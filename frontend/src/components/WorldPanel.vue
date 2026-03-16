@@ -2,14 +2,15 @@
   <a-card title="World Panel">
     <a-space direction="vertical" :size="16" class="world-stack">
       <a-typography-paragraph class="world-help">
-        上面显示的是当前世界参数 JSON。下面可以用点路径修改单个参数：例如把 path 填成
-        <a-typography-text code>counter.increment</a-typography-text>，type 选
-        <a-typography-text code>number</a-typography-text>，value 填成
-        <a-typography-text code>2</a-typography-text>，会写成
-        <a-typography-text code>{{ stringExample }}</a-typography-text>。如果需要单位，例如
-        <a-typography-text code>river.width</a-typography-text>，再额外填写
-        <a-typography-text code>unit</a-typography-text>，会生成
-        <a-typography-text code>{{ unitExample }}</a-typography-text>。
+        The JSON above shows the current world parameters. Use a dot path below to update a
+        single parameter. For example, set path to
+        <a-typography-text code>counter.increment</a-typography-text>, choose type
+        <a-typography-text code>number</a-typography-text>, and enter
+        <a-typography-text code>2</a-typography-text> as the value to produce
+        <a-typography-text code>{{ stringExample }}</a-typography-text>. If you need a unit,
+        for example for <a-typography-text code>river.width</a-typography-text>, fill in
+        <a-typography-text code>unit</a-typography-text> as well to produce
+        <a-typography-text code>{{ unitExample }}</a-typography-text>.
       </a-typography-paragraph>
 
       <a-spin :spinning="loading">
@@ -19,7 +20,7 @@
 
       <a-form layout="vertical" class="world-param-form">
         <a-form-item label="Path">
-          <a-input v-model:value="path" placeholder="例如: counter.increment" />
+          <a-input v-model:value="path" :placeholder="pathPlaceholder" />
         </a-form-item>
         <a-form-item label="Type">
           <a-select v-model:value="valueType" :options="typeOptions" />
@@ -37,7 +38,7 @@
           />
         </a-form-item>
         <a-form-item label="Unit (optional)">
-          <a-input v-model:value="unit" placeholder="例如: meter" />
+          <a-input v-model:value="unit" :placeholder="unitPlaceholder" />
         </a-form-item>
         <a-space direction="vertical" :size="12">
           <a-button
@@ -102,6 +103,8 @@ const applyError = ref<string>("");
 
 const stringExample = '{"value":2,"type":"number"}';
 const unitExample = '{"value":1,"type":"number","unit":"meter"}';
+const pathPlaceholder = "Example: counter.increment";
+const unitPlaceholder = "Example: meter";
 const formattedParams = computed(() => JSON.stringify(props.params ?? {}, null, 2));
 const typeOptions = [
   { label: "string", value: "string" },
@@ -115,12 +118,12 @@ const booleanOptions = [
 ];
 const valuePlaceholder = computed(() => {
   if (valueType.value === "number") {
-    return "例如: 2";
+    return "Example: 2";
   }
   if (valueType.value === "json") {
-    return '例如: {"min":1,"max":3}';
+    return 'Example: {"min":1,"max":3}';
   }
-  return "例如: hello";
+  return "Example: hello";
 });
 
 function parseInputValue(input: string, type: ParamValueType, boolValue: "true" | "false"): unknown {
