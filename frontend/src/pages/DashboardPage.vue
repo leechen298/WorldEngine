@@ -1,35 +1,73 @@
 <template>
-  <main class="dashboard">
-    <h1>WorldEngine Dashboard</h1>
+  <main class="dashboard-shell">
+    <section class="dashboard">
+      <header class="dashboard-header">
+        <div>
+          <a-typography-title :level="1">WorldEngine Dashboard</a-typography-title>
+          <a-typography-paragraph class="dashboard-subtitle">
+            Runtime overview, event timeline, and world parameter controls.
+          </a-typography-paragraph>
+        </div>
+      </header>
 
-    <section class="health">
-      <strong>Backend health:</strong>
-      <span v-if="loading"> checking...</span>
-      <span v-else-if="error"> {{ error }}</span>
-      <span v-else>{{ health?.status }} ({{ health?.service }})</span>
-    </section>
+      <a-row :gutter="[16, 16]" class="dashboard-status-row">
+        <a-col :xs="24" :lg="12">
+          <a-card title="Backend Health" class="status-card">
+            <a-spin :spinning="loading">
+              <a-alert v-if="error" type="error" show-icon :message="error" />
+              <a-descriptions v-else :column="1" size="small" bordered>
+                <a-descriptions-item label="Status">
+                  {{ health?.status ?? "-" }}
+                </a-descriptions-item>
+                <a-descriptions-item label="Service">
+                  {{ health?.service ?? "-" }}
+                </a-descriptions-item>
+              </a-descriptions>
+            </a-spin>
+          </a-card>
+        </a-col>
 
-    <section class="runtime">
-      <strong>Runtime:</strong>
-      <span v-if="runtimeLoading"> loading...</span>
-      <span v-else-if="runtimeError"> {{ runtimeError }}</span>
-      <span v-else>
-        tick_id={{ runtime?.tick_id }}, world_time_seconds={{ runtime?.world_time_seconds }},
-        step_seconds={{ runtime?.step_seconds }}, updated_at={{ runtime?.updated_at ?? "-" }}
-      </span>
-    </section>
+        <a-col :xs="24" :lg="12">
+          <a-card title="Runtime State" class="status-card">
+            <a-spin :spinning="runtimeLoading">
+              <a-alert v-if="runtimeError" type="error" show-icon :message="runtimeError" />
+              <a-descriptions v-else :column="1" size="small" bordered>
+                <a-descriptions-item label="tick_id">
+                  {{ runtime?.tick_id ?? "-" }}
+                </a-descriptions-item>
+                <a-descriptions-item label="world_time_seconds">
+                  {{ runtime?.world_time_seconds ?? "-" }}
+                </a-descriptions-item>
+                <a-descriptions-item label="step_seconds">
+                  {{ runtime?.step_seconds ?? "-" }}
+                </a-descriptions-item>
+                <a-descriptions-item label="updated_at">
+                  {{ runtime?.updated_at ?? "-" }}
+                </a-descriptions-item>
+              </a-descriptions>
+            </a-spin>
+          </a-card>
+        </a-col>
+      </a-row>
 
-    <section class="panel-grid">
-      <RuntimeControls class="panel-grid-full" @stepped="handleRuntimeStepped" />
-      <TimelinePanel
-        class="panel-grid-full"
-        :events="events"
-        :loading="eventsLoading"
-        :error="eventsError"
-      />
-      <WorldPanel />
-      <AgentPanel />
-      <MemoryPanel />
+      <section class="panel-grid">
+        <RuntimeControls class="panel-grid-full" @stepped="handleRuntimeStepped" />
+        <TimelinePanel
+          class="panel-grid-full"
+          :events="events"
+          :loading="eventsLoading"
+          :error="eventsError"
+        />
+        <WorldPanel
+          class="panel-grid-full"
+          :params="worldParams"
+          :loading="worldParamsLoading"
+          :error="worldParamsError"
+          @applied="handleParamsApplied"
+        />
+        <AgentPanel />
+        <MemoryPanel />
+      </section>
     </section>
   </main>
 </template>
@@ -37,12 +75,25 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import {
+  Alert as AAlert,
+  Card as ACard,
+  Col as ACol,
+  Descriptions as ADescriptions,
+  DescriptionsItem as ADescriptionsItem,
+  Row as ARow,
+  Spin as ASpin,
+  TypographyParagraph as ATypographyParagraph,
+  TypographyTitle as ATypographyTitle,
+} from "ant-design-vue";
+import {
+  getWorldParams,
   fetchHealth,
   getWorldEvents,
   getRuntimeState,
   type HealthResponse,
   type RuntimeState,
   type WorldEvent,
+  type WorldParams,
 } from "../api/client";
 import RuntimeControls from "../components/RuntimeControls.vue";
 import TimelinePanel from "../components/TimelinePanel.vue";
@@ -59,6 +110,9 @@ const runtimeError = ref<string>("");
 const events = ref<WorldEvent[]>([]);
 const eventsLoading = ref<boolean>(true);
 const eventsError = ref<string>("");
+const worldParams = ref<WorldParams>({});
+const worldParamsLoading = ref<boolean>(true);
+const worldParamsError = ref<string>("");
 
 async function loadRuntimeState(): Promise<void> {
   try {
@@ -82,6 +136,22 @@ async function loadEvents(): Promise<void> {
   }
 }
 
+async function loadWorldParams(): Promise<void> {
+  try {
+    worldParams.value = await getWorldParams();
+    worldParamsError.value = "";
+  } catch (err) {
+    worldParamsError.value = err instanceof Error ? err.message : "Unknown error";
+  } finally {
+    worldParamsLoading.value = false;
+  }
+}
+
+function handleParamsApplied(nextParams: WorldParams): void {
+  worldParams.value = nextParams;
+  worldParamsError.value = "";
+}
+
 async function handleRuntimeStepped(): Promise<void> {
   runtimeLoading.value = true;
   eventsLoading.value = true;
@@ -99,10 +169,34 @@ onMounted(async () => {
 
   await loadRuntimeState();
   await loadEvents();
+  await loadWorldParams();
 });
 </script>
 
 <style scoped>
+.dashboard-shell {
+  min-height: 100vh;
+  padding: 32px 20px 48px;
+}
+
+.dashboard-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-subtitle {
+  max-width: 680px;
+  margin-bottom: 0;
+  color: #526072;
+}
+
+.dashboard-status-row {
+  margin-bottom: 16px;
+}
+
+.status-card {
+  height: 100%;
+}
+
 .panel-grid-full {
   grid-column: 1 / -1;
 }

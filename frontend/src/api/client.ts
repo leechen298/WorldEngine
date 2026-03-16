@@ -32,6 +32,18 @@ export interface WorldEvent {
   created_at: string;
 }
 
+export type WorldParams = Record<string, unknown>;
+
+export interface ParamPatchItem {
+  op: "add" | "set" | "remove";
+  path: string;
+  value?: unknown;
+}
+
+export interface ApplyWorldParamsRequest {
+  patches: ParamPatchItem[];
+}
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 export class ApiClientError extends Error {
@@ -122,4 +134,20 @@ export async function getWorldEvents(params?: {
 
   const query = searchParams.toString();
   return request<WorldEvent[]>(`/world/events${query ? `?${query}` : ""}`);
+}
+
+export async function getWorldParams(): Promise<WorldParams> {
+  return request<WorldParams>("/world/params");
+}
+
+export async function applyWorldParams(
+  body: ApplyWorldParamsRequest,
+): Promise<WorldParams> {
+  return request<WorldParams>("/world/params/apply", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
 }

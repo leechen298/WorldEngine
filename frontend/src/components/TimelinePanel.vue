@@ -1,24 +1,45 @@
 <template>
-  <section class="panel">
-    <h2>Timeline Panel</h2>
-    <p v-if="error" class="timeline-error">{{ error }}</p>
-    <p v-else-if="loading">Loading events...</p>
-    <p v-else-if="events.length === 0">No events yet.</p>
-    <ul v-else class="timeline-list">
-      <li v-for="event in events" :key="event.id" class="timeline-item">
-        <strong>#{{ event.tick_id }}</strong>
-        <span>{{ event.type }}</span>
-        <span v-if="event.payload?.module_path">[{{ event.payload.module_path }}]</span>
-        <span v-if="event.type === 'module.counter' && event.payload?.counter !== undefined">
-          counter={{ event.payload.counter }}
-        </span>
-        <span>{{ event.created_at }}</span>
-      </li>
-    </ul>
-  </section>
+  <a-card title="Timeline Panel">
+    <a-spin :spinning="loading">
+      <a-alert v-if="error" type="error" show-icon :message="error" />
+      <a-empty v-else-if="events.length === 0" description="No events yet." />
+      <a-list v-else item-layout="vertical" :data-source="events" class="timeline-list">
+        <template #renderItem="{ item }">
+          <a-list-item :key="item.id" class="timeline-item">
+            <a-space wrap :size="[8, 8]">
+              <a-tag color="blue">#{{ item.tick_id }}</a-tag>
+              <a-tag>{{ item.type }}</a-tag>
+              <a-typography-text v-if="item.payload?.module_path" code>
+                [{{ item.payload.module_path }}]
+              </a-typography-text>
+              <a-typography-text
+                v-if="item.type === 'module.counter' && item.payload?.counter !== undefined"
+              >
+                counter={{ item.payload.counter }}
+              </a-typography-text>
+              <a-typography-text type="secondary">
+                {{ item.created_at }}
+              </a-typography-text>
+            </a-space>
+          </a-list-item>
+        </template>
+      </a-list>
+    </a-spin>
+  </a-card>
 </template>
 
 <script setup lang="ts">
+import {
+  Alert as AAlert,
+  Card as ACard,
+  Empty as AEmpty,
+  List as AList,
+  ListItem as AListItem,
+  Space as ASpace,
+  Spin as ASpin,
+  Tag as ATag,
+  TypographyText as ATypographyText,
+} from "ant-design-vue";
 import type { WorldEvent } from "../api/client";
 
 defineProps<{
@@ -30,14 +51,10 @@ defineProps<{
 
 <style scoped>
 .timeline-list {
-  margin: 0;
-  padding-left: 18px;
+  margin-top: 4px;
 }
 
 .timeline-item {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 8px;
   min-width: 0;
   overflow-wrap: anywhere;
   word-break: break-word;

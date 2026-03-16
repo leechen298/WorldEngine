@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Callable, Optional
 from uuid import uuid4
 
 from app.core.event_bus import InMemoryEventLog
@@ -31,6 +31,7 @@ class RuntimeEngine:
         step_seconds: int = 600,
         event_log: Optional[InMemoryEventLog] = None,
         world_root_module: Optional[WorldModule] = None,
+        params_provider: Optional[Callable[[], dict[str, Any]]] = None,
     ) -> None:
         self._state = RuntimeState(
             step_seconds=step_seconds,
@@ -38,12 +39,14 @@ class RuntimeEngine:
         )
         self._event_log = event_log
         self._world_root_module = world_root_module
+        self._params_provider = params_provider
 
     @classmethod
     def from_env(
         cls,
         event_log: Optional[InMemoryEventLog] = None,
         world_root_module: Optional[WorldModule] = None,
+        params_provider: Optional[Callable[[], dict[str, Any]]] = None,
     ) -> "RuntimeEngine":
         raw_step_seconds = os.getenv("WORLD_STEP_SECONDS", "600")
         try:
@@ -58,6 +61,7 @@ class RuntimeEngine:
             step_seconds=step_seconds,
             event_log=event_log,
             world_root_module=world_root_module,
+            params_provider=params_provider,
         )
 
     def get_state(self) -> RuntimeState:
@@ -83,10 +87,12 @@ class RuntimeEngine:
                 )
             )
         if self._world_root_module is not None:
+            params = self._params_provider() if self._params_provider is not None else {}
             module_result = self._world_root_module.on_tick(
                 TickContext(
                     tick_id=self._state.tick_id,
                     world_time_seconds=self._state.world_time_seconds,
+                    params=params,
                 )
             )
             if self._event_log is not None:

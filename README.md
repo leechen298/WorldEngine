@@ -21,8 +21,8 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Default frontend API target is `http://localhost:8000` (configure via `VITE_API_BASE_URL`).

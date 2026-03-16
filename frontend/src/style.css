@@ -1,7 +1,9 @@
 :root {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #102032;
-  background: #f4f7fb;
+  background:
+    radial-gradient(circle at top left, rgba(162, 196, 255, 0.35), transparent 28%),
+    linear-gradient(180deg, #edf4ff 0%, #f5f8fc 55%, #ffffff 100%);
 }
 
 * {
@@ -10,7 +12,10 @@
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #edf3fb 0%, #f7f9fc 60%, #ffffff 100%);
+  color: #102032;
+  background:
+    radial-gradient(circle at top left, rgba(162, 196, 255, 0.35), transparent 28%),
+    linear-gradient(180deg, #edf4ff 0%, #f5f8fc 55%, #ffffff 100%);
 }
 
 #app {
@@ -18,65 +23,13 @@ body {
 }
 
 .dashboard {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 24px;
-}
-
-.dashboard h1 {
-  margin-top: 0;
-  margin-bottom: 12px;
-}
-
-.health {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #c7d6e7;
-  background: #ffffff;
-  margin-bottom: 16px;
-}
-
-.runtime {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #c7d6e7;
-  background: #ffffff;
-  margin-bottom: 16px;
+  padding: 0;
 }
 
 .panel-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-}
-
-.panel {
-  background: #ffffff;
-  border: 1px solid #d2dfec;
-  border-radius: 8px;
-  padding: 12px;
-}
-
-.panel h2 {
-  margin-top: 0;
-  font-size: 1rem;
-}
-
-.step-button {
-  border: 1px solid #7da2c8;
-  border-radius: 6px;
-  background: #1e5f99;
-  color: #ffffff;
-  padding: 8px 14px;
-  cursor: pointer;
-}
-
-.step-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.runtime-error {
-  margin-top: 8px;
-  color: #b42318;
+  gap: 16px;
 }

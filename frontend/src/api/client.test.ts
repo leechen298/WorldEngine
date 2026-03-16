@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  applyWorldParams,
   ApiClientError,
   fetchHealth,
+  getWorldParams,
   getWorldEvents,
   getRuntimeState,
   stepRuntime,
@@ -113,6 +115,84 @@ describe("api client", () => {
       "http://localhost:8000/world/events?from_tick=2&to_tick=4&limit=10",
       undefined,
     );
+  });
+
+  it("loads world params", async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          code: 0,
+          msg: "ok",
+          data: {
+            counter: {
+              increment: 2,
+            },
+          },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      ),
+    );
+
+    await expect(getWorldParams()).resolves.toEqual({
+      counter: {
+        increment: 2,
+      },
+    });
+    expect(fetchMock).toHaveBeenCalledWith("http://localhost:8000/world/params", undefined);
+  });
+
+  it("posts params patches", async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          code: 0,
+          msg: "ok",
+          data: {
+            heartbeat: {
+              enabled: false,
+            },
+          },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      ),
+    );
+
+    await expect(
+      applyWorldParams({
+        patches: [
+          {
+            op: "set",
+            path: "heartbeat.enabled",
+            value: false,
+          },
+        ],
+      }),
+    ).resolves.toEqual({
+      heartbeat: {
+        enabled: false,
+      },
+    });
+    expect(fetchMock).toHaveBeenCalledWith("http://localhost:8000/world/params/apply", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        patches: [
+          {
+            op: "set",
+            path: "heartbeat.enabled",
+            value: false,
+          },
+        ],
+      }),
+    });
   });
 
   it("throws fallback error for non-json responses", async () => {

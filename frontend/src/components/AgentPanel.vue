@@ -1,6 +1,9 @@
 <template>
-  <section class="panel">
-    <h2>Agent Panel</h2>
-    <p>Placeholder agent state and controls.</p>
-  </section>
+  <a-card title="Agent Panel">
+    <a-empty description="Placeholder agent state and controls." />
+  </a-card>
 </template>
+
+<script setup lang="ts">
+import { Card as ACard, Empty as AEmpty } from "ant-design-vue";
+</script>

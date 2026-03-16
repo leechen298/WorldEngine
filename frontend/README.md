@@ -6,8 +6,8 @@ This folder contains the V1 dashboard scaffold for WorldEngine.
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 The app runs at `http://localhost:5173` by default.

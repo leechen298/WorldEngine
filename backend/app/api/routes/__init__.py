@@ -3,5 +3,6 @@
 from app.api.routes.health import router as health_router
 from app.api.routes.runtime import router as runtime_router
 from app.api.routes.world import router as world_router
+from app.api.routes.world_params import router as world_params_router
 
-__all__ = ["health_router", "runtime_router", "world_router"]
+__all__ = ["health_router", "runtime_router", "world_router", "world_params_router"]

@@ -10,6 +10,7 @@ from app.schemas.event import Event
 class TickContext:
     tick_id: int
     world_time_seconds: int
+    params: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
