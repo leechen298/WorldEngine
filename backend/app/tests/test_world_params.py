@@ -87,6 +87,47 @@ def test_structured_param_can_disable_heartbeat() -> None:
     assert heartbeat_events == []
 
 
+def test_next_step_includes_current_params_snapshot() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    apply_response = client.post(
+        "/world/params/apply",
+        json={
+            "patches": [
+                {
+                    "op": "set",
+                    "path": "scene.weather",
+                    "value": {
+                        "value": "rain",
+                        "type": "string",
+                    },
+                }
+            ]
+        },
+    )
+    assert apply_response.status_code == 200
+
+    step_response = client.post("/runtime/step")
+    assert step_response.status_code == 200
+
+    events_response = client.get("/world/event-steps?limit=1")
+    assert events_response.status_code == 200
+
+    step = events_response.json()["data"]["items"][0]
+    tick_advanced = next(event for event in step["items"] if event["type"] == "tick.advanced")
+
+    assert step["tick_id"] == 1
+    assert tick_advanced["payload"]["params"] == {
+        "scene": {
+            "weather": {
+                "value": "rain",
+                "type": "string",
+            }
+        }
+    }
+
+
 def test_params_applied_event_emitted() -> None:
     app = create_app()
     client = TestClient(app)

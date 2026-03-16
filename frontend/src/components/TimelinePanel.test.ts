@@ -98,6 +98,31 @@ describe("TimelinePanel", () => {
     expect(wrapper.text()).toContain("Newest first");
   });
 
+  it("renders params snapshot details for stepped events", () => {
+    const wrapper = mount(TimelinePanel, {
+      props: {
+        steps: [],
+      },
+    });
+
+    expect(
+      (wrapper.vm as unknown as { formatDetails: (event: { payload: Record<string, unknown>; type: string }) => string }).formatDetails({
+        type: "tick.advanced",
+        payload: {
+          step_seconds: 600,
+          params: {
+            scene: {
+              weather: {
+                value: "rain",
+                type: "string",
+              },
+            },
+          },
+        },
+      }),
+    ).toContain('params={"scene":{"weather":{"value":"rain","type":"string"}}}');
+  });
+
   it("keeps long timeline rows in the table markup", () => {
     const wrapper = mount(TimelinePanel, {
       props: {

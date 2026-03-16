@@ -159,6 +159,7 @@ function formatDetails(event: WorldEvent): string {
   const summary = event.payload?.summary;
   const counter = event.payload?.counter;
   const patches = event.payload?.patches;
+  const params = event.payload?.params;
 
   if (typeof modulePath === "string" && modulePath.length > 0) {
     detailParts.push(`[${modulePath}]`);
@@ -171,6 +172,9 @@ function formatDetails(event: WorldEvent): string {
   }
   if (Array.isArray(patches) && patches.length > 0) {
     detailParts.push(`${patches.length} patch${patches.length > 1 ? "es" : ""}`);
+  }
+  if (params && typeof params === "object" && Object.keys(params).length > 0) {
+    detailParts.push(`params=${JSON.stringify(params)}`);
   }
   if (detailParts.length > 0) {
     return detailParts.join(" | ");

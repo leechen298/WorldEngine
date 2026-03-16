@@ -1,4 +1,5 @@
 import os
+from copy import deepcopy
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from typing import Any, Callable, Optional
@@ -71,6 +72,7 @@ class RuntimeEngine:
         self._state.tick_id += 1
         self._state.world_time_seconds += self._state.step_seconds
         self._state.updated_at = _utc_now_iso()
+        params = self._params_provider() if self._params_provider is not None else {}
         if self._event_log is not None:
             self._event_log.append(
                 Event(
@@ -82,12 +84,12 @@ class RuntimeEngine:
                     payload={
                         "step_seconds": self._state.step_seconds,
                         "updated_at": self._state.updated_at,
+                        "params": deepcopy(params),
                     },
                     created_at=self._state.updated_at,
                 )
             )
         if self._world_root_module is not None:
-            params = self._params_provider() if self._params_provider is not None else {}
             module_result = self._world_root_module.on_tick(
                 TickContext(
                     tick_id=self._state.tick_id,
