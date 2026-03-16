@@ -3,14 +3,16 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import DashboardPage from "./DashboardPage.vue";
 
-const { fetchHealthMock, getRuntimeStateMock } = vi.hoisted(() => ({
+const { fetchHealthMock, getRuntimeStateMock, getWorldEventsMock } = vi.hoisted(() => ({
   fetchHealthMock: vi.fn(),
   getRuntimeStateMock: vi.fn(),
+  getWorldEventsMock: vi.fn(),
 }));
 
 vi.mock("../api/client", () => ({
   fetchHealth: fetchHealthMock,
   getRuntimeState: getRuntimeStateMock,
+  getWorldEvents: getWorldEventsMock,
 }));
 
 describe("DashboardPage", () => {
@@ -25,6 +27,17 @@ describe("DashboardPage", () => {
       step_seconds: 600,
       updated_at: "2026-03-09T00:00:00+00:00",
     });
+    getWorldEventsMock.mockResolvedValue([
+      {
+        id: "evt-1",
+        tick_id: 3,
+        world_time_seconds: 1800,
+        type: "tick.advanced",
+        source: "system",
+        payload: {},
+        created_at: "2026-03-09T00:00:00+00:00",
+      },
+    ]);
   });
 
   it("loads and renders health and runtime state on mount", async () => {
@@ -44,6 +57,7 @@ describe("DashboardPage", () => {
 
     expect(fetchHealthMock).toHaveBeenCalledTimes(1);
     expect(getRuntimeStateMock).toHaveBeenCalledTimes(1);
+    expect(getWorldEventsMock).toHaveBeenCalledTimes(1);
     expect(wrapper.text()).toContain("ok (worldengine-backend)");
     expect(wrapper.text()).toContain("tick_id=3");
     expect(wrapper.text()).toContain("updated_at=2026-03-09T00:00:00+00:00");
@@ -71,11 +85,23 @@ describe("DashboardPage", () => {
       step_seconds: 600,
       updated_at: "2026-03-09T00:10:00+00:00",
     });
+    getWorldEventsMock.mockResolvedValueOnce([
+      {
+        id: "evt-2",
+        tick_id: 4,
+        world_time_seconds: 2400,
+        type: "tick.advanced",
+        source: "system",
+        payload: {},
+        created_at: "2026-03-09T00:10:00+00:00",
+      },
+    ]);
 
     await wrapper.get("[data-test='runtime-controls']").trigger("click");
     await flushPromises();
 
     expect(getRuntimeStateMock).toHaveBeenCalledTimes(2);
+    expect(getWorldEventsMock).toHaveBeenCalledTimes(2);
     expect(wrapper.text()).toContain("tick_id=4");
   });
 });

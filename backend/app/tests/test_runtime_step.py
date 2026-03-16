@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.api.app_factory import create_app
+from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_engine import RuntimeEngine
 
 
@@ -23,6 +24,19 @@ def test_runtime_engine_step_advances_tick_and_time() -> None:
     second_state = engine.step()
     assert second_state.tick_id == 2
     assert second_state.world_time_seconds == 1200
+
+
+def test_runtime_engine_step_appends_tick_advanced_event() -> None:
+    event_log = InMemoryEventLog()
+    engine = RuntimeEngine(step_seconds=600, event_log=event_log)
+
+    engine.step()
+
+    events = event_log.list()
+    assert len(events) >= 1
+    assert events[0].type == "tick.advanced"
+    assert events[0].tick_id == 1
+    assert events[0].world_time_seconds == 600
 
 
 def test_runtime_engine_from_env_uses_world_step_seconds(monkeypatch) -> None:
@@ -62,3 +76,39 @@ def test_runtime_step_endpoint_increments_tick() -> None:
         before_step["world_time_seconds"] + payload["step_seconds"]
     )
     assert payload["updated_at"] is not None
+
+
+def test_world_events_endpoint_returns_step_timeline() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    for _ in range(3):
+        response = client.post("/runtime/step")
+        assert response.status_code == 200
+
+    events_response = client.get("/world/events")
+    assert events_response.status_code == 200
+
+    events = events_response.json()
+    assert len(events) == 3
+    assert [event["tick_id"] for event in events] == [1, 2, 3]
+    assert all(event["type"] == "tick.advanced" for event in events)
+
+
+def test_world_events_endpoint_applies_filters() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    for _ in range(4):
+        client.post("/runtime/step")
+
+    filtered_response = client.get("/world/events?from_tick=2&to_tick=3")
+    assert filtered_response.status_code == 200
+    filtered_events = filtered_response.json()
+    assert [event["tick_id"] for event in filtered_events] == [2, 3]
+
+    limited_response = client.get("/world/events?limit=2")
+    assert limited_response.status_code == 200
+    limited_events = limited_response.json()
+    assert len(limited_events) == 2
+    assert [event["tick_id"] for event in limited_events] == [1, 2]

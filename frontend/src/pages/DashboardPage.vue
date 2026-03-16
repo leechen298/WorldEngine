@@ -21,7 +21,7 @@
 
     <section class="panel-grid">
       <RuntimeControls @stepped="handleRuntimeStepped" />
-      <TimelinePanel />
+      <TimelinePanel :events="events" :loading="eventsLoading" :error="eventsError" />
       <WorldPanel />
       <AgentPanel />
       <MemoryPanel />
@@ -33,9 +33,11 @@
 import { onMounted, ref } from "vue";
 import {
   fetchHealth,
+  getWorldEvents,
   getRuntimeState,
   type HealthResponse,
   type RuntimeState,
+  type WorldEvent,
 } from "../api/client";
 import RuntimeControls from "../components/RuntimeControls.vue";
 import TimelinePanel from "../components/TimelinePanel.vue";
@@ -49,6 +51,9 @@ const error = ref<string>("");
 const runtime = ref<RuntimeState | null>(null);
 const runtimeLoading = ref<boolean>(true);
 const runtimeError = ref<string>("");
+const events = ref<WorldEvent[]>([]);
+const eventsLoading = ref<boolean>(true);
+const eventsError = ref<string>("");
 
 async function loadRuntimeState(): Promise<void> {
   try {
@@ -61,9 +66,21 @@ async function loadRuntimeState(): Promise<void> {
   }
 }
 
+async function loadEvents(): Promise<void> {
+  try {
+    events.value = await getWorldEvents({ limit: 20 });
+    eventsError.value = "";
+  } catch (err) {
+    eventsError.value = err instanceof Error ? err.message : "Unknown error";
+  } finally {
+    eventsLoading.value = false;
+  }
+}
+
 async function handleRuntimeStepped(): Promise<void> {
   runtimeLoading.value = true;
-  await loadRuntimeState();
+  eventsLoading.value = true;
+  await Promise.all([loadRuntimeState(), loadEvents()]);
 }
 
 onMounted(async () => {
@@ -76,5 +93,6 @@ onMounted(async () => {
   }
 
   await loadRuntimeState();
+  await loadEvents();
 });
 </script>

@@ -2,6 +2,10 @@ import os
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from typing import Optional
+from uuid import uuid4
+
+from app.core.event_bus import InMemoryEventLog
+from app.schemas.event import Event
 
 
 def _utc_now_iso() -> str:
@@ -20,14 +24,22 @@ class RuntimeState:
 class RuntimeEngine:
     """In-memory runtime engine for stepping world time."""
 
-    def __init__(self, step_seconds: int = 600) -> None:
+    def __init__(
+        self,
+        step_seconds: int = 600,
+        event_log: Optional[InMemoryEventLog] = None,
+    ) -> None:
         self._state = RuntimeState(
             step_seconds=step_seconds,
             updated_at=_utc_now_iso(),
         )
+        self._event_log = event_log
 
     @classmethod
-    def from_env(cls) -> "RuntimeEngine":
+    def from_env(
+        cls,
+        event_log: Optional[InMemoryEventLog] = None,
+    ) -> "RuntimeEngine":
         raw_step_seconds = os.getenv("WORLD_STEP_SECONDS", "600")
         try:
             step_seconds = int(raw_step_seconds)
@@ -37,7 +49,7 @@ class RuntimeEngine:
         if step_seconds <= 0:
             step_seconds = 600
 
-        return cls(step_seconds=step_seconds)
+        return cls(step_seconds=step_seconds, event_log=event_log)
 
     def get_state(self) -> RuntimeState:
         return replace(self._state)
@@ -46,4 +58,19 @@ class RuntimeEngine:
         self._state.tick_id += 1
         self._state.world_time_seconds += self._state.step_seconds
         self._state.updated_at = _utc_now_iso()
+        if self._event_log is not None:
+            self._event_log.append(
+                Event(
+                    id=str(uuid4()),
+                    tick_id=self._state.tick_id,
+                    world_time_seconds=self._state.world_time_seconds,
+                    type="tick.advanced",
+                    source="system",
+                    payload={
+                        "step_seconds": self._state.step_seconds,
+                        "updated_at": self._state.updated_at,
+                    },
+                    created_at=self._state.updated_at,
+                )
+            )
         return self.get_state()
