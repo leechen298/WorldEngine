@@ -17,32 +17,28 @@
     </template>
     <a-spin :spinning="loading">
       <a-alert v-if="error" type="error" show-icon :message="error" />
-      <a-empty v-else-if="events.length === 0" description="No events yet." />
+      <a-empty v-else-if="steps.length === 0" description="No events yet." />
       <div v-else class="timeline-table-shell">
         <a-table
           class="timeline-table"
-          :data-source="events"
+          :data-source="steps"
           :columns="columns"
           :pagination="false"
-          :row-key="(record) => record.id"
+          :row-key="(record) => record.tick_id"
           size="small"
           :scroll="{ x: 960 }"
+          :expanded-row-render="renderExpandedRow"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'tick_id'">
               <a-tag color="blue">#{{ record.tick_id }}</a-tag>
             </template>
-            <template v-else-if="column.key === 'type'">
-              <a-tag>{{ record.type }}</a-tag>
+            <template v-else-if="column.key === 'event_count'">
+              <a-tag color="geekblue">{{ record.event_count }} events</a-tag>
             </template>
-            <template v-else-if="column.key === 'source'">
-              <a-typography-text code>
-                {{ record.source }}
-              </a-typography-text>
-            </template>
-            <template v-else-if="column.key === 'details'">
+            <template v-else-if="column.key === 'summary'">
               <a-typography-text class="timeline-cell-text">
-                {{ formatDetails(record) }}
+                {{ summarizeStep(record as WorldEventStep) }}
               </a-typography-text>
             </template>
             <template v-else-if="column.key === 'created_at'">
@@ -85,11 +81,14 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs } from "vue";
+import { h, toRefs } from "vue";
 import {
   Alert as AAlert,
   Button as AButton,
   Card as ACard,
+  Descriptions as ADescriptions,
+  DescriptionsItem as ADescriptionsItem,
+  Divider as ADivider,
   Empty as AEmpty,
   Space as ASpace,
   Spin as ASpin,
@@ -97,11 +96,11 @@ import {
   Tag as ATag,
   TypographyText as ATypographyText,
 } from "ant-design-vue";
-import type { WorldEvent } from "../api/client";
+import type { WorldEvent, WorldEventStep } from "../api/client";
 
 const props = withDefaults(
   defineProps<{
-    events: WorldEvent[];
+    steps: WorldEventStep[];
     loading?: boolean;
     error?: string;
     pageSize?: number;
@@ -120,7 +119,7 @@ const props = withDefaults(
     pageSizeOptions: () => [20, 50, 100],
   },
 );
-const { canPrevious, currentPage, error, events, hasMore, loading, pageSize, pageSizeOptions } =
+const { canPrevious, currentPage, error, hasMore, loading, pageSize, pageSizeOptions, steps } =
   toRefs(props);
 
 const emit = defineEmits<{
@@ -137,23 +136,17 @@ const columns = [
     width: 96,
   },
   {
-    title: "Type",
-    dataIndex: "type",
-    key: "type",
-    width: 180,
+    title: "Events",
+    dataIndex: "event_count",
+    key: "event_count",
+    width: 120,
   },
   {
-    title: "Source",
-    dataIndex: "source",
-    key: "source",
-    width: 220,
+    title: "Summary",
+    key: "summary",
   },
   {
-    title: "Details",
-    key: "details",
-  },
-  {
-    title: "Created At",
+    title: "Updated At",
     dataIndex: "created_at",
     key: "created_at",
     width: 240,
@@ -190,6 +183,52 @@ function formatDetails(event: WorldEvent): string {
   return JSON.stringify(event.payload);
 }
 
+function summarizeStep(step: WorldEventStep): string {
+  const typeCounts = new Map<string, number>();
+
+  for (const item of step.items) {
+    typeCounts.set(item.type, (typeCounts.get(item.type) ?? 0) + 1);
+  }
+
+  return (
+    Array.from(typeCounts.entries())
+      .map(([type, count]) => `${type} x${count}`)
+      .join(" | ") || "-"
+  );
+}
+
+function renderExpandedRow({ record }: { record: WorldEventStep }) {
+  const step = record;
+  return h("div", { class: "timeline-step-details" }, [
+    h(
+      ADescriptions,
+      {
+        size: "small",
+        column: 3,
+        bordered: true,
+      },
+      {
+        default: () => [
+          h(ADescriptionsItem, { label: "Tick" }, () => `#${step.tick_id}`),
+          h(ADescriptionsItem, { label: "World Time" }, () => String(step.world_time_seconds)),
+          h(ADescriptionsItem, { label: "Events" }, () => String(step.event_count)),
+        ],
+      },
+    ),
+    h(ADivider, { style: "margin: 12px 0" }),
+    ...step.items.map((item) =>
+      h("div", { class: "timeline-step-event", key: item.id }, [
+        h("div", { class: "timeline-step-event-header" }, [
+          h(ATag, { color: item.type === "tick.advanced" ? "blue" : "default" }, () => item.type),
+          h(ATypographyText, { code: true }, () => item.source),
+          h(ATypographyText, { type: "secondary" }, () => item.created_at),
+        ]),
+        h(ATypographyText, { class: "timeline-cell-text" }, () => formatDetails(item)),
+      ]),
+    ),
+  ]);
+}
+
 function handlePageSizeChange(rawEvent: Event): void {
   const target = rawEvent.target as HTMLSelectElement | null;
   const nextValue = Number(target?.value);
@@ -200,6 +239,7 @@ function handlePageSizeChange(rawEvent: Event): void {
 
 defineExpose({
   formatDetails,
+  summarizeStep,
 });
 </script>
 
@@ -232,6 +272,28 @@ defineExpose({
 
 .timeline-cell-text {
   white-space: normal;
+}
+
+.timeline-step-details {
+  display: grid;
+  gap: 8px;
+}
+
+.timeline-step-event {
+  display: grid;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.timeline-step-event + .timeline-step-event {
+  border-top: 1px solid #f0f0f0;
+}
+
+.timeline-step-event-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .timeline-table :deep(.ant-table-cell) {

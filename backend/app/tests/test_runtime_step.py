@@ -180,6 +180,62 @@ def test_world_events_endpoint_supports_cursor_pagination() -> None:
     assert [event["id"] for event in third_page["items"]] == [event["id"] for event in full_events[4:6]]
 
 
+def test_world_event_steps_endpoint_returns_grouped_steps() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    for _ in range(3):
+        response = client.post("/runtime/step")
+        assert response.status_code == 200
+
+    response = client.get("/world/event-steps")
+    assert response.status_code == 200
+
+    payload = response.json()
+    assert payload["code"] == 0
+
+    steps = payload["data"]["items"]
+    assert [step["tick_id"] for step in steps] == [3, 2, 1]
+    assert all(step["event_count"] == len(step["items"]) for step in steps)
+    assert all(step["items"][0]["tick_id"] == step["tick_id"] for step in steps)
+    assert payload["data"]["has_more"] is False
+    assert payload["data"]["next_cursor"] is None
+
+
+def test_world_event_steps_endpoint_supports_cursor_pagination() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    for _ in range(5):
+        response = client.post("/runtime/step")
+        assert response.status_code == 200
+
+    first_page_response = client.get("/world/event-steps?limit=2")
+    assert first_page_response.status_code == 200
+    first_page = first_page_response.json()["data"]
+    assert [step["tick_id"] for step in first_page["items"]] == [5, 4]
+    assert first_page["has_more"] is True
+    assert first_page["next_cursor"] == "4"
+
+    second_page_response = client.get(f"/world/event-steps?limit=2&cursor={first_page['next_cursor']}")
+    assert second_page_response.status_code == 200
+    second_page = second_page_response.json()["data"]
+    assert [step["tick_id"] for step in second_page["items"]] == [3, 2]
+    assert second_page["has_more"] is True
+
+
+def test_world_event_steps_endpoint_rejects_unknown_cursor() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    response = client.get("/world/event-steps?cursor=missing-step")
+
+    assert response.status_code == 400
+    payload = response.json()
+    assert payload["code"] == 10
+    assert payload["msg"] == "Unknown cursor: missing-step"
+
+
 def test_world_events_endpoint_rejects_unknown_cursor() -> None:
     app = create_app()
     client = TestClient(app)

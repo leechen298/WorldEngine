@@ -39,6 +39,21 @@ export interface WorldEventsPage {
   limit: number;
 }
 
+export interface WorldEventStep {
+  tick_id: number;
+  world_time_seconds: number;
+  event_count: number;
+  created_at: string;
+  items: WorldEvent[];
+}
+
+export interface WorldEventStepsPage {
+  items: WorldEventStep[];
+  next_cursor?: string | null;
+  has_more: boolean;
+  limit: number;
+}
+
 export type WorldParams = Record<string, unknown>;
 
 export interface ParamPatchItem {
@@ -145,6 +160,31 @@ export async function getWorldEvents(params?: {
 
   const query = searchParams.toString();
   return request<WorldEventsPage>(`/world/events${query ? `?${query}` : ""}`);
+}
+
+export async function getWorldEventSteps(params?: {
+  from_tick?: number;
+  to_tick?: number;
+  cursor?: string;
+  limit?: number;
+}): Promise<WorldEventStepsPage> {
+  const searchParams = new URLSearchParams();
+
+  if (params?.from_tick !== undefined) {
+    searchParams.set("from_tick", String(params.from_tick));
+  }
+  if (params?.to_tick !== undefined) {
+    searchParams.set("to_tick", String(params.to_tick));
+  }
+  if (params?.cursor !== undefined) {
+    searchParams.set("cursor", params.cursor);
+  }
+  if (params?.limit !== undefined) {
+    searchParams.set("limit", String(params.limit));
+  }
+
+  const query = searchParams.toString();
+  return request<WorldEventStepsPage>(`/world/event-steps${query ? `?${query}` : ""}`);
 }
 
 export async function getWorldParams(): Promise<WorldParams> {

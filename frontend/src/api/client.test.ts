@@ -4,6 +4,7 @@ import {
   applyWorldParams,
   ApiClientError,
   fetchHealth,
+  getWorldEventSteps,
   getWorldParams,
   getWorldEvents,
   getRuntimeState,
@@ -123,6 +124,40 @@ describe("api client", () => {
     });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost:8000/world/events?from_tick=2&to_tick=4&cursor=evt-9&limit=10",
+      undefined,
+    );
+  });
+
+  it("builds query strings for world event steps", async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          code: 0,
+          msg: "ok",
+          data: {
+            items: [],
+            next_cursor: "3",
+            has_more: true,
+            limit: 10,
+          },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      ),
+    );
+
+    await expect(
+      getWorldEventSteps({ from_tick: 2, to_tick: 4, cursor: "6", limit: 10 }),
+    ).resolves.toEqual({
+      items: [],
+      next_cursor: "3",
+      has_more: true,
+      limit: 10,
+    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "http://localhost:8000/world/event-steps?from_tick=2&to_tick=4&cursor=6&limit=10",
       undefined,
     );
   });

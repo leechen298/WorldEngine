@@ -54,7 +54,7 @@
         <RuntimeControls class="panel-grid-full" @stepped="handleRuntimeStepped" />
         <TimelinePanel
           class="panel-grid-full"
-          :events="events"
+          :steps="eventSteps"
           :loading="eventsLoading"
           :error="eventsError"
           :page-size="eventsPageSize"
@@ -95,11 +95,11 @@ import {
 import {
   getWorldParams,
   fetchHealth,
-  getWorldEvents,
+  getWorldEventSteps,
   getRuntimeState,
   type HealthResponse,
   type RuntimeState,
-  type WorldEvent,
+  type WorldEventStep,
   type WorldParams,
 } from "../api/client";
 import RuntimeControls from "../components/RuntimeControls.vue";
@@ -116,7 +116,7 @@ const error = ref<string>("");
 const runtime = ref<RuntimeState | null>(null);
 const runtimeLoading = ref<boolean>(true);
 const runtimeError = ref<string>("");
-const events = ref<WorldEvent[]>([]);
+const eventSteps = ref<WorldEventStep[]>([]);
 const eventsLoading = ref<boolean>(true);
 const eventsError = ref<string>("");
 const eventsPageSize = ref<number>(DEFAULT_EVENTS_PAGE_SIZE);
@@ -144,11 +144,11 @@ async function loadRuntimeState(): Promise<void> {
 
 async function loadEvents(cursor: string | null = eventsCurrentCursor.value): Promise<boolean> {
   try {
-    const page = await getWorldEvents({
+    const page = await getWorldEventSteps({
       cursor: cursor ?? undefined,
       limit: eventsPageSize.value,
     });
-    events.value = page.items;
+    eventSteps.value = page.items;
     eventsNextCursor.value = page.next_cursor ?? null;
     eventsHasMore.value = page.has_more;
     eventsCurrentCursor.value = cursor;

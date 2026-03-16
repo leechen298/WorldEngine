@@ -18,3 +18,18 @@ class EventPage(BaseModel):
     next_cursor: Optional[str] = None
     has_more: bool
     limit: int
+
+
+class EventStep(BaseModel):
+    tick_id: int
+    world_time_seconds: int
+    event_count: int
+    created_at: str
+    items: List[Event]
+
+
+class EventStepPage(BaseModel):
+    items: List[EventStep]
+    next_cursor: Optional[str] = None
+    has_more: bool
+    limit: int

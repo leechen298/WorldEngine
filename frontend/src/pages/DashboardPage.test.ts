@@ -3,17 +3,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import DashboardPage from "./DashboardPage.vue";
 
-const { fetchHealthMock, getRuntimeStateMock, getWorldEventsMock, getWorldParamsMock } = vi.hoisted(() => ({
+const { fetchHealthMock, getRuntimeStateMock, getWorldEventStepsMock, getWorldParamsMock } = vi.hoisted(() => ({
   fetchHealthMock: vi.fn(),
   getRuntimeStateMock: vi.fn(),
-  getWorldEventsMock: vi.fn(),
+  getWorldEventStepsMock: vi.fn(),
   getWorldParamsMock: vi.fn(),
 }));
 
 vi.mock("../api/client", () => ({
   fetchHealth: fetchHealthMock,
   getRuntimeState: getRuntimeStateMock,
-  getWorldEvents: getWorldEventsMock,
+  getWorldEventSteps: getWorldEventStepsMock,
   getWorldParams: getWorldParamsMock,
 }));
 
@@ -29,16 +29,24 @@ describe("DashboardPage", () => {
       step_seconds: 600,
       updated_at: "2026-03-09T00:00:00+00:00",
     });
-    getWorldEventsMock.mockResolvedValue({
+    getWorldEventStepsMock.mockResolvedValue({
       items: [
         {
-          id: "evt-1",
           tick_id: 3,
           world_time_seconds: 1800,
-          type: "tick.advanced",
-          source: "system",
-          payload: {},
+          event_count: 1,
           created_at: "2026-03-09T00:00:00+00:00",
+          items: [
+            {
+              id: "evt-1",
+              tick_id: 3,
+              world_time_seconds: 1800,
+              type: "tick.advanced",
+              source: "system",
+              payload: {},
+              created_at: "2026-03-09T00:00:00+00:00",
+            },
+          ],
         },
       ],
       next_cursor: null,
@@ -69,8 +77,8 @@ describe("DashboardPage", () => {
 
     expect(fetchHealthMock).toHaveBeenCalledTimes(1);
     expect(getRuntimeStateMock).toHaveBeenCalledTimes(1);
-    expect(getWorldEventsMock).toHaveBeenCalledTimes(1);
-    expect(getWorldEventsMock).toHaveBeenCalledWith({ cursor: undefined, limit: 20 });
+    expect(getWorldEventStepsMock).toHaveBeenCalledTimes(1);
+    expect(getWorldEventStepsMock).toHaveBeenCalledWith({ cursor: undefined, limit: 20 });
     expect(getWorldParamsMock).toHaveBeenCalledTimes(1);
     expect(wrapper.text()).toContain("Status");
     expect(wrapper.text()).toContain("ok");
@@ -104,16 +112,24 @@ describe("DashboardPage", () => {
       step_seconds: 600,
       updated_at: "2026-03-09T00:10:00+00:00",
     });
-    getWorldEventsMock.mockResolvedValueOnce({
+    getWorldEventStepsMock.mockResolvedValueOnce({
       items: [
         {
-          id: "evt-2",
           tick_id: 4,
           world_time_seconds: 2400,
-          type: "tick.advanced",
-          source: "system",
-          payload: {},
+          event_count: 1,
           created_at: "2026-03-09T00:10:00+00:00",
+          items: [
+            {
+              id: "evt-2",
+              tick_id: 4,
+              world_time_seconds: 2400,
+              type: "tick.advanced",
+              source: "system",
+              payload: {},
+              created_at: "2026-03-09T00:10:00+00:00",
+            },
+          ],
         },
       ],
       next_cursor: null,
@@ -125,8 +141,8 @@ describe("DashboardPage", () => {
     await flushPromises();
 
     expect(getRuntimeStateMock).toHaveBeenCalledTimes(2);
-    expect(getWorldEventsMock).toHaveBeenCalledTimes(2);
-    expect(getWorldEventsMock).toHaveBeenLastCalledWith({ cursor: undefined, limit: 20 });
+    expect(getWorldEventStepsMock).toHaveBeenCalledTimes(2);
+    expect(getWorldEventStepsMock).toHaveBeenLastCalledWith({ cursor: undefined, limit: 20 });
     expect(getWorldParamsMock).toHaveBeenCalledTimes(1);
     expect(wrapper.text()).toContain("tick_id");
     expect(wrapper.text()).toContain("4");

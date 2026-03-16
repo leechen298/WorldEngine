@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Callable, DefaultDict, Dict, List, Optional
 
-from app.schemas.event import Event, EventPage
+from app.schemas.event import Event, EventPage, EventStep, EventStepPage
 
 EventHandler = Callable[[Dict[str, str]], None]
 
@@ -73,6 +73,56 @@ class InMemoryEventLog:
 
         next_cursor = items[-1].id if has_more and items else None
         return EventPage(
+            items=items,
+            next_cursor=next_cursor,
+            has_more=has_more,
+            limit=capped_limit,
+        )
+
+    def list_step_page(
+        self,
+        *,
+        cursor: Optional[str] = None,
+        from_tick: Optional[int] = None,
+        to_tick: Optional[int] = None,
+        limit: int = 20,
+    ) -> EventStepPage:
+        capped_limit = max(1, min(limit, 200))
+
+        grouped_events: DefaultDict[int, List[Event]] = defaultdict(list)
+        for event in self._events:
+            if from_tick is not None and event.tick_id < from_tick:
+                continue
+            if to_tick is not None and event.tick_id > to_tick:
+                continue
+            grouped_events[event.tick_id].append(event)
+
+        tick_ids = sorted(grouped_events.keys(), reverse=True)
+        if cursor is not None:
+            try:
+                cursor_tick_id = int(cursor)
+            except ValueError as exc:
+                raise KeyError(cursor) from exc
+            if cursor_tick_id not in grouped_events:
+                raise KeyError(cursor)
+            tick_ids = [tick_id for tick_id in tick_ids if tick_id < cursor_tick_id]
+
+        page_tick_ids = tick_ids[:capped_limit]
+        has_more = len(tick_ids) > capped_limit
+        next_cursor = str(page_tick_ids[-1]) if has_more and page_tick_ids else None
+
+        items = [
+            EventStep(
+                tick_id=tick_id,
+                world_time_seconds=grouped_events[tick_id][-1].world_time_seconds,
+                event_count=len(grouped_events[tick_id]),
+                created_at=grouped_events[tick_id][-1].created_at,
+                items=grouped_events[tick_id],
+            )
+            for tick_id in page_tick_ids
+        ]
+
+        return EventStepPage(
             items=items,
             next_cursor=next_cursor,
             has_more=has_more,
