@@ -64,6 +64,20 @@ def test_runtime_state_endpoint_returns_initial_state() -> None:
     assert "tick_id" in payload["data"]
 
 
+def test_health_endpoint_returns_api_envelope() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["code"] == 0
+    assert payload["msg"] == "ok"
+    assert payload["data"]["status"] == "ok"
+    assert payload["data"]["service"] == "worldengine-backend"
+
+
 def test_runtime_step_endpoint_increments_tick() -> None:
     app = create_app()
     client = TestClient(app)
@@ -131,3 +145,16 @@ def test_validation_errors_use_api_error_shape() -> None:
     assert payload["code"] == 30
     assert payload["msg"]
     assert "errors" in payload["data"]
+
+
+def test_not_found_errors_use_api_error_shape() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    response = client.get("/missing-route")
+
+    assert response.status_code == 404
+    payload = response.json()
+    assert payload["code"] == 24
+    assert payload["msg"] == "Not Found"
+    assert payload["data"] is None
