@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
 from app.core.runtime_engine import RuntimeEngine, RuntimeState
+from app.schemas.api import ApiResponse
 
 router = APIRouter(prefix="/runtime", tags=["runtime"])
 
@@ -28,15 +29,15 @@ def _to_response(state: RuntimeState) -> RuntimeStateResponse:
     )
 
 
-@router.get("/state", response_model=RuntimeStateResponse)
+@router.get("/state", response_model=ApiResponse[RuntimeStateResponse])
 def get_runtime_state(
     runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
-) -> RuntimeStateResponse:
-    return _to_response(runtime_engine.get_state())
+) -> ApiResponse[RuntimeStateResponse]:
+    return ApiResponse(data=_to_response(runtime_engine.get_state()))
 
 
-@router.post("/step", response_model=RuntimeStateResponse)
+@router.post("/step", response_model=ApiResponse[RuntimeStateResponse])
 def step_runtime(
     runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
-) -> RuntimeStateResponse:
-    return _to_response(runtime_engine.step())
+) -> ApiResponse[RuntimeStateResponse]:
+    return ApiResponse(data=_to_response(runtime_engine.step()))

@@ -56,26 +56,29 @@ def test_runtime_state_endpoint_returns_initial_state() -> None:
     assert response.status_code == 200
 
     payload = response.json()
-    assert payload["tick_id"] == 0
-    assert payload["world_time_seconds"] == 0
-    assert payload["updated_at"] is not None
-    assert "tick_id" in payload
+    assert payload["code"] == 0
+    assert payload["msg"] == "ok"
+    assert payload["data"]["tick_id"] == 0
+    assert payload["data"]["world_time_seconds"] == 0
+    assert payload["data"]["updated_at"] is not None
+    assert "tick_id" in payload["data"]
 
 
 def test_runtime_step_endpoint_increments_tick() -> None:
     app = create_app()
     client = TestClient(app)
 
-    before_step = client.get("/runtime/state").json()
+    before_step = client.get("/runtime/state").json()["data"]
     step_response = client.post("/runtime/step")
     assert step_response.status_code == 200
 
     payload = step_response.json()
-    assert payload["tick_id"] == before_step["tick_id"] + 1
-    assert payload["world_time_seconds"] == (
-        before_step["world_time_seconds"] + payload["step_seconds"]
+    assert payload["code"] == 0
+    assert payload["data"]["tick_id"] == before_step["tick_id"] + 1
+    assert payload["data"]["world_time_seconds"] == (
+        before_step["world_time_seconds"] + payload["data"]["step_seconds"]
     )
-    assert payload["updated_at"] is not None
+    assert payload["data"]["updated_at"] is not None
 
 
 def test_world_events_endpoint_returns_step_timeline() -> None:
@@ -89,7 +92,10 @@ def test_world_events_endpoint_returns_step_timeline() -> None:
     events_response = client.get("/world/events")
     assert events_response.status_code == 200
 
-    events = events_response.json()
+    payload = events_response.json()
+    assert payload["code"] == 0
+
+    events = payload["data"]
     assert len(events) == 3
     assert [event["tick_id"] for event in events] == [1, 2, 3]
     assert all(event["type"] == "tick.advanced" for event in events)
@@ -104,11 +110,24 @@ def test_world_events_endpoint_applies_filters() -> None:
 
     filtered_response = client.get("/world/events?from_tick=2&to_tick=3")
     assert filtered_response.status_code == 200
-    filtered_events = filtered_response.json()
+    filtered_events = filtered_response.json()["data"]
     assert [event["tick_id"] for event in filtered_events] == [2, 3]
 
     limited_response = client.get("/world/events?limit=2")
     assert limited_response.status_code == 200
-    limited_events = limited_response.json()
+    limited_events = limited_response.json()["data"]
     assert len(limited_events) == 2
     assert [event["tick_id"] for event in limited_events] == [1, 2]
+
+
+def test_validation_errors_use_api_error_shape() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    response = client.get("/world/events?limit=0")
+
+    assert response.status_code == 422
+    payload = response.json()
+    assert payload["code"] == 30
+    assert payload["msg"]
+    assert "errors" in payload["data"]
