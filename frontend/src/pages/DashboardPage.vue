@@ -15,7 +15,7 @@
       <span v-else-if="runtimeError"> {{ runtimeError }}</span>
       <span v-else>
         tick_id={{ runtime?.tick_id }}, world_time_seconds={{ runtime?.world_time_seconds }},
-        step_seconds={{ runtime?.step_seconds }}
+        step_seconds={{ runtime?.step_seconds }}, updated_at={{ runtime?.updated_at ?? "-" }}
       </span>
     </section>
 

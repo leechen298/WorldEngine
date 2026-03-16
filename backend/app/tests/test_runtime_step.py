@@ -25,6 +25,15 @@ def test_runtime_engine_step_advances_tick_and_time() -> None:
     assert second_state.world_time_seconds == 1200
 
 
+def test_runtime_engine_from_env_uses_world_step_seconds(monkeypatch) -> None:
+    monkeypatch.setenv("WORLD_STEP_SECONDS", "60")
+
+    engine = RuntimeEngine.from_env()
+    state = engine.get_state()
+
+    assert state.step_seconds == 60
+
+
 def test_runtime_state_endpoint_returns_initial_state() -> None:
     app = create_app()
     client = TestClient(app)
@@ -35,6 +44,7 @@ def test_runtime_state_endpoint_returns_initial_state() -> None:
     payload = response.json()
     assert payload["tick_id"] == 0
     assert payload["world_time_seconds"] == 0
+    assert payload["updated_at"] is not None
     assert "tick_id" in payload
 
 
@@ -51,3 +61,4 @@ def test_runtime_step_endpoint_increments_tick() -> None:
     assert payload["world_time_seconds"] == (
         before_step["world_time_seconds"] + payload["step_seconds"]
     )
+    assert payload["updated_at"] is not None

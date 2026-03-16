@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Request
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
 from app.core.runtime_engine import RuntimeEngine, RuntimeState
@@ -10,9 +12,10 @@ class RuntimeStateResponse(BaseModel):
     tick_id: int
     world_time_seconds: int
     step_seconds: int
+    updated_at: Optional[str] = None
 
 
-def _get_runtime_engine(request: Request) -> RuntimeEngine:
+def get_runtime_engine(request: Request) -> RuntimeEngine:
     return request.app.state.runtime_engine
 
 
@@ -21,14 +24,19 @@ def _to_response(state: RuntimeState) -> RuntimeStateResponse:
         tick_id=state.tick_id,
         world_time_seconds=state.world_time_seconds,
         step_seconds=state.step_seconds,
+        updated_at=state.updated_at,
     )
 
 
 @router.get("/state", response_model=RuntimeStateResponse)
-def get_runtime_state(request: Request) -> RuntimeStateResponse:
-    return _to_response(_get_runtime_engine(request).get_state())
+def get_runtime_state(
+    runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
+) -> RuntimeStateResponse:
+    return _to_response(runtime_engine.get_state())
 
 
 @router.post("/step", response_model=RuntimeStateResponse)
-def step_runtime(request: Request) -> RuntimeStateResponse:
-    return _to_response(_get_runtime_engine(request).step())
+def step_runtime(
+    runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
+) -> RuntimeStateResponse:
+    return _to_response(runtime_engine.step())
