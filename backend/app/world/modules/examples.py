@@ -1,14 +1,15 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Optional
 
 from app.world.module_types import ModuleResult, TickContext
+from app.world.params_access import get_param_value
 from app.world.modules.base import WorldModule, build_module_event
 
 
 class HeartbeatModule(WorldModule):
     def on_tick(self, ctx: TickContext) -> ModuleResult:
-        enabled = _get_param(ctx.params, "heartbeat.enabled")
+        enabled = get_param_value(ctx.params, "heartbeat.enabled")
         if isinstance(enabled, bool) and not enabled:
             return ModuleResult(
                 events=[],
@@ -37,7 +38,7 @@ class CounterModule(WorldModule):
         self._counter = 0
 
     def on_tick(self, ctx: TickContext) -> ModuleResult:
-        increment = _get_param(ctx.params, "counter.increment")
+        increment = get_param_value(ctx.params, "counter.increment")
         if not (isinstance(increment, int) and not isinstance(increment, bool)):
             increment = 1
 
@@ -59,12 +60,3 @@ class CounterModule(WorldModule):
             summary=summary,
             state_delta={},
         )
-
-
-def _get_param(params: dict[str, Any], path: str) -> Any:
-    current: Any = params
-    for key in path.split("."):
-        if not isinstance(current, dict) or key not in current:
-            return None
-        current = current[key]
-    return current

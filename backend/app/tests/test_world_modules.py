@@ -6,6 +6,10 @@ from app.world.modules.composite import CompositeModule
 from app.world.service import get_default_module_tree
 
 
+def _event_items(response) -> list[dict]:
+    return response.json()["data"]["items"]
+
+
 def test_step_emits_module_events_into_world_events() -> None:
     app = create_app()
     client = TestClient(app)
@@ -16,7 +20,7 @@ def test_step_emits_module_events_into_world_events() -> None:
     response = client.get("/world/events")
     assert response.status_code == 200
 
-    events = response.json()["data"]
+    events = _event_items(response)
     event_types = {event["type"] for event in events}
 
     assert "tick.advanced" in event_types
@@ -35,9 +39,8 @@ def test_counter_module_increments_across_ticks() -> None:
     response = client.get("/world/events?limit=200")
     assert response.status_code == 200
 
-    counter_events = [
-        event for event in response.json()["data"] if event["type"] == "module.counter"
-    ]
+    counter_events = [event for event in _event_items(response) if event["type"] == "module.counter"]
+    counter_events.sort(key=lambda event: event["tick_id"])
 
     assert len(counter_events) == 3
     assert [event["payload"]["counter"] for event in counter_events] == [1, 2, 3]
@@ -55,7 +58,7 @@ def test_module_events_include_module_path_payload() -> None:
 
     module_events = [
         event
-        for event in response.json()["data"]
+        for event in _event_items(response)
         if event["type"] in {"module.tick", "module.counter", "module.aggregate"}
     ]
 
@@ -73,9 +76,7 @@ def test_module_tick_has_module_path() -> None:
     response = client.get("/world/events?limit=200")
     assert response.status_code == 200
 
-    heartbeat_events = [
-        event for event in response.json()["data"] if event["type"] == "module.tick"
-    ]
+    heartbeat_events = [event for event in _event_items(response) if event["type"] == "module.tick"]
 
     assert len(heartbeat_events) == 1
     assert heartbeat_events[0]["payload"]["module_path"] == "root.heartbeat"
