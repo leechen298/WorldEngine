@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_engine import RuntimeEngine
@@ -9,6 +9,7 @@ from app.schemas.api import ApiResponse
 from app.schemas.event import Event
 from app.schemas.params import ApplyParamsRequest
 from app.world.state import WorldState
+from app.world.validation import ParamValidator
 
 router = APIRouter(prefix="/world", tags=["world"])
 
@@ -25,6 +26,10 @@ def get_runtime_engine(request: Request) -> RuntimeEngine:
     return request.app.state.runtime_engine
 
 
+def get_param_validator(request: Request) -> ParamValidator:
+    return request.app.state.param_validator
+
+
 @router.get("/params", response_model=ApiResponse[Dict[str, Any]])
 def get_world_params(
     world_state: WorldState = Depends(get_world_state),
@@ -38,7 +43,18 @@ def apply_world_params(
     world_state: WorldState = Depends(get_world_state),
     event_log: InMemoryEventLog = Depends(get_event_log),
     runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
+    param_validator: ParamValidator = Depends(get_param_validator),
 ) -> ApiResponse[Dict[str, Any]]:
+    validation_result = param_validator.validate(request_body.patches)
+    if not validation_result.ok:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "msg": "Param validation failed",
+                "errors": [error.to_dict() for error in validation_result.errors],
+            },
+        )
+
     params = world_state.apply_patch(request_body.patches)
     runtime_state = runtime_engine.get_state()
 
