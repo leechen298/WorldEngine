@@ -36,6 +36,14 @@ body {
   margin-bottom: 16px;
 }
 
+.runtime {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #c7d6e7;
+  background: #ffffff;
+  margin-bottom: 16px;
+}
+
 .panel-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -52,4 +60,23 @@ body {
 .panel h2 {
   margin-top: 0;
   font-size: 1rem;
+}
+
+.step-button {
+  border: 1px solid #7da2c8;
+  border-radius: 6px;
+  background: #1e5f99;
+  color: #ffffff;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.step-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.runtime-error {
+  margin-top: 8px;
+  color: #b42318;
 }

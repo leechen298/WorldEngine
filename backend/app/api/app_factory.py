@@ -3,7 +3,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes.health import router as health_router
+from app.api.routes import health_router, runtime_router
+from app.core.runtime_engine import RuntimeEngine
 
 
 def create_app() -> FastAPI:
@@ -25,5 +26,7 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    app.state.runtime_engine = RuntimeEngine.from_env()
     app.include_router(health_router)
+    app.include_router(runtime_router)
     return app
