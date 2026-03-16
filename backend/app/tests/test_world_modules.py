@@ -30,16 +30,18 @@ def test_counter_module_increments_across_ticks() -> None:
 
     client.post("/runtime/step")
     client.post("/runtime/step")
+    client.post("/runtime/step")
 
-    response = client.get("/world/events")
+    response = client.get("/world/events?limit=200")
     assert response.status_code == 200
 
     counter_events = [
         event for event in response.json()["data"] if event["type"] == "module.counter"
     ]
 
-    assert len(counter_events) >= 2
-    assert [event["payload"]["counter"] for event in counter_events[:2]] == [1, 2]
+    assert len(counter_events) == 3
+    assert [event["payload"]["counter"] for event in counter_events] == [1, 2, 3]
+    assert all(event["payload"]["module_path"] == "root.counter" for event in counter_events)
 
 
 def test_module_events_include_module_path_payload() -> None:
@@ -60,6 +62,23 @@ def test_module_events_include_module_path_payload() -> None:
     assert module_events
     module_paths = {event["payload"].get("module_path") for event in module_events}
     assert "root.heartbeat" in module_paths or "root.counter" in module_paths
+
+
+def test_module_tick_has_module_path() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    client.post("/runtime/step")
+
+    response = client.get("/world/events?limit=200")
+    assert response.status_code == 200
+
+    heartbeat_events = [
+        event for event in response.json()["data"] if event["type"] == "module.tick"
+    ]
+
+    assert len(heartbeat_events) == 1
+    assert heartbeat_events[0]["payload"]["module_path"] == "root.heartbeat"
 
 
 def test_default_module_tree_assigns_stable_child_paths() -> None:

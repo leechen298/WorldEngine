@@ -20,8 +20,13 @@
     </section>
 
     <section class="panel-grid">
-      <RuntimeControls @stepped="handleRuntimeStepped" />
-      <TimelinePanel :events="events" :loading="eventsLoading" :error="eventsError" />
+      <RuntimeControls class="panel-grid-full" @stepped="handleRuntimeStepped" />
+      <TimelinePanel
+        class="panel-grid-full"
+        :events="events"
+        :loading="eventsLoading"
+        :error="eventsError"
+      />
       <WorldPanel />
       <AgentPanel />
       <MemoryPanel />
@@ -96,3 +101,9 @@ onMounted(async () => {
   await loadEvents();
 });
 </script>
+
+<style scoped>
+.panel-grid-full {
+  grid-column: 1 / -1;
+}
+</style>

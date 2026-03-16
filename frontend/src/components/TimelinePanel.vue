@@ -9,6 +9,9 @@
         <strong>#{{ event.tick_id }}</strong>
         <span>{{ event.type }}</span>
         <span v-if="event.payload?.module_path">[{{ event.payload.module_path }}]</span>
+        <span v-if="event.type === 'module.counter' && event.payload?.counter !== undefined">
+          counter={{ event.payload.counter }}
+        </span>
         <span>{{ event.created_at }}</span>
       </li>
     </ul>
