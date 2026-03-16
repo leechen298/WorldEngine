@@ -29,17 +29,22 @@ describe("DashboardPage", () => {
       step_seconds: 600,
       updated_at: "2026-03-09T00:00:00+00:00",
     });
-    getWorldEventsMock.mockResolvedValue([
-      {
-        id: "evt-1",
-        tick_id: 3,
-        world_time_seconds: 1800,
-        type: "tick.advanced",
-        source: "system",
-        payload: {},
-        created_at: "2026-03-09T00:00:00+00:00",
-      },
-    ]);
+    getWorldEventsMock.mockResolvedValue({
+      items: [
+        {
+          id: "evt-1",
+          tick_id: 3,
+          world_time_seconds: 1800,
+          type: "tick.advanced",
+          source: "system",
+          payload: {},
+          created_at: "2026-03-09T00:00:00+00:00",
+        },
+      ],
+      next_cursor: null,
+      has_more: false,
+      limit: 20,
+    });
     getWorldParamsMock.mockResolvedValue({
       counter: {
         increment: 2,
@@ -65,6 +70,7 @@ describe("DashboardPage", () => {
     expect(fetchHealthMock).toHaveBeenCalledTimes(1);
     expect(getRuntimeStateMock).toHaveBeenCalledTimes(1);
     expect(getWorldEventsMock).toHaveBeenCalledTimes(1);
+    expect(getWorldEventsMock).toHaveBeenCalledWith({ cursor: undefined, limit: 20 });
     expect(getWorldParamsMock).toHaveBeenCalledTimes(1);
     expect(wrapper.text()).toContain("Status");
     expect(wrapper.text()).toContain("ok");
@@ -98,23 +104,29 @@ describe("DashboardPage", () => {
       step_seconds: 600,
       updated_at: "2026-03-09T00:10:00+00:00",
     });
-    getWorldEventsMock.mockResolvedValueOnce([
-      {
-        id: "evt-2",
-        tick_id: 4,
-        world_time_seconds: 2400,
-        type: "tick.advanced",
-        source: "system",
-        payload: {},
-        created_at: "2026-03-09T00:10:00+00:00",
-      },
-    ]);
+    getWorldEventsMock.mockResolvedValueOnce({
+      items: [
+        {
+          id: "evt-2",
+          tick_id: 4,
+          world_time_seconds: 2400,
+          type: "tick.advanced",
+          source: "system",
+          payload: {},
+          created_at: "2026-03-09T00:10:00+00:00",
+        },
+      ],
+      next_cursor: null,
+      has_more: false,
+      limit: 20,
+    });
 
     await wrapper.get("[data-test='runtime-controls']").trigger("click");
     await flushPromises();
 
     expect(getRuntimeStateMock).toHaveBeenCalledTimes(2);
     expect(getWorldEventsMock).toHaveBeenCalledTimes(2);
+    expect(getWorldEventsMock).toHaveBeenLastCalledWith({ cursor: undefined, limit: 20 });
     expect(getWorldParamsMock).toHaveBeenCalledTimes(1);
     expect(wrapper.text()).toContain("tick_id");
     expect(wrapper.text()).toContain("4");

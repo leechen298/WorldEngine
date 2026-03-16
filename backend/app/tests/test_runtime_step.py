@@ -109,10 +109,13 @@ def test_world_events_endpoint_returns_step_timeline() -> None:
     payload = events_response.json()
     assert payload["code"] == 0
 
-    events = payload["data"]
+    events = payload["data"]["items"]
     tick_advanced_events = [event for event in events if event["type"] == "tick.advanced"]
     assert len(tick_advanced_events) == 3
-    assert [event["tick_id"] for event in tick_advanced_events] == [1, 2, 3]
+    assert [event["tick_id"] for event in tick_advanced_events] == [3, 2, 1]
+    assert payload["data"]["has_more"] is False
+    assert payload["data"]["next_cursor"] is None
+    assert payload["data"]["limit"] == 20
 
 
 def test_world_events_endpoint_applies_filters() -> None:
@@ -124,18 +127,69 @@ def test_world_events_endpoint_applies_filters() -> None:
 
     filtered_response = client.get("/world/events?from_tick=2&to_tick=3")
     assert filtered_response.status_code == 200
-    filtered_events = filtered_response.json()["data"]
+    filtered_events = filtered_response.json()["data"]["items"]
     assert filtered_events
     assert all(2 <= event["tick_id"] <= 3 for event in filtered_events)
+    filtered_tick_ids = [event["tick_id"] for event in filtered_events]
+    assert filtered_tick_ids == sorted(filtered_tick_ids, reverse=True)
 
     full_response = client.get("/world/events")
     assert full_response.status_code == 200
-    full_events = full_response.json()["data"]
+    full_events = full_response.json()["data"]["items"]
     limited_response = client.get("/world/events?limit=2")
     assert limited_response.status_code == 200
-    limited_events = limited_response.json()["data"]
+    limited_payload = limited_response.json()["data"]
+    limited_events = limited_payload["items"]
     assert len(limited_events) == 2
     assert [event["id"] for event in limited_events] == [event["id"] for event in full_events[:2]]
+    assert limited_payload["has_more"] is True
+    assert limited_payload["next_cursor"] == limited_events[-1]["id"]
+
+
+def test_world_events_endpoint_supports_cursor_pagination() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    for _ in range(5):
+        response = client.post("/runtime/step")
+        assert response.status_code == 200
+
+    full_response = client.get("/world/events")
+    assert full_response.status_code == 200
+    full_events = full_response.json()["data"]["items"]
+
+    first_page_response = client.get("/world/events?limit=2")
+    assert first_page_response.status_code == 200
+    first_page = first_page_response.json()["data"]
+    assert [event["id"] for event in first_page["items"]] == [event["id"] for event in full_events[:2]]
+    assert first_page["has_more"] is True
+
+    second_page_response = client.get(
+        f"/world/events?limit=2&cursor={first_page['next_cursor']}"
+    )
+    assert second_page_response.status_code == 200
+    second_page = second_page_response.json()["data"]
+    assert [event["id"] for event in second_page["items"]] == [event["id"] for event in full_events[2:4]]
+    assert second_page["has_more"] is True
+
+    third_page_response = client.get(
+        f"/world/events?limit=2&cursor={second_page['next_cursor']}"
+    )
+    assert third_page_response.status_code == 200
+    third_page = third_page_response.json()["data"]
+    assert [event["id"] for event in third_page["items"]] == [event["id"] for event in full_events[4:6]]
+
+
+def test_world_events_endpoint_rejects_unknown_cursor() -> None:
+    app = create_app()
+    client = TestClient(app)
+
+    response = client.get("/world/events?cursor=missing-event-id")
+
+    assert response.status_code == 400
+    payload = response.json()
+    assert payload["code"] == 10
+    assert payload["msg"] == "Unknown cursor: missing-event-id"
 
 
 def test_validation_errors_use_api_error_shape() -> None:

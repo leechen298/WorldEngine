@@ -14,6 +14,15 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
+Object.defineProperty(window, "getComputedStyle", {
+  writable: true,
+  value: vi.fn().mockImplementation(() => ({
+    width: "0px",
+    height: "0px",
+    getPropertyValue: vi.fn().mockReturnValue(""),
+  })),
+});
+
 afterEach(() => {
   vi.clearAllMocks();
 });

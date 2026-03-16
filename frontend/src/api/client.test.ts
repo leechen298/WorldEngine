@@ -99,7 +99,12 @@ describe("api client", () => {
         JSON.stringify({
           code: 0,
           msg: "ok",
-          data: [],
+          data: {
+            items: [],
+            next_cursor: "evt-2",
+            has_more: true,
+            limit: 10,
+          },
         }),
         {
           status: 200,
@@ -109,10 +114,15 @@ describe("api client", () => {
     );
 
     await expect(
-      getWorldEvents({ from_tick: 2, to_tick: 4, limit: 10 }),
-    ).resolves.toEqual([]);
+      getWorldEvents({ from_tick: 2, to_tick: 4, cursor: "evt-9", limit: 10 }),
+    ).resolves.toEqual({
+      items: [],
+      next_cursor: "evt-2",
+      has_more: true,
+      limit: 10,
+    });
     expect(fetchMock).toHaveBeenCalledWith(
-      "http://localhost:8000/world/events?from_tick=2&to_tick=4&limit=10",
+      "http://localhost:8000/world/events?from_tick=2&to_tick=4&cursor=evt-9&limit=10",
       undefined,
     );
   });

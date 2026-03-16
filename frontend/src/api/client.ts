@@ -32,6 +32,13 @@ export interface WorldEvent {
   created_at: string;
 }
 
+export interface WorldEventsPage {
+  items: WorldEvent[];
+  next_cursor?: string | null;
+  has_more: boolean;
+  limit: number;
+}
+
 export type WorldParams = Record<string, unknown>;
 
 export interface ParamPatchItem {
@@ -118,8 +125,9 @@ export async function stepRuntime(): Promise<RuntimeState> {
 export async function getWorldEvents(params?: {
   from_tick?: number;
   to_tick?: number;
+  cursor?: string;
   limit?: number;
-}): Promise<WorldEvent[]> {
+}): Promise<WorldEventsPage> {
   const searchParams = new URLSearchParams();
 
   if (params?.from_tick !== undefined) {
@@ -128,12 +136,15 @@ export async function getWorldEvents(params?: {
   if (params?.to_tick !== undefined) {
     searchParams.set("to_tick", String(params.to_tick));
   }
+  if (params?.cursor !== undefined) {
+    searchParams.set("cursor", params.cursor);
+  }
   if (params?.limit !== undefined) {
     searchParams.set("limit", String(params.limit));
   }
 
   const query = searchParams.toString();
-  return request<WorldEvent[]>(`/world/events${query ? `?${query}` : ""}`);
+  return request<WorldEventsPage>(`/world/events${query ? `?${query}` : ""}`);
 }
 
 export async function getWorldParams(): Promise<WorldParams> {

@@ -57,6 +57,13 @@
           :events="events"
           :loading="eventsLoading"
           :error="eventsError"
+          :page-size="eventsPageSize"
+          :current-page="eventsCurrentPage"
+          :has-more="eventsHasMore"
+          :can-previous="canLoadPreviousEvents"
+          @next-page="handleNextEventsPage"
+          @previous-page="handlePreviousEventsPage"
+          @page-size-change="handleEventsPageSizeChange"
         />
         <WorldPanel
           class="panel-grid-full"
@@ -73,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import {
   Alert as AAlert,
   Card as ACard,
@@ -101,6 +108,8 @@ import WorldPanel from "../components/WorldPanel.vue";
 import AgentPanel from "../components/AgentPanel.vue";
 import MemoryPanel from "../components/MemoryPanel.vue";
 
+const DEFAULT_EVENTS_PAGE_SIZE = 20;
+
 const health = ref<HealthResponse | null>(null);
 const loading = ref<boolean>(true);
 const error = ref<string>("");
@@ -110,9 +119,17 @@ const runtimeError = ref<string>("");
 const events = ref<WorldEvent[]>([]);
 const eventsLoading = ref<boolean>(true);
 const eventsError = ref<string>("");
+const eventsPageSize = ref<number>(DEFAULT_EVENTS_PAGE_SIZE);
+const eventsCurrentCursor = ref<string | null>(null);
+const eventsCursorHistory = ref<Array<string | null>>([]);
+const eventsNextCursor = ref<string | null>(null);
+const eventsHasMore = ref<boolean>(false);
 const worldParams = ref<WorldParams>({});
 const worldParamsLoading = ref<boolean>(true);
 const worldParamsError = ref<string>("");
+
+const eventsCurrentPage = computed(() => eventsCursorHistory.value.length + 1);
+const canLoadPreviousEvents = computed(() => eventsCursorHistory.value.length > 0);
 
 async function loadRuntimeState(): Promise<void> {
   try {
@@ -125,12 +142,21 @@ async function loadRuntimeState(): Promise<void> {
   }
 }
 
-async function loadEvents(): Promise<void> {
+async function loadEvents(cursor: string | null = eventsCurrentCursor.value): Promise<boolean> {
   try {
-    events.value = await getWorldEvents({ limit: 20 });
+    const page = await getWorldEvents({
+      cursor: cursor ?? undefined,
+      limit: eventsPageSize.value,
+    });
+    events.value = page.items;
+    eventsNextCursor.value = page.next_cursor ?? null;
+    eventsHasMore.value = page.has_more;
+    eventsCurrentCursor.value = cursor;
     eventsError.value = "";
+    return true;
   } catch (err) {
     eventsError.value = err instanceof Error ? err.message : "Unknown error";
+    return false;
   } finally {
     eventsLoading.value = false;
   }
@@ -155,7 +181,53 @@ function handleParamsApplied(nextParams: WorldParams): void {
 async function handleRuntimeStepped(): Promise<void> {
   runtimeLoading.value = true;
   eventsLoading.value = true;
-  await Promise.all([loadRuntimeState(), loadEvents()]);
+  eventsCursorHistory.value = [];
+  eventsCurrentCursor.value = null;
+  eventsNextCursor.value = null;
+  eventsHasMore.value = false;
+  await Promise.all([loadRuntimeState(), loadEvents(null)]);
+}
+
+async function handleNextEventsPage(): Promise<void> {
+  if (!eventsHasMore.value || !eventsNextCursor.value) {
+    return;
+  }
+
+  eventsLoading.value = true;
+  const nextCursor = eventsNextCursor.value;
+  const nextHistory = [...eventsCursorHistory.value, eventsCurrentCursor.value];
+  const loaded = await loadEvents(nextCursor);
+  if (loaded) {
+    eventsCursorHistory.value = nextHistory;
+  }
+}
+
+async function handlePreviousEventsPage(): Promise<void> {
+  if (eventsCursorHistory.value.length === 0) {
+    return;
+  }
+
+  eventsLoading.value = true;
+  const nextHistory = eventsCursorHistory.value.slice(0, -1);
+  const previousCursor = eventsCursorHistory.value[eventsCursorHistory.value.length - 1] ?? null;
+  const loaded = await loadEvents(previousCursor);
+  if (loaded) {
+    eventsCursorHistory.value = nextHistory;
+  }
+}
+
+async function handleEventsPageSizeChange(nextPageSize: number): Promise<void> {
+  if (!Number.isFinite(nextPageSize) || nextPageSize <= 0 || nextPageSize === eventsPageSize.value) {
+    return;
+  }
+
+  eventsPageSize.value = nextPageSize;
+  eventsLoading.value = true;
+  eventsCursorHistory.value = [];
+  eventsCurrentCursor.value = null;
+  eventsNextCursor.value = null;
+  eventsHasMore.value = false;
+  await loadEvents(null);
 }
 
 onMounted(async () => {
@@ -168,7 +240,7 @@ onMounted(async () => {
   }
 
   await loadRuntimeState();
-  await loadEvents();
+  await loadEvents(null);
   await loadWorldParams();
 });
 </script>
