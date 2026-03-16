@@ -6,6 +6,8 @@ from uuid import uuid4
 
 from app.core.event_bus import InMemoryEventLog
 from app.schemas.event import Event
+from app.world.module_types import TickContext
+from app.world.modules.base import WorldModule
 
 
 def _utc_now_iso() -> str:
@@ -28,17 +30,20 @@ class RuntimeEngine:
         self,
         step_seconds: int = 600,
         event_log: Optional[InMemoryEventLog] = None,
+        world_root_module: Optional[WorldModule] = None,
     ) -> None:
         self._state = RuntimeState(
             step_seconds=step_seconds,
             updated_at=_utc_now_iso(),
         )
         self._event_log = event_log
+        self._world_root_module = world_root_module
 
     @classmethod
     def from_env(
         cls,
         event_log: Optional[InMemoryEventLog] = None,
+        world_root_module: Optional[WorldModule] = None,
     ) -> "RuntimeEngine":
         raw_step_seconds = os.getenv("WORLD_STEP_SECONDS", "600")
         try:
@@ -49,7 +54,11 @@ class RuntimeEngine:
         if step_seconds <= 0:
             step_seconds = 600
 
-        return cls(step_seconds=step_seconds, event_log=event_log)
+        return cls(
+            step_seconds=step_seconds,
+            event_log=event_log,
+            world_root_module=world_root_module,
+        )
 
     def get_state(self) -> RuntimeState:
         return replace(self._state)
@@ -73,4 +82,14 @@ class RuntimeEngine:
                     created_at=self._state.updated_at,
                 )
             )
+        if self._world_root_module is not None:
+            module_result = self._world_root_module.on_tick(
+                TickContext(
+                    tick_id=self._state.tick_id,
+                    world_time_seconds=self._state.world_time_seconds,
+                )
+            )
+            if self._event_log is not None:
+                for event in module_result.events:
+                    self._event_log.append(event)
         return self.get_state()

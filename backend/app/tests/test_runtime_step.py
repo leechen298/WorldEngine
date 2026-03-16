@@ -110,9 +110,9 @@ def test_world_events_endpoint_returns_step_timeline() -> None:
     assert payload["code"] == 0
 
     events = payload["data"]
-    assert len(events) == 3
-    assert [event["tick_id"] for event in events] == [1, 2, 3]
-    assert all(event["type"] == "tick.advanced" for event in events)
+    tick_advanced_events = [event for event in events if event["type"] == "tick.advanced"]
+    assert len(tick_advanced_events) == 3
+    assert [event["tick_id"] for event in tick_advanced_events] == [1, 2, 3]
 
 
 def test_world_events_endpoint_applies_filters() -> None:
@@ -125,13 +125,17 @@ def test_world_events_endpoint_applies_filters() -> None:
     filtered_response = client.get("/world/events?from_tick=2&to_tick=3")
     assert filtered_response.status_code == 200
     filtered_events = filtered_response.json()["data"]
-    assert [event["tick_id"] for event in filtered_events] == [2, 3]
+    assert filtered_events
+    assert all(2 <= event["tick_id"] <= 3 for event in filtered_events)
 
+    full_response = client.get("/world/events")
+    assert full_response.status_code == 200
+    full_events = full_response.json()["data"]
     limited_response = client.get("/world/events?limit=2")
     assert limited_response.status_code == 200
     limited_events = limited_response.json()["data"]
     assert len(limited_events) == 2
-    assert [event["tick_id"] for event in limited_events] == [1, 2]
+    assert [event["id"] for event in limited_events] == [event["id"] for event in full_events[:2]]
 
 
 def test_validation_errors_use_api_error_shape() -> None:

@@ -8,6 +8,7 @@
       <li v-for="event in events" :key="event.id" class="timeline-item">
         <strong>#{{ event.tick_id }}</strong>
         <span>{{ event.type }}</span>
+        <span v-if="event.payload?.module_path">[{{ event.payload.module_path }}]</span>
         <span>{{ event.created_at }}</span>
       </li>
     </ul>
@@ -23,3 +24,19 @@ defineProps<{
   error?: string;
 }>();
 </script>
+
+<style scoped>
+.timeline-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.timeline-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+</style>

@@ -60,7 +60,7 @@ describe("api client", () => {
       ),
     );
 
-    await expect(fetchHealth()).rejects.toMatchObject<ApiClientError>({
+    await expect(fetchHealth()).rejects.toMatchObject({
       name: "ApiClientError",
       message: "Unauthenticated",
       status: 401,
@@ -83,7 +83,7 @@ describe("api client", () => {
       ),
     );
 
-    await expect(stepRuntime()).rejects.toMatchObject<ApiClientError>({
+    await expect(stepRuntime()).rejects.toMatchObject({
       name: "ApiClientError",
       message: "Conflict",
       status: 200,
@@ -123,7 +123,7 @@ describe("api client", () => {
       }),
     );
 
-    await expect(fetchHealth()).rejects.toMatchObject<ApiClientError>({
+    await expect(fetchHealth()).rejects.toMatchObject({
       name: "ApiClientError",
       message: "Request failed: 503",
       status: 503,
