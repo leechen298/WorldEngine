@@ -11,6 +11,13 @@ def _event_items(response) -> list[dict]:
     return response.json()["data"]["items"]
 
 
+def _has_error(payload: dict, *, path: str, reason: str) -> bool:
+    return any(
+        error.get("path") == path and error.get("reason") == reason
+        for error in payload["data"]["errors"]
+    )
+
+
 def test_unknown_path_is_rejected() -> None:
     client = TestClient(create_app())
 
@@ -93,6 +100,35 @@ def test_heartbeat_enabled_type_mismatch_is_rejected() -> None:
     assert response.status_code == 422
     payload = response.json()
     assert payload["data"]["errors"][0]["reason"] == "type_mismatch"
+
+
+def test_missing_value_is_rejected() -> None:
+    client = TestClient(create_app())
+
+    response = _apply(
+        client,
+        [{"op": "set", "path": "counter.increment"}],
+    )
+
+    assert response.status_code == 422
+    payload = response.json()
+    assert set(payload) == {"code", "msg", "data"}
+    assert payload["data"]["errors"]
+    assert _has_error(payload, path="counter.increment", reason="missing_value")
+
+
+def test_invalid_op_is_rejected() -> None:
+    client = TestClient(create_app())
+
+    response = _apply(
+        client,
+        [{"op": "oops", "path": "counter.increment", "value": 1}],
+    )
+
+    assert response.status_code == 422
+    payload = response.json()
+    assert payload["data"]["errors"]
+    assert _has_error(payload, path="counter.increment", reason="invalid_op")
 
 
 def test_valid_patch_is_applied_and_used_by_modules() -> None:

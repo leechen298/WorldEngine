@@ -1,10 +1,10 @@
-from typing import Any, Literal, Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel
 
 
 class ParamPatchItem(BaseModel):
-    op: Literal["add", "set", "remove"]
+    op: str
     path: str
     value: Optional[Any] = None
 
