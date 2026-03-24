@@ -14,6 +14,11 @@ class WorldState:
         self._params: dict[str, Any] = deepcopy(params or {})
         self.updated_at = _utc_now_iso()
 
+    def clone(self) -> "WorldState":
+        cloned = WorldState(params=self._params)
+        cloned.updated_at = self.updated_at
+        return cloned
+
     def get_params(self) -> dict[str, Any]:
         return deepcopy(self._params)
 

@@ -8,6 +8,7 @@ from app.core.runtime_engine import RuntimeEngine
 from app.schemas.api import ApiResponse
 from app.schemas.event import Event
 from app.schemas.params import ApplyParamsRequest
+from app.world.dry_run import ParamDryRunValidator
 from app.world.state import WorldState
 from app.world.validation import ParamValidator
 
@@ -30,6 +31,10 @@ def get_param_validator(request: Request) -> ParamValidator:
     return request.app.state.param_validator
 
 
+def get_param_dry_run_validator(request: Request) -> ParamDryRunValidator:
+    return request.app.state.param_dry_run_validator
+
+
 @router.get("/params", response_model=ApiResponse[Dict[str, Any]])
 def get_world_params(
     world_state: WorldState = Depends(get_world_state),
@@ -44,6 +49,7 @@ def apply_world_params(
     event_log: InMemoryEventLog = Depends(get_event_log),
     runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
     param_validator: ParamValidator = Depends(get_param_validator),
+    param_dry_run_validator: ParamDryRunValidator = Depends(get_param_dry_run_validator),
 ) -> ApiResponse[Dict[str, Any]]:
     validation_result = param_validator.validate(request_body.patches)
     if not validation_result.ok:
@@ -52,6 +58,23 @@ def apply_world_params(
             detail={
                 "msg": "Param validation failed",
                 "errors": [error.to_dict() for error in validation_result.errors],
+            },
+        )
+
+    dry_run_report = param_dry_run_validator.validate(
+        request_body.patches,
+        world_state=world_state,
+        step_seconds=runtime_engine.get_state().step_seconds,
+    )
+    if not dry_run_report.ok:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "msg": "Dry-run validation failed",
+                "data": {
+                    "errors": dry_run_report.errors,
+                    "metrics": dry_run_report.metrics,
+                },
             },
         )
 

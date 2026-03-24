@@ -19,6 +19,9 @@ class InMemoryEventLog:
         self._event_index_by_id[event.id] = len(self._events)
         self._events.append(event)
 
+    def snapshot(self) -> List[Event]:
+        return list(self._events)
+
     def list(
         self,
         from_tick: Optional[int] = None,
