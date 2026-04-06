@@ -12,7 +12,14 @@ def _utc_now_iso() -> str:
 class WorldState:
     def __init__(self, params: dict[str, Any] | None = None) -> None:
         self._params: dict[str, Any] = deepcopy(params or {})
+        self._validation_override: dict[str, Any] = {}
         self.updated_at = _utc_now_iso()
+
+    def get_validation_override(self) -> dict[str, Any]:
+        return deepcopy(self._validation_override)
+
+    def set_validation_override(self, override: dict[str, Any]) -> None:
+        self._validation_override = deepcopy(override)
 
     def clone(self) -> "WorldState":
         cloned = WorldState(params=self._params)

@@ -16,6 +16,7 @@ from app.world.dry_run import ParamDryRunValidator
 from app.world.service import get_default_module_tree
 from app.world.state import WorldState
 from app.world.validation import ParamRegistry, ParamValidator
+from app.world.validation.policy import WorldValidationPolicy
 
 
 def _error_code_from_status(status_code: int) -> int:
@@ -83,7 +84,10 @@ def create_app() -> FastAPI:
     app.state.world_state = WorldState()
     app.state.world_root_module = get_default_module_tree()
     app.state.param_validator = ParamValidator(ParamRegistry.default())
-    app.state.param_dry_run_validator = ParamDryRunValidator.from_env()
+    app.state.validation_policy_default = WorldValidationPolicy.from_env()
+    app.state.param_dry_run_validator = ParamDryRunValidator(
+        default_policy=app.state.validation_policy_default,
+    )
     app.state.runtime_engine = RuntimeEngine.from_env(
         event_log=app.state.event_log,
         world_root_module=app.state.world_root_module,

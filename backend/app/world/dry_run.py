@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass, field
@@ -11,12 +10,8 @@ from app.core.runtime_engine import RuntimeEngine
 from app.schemas.event import Event
 from app.world.service import get_default_module_tree
 from app.world.state import WorldState
+from app.world.validation.policy import WorldValidationPolicy
 from app.world.validation.types import ValidationError
-
-DEFAULT_DRY_RUN_TICKS = 20
-MAX_AVG_EVENTS_PER_TICK = 20
-MAX_TOTAL_EVENTS = 500
-MAX_FINAL_COUNTER = 100000
 
 
 @dataclass(frozen=True)
@@ -27,21 +22,8 @@ class SimulationReport:
 
 
 class ParamDryRunValidator:
-    def __init__(self, dry_run_ticks: int = DEFAULT_DRY_RUN_TICKS) -> None:
-        self._dry_run_ticks = max(1, dry_run_ticks)
-
-    @classmethod
-    def from_env(cls) -> "ParamDryRunValidator":
-        raw_dry_run_ticks = os.getenv("WORLD_PARAMS_DRY_RUN_TICKS", str(DEFAULT_DRY_RUN_TICKS))
-        try:
-            dry_run_ticks = int(raw_dry_run_ticks)
-        except ValueError:
-            dry_run_ticks = DEFAULT_DRY_RUN_TICKS
-
-        if dry_run_ticks <= 0:
-            dry_run_ticks = DEFAULT_DRY_RUN_TICKS
-
-        return cls(dry_run_ticks=dry_run_ticks)
+    def __init__(self, default_policy: WorldValidationPolicy) -> None:
+        self._default_policy = default_policy
 
     def validate(
         self,
@@ -50,8 +32,14 @@ class ParamDryRunValidator:
         world_state: WorldState,
         step_seconds: int,
     ) -> SimulationReport:
+        policy = WorldValidationPolicy.merged(
+            self._default_policy,
+            world_state.get_validation_override(),
+        )
         sandbox_world_state = world_state.clone()
         sandbox_world_state.apply_patch(patches)
+
+        dry_run_ticks = max(1, policy.dry_run_steps)
 
         sandbox_event_log = InMemoryEventLog()
         sandbox_engine = RuntimeEngine(
@@ -61,17 +49,18 @@ class ParamDryRunValidator:
             params_provider=sandbox_world_state.get_params,
         )
 
-        for _ in range(self._dry_run_ticks):
+        for _ in range(dry_run_ticks):
             sandbox_engine.step()
 
         sim_events = sandbox_event_log.snapshot()
-        metrics = self._build_metrics(sim_events, patches)
-        errors = self._build_errors(sim_events, patches, metrics)
+        metrics = self._build_metrics(sim_events, patches, dry_run_ticks)
+        metrics["policy"] = policy.model_dump()
+        errors = self._build_errors(sim_events, patches, metrics, policy)
         return SimulationReport(ok=not errors, metrics=metrics, errors=errors)
 
-    def _build_metrics(self, sim_events: list[Event], patches: list[object]) -> dict[str, Any]:
+    def _build_metrics(self, sim_events: list[Event], patches: list[object], dry_run_ticks: int) -> dict[str, Any]:
         total_events = len(sim_events)
-        avg_events_per_tick = total_events / self._dry_run_ticks
+        avg_events_per_tick = total_events / dry_run_ticks
         counter_values = [
             event.payload.get("counter")
             for event in sim_events
@@ -85,7 +74,7 @@ class ParamDryRunValidator:
         duplicate_set_paths = self._duplicate_set_paths(patches)
 
         return {
-            "dry_run_ticks": self._dry_run_ticks,
+            "dry_run_ticks": dry_run_ticks,
             "total_events": total_events,
             "avg_events_per_tick": avg_events_per_tick,
             "final_counter": counter_values[-1] if counter_values else 0,
@@ -98,36 +87,37 @@ class ParamDryRunValidator:
         sim_events: list[Event],
         patches: list[object],
         metrics: dict[str, Any],
+        policy: WorldValidationPolicy,
     ) -> list[ValidationError]:
         errors: list[ValidationError] = []
 
         if (
-            metrics["avg_events_per_tick"] > MAX_AVG_EVENTS_PER_TICK
-            or metrics["total_events"] > MAX_TOTAL_EVENTS
+            metrics["avg_events_per_tick"] > policy.max_avg_events_per_tick
+            or metrics["total_events"] > policy.max_total_events
         ):
             errors.append(
                 ValidationError(
                     path="",
                     reason="event_flood",
-                    expected={"max_avg": MAX_AVG_EVENTS_PER_TICK, "max_total": MAX_TOTAL_EVENTS},
+                    expected={"max_avg": policy.max_avg_events_per_tick, "max_total": policy.max_total_events},
                     got={"avg": metrics["avg_events_per_tick"], "total": metrics["total_events"]},
                     detail=(
                         f"Simulation produced too many events "
-                        f"(avg {metrics['avg_events_per_tick']:.1f}/tick, max {MAX_AVG_EVENTS_PER_TICK})."
+                        f"(avg {metrics['avg_events_per_tick']:.1f}/tick, max {policy.max_avg_events_per_tick})."
                     ),
                 )
             )
 
-        if metrics["final_counter"] > MAX_FINAL_COUNTER:
+        if metrics["final_counter"] > policy.max_final_counter:
             errors.append(
                 ValidationError(
                     path="counter.increment",
                     reason="numeric_divergence",
-                    expected={"max_final_counter": MAX_FINAL_COUNTER},
+                    expected={"max_final_counter": policy.max_final_counter},
                     got=metrics["final_counter"],
                     detail=(
                         f"Counter diverged to {metrics['final_counter']} "
-                        f"(max {MAX_FINAL_COUNTER})."
+                        f"(max {policy.max_final_counter})."
                     ),
                 )
             )
