@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api.routes import archive_router, health_router, runtime_router, world_params_router, world_router
+from app.api.routes import archive_router, health_router, runtime_router, world_agent_router, world_params_router, world_router
 from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_engine import RuntimeEngine
 from app.schemas.api import ApiErrorResponse
@@ -19,6 +19,8 @@ from app.world.state import WorldState
 from app.world.storage import InMemorySnapshotStore, InMemorySummaryStore
 from app.world.validation import ParamRegistry, ParamValidator
 from app.world.validation.policy import WorldValidationPolicy
+from app.agent.llm_provider import MockLLMProvider
+from app.agent.params_agent import ParamsAgent
 
 
 def _error_code_from_status(status_code: int) -> int:
@@ -106,6 +108,20 @@ def create_app() -> FastAPI:
         app.state.archive_service.on_tick_completed
     )
 
+    registry = ParamRegistry.default()
+    llm_provider = MockLLMProvider(responses=[
+        {"patches": [{"op": "set", "path": "counter.increment", "value": {"value": 1, "type": "number"}}]}
+    ])
+    app.state.params_agent = ParamsAgent(
+        llm=llm_provider,
+        param_validator=app.state.param_validator,
+        param_dry_run_validator=app.state.param_dry_run_validator,
+        world_state=app.state.world_state,
+        event_log=app.state.event_log,
+        runtime_engine=app.state.runtime_engine,
+        registry=registry,
+    )
+
     @app.exception_handler(StarletteHTTPException)
     async def handle_http_exception(_, exc: StarletteHTTPException) -> JSONResponse:
         payload = ApiErrorResponse(
@@ -128,5 +144,6 @@ def create_app() -> FastAPI:
     app.include_router(runtime_router)
     app.include_router(world_router)
     app.include_router(world_params_router)
+    app.include_router(world_agent_router)
     app.include_router(archive_router)
     return app
