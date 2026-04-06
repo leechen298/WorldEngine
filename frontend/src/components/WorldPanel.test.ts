@@ -1,0 +1,120 @@
+import { flushPromises, mount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { describe, expect, it, vi } from "vitest";
+
+import { ApiClientError } from "../api/client";
+import WorldPanel from "./WorldPanel.vue";
+
+const { applyWorldParamsMock } = vi.hoisted(() => ({
+  applyWorldParamsMock: vi.fn(),
+}));
+
+vi.mock("../api/client", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../api/client")>();
+  return { ...actual, applyWorldParams: applyWorldParamsMock };
+});
+
+function makeApiError(
+  msg: string,
+  errors: { path: string; reason: string; detail: string }[],
+): ApiClientError {
+  return new ApiClientError(msg, { status: 422, code: 30, data: { errors } });
+}
+
+describe("WorldPanel error display", () => {
+  it("shows only msg when there are no error details", async () => {
+    applyWorldParamsMock.mockRejectedValue(new Error("Network error"));
+
+    const wrapper = mount(WorldPanel, {
+      props: { params: {}, loading: false },
+    });
+    await wrapper.find("input").setValue("counter.increment");
+    await nextTick();
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Network error");
+    expect(wrapper.find("ul.apply-error-list").exists()).toBe(false);
+  });
+
+  it("shows msg + detail lines on static validator 422", async () => {
+    applyWorldParamsMock.mockRejectedValue(
+      makeApiError("Param validation failed", [
+        { path: "counter.increment", reason: "out_of_range", detail: "Value must be ≤ 1000." },
+      ]),
+    );
+
+    const wrapper = mount(WorldPanel, {
+      props: { params: {}, loading: false },
+    });
+    await wrapper.find("input").setValue("counter.increment");
+    await nextTick();
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Param validation failed");
+    expect(wrapper.text()).toContain("counter.increment: Value must be ≤ 1000.");
+  });
+
+  it("shows msg + detail lines on dry-run 422", async () => {
+    applyWorldParamsMock.mockRejectedValue(
+      makeApiError("Dry-run validation failed", [
+        { path: "counter.increment", reason: "numeric_divergence", detail: "Counter diverged to 2000000 (max 100000)." },
+      ]),
+    );
+
+    const wrapper = mount(WorldPanel, {
+      props: { params: {}, loading: false },
+    });
+    await wrapper.find("input").setValue("counter.increment");
+    await nextTick();
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Dry-run validation failed");
+    expect(wrapper.text()).toContain("counter.increment: Counter diverged to 2000000 (max 100000).");
+  });
+
+  it("omits path prefix when path is empty", async () => {
+    applyWorldParamsMock.mockRejectedValue(
+      makeApiError("Dry-run validation failed", [
+        { path: "", reason: "event_flood", detail: "Simulation produced too many events (avg 25.0/tick, max 20)." },
+      ]),
+    );
+
+    const wrapper = mount(WorldPanel, {
+      props: { params: {}, loading: false },
+    });
+    await wrapper.find("input").setValue("counter.increment");
+    await nextTick();
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    const listText = wrapper.find("ul.apply-error-list").text();
+    expect(listText).not.toMatch(/^:/);
+    expect(listText).toContain("Simulation produced too many events");
+  });
+
+  it("emits applied and clears errors on success", async () => {
+    applyWorldParamsMock.mockRejectedValue(
+      makeApiError("Param validation failed", [
+        { path: "counter.increment", reason: "out_of_range", detail: "Value must be ≤ 1000." },
+      ]),
+    );
+
+    const wrapper = mount(WorldPanel, { props: { params: {}, loading: false } });
+    await wrapper.find("input").setValue("counter.increment");
+    await nextTick();
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.find("ul.apply-error-list").exists()).toBe(true);
+
+    applyWorldParamsMock.mockResolvedValue({ counter: { increment: { value: 2, type: "number" } } });
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.emitted("applied")).toHaveLength(1);
+    expect(wrapper.find("ul.apply-error-list").exists()).toBe(false);
+  });
+});

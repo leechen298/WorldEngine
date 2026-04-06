@@ -49,7 +49,13 @@
           >
             {{ applying ? "Applying..." : "Apply" }}
           </a-button>
-          <a-alert v-if="applyError" type="error" show-icon :message="applyError" />
+          <a-alert v-if="applyError" type="error" show-icon :message="applyError">
+            <template v-if="applyErrorDetails.length" #description>
+              <ul class="apply-error-list">
+                <li v-for="(detail, i) in applyErrorDetails" :key="i">{{ detail }}</li>
+              </ul>
+            </template>
+          </a-alert>
         </a-space>
       </a-form>
     </a-space>
@@ -72,7 +78,7 @@ import {
   TypographyText as ATypographyText,
 } from "ant-design-vue";
 
-import { applyWorldParams, type WorldParams } from "../api/client";
+import { ApiClientError, applyWorldParams, type WorldParams } from "../api/client";
 
 type ParamValueType = "string" | "number" | "boolean" | "json";
 
@@ -100,6 +106,7 @@ const booleanValue = ref<"true" | "false">("false");
 const unit = ref<string>("");
 const applying = ref<boolean>(false);
 const applyError = ref<string>("");
+const applyErrorDetails = ref<string[]>([]);
 
 const stringExample = '{"value":2,"type":"number"}';
 const unitExample = '{"value":1,"type":"number","unit":"meter"}';
@@ -170,9 +177,27 @@ function buildPatchValue(): unknown {
   return structuredValue;
 }
 
+function extractErrorDetails(err: unknown): { msg: string; details: string[] } {
+  if (!(err instanceof ApiClientError)) {
+    return { msg: err instanceof Error ? err.message : "Apply failed", details: [] };
+  }
+
+  const data = err.data as Record<string, unknown> | undefined;
+  const errors = Array.isArray(data?.errors) ? (data.errors as Record<string, unknown>[]) : [];
+
+  const details = errors.map((e) => {
+    const path = typeof e.path === "string" && e.path ? `${e.path}: ` : "";
+    const detail = typeof e.detail === "string" ? e.detail : `${e.reason}`;
+    return `${path}${detail}`;
+  });
+
+  return { msg: err.message, details };
+}
+
 async function handleApply(): Promise<void> {
   applying.value = true;
   applyError.value = "";
+  applyErrorDetails.value = [];
 
   try {
     const nextParams = await applyWorldParams({
@@ -191,7 +216,9 @@ async function handleApply(): Promise<void> {
     unit.value = "";
     emit("applied", nextParams);
   } catch (err) {
-    applyError.value = err instanceof Error ? err.message : "Apply failed";
+    const { msg, details } = extractErrorDetails(err);
+    applyError.value = msg;
+    applyErrorDetails.value = details;
   } finally {
     applying.value = false;
   }
@@ -225,5 +252,10 @@ async function handleApply(): Promise<void> {
 
 .world-error {
   color: #b42318;
+}
+
+.apply-error-list {
+  margin: 4px 0 0;
+  padding-left: 18px;
 }
 </style>

@@ -11,6 +11,7 @@ from app.core.runtime_engine import RuntimeEngine
 from app.schemas.event import Event
 from app.world.service import get_default_module_tree
 from app.world.state import WorldState
+from app.world.validation.types import ValidationError
 
 DEFAULT_DRY_RUN_TICKS = 20
 MAX_AVG_EVENTS_PER_TICK = 20
@@ -22,7 +23,7 @@ MAX_FINAL_COUNTER = 100000
 class SimulationReport:
     ok: bool
     metrics: dict[str, Any] = field(default_factory=dict)
-    errors: list[dict[str, Any]] = field(default_factory=list)
+    errors: list[ValidationError] = field(default_factory=list)
 
 
 class ParamDryRunValidator:
@@ -97,45 +98,49 @@ class ParamDryRunValidator:
         sim_events: list[Event],
         patches: list[object],
         metrics: dict[str, Any],
-    ) -> list[dict[str, Any]]:
-        errors: list[dict[str, Any]] = []
+    ) -> list[ValidationError]:
+        errors: list[ValidationError] = []
 
         if (
             metrics["avg_events_per_tick"] > MAX_AVG_EVENTS_PER_TICK
             or metrics["total_events"] > MAX_TOTAL_EVENTS
         ):
             errors.append(
-                {
-                    "reason": "event_flood",
-                    "detail": {
-                        "avg_events_per_tick": metrics["avg_events_per_tick"],
-                        "total_events": metrics["total_events"],
-                        "max_avg_events_per_tick": MAX_AVG_EVENTS_PER_TICK,
-                        "max_total_events": MAX_TOTAL_EVENTS,
-                    },
-                }
+                ValidationError(
+                    path="",
+                    reason="event_flood",
+                    expected={"max_avg": MAX_AVG_EVENTS_PER_TICK, "max_total": MAX_TOTAL_EVENTS},
+                    got={"avg": metrics["avg_events_per_tick"], "total": metrics["total_events"]},
+                    detail=(
+                        f"Simulation produced too many events "
+                        f"(avg {metrics['avg_events_per_tick']:.1f}/tick, max {MAX_AVG_EVENTS_PER_TICK})."
+                    ),
+                )
             )
 
         if metrics["final_counter"] > MAX_FINAL_COUNTER:
             errors.append(
-                {
-                    "reason": "numeric_divergence",
-                    "detail": {
-                        "final_counter": metrics["final_counter"],
-                        "max_final_counter": MAX_FINAL_COUNTER,
-                    },
-                }
+                ValidationError(
+                    path="counter.increment",
+                    reason="numeric_divergence",
+                    expected={"max_final_counter": MAX_FINAL_COUNTER},
+                    got=metrics["final_counter"],
+                    detail=(
+                        f"Counter diverged to {metrics['final_counter']} "
+                        f"(max {MAX_FINAL_COUNTER})."
+                    ),
+                )
             )
 
         if metrics["duplicate_set_paths"]:
-            errors.append(
-                {
-                    "reason": "high_frequency_toggle",
-                    "detail": {
-                        "paths": metrics["duplicate_set_paths"],
-                    },
-                }
-            )
+            for dup_path in metrics["duplicate_set_paths"]:
+                errors.append(
+                    ValidationError(
+                        path=dup_path,
+                        reason="high_frequency_toggle",
+                        detail="Path is set multiple times in the same patch list.",
+                    ),
+                )
 
         requested_increment = self._requested_counter_increment(patches)
         if requested_increment is not None and requested_increment != 1:
@@ -146,14 +151,16 @@ class ParamDryRunValidator:
             ]
             if observed_increments and all(increment == 1 for increment in observed_increments):
                 errors.append(
-                    {
-                        "reason": "no_effect",
-                        "detail": {
-                            "path": "counter.increment",
-                            "expected_increment": requested_increment,
-                            "observed_increments": observed_increments[: min(5, len(observed_increments))],
-                        },
-                    }
+                    ValidationError(
+                        path="counter.increment",
+                        reason="no_effect",
+                        expected=requested_increment,
+                        got=observed_increments[: min(5, len(observed_increments))],
+                        detail=(
+                            f"Expected increment {requested_increment} "
+                            f"but observed all increments = 1."
+                        ),
+                    ),
                 )
 
         return errors

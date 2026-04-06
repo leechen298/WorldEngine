@@ -53,7 +53,10 @@ def _data_from_detail(detail: object) -> object | None:
     if data is not None:
         return data
     if "errors" in detail:
-        return {"errors": detail["errors"]}
+        result: dict[str, object] = {"errors": detail["errors"]}
+        if "metrics" in detail:
+            result["metrics"] = detail["metrics"]
+        return result
     return None
 
 

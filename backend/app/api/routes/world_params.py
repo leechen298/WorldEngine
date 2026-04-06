@@ -71,10 +71,8 @@ def apply_world_params(
             status_code=422,
             detail={
                 "msg": "Dry-run validation failed",
-                "data": {
-                    "errors": dry_run_report.errors,
-                    "metrics": dry_run_report.metrics,
-                },
+                "errors": [error.to_dict() for error in dry_run_report.errors],
+                "metrics": dry_run_report.metrics,
             },
         )
 
