@@ -184,10 +184,8 @@ async function loadWorldParams(): Promise<void> {
 
 async function loadLatestSummary(): Promise<void> {
   try {
-    const result = await getWorldSummaries({ limit: 200 });
-    latestSummary.value = result.items.length > 0
-      ? result.items[result.items.length - 1]
-      : null;
+    const result = await getWorldSummaries({ limit: 1, order: "desc" });
+    latestSummary.value = result.items.length > 0 ? result.items[0] : null;
     summaryError.value = "";
   } catch (err) {
     summaryError.value = err instanceof Error ? err.message : "Unknown error";

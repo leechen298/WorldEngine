@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, Request
 from starlette.exceptions import HTTPException
@@ -25,9 +25,10 @@ def list_snapshots(
     from_tick: Optional[int] = None,
     to_tick: Optional[int] = None,
     limit: int = 200,
+    order: Literal["asc", "desc"] = "asc",
     store: InMemorySnapshotStore = Depends(get_snapshot_store),
 ) -> ApiResponse[SnapshotList]:
-    items, total = store.list(from_tick=from_tick, to_tick=to_tick, limit=limit)
+    items, total = store.list(from_tick=from_tick, to_tick=to_tick, limit=limit, order=order)
     return ApiResponse(data=SnapshotList(items=items, total=total))
 
 
@@ -45,9 +46,10 @@ def get_snapshot(
 @router.get("/summaries", response_model=ApiResponse[SummaryList])
 def list_summaries(
     limit: int = 200,
+    order: Literal["asc", "desc"] = "asc",
     store: InMemorySummaryStore = Depends(get_summary_store),
 ) -> ApiResponse[SummaryList]:
-    items, total = store.list(limit=limit)
+    items, total = store.list(limit=limit, order=order)
     return ApiResponse(data=SummaryList(items=items, total=total))
 
 

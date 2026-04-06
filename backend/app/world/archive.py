@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from collections import Counter
+from copy import deepcopy
 from datetime import datetime, timezone
 from typing import List, Optional
 from uuid import uuid4
@@ -78,14 +79,12 @@ class ArchiveService:
                 step_seconds=runtime_state.step_seconds,
                 updated_at=runtime_state.updated_at,
             ),
-            params=dict(params),
+            params=deepcopy(params),
         )
         self._snapshot_store.save(snap)
         return snap
 
     def _create_summary(self, from_tick: int, to_tick: int) -> Summary:
-        events = self._event_log.list(from_tick=from_tick, to_tick=to_tick, limit=200)
-        # Fetch all events in range (list caps at 200, but get full set via snapshot)
         all_events: List[Event] = [
             e
             for e in self._event_log.snapshot()

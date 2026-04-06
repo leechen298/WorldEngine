@@ -228,10 +228,14 @@ export interface SummaryList {
 
 export async function getWorldSummaries(params?: {
   limit?: number;
+  order?: "asc" | "desc";
 }): Promise<SummaryList> {
   const searchParams = new URLSearchParams();
   if (params?.limit !== undefined) {
     searchParams.set("limit", String(params.limit));
+  }
+  if (params?.order !== undefined) {
+    searchParams.set("order", params.order);
   }
   const query = searchParams.toString();
   return request<SummaryList>(`/world/summaries${query ? `?${query}` : ""}`);

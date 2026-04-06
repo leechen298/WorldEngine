@@ -22,6 +22,7 @@ class InMemorySnapshotStore:
         from_tick: Optional[int] = None,
         to_tick: Optional[int] = None,
         limit: int = 200,
+        order: str = "asc",
     ) -> Tuple[List[Snapshot], int]:
         capped = max(1, min(limit, 200))
         filtered = [
@@ -30,6 +31,8 @@ class InMemorySnapshotStore:
             if (from_tick is None or s.tick_id >= from_tick)
             and (to_tick is None or s.tick_id <= to_tick)
         ]
+        if order == "desc":
+            return list(reversed(filtered))[:capped], len(filtered)
         return filtered[:capped], len(filtered)
 
     def get(self, snapshot_id: str) -> Optional[Snapshot]:
