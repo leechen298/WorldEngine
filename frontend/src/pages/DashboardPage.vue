@@ -73,7 +73,11 @@
           @applied="handleParamsApplied"
         />
         <AgentPanel />
-        <MemoryPanel />
+        <MemoryPanel
+          :summary="latestSummary"
+          :loading="summaryLoading"
+          :error="summaryError"
+        />
       </section>
     </section>
   </main>
@@ -94,6 +98,7 @@ import {
 } from "ant-design-vue";
 import {
   getWorldParams,
+  getWorldSummaries,
   fetchHealth,
   getWorldEventSteps,
   getRuntimeState,
@@ -101,6 +106,7 @@ import {
   type RuntimeState,
   type WorldEventStep,
   type WorldParams,
+  type WorldSummary,
 } from "../api/client";
 import RuntimeControls from "../components/RuntimeControls.vue";
 import TimelinePanel from "../components/TimelinePanel.vue";
@@ -127,6 +133,9 @@ const eventsHasMore = ref<boolean>(false);
 const worldParams = ref<WorldParams>({});
 const worldParamsLoading = ref<boolean>(true);
 const worldParamsError = ref<string>("");
+const latestSummary = ref<WorldSummary | null>(null);
+const summaryLoading = ref<boolean>(true);
+const summaryError = ref<string>("");
 
 const eventsCurrentPage = computed(() => eventsCursorHistory.value.length + 1);
 const canLoadPreviousEvents = computed(() => eventsCursorHistory.value.length > 0);
@@ -173,6 +182,20 @@ async function loadWorldParams(): Promise<void> {
   }
 }
 
+async function loadLatestSummary(): Promise<void> {
+  try {
+    const result = await getWorldSummaries({ limit: 200 });
+    latestSummary.value = result.items.length > 0
+      ? result.items[result.items.length - 1]
+      : null;
+    summaryError.value = "";
+  } catch (err) {
+    summaryError.value = err instanceof Error ? err.message : "Unknown error";
+  } finally {
+    summaryLoading.value = false;
+  }
+}
+
 function handleParamsApplied(nextParams: WorldParams): void {
   worldParams.value = nextParams;
   worldParamsError.value = "";
@@ -185,7 +208,7 @@ async function handleRuntimeStepped(): Promise<void> {
   eventsCurrentCursor.value = null;
   eventsNextCursor.value = null;
   eventsHasMore.value = false;
-  await Promise.all([loadRuntimeState(), loadEvents(null)]);
+  await Promise.all([loadRuntimeState(), loadEvents(null), loadLatestSummary()]);
 }
 
 async function handleNextEventsPage(): Promise<void> {
@@ -242,6 +265,7 @@ onMounted(async () => {
   await loadRuntimeState();
   await loadEvents(null);
   await loadWorldParams();
+  await loadLatestSummary();
 });
 </script>
 

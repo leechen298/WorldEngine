@@ -2,7 +2,7 @@ import os
 from copy import deepcopy
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
-from typing import Any, Callable, Optional
+from typing import Any, Callable, List, Optional
 from uuid import uuid4
 
 from app.core.event_bus import InMemoryEventLog
@@ -41,6 +41,12 @@ class RuntimeEngine:
         self._event_log = event_log
         self._world_root_module = world_root_module
         self._params_provider = params_provider
+        self._on_step_callbacks: List[Callable[["RuntimeState", dict], None]] = []
+
+    def add_on_step_callback(
+        self, callback: Callable[["RuntimeState", dict], None]
+    ) -> None:
+        self._on_step_callbacks.append(callback)
 
     @classmethod
     def from_env(
@@ -100,4 +106,6 @@ class RuntimeEngine:
             if self._event_log is not None:
                 for event in module_result.events:
                     self._event_log.append(event)
+        for cb in self._on_step_callbacks:
+            cb(self._state, params)
         return self.get_state()

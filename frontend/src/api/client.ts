@@ -202,3 +202,37 @@ export async function applyWorldParams(
     body: JSON.stringify(body),
   });
 }
+
+// ---------------------------------------------------------------------------
+// Archive: Summaries
+// ---------------------------------------------------------------------------
+
+export interface SummaryStats {
+  total_events: number;
+  type_counts: Record<string, number>;
+}
+
+export interface WorldSummary {
+  id: string;
+  from_tick: number;
+  to_tick: number;
+  created_at: string;
+  text: string;
+  stats: SummaryStats;
+}
+
+export interface SummaryList {
+  items: WorldSummary[];
+  total: number;
+}
+
+export async function getWorldSummaries(params?: {
+  limit?: number;
+}): Promise<SummaryList> {
+  const searchParams = new URLSearchParams();
+  if (params?.limit !== undefined) {
+    searchParams.set("limit", String(params.limit));
+  }
+  const query = searchParams.toString();
+  return request<SummaryList>(`/world/summaries${query ? `?${query}` : ""}`);
+}

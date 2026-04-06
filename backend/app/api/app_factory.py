@@ -8,13 +8,15 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api.routes import health_router, runtime_router, world_params_router, world_router
+from app.api.routes import archive_router, health_router, runtime_router, world_params_router, world_router
 from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_engine import RuntimeEngine
 from app.schemas.api import ApiErrorResponse
+from app.world.archive import ArchiveService
 from app.world.dry_run import ParamDryRunValidator
 from app.world.service import get_default_module_tree
 from app.world.state import WorldState
+from app.world.storage import InMemorySnapshotStore, InMemorySummaryStore
 from app.world.validation import ParamRegistry, ParamValidator
 from app.world.validation.policy import WorldValidationPolicy
 
@@ -88,10 +90,20 @@ def create_app() -> FastAPI:
     app.state.param_dry_run_validator = ParamDryRunValidator(
         default_policy=app.state.validation_policy_default,
     )
+    app.state.snapshot_store = InMemorySnapshotStore()
+    app.state.summary_store = InMemorySummaryStore()
     app.state.runtime_engine = RuntimeEngine.from_env(
         event_log=app.state.event_log,
         world_root_module=app.state.world_root_module,
         params_provider=app.state.world_state.get_params,
+    )
+    app.state.archive_service = ArchiveService(
+        snapshot_store=app.state.snapshot_store,
+        summary_store=app.state.summary_store,
+        event_log=app.state.event_log,
+    )
+    app.state.runtime_engine.add_on_step_callback(
+        app.state.archive_service.on_tick_completed
     )
 
     @app.exception_handler(StarletteHTTPException)
@@ -116,4 +128,5 @@ def create_app() -> FastAPI:
     app.include_router(runtime_router)
     app.include_router(world_router)
     app.include_router(world_params_router)
+    app.include_router(archive_router)
     return app
