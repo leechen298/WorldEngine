@@ -204,6 +204,29 @@ export async function applyWorldParams(
 }
 
 // ---------------------------------------------------------------------------
+// Agent: Params propose-and-apply
+// ---------------------------------------------------------------------------
+
+export interface AgentProposeApplyResponse {
+  applied: boolean;
+  patches: ParamPatchItem[];
+  attempts: number;
+}
+
+export async function proposeAndApplyWorldParams(
+  goal?: string,
+): Promise<AgentProposeApplyResponse> {
+  return request<AgentProposeApplyResponse>(
+    "/world/agent/params/propose-and-apply",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(goal ? { goal } : {}),
+    },
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Archive: Summaries
 // ---------------------------------------------------------------------------
 

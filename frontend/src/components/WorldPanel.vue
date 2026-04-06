@@ -58,6 +58,32 @@
           </a-alert>
         </a-space>
       </a-form>
+
+      <a-divider />
+
+      <a-form layout="vertical" class="world-param-form">
+        <a-form-item label="Goal (optional)">
+          <a-input v-model:value="agentGoal" placeholder="e.g. speed up counter / disable heartbeat" />
+        </a-form-item>
+        <a-space direction="vertical" :size="12">
+          <a-button
+            type="primary"
+            :loading="agentRunning"
+            @click="handleAgentApply"
+            class="agent-btn"
+          >
+            {{ agentRunning ? "Running..." : "LLM Auto-Tune" }}
+          </a-button>
+          <a-alert v-if="agentSuccess" type="success" show-icon :message="agentSuccess" />
+          <a-alert v-if="agentError" type="error" show-icon :message="agentError">
+            <template v-if="agentErrorDetails.length" #description>
+              <ul class="apply-error-list">
+                <li v-for="(detail, i) in agentErrorDetails" :key="i">{{ detail }}</li>
+              </ul>
+            </template>
+          </a-alert>
+        </a-space>
+      </a-form>
     </a-space>
   </a-card>
 </template>
@@ -68,6 +94,7 @@ import {
   Alert as AAlert,
   Button as AButton,
   Card as ACard,
+  Divider as ADivider,
   Form as AForm,
   FormItem as AFormItem,
   Input as AInput,
@@ -78,7 +105,7 @@ import {
   TypographyText as ATypographyText,
 } from "ant-design-vue";
 
-import { ApiClientError, applyWorldParams, type WorldParams } from "../api/client";
+import { ApiClientError, applyWorldParams, getWorldParams, proposeAndApplyWorldParams, type WorldParams } from "../api/client";
 
 type ParamValueType = "string" | "number" | "boolean" | "json";
 
@@ -107,6 +134,12 @@ const unit = ref<string>("");
 const applying = ref<boolean>(false);
 const applyError = ref<string>("");
 const applyErrorDetails = ref<string[]>([]);
+
+const agentGoal = ref<string>("");
+const agentRunning = ref<boolean>(false);
+const agentSuccess = ref<string>("");
+const agentError = ref<string>("");
+const agentErrorDetails = ref<string[]>([]);
 
 const stringExample = '{"value":2,"type":"number"}';
 const unitExample = '{"value":1,"type":"number","unit":"meter"}';
@@ -221,6 +254,27 @@ async function handleApply(): Promise<void> {
     applyErrorDetails.value = details;
   } finally {
     applying.value = false;
+  }
+}
+
+async function handleAgentApply(): Promise<void> {
+  agentRunning.value = true;
+  agentSuccess.value = "";
+  agentError.value = "";
+  agentErrorDetails.value = [];
+
+  try {
+    const result = await proposeAndApplyWorldParams(agentGoal.value.trim() || undefined);
+    const nextParams = await getWorldParams();
+    agentSuccess.value = `Applied in ${result.attempts} attempt(s): ${JSON.stringify(result.patches)}`;
+    agentGoal.value = "";
+    emit("applied", nextParams);
+  } catch (err) {
+    const { msg, details } = extractErrorDetails(err);
+    agentError.value = msg;
+    agentErrorDetails.value = details;
+  } finally {
+    agentRunning.value = false;
   }
 }
 </script>

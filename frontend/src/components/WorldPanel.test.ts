@@ -5,13 +5,20 @@ import { describe, expect, it, vi } from "vitest";
 import { ApiClientError } from "../api/client";
 import WorldPanel from "./WorldPanel.vue";
 
-const { applyWorldParamsMock } = vi.hoisted(() => ({
+const { applyWorldParamsMock, proposeAndApplyMock, getWorldParamsMock } = vi.hoisted(() => ({
   applyWorldParamsMock: vi.fn(),
+  proposeAndApplyMock: vi.fn(),
+  getWorldParamsMock: vi.fn(),
 }));
 
 vi.mock("../api/client", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../api/client")>();
-  return { ...actual, applyWorldParams: applyWorldParamsMock };
+  return {
+    ...actual,
+    applyWorldParams: applyWorldParamsMock,
+    proposeAndApplyWorldParams: proposeAndApplyMock,
+    getWorldParams: getWorldParamsMock,
+  };
 });
 
 function makeApiError(
@@ -116,5 +123,46 @@ describe("WorldPanel error display", () => {
 
     expect(wrapper.emitted("applied")).toHaveLength(1);
     expect(wrapper.find("ul.apply-error-list").exists()).toBe(false);
+  });
+});
+
+describe("WorldPanel agent button", () => {
+  it("shows success message and emits fresh params after LLM auto-tune", async () => {
+    const freshParams = { counter: { increment: { value: 2, type: "number" } } };
+    proposeAndApplyMock.mockResolvedValue({
+      applied: true,
+      patches: [{ op: "set", path: "counter.increment", value: { value: 2, type: "number" } }],
+      attempts: 1,
+    });
+    getWorldParamsMock.mockResolvedValue(freshParams);
+
+    const wrapper = mount(WorldPanel, { props: { params: {}, loading: false } });
+    const agentBtn = wrapper.findAll("button").find((b) => b.text().includes("LLM Auto-Tune"));
+    expect(agentBtn).toBeTruthy();
+
+    await agentBtn!.trigger("click");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Applied in 1 attempt(s)");
+    const emitted = wrapper.emitted("applied");
+    expect(emitted).toHaveLength(1);
+    expect(emitted![0][0]).toEqual(freshParams);
+  });
+
+  it("shows errors when agent proposal is rejected", async () => {
+    proposeAndApplyMock.mockRejectedValue(
+      makeApiError("Agent proposal rejected after max attempts", [
+        { path: "counter.increment", reason: "out_of_range", detail: "Value must be ≤ 1000." },
+      ]),
+    );
+
+    const wrapper = mount(WorldPanel, { props: { params: {}, loading: false } });
+    const agentBtn = wrapper.findAll("button").find((b) => b.text().includes("LLM Auto-Tune"));
+
+    await agentBtn!.trigger("click");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Agent proposal rejected after max attempts");
+    expect(wrapper.text()).toContain("counter.increment: Value must be ≤ 1000.");
   });
 });
