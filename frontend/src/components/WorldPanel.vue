@@ -74,7 +74,14 @@
           >
             {{ agentRunning ? "Running..." : "LLM Auto-Tune" }}
           </a-button>
-          <a-alert v-if="agentSuccess" type="success" show-icon :message="agentSuccess" />
+          <a-alert v-if="agentSuccess" type="success" show-icon :message="agentSuccess">
+            <template v-if="agentPatches.length" #description>
+              <details class="agent-patches-details">
+                <summary>Show {{ agentPatches.length }} patch(es)</summary>
+                <pre class="agent-patches-pre">{{ JSON.stringify(agentPatches, null, 2) }}</pre>
+              </details>
+            </template>
+          </a-alert>
           <a-alert v-if="agentError" type="error" show-icon :message="agentError">
             <template v-if="agentErrorDetails.length" #description>
               <ul class="apply-error-list">
@@ -138,6 +145,7 @@ const applyErrorDetails = ref<string[]>([]);
 const agentGoal = ref<string>("");
 const agentRunning = ref<boolean>(false);
 const agentSuccess = ref<string>("");
+const agentPatches = ref<unknown[]>([]);
 const agentError = ref<string>("");
 const agentErrorDetails = ref<string[]>([]);
 
@@ -260,13 +268,15 @@ async function handleApply(): Promise<void> {
 async function handleAgentApply(): Promise<void> {
   agentRunning.value = true;
   agentSuccess.value = "";
+  agentPatches.value = [];
   agentError.value = "";
   agentErrorDetails.value = [];
 
   try {
     const result = await proposeAndApplyWorldParams(agentGoal.value.trim() || undefined);
     const nextParams = await getWorldParams();
-    agentSuccess.value = `Applied in ${result.attempts} attempt(s): ${JSON.stringify(result.patches)}`;
+    agentSuccess.value = `Applied ${result.patches.length} patch(es) in ${result.attempts} attempt(s)`;
+    agentPatches.value = result.patches;
     agentGoal.value = "";
     emit("applied", nextParams);
   } catch (err) {
@@ -311,5 +321,12 @@ async function handleAgentApply(): Promise<void> {
 .apply-error-list {
   margin: 4px 0 0;
   padding-left: 18px;
+}
+
+.agent-patches-pre {
+  max-height: 160px;
+  overflow: auto;
+  margin: 4px 0 0;
+  font-size: 12px;
 }
 </style>

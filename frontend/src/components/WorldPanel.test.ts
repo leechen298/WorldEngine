@@ -143,7 +143,7 @@ describe("WorldPanel agent button", () => {
     await agentBtn!.trigger("click");
     await flushPromises();
 
-    expect(wrapper.text()).toContain("Applied in 1 attempt(s)");
+    expect(wrapper.text()).toContain("Applied 1 patch(es) in 1 attempt(s)");
     const emitted = wrapper.emitted("applied");
     expect(emitted).toHaveLength(1);
     expect(emitted![0][0]).toEqual(freshParams);
