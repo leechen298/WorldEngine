@@ -7,6 +7,20 @@ This repository is now scaffolded as a monorepo with:
 - `frontend/` Vue 3 + TypeScript dashboard
 - `docs/` architecture notes
 
+### Root-Level Quick Start
+
+```bash
+make setup
+make dev
+```
+
+Useful single-service commands:
+
+```bash
+make dev-backend
+make dev-frontend
+```
+
 ### Backend Dev Run
 
 ```bash
