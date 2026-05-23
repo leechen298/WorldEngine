@@ -16,6 +16,7 @@ REQUIRED_KEYS = {
     "assertions",
     "failures",
 }
+SUPPORTED_SCENARIOS = {"dashboard-basic-runtime"}
 
 
 def _load_json(path: Path, errors: list[str]) -> Any:
@@ -41,6 +42,11 @@ def _is_non_empty_evidence(value: Any) -> bool:
 def _validate_artifact_path(result_dir: Path, artifact_name: str, relative_path: Any, errors: list[str]) -> None:
     if not isinstance(relative_path, str) or not relative_path.strip():
         errors.append(f"Artifact {artifact_name} must be a non-empty relative path")
+        return
+
+    raw_path = Path(relative_path)
+    if raw_path.is_absolute() or ".." in raw_path.parts:
+        errors.append(f"Artifact {artifact_name} must stay inside result directory: {relative_path}")
         return
 
     path = result_dir / relative_path
@@ -123,8 +129,11 @@ def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: li
         if operation_type == "cli":
             if not isinstance(operation.get("command"), str) or not operation["command"].strip():
                 errors.append(f"operation-log.jsonl line {index}.command must be a non-empty string")
-            if not isinstance(operation.get("exit_code"), int):
+            exit_code = operation.get("exit_code")
+            if not isinstance(exit_code, int):
                 errors.append(f"operation-log.jsonl line {index}.exit_code must be an integer")
+            elif exit_code != 0:
+                errors.append(f"operation-log.jsonl line {index}.exit_code must be 0")
 
     if result.get("scenario") == "dashboard-basic-runtime" and not saw_ui_operation:
         errors.append("operation-log.jsonl must include at least one ui operation for dashboard-basic-runtime")
@@ -142,8 +151,11 @@ def _validate_commands(result: dict[str, Any], errors: list[str]) -> None:
             continue
         if not isinstance(command.get("command"), str) or not command["command"].strip():
             errors.append(f"commands[{index}].command must be a non-empty string")
-        if not isinstance(command.get("exit_code"), int):
+        exit_code = command.get("exit_code")
+        if not isinstance(exit_code, int):
             errors.append(f"commands[{index}].exit_code must be an integer")
+        elif exit_code != 0:
+            errors.append(f"commands[{index}].exit_code must be 0")
 
 
 def _validate_assertions(result: dict[str, Any], errors: list[str]) -> None:
@@ -211,6 +223,8 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
     if missing_keys:
         errors.append(f"result.json missing required keys: {', '.join(missing_keys)}")
 
+    if raw_result.get("scenario") not in SUPPORTED_SCENARIOS:
+        errors.append("scenario must be dashboard-basic-runtime")
     if raw_result.get("status") != "pass":
         errors.append("status must be pass for a successful agent smoke result")
     if raw_result.get("verdict_source") != "deterministic_checker":

@@ -15,7 +15,7 @@
   ],
   "properties": {
     "scenario": {
-      "type": "string"
+      "const": "dashboard-basic-runtime"
     },
     "status": {
       "const": "pass"
@@ -39,7 +39,7 @@
             "minLength": 1
           },
           "exit_code": {
-            "type": "integer"
+            "const": 0
           }
         }
       }

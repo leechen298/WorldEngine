@@ -1,6 +1,6 @@
 # Review
 
-Status: review complete
+Status: review complete after validator blocker fix
 
 ## Changed Files
 
@@ -13,8 +13,8 @@ Status: review complete
 | `frontend/e2e/dashboard.spec.ts` | Added three deterministic dashboard E2E scenarios. |
 | `frontend/src/**/*` | Added stable `data-test` selectors only. |
 | `frontend/vite.config.ts` | Excluded Playwright E2E specs from Vitest collection. |
-| `tools/testing/*` | Added Agent smoke result validator, tests, and fixtures. |
-| `docs/testing/agent-smoke/*` | Added Agent smoke protocol, scenarios, and result schema. |
+| `tools/testing/*` | Added Agent smoke result validator, tests, and fixtures. Follow-up fix enforces zero command exit codes, first-package scenario support, and artifact path containment. |
+| `docs/testing/agent-smoke/*` | Added Agent smoke protocol, scenarios, and result schema. Follow-up schema pins the first supported scenario and command exit code. |
 | `test-results/agent-smoke/latest/README.md` | Added a tracked placeholder for the latest pushable raw Agent smoke record. |
 | `docs/testing/results/2026-05-23-v0.1-e2e-agent-acceptance.md` | Added durable verification summary. |
 | `docs/iterations/v0.1/*` | Added v0.1.3 package and index references. |
@@ -39,6 +39,8 @@ backend/.venv/bin/python -m pytest tools/testing/test_validate_agent_smoke_resul
 make validate-agent-smoke-fixtures
 make validate-agent-smoke-result RESULT_DIR=tools/testing/fixtures/agent-smoke/valid-basic-runtime
 git diff --check
+backend/.venv/bin/python -m pytest tools/testing/test_validate_agent_smoke_result.py -q
+make validate-agent-smoke-fixtures
 ```
 
 ## Test Results
@@ -73,6 +75,15 @@ git diff --check
 - Follow-up `make validate-agent-smoke-result RESULT_DIR=tools/testing/fixtures/agent-smoke/valid-basic-runtime`:
   passed.
 - Follow-up `git diff --check`: passed.
+- Validator blocker red run for review feedback: `5 failed, 9 passed`; failures
+  proved non-zero `commands[].exit_code`, unsupported scenario, non-zero CLI
+  operation `exit_code`, absolute artifact paths, and `../` artifact paths were
+  not yet rejected.
+- Validator blocker tests after fix:
+  `14 passed in 0.04s`.
+- Follow-up `make validate-agent-smoke-fixtures`: passed; valid fixture passed,
+  invalid `verdict_source=agent` fixture failed as expected, validator tests
+  passed with `14 passed in 0.04s`.
 
 Development failures fixed before final verification:
 
@@ -90,8 +101,8 @@ legacy `backend/worldengine/` code changed.
 
 Dashboard `data-test` attributes are non-user-visible test selectors. The new
 Playwright setup and Agent smoke checker only add verification capabilities.
-The operation-log refinement changes only evidence requirements and checker
-validation; it does not change runtime behavior.
+The operation-log and result-schema refinements change only evidence
+requirements and checker validation; they do not change runtime behavior.
 
 ## Scope Review
 
