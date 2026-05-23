@@ -22,6 +22,7 @@ WorldSpec, world generation, agent memory, or pseudo-self continuity.
 | `0.1.3-e2e-agent-acceptance` | mixed | review complete | Add post-closeout E2E tests and Agent smoke evidence validation without changing product behavior. |
 | `0.1.4-codex-test-skills` | mixed | review complete | Add project-local Codex skills and sync tooling for E2E and Agent smoke workflows. |
 | `0.1.5-project-agent-workflow-skills` | mixed | review complete | Add project-local workflow skills for iteration documentation and reviewed implementation gates. |
+| `0.1.6-current-code-test-case-expansion` | documentation-only | ready for review | Define current-code E2E, Agent smoke, and Codex/test-runner autonomous scenario contracts before implementing or running more tests. |
 
 ## Required Reading
 
@@ -38,3 +39,4 @@ WorldSpec, world generation, agent memory, or pseudo-self continuity.
 - `docs/iterations/v0.1/0.1.3-e2e-agent-acceptance/review.md`
 - `docs/iterations/v0.1/0.1.4-codex-test-skills/review.md`
 - `docs/iterations/v0.1/0.1.5-project-agent-workflow-skills/review.md`
+- `docs/iterations/v0.1/0.1.6-current-code-test-case-expansion/review.md`

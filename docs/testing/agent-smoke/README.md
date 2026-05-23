@@ -8,13 +8,17 @@ Agent smoke is an agent-assisted exploratory check. Codex may operate the app
 through UI or CLI, observe UI state, record the raw operation log, and write
 transcript notes, but Codex may not issue the final PASS verdict.
 
-## First Scenario
+## Scenario Index
 
-The first supported scenario is `dashboard-basic-runtime`.
+| Scenario | Status | Instructions |
+|---|---|---|
+| `dashboard-basic-runtime` | `executable` | `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md` |
+| `dashboard-params-flow` | `defined-not-executable-until-validator-supports-scenario` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
+| `dashboard-invalid-param` | `defined-not-executable-until-validator-supports-scenario` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
 
-Scenario instructions:
-
-- `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md`
+Only `dashboard-basic-runtime` is executable today. The other scenario
+contracts must not be run or reported as passed until the validator supports
+them.
 
 ## Required Evidence
 

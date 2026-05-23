@@ -1,5 +1,7 @@
 # Scenario: dashboard-basic-runtime
 
+Status: executable
+
 ## Purpose
 
 Verify that an agent can operate the dashboard while the final verdict remains
@@ -32,6 +34,12 @@ deterministic and evidence-based.
 `operation-log.jsonl` must prove the agent operated through UI or CLI. Direct
 API operation entries are invalid; API state may appear only as deterministic
 checker evidence in `api-summary.json`.
+
+## PASS Source
+
+```bash
+make validate-agent-smoke-result RESULT_DIR=<run-dir>
+```
 
 ## Invalid Verdicts
 

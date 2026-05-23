@@ -43,3 +43,44 @@ Historical raw Agent smoke artifacts belong under ignored
 `test-results/agent-smoke/<timestamp>/`. The latest reviewed raw record may be
 committed under `test-results/agent-smoke/latest/` for audit. Durable summaries
 belong under `docs/testing/results/`.
+
+Current Agent smoke scenario contracts live under
+`docs/testing/agent-smoke/scenarios/`. Only `dashboard-basic-runtime` is
+currently executable. `dashboard-params-flow` and `dashboard-invalid-param` are
+defined but not executable until the validator supports those scenarios.
+
+## E2E Scenario Contracts
+
+Current-code E2E scenario contracts live under
+`docs/testing/e2e-scenarios/`.
+
+Implemented current E2E coverage:
+
+- `dashboard-basic-runtime`
+- `dashboard-params-flow`
+- `dashboard-invalid-param`
+
+Contract-only E2E scenarios:
+
+- `dashboard-agent-autotune`
+- `dashboard-timeline-navigation`
+- `dashboard-archive-summary`
+
+Contract-only scenarios must not be reported as passed until implemented and
+verified by Playwright assertion.
+
+## Codex/Test-Runner Autonomous Contracts
+
+Codex/test-runner autonomous test contracts live under
+`docs/testing/agent-autonomous/`.
+
+In that directory, "Agent" means a Codex/test-runner agent operating
+WorldEngine as a tester. It does not mean a future WorldEngine in-world Agent.
+
+All current autonomous scenarios are `contract-only-do-not-execute`. They
+require a scorecard checker before any PASS/FAIL claim.
+
+## Future Implementation Prerequisites
+
+Selector, validator, checker, and test-environment prerequisites are recorded
+in `docs/testing/test-implementation-prerequisites.md`.

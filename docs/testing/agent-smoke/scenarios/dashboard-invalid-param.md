@@ -1,12 +1,12 @@
-# Scenario: dashboard-params-flow
+# Scenario: dashboard-invalid-param
 
 Status: defined-not-executable-until-validator-supports-scenario
 
 ## Purpose
 
-Verify that a Codex/test-runner agent can change `counter.increment` through
-the dashboard UI and prove the next runtime event reflects the new increment,
-while PASS remains deterministic.
+Verify that a Codex/test-runner agent can attempt an invalid param update
+through the dashboard UI and prove that the system rejects it without polluting
+world params.
 
 ## Current Executability
 
@@ -19,8 +19,8 @@ the validator whitelist and deterministic checker logic.
 ## Allowed Operations
 
 - CLI operations to start services and run the validator.
-- UI operations to open the dashboard, edit params, click `Apply`, and click
-  `Step`.
+- UI operations to open the dashboard, enter an invalid param, click `Apply`,
+  and inspect UI feedback.
 
 ## Forbidden Operations
 
@@ -34,15 +34,12 @@ the validator whitelist and deterministic checker logic.
 
 1. Start backend and frontend services through CLI.
 2. Open the dashboard through UI.
-3. Fill path `counter.increment`.
-4. Select type `number`.
-5. Fill value `2`.
-6. Click `Apply`.
-7. Observe params JSON update through UI.
-8. Click `Step`.
-9. Observe timeline or event evidence through UI.
-10. Write required artifacts.
-11. Run the Agent smoke validator after validator support exists.
+3. Fill path `system.secret`.
+4. Fill value `blocked`.
+5. Click `Apply`.
+6. Observe validation error through UI.
+7. Write required artifacts.
+8. Run the Agent smoke validator after validator support exists.
 
 ## Required Artifacts
 
@@ -60,11 +57,10 @@ such as:
 
 ```json
 {
-  "scenario": "dashboard-params-flow",
-  "param_path": "counter.increment",
-  "expected_value": 2,
-  "observed_value": 2,
-  "counter_event_increment": 2
+  "scenario": "dashboard-invalid-param",
+  "invalid_path": "system.secret",
+  "ui_error_seen": true,
+  "params_unchanged": true
 }
 ```
 
@@ -83,5 +79,5 @@ with `verdict_source: "deterministic_checker"`.
 ## Implementation Prerequisites
 
 - Extend the validator supported scenario whitelist.
-- Add deterministic checker logic for params update and counter event
-  increment evidence.
+- Add deterministic checker logic for UI error evidence and unchanged params
+  evidence.

@@ -8,13 +8,16 @@ Agent smoke 是 agent-assisted exploratory check。Codex 可以通过 UI 或 CLI
 观察 UI 状态、记录原始 operation log，并写 transcript notes，但 Codex 不能给出最终
 PASS verdict。
 
-## First Scenario
+## Scenario Index
 
-第一批支持的 scenario 是 `dashboard-basic-runtime`。
+| Scenario | Status | Instructions |
+|---|---|---|
+| `dashboard-basic-runtime` | `executable` | `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md` |
+| `dashboard-params-flow` | `defined-not-executable-until-validator-supports-scenario` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
+| `dashboard-invalid-param` | `defined-not-executable-until-validator-supports-scenario` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
 
-Scenario instructions：
-
-- `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md`
+目前只有 `dashboard-basic-runtime` 可执行。其他 scenario contracts 在 validator 支持前不能执行，
+也不能报告为通过。
 
 ## Required Evidence
 

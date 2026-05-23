@@ -41,3 +41,40 @@ Agent-assisted smoke tests 必须遵循 `docs/testing/agent-smoke/`。Codex 或�
 历史 raw Agent smoke artifacts 应放在 ignored `test-results/agent-smoke/<timestamp>/`
 下。最新一次已 review 的原始记录可以提交到 `test-results/agent-smoke/latest/`，用于审计。
 Durable summaries 应放在 `docs/testing/results/` 下。
+
+当前 Agent smoke scenario contracts 位于 `docs/testing/agent-smoke/scenarios/`。
+目前只有 `dashboard-basic-runtime` 可执行。`dashboard-params-flow` 和
+`dashboard-invalid-param` 已定义，但在 validator 支持这些 scenario 前不能执行或声称通过。
+
+## E2E Scenario Contracts
+
+当前代码对应的 E2E scenario contracts 位于 `docs/testing/e2e-scenarios/`。
+
+已实现的当前 E2E 覆盖：
+
+- `dashboard-basic-runtime`
+- `dashboard-params-flow`
+- `dashboard-invalid-param`
+
+仅契约定义、尚未实现的 E2E scenarios：
+
+- `dashboard-agent-autotune`
+- `dashboard-timeline-navigation`
+- `dashboard-archive-summary`
+
+这些 contract-only scenarios 只有在后续实现并由 Playwright assertion 验证后，才能报告为通过。
+
+## Codex/Test-Runner Autonomous Contracts
+
+Codex/test-runner autonomous test contracts 位于 `docs/testing/agent-autonomous/`。
+
+该目录中的 "Agent" 指 Codex/test-runner agent 作为测试执行者操作 WorldEngine，
+不是未来 WorldEngine 世界里的 in-world Agent。
+
+当前所有 autonomous scenarios 都是 `contract-only-do-not-execute`。在有 scorecard checker
+之前，不得报告 PASS/FAIL。
+
+## Future Implementation Prerequisites
+
+Selector、validator、checker 和 test-environment 前置条件记录在
+`docs/testing/test-implementation-prerequisites.md`。

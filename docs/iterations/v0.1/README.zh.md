@@ -1,6 +1,6 @@
 # v0.1 Runtime Scaffold
 
-Status: closeout complete
+Status: closeout documented
 
 英文版本：`README.md`。
 
@@ -16,8 +16,14 @@ Agent memory 或 pseudo-self continuity。
 
 ## Package Index
 
-- `0.1.1-v0.1-closeout` - v0.1 closeout verification 和 release docs。
-- `0.1.2-current-implementation-docs` - current implementation docs、API reference 和 test map。
+| Package | Type | Status | Purpose |
+|---|---|---|---|
+| `0.1.1-v0.1-closeout` | documentation-only | review complete | Inventory v0.1 capability, run verification, and update closeout docs. |
+| `0.1.2-current-implementation-docs` | documentation-only | review complete | Document current backend, frontend, API, and test implementation. |
+| `0.1.3-e2e-agent-acceptance` | mixed | review complete | Add post-closeout E2E tests and Agent smoke evidence validation without changing product behavior. |
+| `0.1.4-codex-test-skills` | mixed | review complete | Add project-local Codex skills and sync tooling for E2E and Agent smoke workflows. |
+| `0.1.5-project-agent-workflow-skills` | mixed | review complete | Add project-local workflow skills for iteration documentation and reviewed implementation gates. |
+| `0.1.6-current-code-test-case-expansion` | documentation-only | ready for review | Define current-code E2E、Agent smoke 和 Codex/test-runner autonomous scenario contracts before implementing or running more tests. |
 
 ## Required Reading
 
@@ -27,3 +33,11 @@ Agent memory 或 pseudo-self continuity。
 - `docs/frontend-implementation.md`
 - `docs/api-reference-v0.1.md`
 - `docs/testing/v0.1-test-map.md`
+- `docs/testing/results/2026-05-23-v0.1-closeout.md`
+- `docs/testing/results/2026-05-23-v0.1-e2e-agent-acceptance.md`
+- `docs/iterations/v0.1/0.1.1-v0.1-closeout/review.md`
+- `docs/iterations/v0.1/0.1.2-current-implementation-docs/review.md`
+- `docs/iterations/v0.1/0.1.3-e2e-agent-acceptance/review.md`
+- `docs/iterations/v0.1/0.1.4-codex-test-skills/review.md`
+- `docs/iterations/v0.1/0.1.5-project-agent-workflow-skills/review.md`
+- `docs/iterations/v0.1/0.1.6-current-code-test-case-expansion/review.md`
