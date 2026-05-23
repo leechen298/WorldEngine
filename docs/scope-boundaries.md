@@ -7,6 +7,9 @@ Status: authoritative boundary guide
 - WorldEngine must stay aligned with `docs/project-north-star.md`.
 - The first game surface must not redefine the engine as a village-game
   backend.
+- Tiny Village may be used early as a reference fixture or acceptance target,
+  but it must not become game-specific runtime logic before an iteration
+  contract explicitly allows that work.
 - Code work must be scoped to one iteration package.
 - Schema changes must be additive unless the current contract allows breaking
   changes.

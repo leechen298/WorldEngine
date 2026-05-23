@@ -20,6 +20,11 @@ legacy boundary.
 
 Non-goal: do not migrate RuntimeEngine to WorldCell or build village runtime.
 
+Tiny Village may appear before v0.7 as a reference fixture, schema validation
+target, loader test input, or projection acceptance target. It must not become
+game-specific runtime logic inside WorldEngine before the roadmap explicitly
+allows that work.
+
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 
 Goal: load validated WorldSpec data into runtime context without losing v0.1
