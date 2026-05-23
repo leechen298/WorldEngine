@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures
+.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures validate-codex-skills sync-codex-skills
 
 BACKEND_DIR := backend
 FRONTEND_DIR := frontend
@@ -17,6 +17,8 @@ help:
 	@echo "  make test-e2e       Run browser E2E tests"
 	@echo "  make validate-agent-smoke-result RESULT_DIR=<dir>"
 	@echo "  make validate-agent-smoke-fixtures"
+	@echo "  make validate-codex-skills"
+	@echo "  make sync-codex-skills"
 
 setup: setup-backend setup-frontend
 
@@ -65,3 +67,9 @@ validate-agent-smoke-fixtures: check-backend
 		echo "invalid-agent-verdict fixture failed as expected."; \
 	fi
 	@$(BACKEND_PYTHON) -m pytest tools/testing/test_validate_agent_smoke_result.py -q
+
+validate-codex-skills:
+	@python3 tools/testing/sync_codex_skills.py --dry-run
+
+sync-codex-skills:
+	@python3 tools/testing/sync_codex_skills.py
