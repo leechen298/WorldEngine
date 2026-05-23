@@ -15,7 +15,9 @@ expand v0.1 runtime, product, WorldSpec, agent, or village capabilities.
 - Add Make targets for E2E and agent smoke result validation.
 - Add `tools/testing/` scripts, fixtures, and tests for agent smoke validation.
 - Add `docs/testing/agent-smoke/` protocol documentation and result schema.
-- Ignore local `test-results/` artifacts.
+- Ignore local historical `test-results/` artifacts while allowing
+  `test-results/agent-smoke/latest/` to be committed as the latest raw audit
+  record.
 - Add durable verification summaries under `docs/testing/results/`.
 
 ## Forbidden Changes
@@ -37,10 +39,13 @@ expand v0.1 runtime, product, WorldSpec, agent, or village capabilities.
 4. PASS/FAIL must come from Playwright assertions or
    `tools/testing/validate_agent_smoke_result.py`.
 5. Agent smoke requires `result.json`, `transcript.md`, `console.log`,
-   `api-summary.json`, and at least one screenshot artifact.
+   `api-summary.json`, `operation-log.jsonl`, and at least one screenshot
+   artifact.
 6. Agent smoke `trace.zip` is optional in the first package.
 7. `verdict_source` must be `deterministic_checker`; `agent` is invalid.
-8. Codex summaries may cite evidence paths, but must not replace evidence.
+8. `operation-log.jsonl` may record only UI and CLI operations. Direct API
+   operations are invalid as Agent operations.
+9. Codex summaries may cite evidence paths, but must not replace evidence.
 
 ## Compatibility
 

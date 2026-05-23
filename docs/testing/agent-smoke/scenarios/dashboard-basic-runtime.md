@@ -9,16 +9,18 @@ deterministic and evidence-based.
 
 1. Start the backend and frontend dev services.
 2. Open the dashboard.
-3. Record `GET /health`.
-4. Record `GET /runtime/state` as `before_tick`.
+3. Record the current health and tick evidence through UI or CLI-observable
+   output.
+4. Record `before_tick` from the dashboard UI.
 5. Click the dashboard `Step` button.
-6. Record `GET /runtime/state` as `after_tick`.
-7. Save at least one screenshot.
-8. Save a transcript of actions and observations.
-9. Save console output or an explicit empty-console note.
-10. Save `api-summary.json`.
-11. Save `result.json` with `verdict_source: "deterministic_checker"`.
-12. Run `make validate-agent-smoke-result RESULT_DIR=<run-dir>`.
+6. Record `after_tick` from the dashboard UI.
+7. Save `operation-log.jsonl` with every UI and CLI operation.
+8. Save at least one screenshot.
+9. Save a transcript of actions and observations.
+10. Save console output or an explicit empty-console note.
+11. Save `api-summary.json`.
+12. Save `result.json` with `verdict_source: "deterministic_checker"`.
+13. Run `make validate-agent-smoke-result RESULT_DIR=<run-dir>`.
 
 ## Required Deterministic Check
 
@@ -26,6 +28,10 @@ deterministic and evidence-based.
 
 - `health_status` is `ok`.
 - `after_tick === before_tick + 1`.
+
+`operation-log.jsonl` must prove the agent operated through UI or CLI. Direct
+API operation entries are invalid; API state may appear only as deterministic
+checker evidence in `api-summary.json`.
 
 ## Invalid Verdicts
 

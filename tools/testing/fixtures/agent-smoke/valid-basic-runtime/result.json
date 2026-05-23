@@ -2,14 +2,14 @@
   "scenario": "dashboard-basic-runtime",
   "status": "pass",
   "verdict_source": "deterministic_checker",
-  "agent_summary": "Codex opened the dashboard, captured runtime tick values, clicked Step, and recorded deterministic API evidence.",
+  "agent_summary": "Codex opened the dashboard, read runtime tick values from the UI, clicked Step, and recorded deterministic checker evidence.",
   "commands": [
     {
       "command": "make dev",
       "exit_code": 0
     },
     {
-      "command": "open dashboard and click Step",
+      "command": "make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest",
       "exit_code": 0
     }
   ],
@@ -17,6 +17,7 @@
     "transcript": "transcript.md",
     "console_log": "console.log",
     "api_summary": "api-summary.json",
+    "operation_log": "operation-log.jsonl",
     "screenshots": [
       "screenshots/dashboard-basic-runtime.svg"
     ]

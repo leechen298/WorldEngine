@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 
@@ -78,3 +79,52 @@ def test_assertion_without_evidence_fails(tmp_path: Path) -> None:
     errors = validate_result_dir(result_dir)
 
     assert any("evidence" in error for error in errors)
+
+
+def test_missing_operation_log_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "missing-operation-log"
+    shutil.copytree(FIXTURES_DIR / "valid-basic-runtime", result_dir)
+    result_json = result_dir / "result.json"
+    result = json.loads(result_json.read_text())
+    result["artifacts"]["operation_log"] = "operation-log.jsonl"
+    result_json.write_text(json.dumps(result, indent=2) + "\n")
+    (result_dir / "operation-log.jsonl").unlink()
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("operation_log" in error or "operation-log.jsonl" in error for error in errors)
+
+
+def test_empty_operation_log_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "empty-operation-log"
+    shutil.copytree(FIXTURES_DIR / "valid-basic-runtime", result_dir)
+    (result_dir / "operation-log.jsonl").write_text("")
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("operation-log.jsonl" in error and "at least one" in error for error in errors)
+
+
+def test_operation_log_rejects_direct_api_operations(tmp_path: Path) -> None:
+    result_dir = tmp_path / "api-operation"
+    shutil.copytree(FIXTURES_DIR / "valid-basic-runtime", result_dir)
+    result_json = result_dir / "result.json"
+    result = json.loads(result_json.read_text())
+    result["artifacts"]["operation_log"] = "operation-log.jsonl"
+    result_json.write_text(json.dumps(result, indent=2) + "\n")
+    (result_dir / "operation-log.jsonl").write_text(
+        json.dumps(
+            {
+                "seq": 1,
+                "type": "api",
+                "method": "GET",
+                "target": "/runtime/state",
+                "summary": "Direct API reads are not allowed as agent operations.",
+            }
+        )
+        + "\n"
+    )
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("direct API" in error or "type must be ui or cli" in error for error in errors)

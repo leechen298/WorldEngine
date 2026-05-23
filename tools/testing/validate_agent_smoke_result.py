@@ -60,6 +60,7 @@ def _validate_artifacts(result_dir: Path, result: dict[str, Any], errors: list[s
     _validate_artifact_path(result_dir, "transcript", artifacts.get("transcript"), errors)
     _validate_artifact_path(result_dir, "console_log", artifacts.get("console_log"), errors)
     _validate_artifact_path(result_dir, "api_summary", artifacts.get("api_summary"), errors)
+    _validate_artifact_path(result_dir, "operation_log", artifacts.get("operation_log"), errors)
 
     screenshots = artifacts.get("screenshots")
     if not isinstance(screenshots, list) or not screenshots:
@@ -68,6 +69,65 @@ def _validate_artifacts(result_dir: Path, result: dict[str, Any], errors: list[s
 
     for index, screenshot in enumerate(screenshots):
         _validate_artifact_path(result_dir, f"screenshots[{index}]", screenshot, errors)
+
+
+def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: list[str]) -> None:
+    artifacts = result.get("artifacts")
+    if not isinstance(artifacts, dict):
+        return
+    operation_log_path = artifacts.get("operation_log")
+    if not isinstance(operation_log_path, str) or not operation_log_path.strip():
+        return
+
+    path = result_dir / operation_log_path
+    try:
+        lines = path.read_text().splitlines()
+    except FileNotFoundError:
+        return
+
+    non_empty_lines = [line for line in lines if line.strip()]
+    if not non_empty_lines:
+        errors.append("operation-log.jsonl must contain at least one operation record")
+        return
+
+    saw_ui_operation = False
+    for index, line in enumerate(non_empty_lines, start=1):
+        try:
+            operation = json.loads(line)
+        except json.JSONDecodeError as exc:
+            errors.append(f"operation-log.jsonl line {index} must be valid JSON: {exc}")
+            continue
+
+        if not isinstance(operation, dict):
+            errors.append(f"operation-log.jsonl line {index} must be an object")
+            continue
+
+        operation_type = operation.get("type")
+        if operation_type not in {"ui", "cli"}:
+            errors.append(
+                f"operation-log.jsonl line {index} type must be ui or cli; "
+                f"direct API operations are not allowed"
+            )
+            continue
+
+        if not isinstance(operation.get("seq"), int):
+            errors.append(f"operation-log.jsonl line {index}.seq must be an integer")
+
+        if operation_type == "ui":
+            saw_ui_operation = True
+            if not isinstance(operation.get("target"), str) or not operation["target"].strip():
+                errors.append(f"operation-log.jsonl line {index}.target must be a non-empty string")
+            if not isinstance(operation.get("action"), str) or not operation["action"].strip():
+                errors.append(f"operation-log.jsonl line {index}.action must be a non-empty string")
+
+        if operation_type == "cli":
+            if not isinstance(operation.get("command"), str) or not operation["command"].strip():
+                errors.append(f"operation-log.jsonl line {index}.command must be a non-empty string")
+            if not isinstance(operation.get("exit_code"), int):
+                errors.append(f"operation-log.jsonl line {index}.exit_code must be an integer")
+
+    if result.get("scenario") == "dashboard-basic-runtime" and not saw_ui_operation:
+        errors.append("operation-log.jsonl must include at least one ui operation for dashboard-basic-runtime")
 
 
 def _validate_commands(result: dict[str, Any], errors: list[str]) -> None:
@@ -165,6 +225,7 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
     _validate_commands(raw_result, errors)
     _validate_assertions(raw_result, errors)
     _validate_artifacts(result_dir, raw_result, errors)
+    _validate_operation_log(result_dir, raw_result, errors)
     _validate_api_summary(result_dir, raw_result, errors)
 
     return errors

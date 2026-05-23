@@ -6,7 +6,7 @@ Status: review complete
 
 | File | Change |
 |---|---|
-| `.gitignore` | Ignored local `test-results/` artifacts. |
+| `.gitignore` | Ignored historical local `test-results/` artifacts while allowing `test-results/agent-smoke/latest/`. |
 | `Makefile` | Added E2E and Agent smoke validation targets. |
 | `frontend/package.json`, `frontend/pnpm-lock.yaml` | Added `@playwright/test` and `test:e2e`. |
 | `frontend/playwright.config.ts` | Added Playwright browser E2E setup. |
@@ -15,6 +15,7 @@ Status: review complete
 | `frontend/vite.config.ts` | Excluded Playwright E2E specs from Vitest collection. |
 | `tools/testing/*` | Added Agent smoke result validator, tests, and fixtures. |
 | `docs/testing/agent-smoke/*` | Added Agent smoke protocol, scenarios, and result schema. |
+| `test-results/agent-smoke/latest/README.md` | Added a tracked placeholder for the latest pushable raw Agent smoke record. |
 | `docs/testing/results/2026-05-23-v0.1-e2e-agent-acceptance.md` | Added durable verification summary. |
 | `docs/iterations/v0.1/*` | Added v0.1.3 package and index references. |
 
@@ -34,6 +35,10 @@ make validate-agent-smoke-fixtures
 cd backend && .venv/bin/python -m pytest app/tests
 cd frontend && pnpm test
 cd frontend && pnpm build
+backend/.venv/bin/python -m pytest tools/testing/test_validate_agent_smoke_result.py -q
+make validate-agent-smoke-fixtures
+make validate-agent-smoke-result RESULT_DIR=tools/testing/fixtures/agent-smoke/valid-basic-runtime
+git diff --check
 ```
 
 ## Test Results
@@ -57,6 +62,17 @@ cd frontend && pnpm build
 - Frontend tests: `5 passed (5)` files, `24 passed (24)` tests.
 - Frontend build: passed with existing Vite chunk-size warning for a
   `1,514.38 kB` JS bundle.
+- Follow-up validator TDD red run for operation-log enforcement:
+  `2 failed, 6 passed`; failures proved missing `operation-log.jsonl` and
+  direct API operation entries were not yet rejected.
+- Follow-up validator tests after operation-log implementation:
+  `9 passed in 0.02s`.
+- Follow-up `make validate-agent-smoke-fixtures`: passed; valid fixture passed,
+  invalid `verdict_source=agent` fixture failed as expected, validator tests
+  passed.
+- Follow-up `make validate-agent-smoke-result RESULT_DIR=tools/testing/fixtures/agent-smoke/valid-basic-runtime`:
+  passed.
+- Follow-up `git diff --check`: passed.
 
 Development failures fixed before final verification:
 
@@ -74,6 +90,8 @@ legacy `backend/worldengine/` code changed.
 
 Dashboard `data-test` attributes are non-user-visible test selectors. The new
 Playwright setup and Agent smoke checker only add verification capabilities.
+The operation-log refinement changes only evidence requirements and checker
+validation; it does not change runtime behavior.
 
 ## Scope Review
 

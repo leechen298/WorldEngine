@@ -39,5 +39,7 @@ Agent-assisted smoke tests must follow `docs/testing/agent-smoke/`. Codex or any
 agent may execute and observe, but PASS/FAIL must come from deterministic
 Playwright assertions or `tools/testing/validate_agent_smoke_result.py`.
 
-Raw Agent smoke artifacts belong under ignored `test-results/agent-smoke/`.
-Durable summaries belong under `docs/testing/results/`.
+Historical raw Agent smoke artifacts belong under ignored
+`test-results/agent-smoke/<timestamp>/`. The latest reviewed raw record may be
+committed under `test-results/agent-smoke/latest/` for audit. Durable summaries
+belong under `docs/testing/results/`.

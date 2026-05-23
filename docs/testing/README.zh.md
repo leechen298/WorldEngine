@@ -31,3 +31,13 @@ YYYY-MM-DD-<version-package>-<slug>.md
 - output summary。
 - failures 或 skipped checks。
 - 回链到 iteration package。
+
+## Agent Smoke
+
+Agent-assisted smoke tests 必须遵循 `docs/testing/agent-smoke/`。Codex 或其他 agent
+可以执行和观察，但 PASS/FAIL 必须来自 deterministic Playwright assertions 或
+`tools/testing/validate_agent_smoke_result.py`。
+
+历史 raw Agent smoke artifacts 应放在 ignored `test-results/agent-smoke/<timestamp>/`
+下。最新一次已 review 的原始记录可以提交到 `test-results/agent-smoke/latest/`，用于审计。
+Durable summaries 应放在 `docs/testing/results/` 下。

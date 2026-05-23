@@ -65,11 +65,25 @@ test-results/agent-smoke/<timestamp>/
 ├── transcript.md
 ├── console.log
 ├── api-summary.json
+├── operation-log.jsonl
 └── screenshots/
 ```
 
+The latest reviewed raw evidence may be mirrored into
+`test-results/agent-smoke/latest/` and committed. Historical timestamped run
+directories remain ignored.
+
 `result.json` must name `verdict_source: "deterministic_checker"`. If the
 verdict source is `agent`, validation fails.
+
+`operation-log.jsonl` is newline-delimited JSON and records the Agent's raw
+operations. Allowed operation types are:
+
+- `ui`: requires `seq`, `target`, and `action`.
+- `cli`: requires `seq`, `command`, and `exit_code`.
+
+Direct API operations are invalid as Agent operations. API state may be
+preserved in `api-summary.json` only as deterministic checker or CLI evidence.
 
 ## Validator
 
@@ -78,6 +92,7 @@ checks:
 
 - required files exist.
 - command records exist.
+- operation log exists, is non-empty, and contains only UI or CLI operations.
 - assertions exist and include evidence.
 - `verdict_source` is deterministic.
 - `dashboard-basic-runtime` API summary proves tick increment.

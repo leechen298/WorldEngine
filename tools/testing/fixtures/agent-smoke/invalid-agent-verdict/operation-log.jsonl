@@ -1,0 +1,2 @@
+{"seq":1,"type":"ui","target":"dashboard","action":"open","summary":"Opened the WorldEngine dashboard."}
+{"seq":2,"type":"ui","target":"runtime-step-button","action":"click","summary":"Clicked the Step button."}

@@ -46,7 +46,7 @@
     },
     "artifacts": {
       "type": "object",
-      "required": ["transcript", "console_log", "api_summary", "screenshots"],
+      "required": ["transcript", "console_log", "api_summary", "operation_log", "screenshots"],
       "properties": {
         "transcript": {
           "type": "string",
@@ -57,6 +57,10 @@
           "minLength": 1
         },
         "api_summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation_log": {
           "type": "string",
           "minLength": 1
         },

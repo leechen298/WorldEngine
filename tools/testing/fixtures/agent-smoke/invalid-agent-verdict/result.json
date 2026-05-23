@@ -13,6 +13,7 @@
     "transcript": "transcript.md",
     "console_log": "console.log",
     "api_summary": "api-summary.json",
+    "operation_log": "operation-log.jsonl",
     "screenshots": [
       "screenshots/dashboard-basic-runtime.svg"
     ]

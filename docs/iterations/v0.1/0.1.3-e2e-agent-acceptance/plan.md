@@ -7,7 +7,9 @@
 5. Add Playwright dependency, config, and E2E tests.
 6. Add stable `data-test` selectors to dashboard components.
 7. Add Make targets for E2E and agent smoke validation.
-8. Add `test-results/` to `.gitignore`.
+8. Add `test-results/` ignore rules with a tracked
+   `test-results/agent-smoke/latest/` exception for the latest raw audit
+   record.
 9. Add Agent smoke documentation and result schema.
 10. Update v0.1 iteration index and plan docs.
 11. Run required verification commands.

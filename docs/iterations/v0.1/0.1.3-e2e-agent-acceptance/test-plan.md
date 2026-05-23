@@ -44,7 +44,8 @@ cd frontend && pnpm build
 - valid fixture passes.
 - invalid `verdict_source = agent` fixture fails as expected.
 - validator unit tests cover missing artifacts, empty commands, empty
-  assertions, and assertion evidence requirements.
+  assertions, assertion evidence requirements, missing/empty operation logs,
+  and direct API operation rejection.
 
 ## Reporting Rule
 
@@ -52,3 +53,5 @@ Do not claim live Agent smoke passed unless a real result directory exists and
 `make validate-agent-smoke-result RESULT_DIR=<dir>` exits `0`.
 
 If only fixtures are run, report only protocol/schema/checker verification.
+When a real run is retained for review, mirror its latest raw evidence to
+`test-results/agent-smoke/latest/` before commit.
