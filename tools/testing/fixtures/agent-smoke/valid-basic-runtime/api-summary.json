@@ -1,0 +1,6 @@
+{
+  "scenario": "dashboard-basic-runtime",
+  "health_status": "ok",
+  "before_tick": 4,
+  "after_tick": 5
+}

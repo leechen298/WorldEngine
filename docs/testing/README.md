@@ -32,3 +32,12 @@ Each result file should include:
 - output summary.
 - failures or skipped checks.
 - link back to the iteration package.
+
+## Agent Smoke
+
+Agent-assisted smoke tests must follow `docs/testing/agent-smoke/`. Codex or any
+agent may execute and observe, but PASS/FAIL must come from deterministic
+Playwright assertions or `tools/testing/validate_agent_smoke_result.py`.
+
+Raw Agent smoke artifacts belong under ignored `test-results/agent-smoke/`.
+Durable summaries belong under `docs/testing/results/`.

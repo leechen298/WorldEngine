@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend
+.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures
 
 BACKEND_DIR := backend
 FRONTEND_DIR := frontend
@@ -14,6 +14,9 @@ help:
 	@echo "  make dev            Start backend and frontend together"
 	@echo "  make dev-backend    Start only the FastAPI backend"
 	@echo "  make dev-frontend   Start only the Vite frontend"
+	@echo "  make test-e2e       Run browser E2E tests"
+	@echo "  make validate-agent-smoke-result RESULT_DIR=<dir>"
+	@echo "  make validate-agent-smoke-fixtures"
 
 setup: setup-backend setup-frontend
 
@@ -43,3 +46,22 @@ dev-backend:
 dev-frontend:
 	@$(MAKE) check-frontend
 	@cd "$(FRONTEND_DIR)" && pnpm dev
+
+test-e2e: check-backend check-frontend
+	@cd "$(FRONTEND_DIR)" && pnpm exec playwright test
+
+validate-agent-smoke-result: check-backend
+	@test -n "$(RESULT_DIR)" || (echo "Missing RESULT_DIR. Usage: make validate-agent-smoke-result RESULT_DIR=<dir>" && exit 2)
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py "$(RESULT_DIR)"
+
+validate-agent-smoke-fixtures: check-backend
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/valid-basic-runtime
+	@if $(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/invalid-agent-verdict >/tmp/worldengine-invalid-agent-smoke.out 2>&1; then \
+		cat /tmp/worldengine-invalid-agent-smoke.out; \
+		echo "Expected invalid-agent-verdict fixture to fail, but it passed."; \
+		exit 1; \
+	else \
+		cat /tmp/worldengine-invalid-agent-smoke.out; \
+		echo "invalid-agent-verdict fixture failed as expected."; \
+	fi
+	@$(BACKEND_PYTHON) -m pytest tools/testing/test_validate_agent_smoke_result.py -q

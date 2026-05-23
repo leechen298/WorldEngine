@@ -1,7 +1,7 @@
 <template>
   <a-card title="Runtime Controls">
     <a-space direction="vertical" :size="12">
-      <a-button type="primary" :loading="stepping" @click="handleStep">
+      <a-button data-test="runtime-step-button" type="primary" :loading="stepping" @click="handleStep">
         {{ stepping ? "Stepping..." : "Step" }}
       </a-button>
       <a-alert v-if="error" type="error" show-icon :message="error" />

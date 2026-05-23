@@ -73,6 +73,20 @@ pnpm test
 pnpm build
 ```
 
+Browser E2E tests use Playwright. Install the Chromium browser before the first
+local E2E run:
+
+```bash
+cd frontend
+pnpm exec playwright install chromium
+```
+
+Then run from the repository root:
+
+```bash
+make test-e2e
+```
+
 Latest recorded closeout results:
 
 - unit tests: `24 passed`.

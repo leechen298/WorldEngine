@@ -17,7 +17,7 @@
               <a-alert v-if="error" type="error" show-icon :message="error" />
               <a-descriptions v-else :column="1" size="small" bordered>
                 <a-descriptions-item label="Status">
-                  {{ health?.status ?? "-" }}
+                  <span data-test="backend-health-status">{{ health?.status ?? "-" }}</span>
                 </a-descriptions-item>
                 <a-descriptions-item label="Service">
                   {{ health?.service ?? "-" }}
@@ -33,7 +33,7 @@
               <a-alert v-if="runtimeError" type="error" show-icon :message="runtimeError" />
               <a-descriptions v-else :column="1" size="small" bordered>
                 <a-descriptions-item label="tick_id">
-                  {{ runtime?.tick_id ?? "-" }}
+                  <span data-test="runtime-tick-id">{{ runtime?.tick_id ?? "-" }}</span>
                 </a-descriptions-item>
                 <a-descriptions-item label="world_time_seconds">
                   {{ runtime?.world_time_seconds ?? "-" }}

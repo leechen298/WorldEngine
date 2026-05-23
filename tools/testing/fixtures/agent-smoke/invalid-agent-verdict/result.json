@@ -1,0 +1,32 @@
+{
+  "scenario": "dashboard-basic-runtime",
+  "status": "pass",
+  "verdict_source": "agent",
+  "agent_summary": "This fixture must fail because the agent tried to provide the final verdict.",
+  "commands": [
+    {
+      "command": "open dashboard and click Step",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": {
+    "transcript": "transcript.md",
+    "console_log": "console.log",
+    "api_summary": "api-summary.json",
+    "screenshots": [
+      "screenshots/dashboard-basic-runtime.svg"
+    ]
+  },
+  "assertions": [
+    {
+      "name": "tick increments after step",
+      "status": "pass",
+      "evidence": {
+        "source": "api-summary.json",
+        "before_tick": 4,
+        "after_tick": 5
+      }
+    }
+  ],
+  "failures": []
+}

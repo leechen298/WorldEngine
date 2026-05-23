@@ -1,5 +1,5 @@
 <template>
-  <a-card title="World Panel">
+  <a-card data-test="world-panel" title="World Panel">
     <a-space direction="vertical" :size="16" class="world-stack">
       <a-typography-paragraph class="world-help">
         The JSON above shows the current world parameters. Use a dot path below to update a
@@ -15,15 +15,15 @@
 
       <a-spin :spinning="loading">
         <a-alert v-if="error" type="error" show-icon :message="error" />
-        <pre v-else class="world-params">{{ formattedParams }}</pre>
+        <pre v-else data-test="world-params-json" class="world-params">{{ formattedParams }}</pre>
       </a-spin>
 
       <a-form layout="vertical" class="world-param-form">
         <a-form-item label="Path">
-          <a-input v-model:value="path" :placeholder="pathPlaceholder" />
+          <a-input data-test="world-params-path-input" v-model:value="path" :placeholder="pathPlaceholder" />
         </a-form-item>
         <a-form-item label="Type">
-          <a-select v-model:value="valueType" :options="typeOptions" />
+          <a-select data-test="world-params-type-select" v-model:value="valueType" :options="typeOptions" />
         </a-form-item>
         <a-form-item label="Value">
           <a-select
@@ -33,6 +33,7 @@
           />
           <a-input
             v-else
+            data-test="world-params-value-input"
             v-model:value="rawValue"
             :placeholder="valuePlaceholder"
           />
@@ -43,13 +44,14 @@
         <a-space direction="vertical" :size="12">
           <a-button
             type="primary"
+            data-test="world-params-apply-button"
             :loading="applying"
             :disabled="!path.trim()"
             @click="handleApply"
           >
             {{ applying ? "Applying..." : "Apply" }}
           </a-button>
-          <a-alert v-if="applyError" type="error" show-icon :message="applyError">
+          <a-alert v-if="applyError" data-test="world-params-error" type="error" show-icon :message="applyError">
             <template v-if="applyErrorDetails.length" #description>
               <ul class="apply-error-list">
                 <li v-for="(detail, i) in applyErrorDetails" :key="i">{{ detail }}</li>

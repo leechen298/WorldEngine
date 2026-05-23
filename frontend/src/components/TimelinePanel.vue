@@ -1,5 +1,5 @@
 <template>
-  <a-card title="Timeline Panel">
+  <a-card data-test="timeline-panel" title="Timeline Panel">
     <template #extra>
       <label class="timeline-page-size-control">
         <span>Page size</span>
