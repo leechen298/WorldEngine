@@ -1,6 +1,6 @@
 # 0.1.4 Codex Test Skills
 
-Status: ready for implementation
+Status: review complete
 
 ## Purpose
 
