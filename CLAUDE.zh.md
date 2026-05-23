@@ -51,6 +51,19 @@ Documentation-only iteration 只有在不准备 runtime、schema、API、UI 或 
 rules、version semantics、product boundaries、concepts、evidence rules 或
 templates，仍然必须包含 `contract.md`。
 
+Iteration work 必须分成两个 gate：
+
+1. Documentation stage：先起草或更新当前 iteration package 所需文档。除非当前请求
+   明确是 documentation-only 且文件属于文档 scope，否则不要改 runtime、schema、
+   API、UI、test 或 fixture 文件。
+2. Implementation stage：只有 iteration package 通过 review 并批准后才能开始。把已
+   批准的文档视为 work contract。
+
+不要一边起草或修订 iteration 文档，一边实现对应的 runtime/code changes。文档必须先
+单独可 review，之后才能进入代码实现。如果实现过程中发现 design gap，先停止实现，
+更新相关文档；只有更新后的 contract、design、test plan 或 execution plan 通过 review
+后，才能继续。
+
 实现代码时，先按顺序阅读当前 iteration 文档并遵循它们：
 
 1. `intent.md`
@@ -70,7 +83,8 @@ contract/design 更新并通过 review 后，才能继续。
 
 2. No implementation without iteration docs.
    代码或混合型 iteration 必须有 intent、contract、technical design、test plan、
-   execution plan 和 review evidence。
+   execution plan 和 review evidence。这些文档是实现前必须通过 review 的 gate，
+   不是边写代码边补的 paperwork。
 
 3. Current package only.
    只实现当前 active iteration package。不要顺手实现 adjacent future versions 或

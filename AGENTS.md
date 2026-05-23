@@ -51,6 +51,21 @@ only when they do not prepare runtime, schema, API, UI, or test implementation.
 They must still include `contract.md` if they change process rules, version
 semantics, product boundaries, concepts, evidence rules, or templates.
 
+Iteration work is a two-stage gate:
+
+1. Documentation stage: draft or update the required iteration package
+   documents first. Keep runtime, schema, API, UI, test, and fixture files
+   untouched unless the active request is explicitly documentation-only and the
+   file is part of that documentation scope.
+2. Implementation stage: start only after the iteration package has been
+   reviewed and approved. Treat the approved documents as the work contract.
+
+Do not draft or revise iteration documents and implement their runtime/code
+changes side by side. Documentation must be separately reviewable before code
+work starts. If implementation reveals a design gap, stop implementation,
+update the relevant documents, and resume only after the updated contract,
+design, test plan, or execution plan is reviewed.
+
 When implementing code, read the current iteration documents first and follow:
 
 1. `intent.md`
@@ -71,7 +86,8 @@ reviewed.
 
 2. No implementation without iteration docs.
    Code or mixed iterations require intent, contract, technical design, test
-   plan, execution plan, and review evidence.
+   plan, execution plan, and review evidence. These documents are a reviewed
+   gate before implementation, not paperwork to create while coding.
 
 3. Current package only.
    Implement only the active iteration package. Do not implement adjacent
