@@ -46,10 +46,13 @@ make test-e2e
 backend/.venv/bin/python -m pytest tools/testing/test_validate_agent_smoke_result.py -q
 make validate-agent-smoke-fixtures
 make validate-codex-skills
-git diff --name-only | rg '^(backend/worldengine/)'
+if git diff --name-only | rg '^(backend/worldengine/)'; then
+  echo "Unexpected backend/worldengine change"
+  exit 1
+fi
 ```
 
-Expected result for the final command: no output.
+Expected result for the final block: no output.
 
 ## Acceptance Criteria
 
