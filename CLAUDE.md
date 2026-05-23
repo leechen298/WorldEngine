@@ -1,6 +1,6 @@
-# AGENTS.md
+# CLAUDE.md
 
-Guidance for Codex and other AI coding agents when working in this repository.
+Guidance for Claude and other AI coding agents when working in this repository.
 
 ## Project Overview
 
@@ -17,7 +17,7 @@ Read these documents before proposing or implementing project-direction work:
 - `docs/roadmap.md`
 - `docs/iterations/README.md`
 
-Chinese mirror: `AGENTS.zh.md`.
+Chinese mirror: `CLAUDE.zh.md`.
 
 The first village-like game or electronic-pet surface is only the first
 user-facing projection of WorldEngine. It is not the engine goal and must not

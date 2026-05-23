@@ -2,6 +2,8 @@
 
 Status: v0.1 scaffold complete, v0.2 planned.
 
+Chinese mirror: `README.zh.md`.
+
 WorldEngine is a recursive world generation and runtime engine. The current
 v0.1 branch is an experimental monorepo scaffold that proves the first runtime,
 event, params, archive, agent-assist, and dashboard surfaces. It is not yet a
