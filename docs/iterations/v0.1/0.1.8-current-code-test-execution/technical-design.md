@@ -70,8 +70,12 @@ Between those commands, Codex operates the dashboard UI to:
 5. capture screenshot evidence.
 
 The operation log must include the scenario-relevant UI targets enforced by
-the validator. The result directory must include the required artifacts and
-then pass:
+the validator. It must also include `cli` entries for helper baseline, helper
+collect, and validator execution. `result.json.commands` must record the same
+three commands with `exit_code: 0`, so review can audit how
+`api-summary.json` was generated and validated.
+
+The result directory must include the required artifacts and then pass:
 
 ```bash
 make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest
@@ -94,13 +98,13 @@ backend code.
 Add a Playwright test in `frontend/e2e/dashboard.spec.ts` that:
 
 1. opens the dashboard.
-2. verifies the MemoryPanel starts in empty or non-summary state as
-   appropriate for the fresh test server.
+2. records the latest summary, if any, before stepping.
 3. steps runtime enough times to cross the low summary interval.
 4. polls `/world/summaries?limit=1&order=desc` inside the Playwright test.
-5. asserts the latest summary has a valid tick range, total events, and
+5. asserts a newer summary is created after the required steps.
+6. asserts the latest summary has a valid tick range, total events, and
    `tick.advanced` type count.
-6. asserts `memory-summary-text` and `memory-summary-stats` show the summary in
+7. asserts `memory-summary-text` and `memory-summary-stats` show the summary in
    the dashboard.
 
 The test should reuse existing E2E helper patterns in `dashboard.spec.ts` for

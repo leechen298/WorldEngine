@@ -110,6 +110,18 @@ The operation log must contain UI targets required by the 0.1.7 validator:
 - `world-params-apply-button`
 - `runtime-step-button`
 
+The live run evidence must record these CLI commands in
+`result.json.commands` and as `cli` entries in `operation-log.jsonl`:
+
+- `tools/testing/agent_smoke_evidence.py baseline ...`
+- `tools/testing/agent_smoke_evidence.py collect --scenario
+  dashboard-params-flow ...`
+- `make validate-agent-smoke-result
+  RESULT_DIR=test-results/agent-smoke/latest`
+
+Each recorded CLI command must have `exit_code: 0`. These command records are
+the audit trail for who generated or validated the checker artifact.
+
 `result.json` must use:
 
 ```json
@@ -144,6 +156,10 @@ The E2E should use MemoryPanel selectors:
 
 The E2E may use API reads inside the Playwright test to prove summary creation
 and stats. It must not depend on Codex narration.
+
+The E2E must not rely on global initial state being empty. It should record the
+latest summary before stepping, then assert that a newer summary is created
+after the required steps and rendered in the MemoryPanel.
 
 ## Status Update Rules
 

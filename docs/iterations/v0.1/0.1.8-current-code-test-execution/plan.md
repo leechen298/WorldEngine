@@ -45,24 +45,30 @@ Do not touch:
    `test-results/agent-smoke/latest/`.
 3. Start backend and frontend services.
 4. Run the evidence helper `baseline` command before UI actions.
-5. Operate the dashboard UI for `dashboard-params-flow`, recording
+5. Record the helper `baseline` command in both `result.json.commands` and
+   `operation-log.jsonl` as a `cli` operation with `exit_code: 0`.
+6. Operate the dashboard UI for `dashboard-params-flow`, recording
    `operation-log.jsonl`, `transcript.md`, `console.log`, and screenshot
    evidence.
-6. Run the evidence helper `collect --scenario dashboard-params-flow`.
-7. Write `result.json` with `verdict_source: deterministic_checker`.
-8. Validate the run with `make validate-agent-smoke-result
+7. Run the evidence helper `collect --scenario dashboard-params-flow`.
+8. Record the helper `collect` command in both `result.json.commands` and
+   `operation-log.jsonl` as a `cli` operation with `exit_code: 0`.
+9. Write `result.json` with `verdict_source: deterministic_checker`.
+10. Validate the run with `make validate-agent-smoke-result
    RESULT_DIR=test-results/agent-smoke/latest`.
-9. If validation fails, stop and record the blocker in `review.md`; do not
+11. Record the validator command in both `result.json.commands` and
+    `operation-log.jsonl` as a `cli` operation with `exit_code: 0`.
+12. If validation fails, stop and record the blocker in `review.md`; do not
    start 0.1.8-B.
-10. If validation succeeds, update Agent smoke docs to
+13. If validation succeeds, update Agent smoke docs to
     `dashboard-params-flow: live-smoke-recorded`.
-11. Implement 0.1.8-B by adding low archive interval env vars to the
+14. Implement 0.1.8-B by adding low archive interval env vars to the
     Playwright backend web server only.
-12. Add `dashboard-archive-summary` to `frontend/e2e/dashboard.spec.ts`.
-13. Run the commands in `test-plan.md`.
-14. If E2E passes, update E2E docs and test maps to mark
+15. Add `dashboard-archive-summary` to `frontend/e2e/dashboard.spec.ts`.
+16. Run the commands in `test-plan.md`.
+17. If E2E passes, update E2E docs and test maps to mark
     `dashboard-archive-summary` as implemented.
-15. Update `review.md` with actual changed files, commands, results,
+18. Update `review.md` with actual changed files, commands, results,
     compatibility review, scope review, and unresolved findings.
 
 ## Verification

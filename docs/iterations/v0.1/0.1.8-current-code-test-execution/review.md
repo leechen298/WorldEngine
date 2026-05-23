@@ -8,11 +8,11 @@ Status: documentation-stage ready for review
 |---|---|
 | `docs/iterations/v0.1/0.1.8-current-code-test-execution/README.md` | Added package overview, status, documents, checklist, and boundary. |
 | `docs/iterations/v0.1/0.1.8-current-code-test-execution/intent.md` | Defined the live execution and archive E2E gaps, goals, non-goals, timing, and north-star alignment. |
-| `docs/iterations/v0.1/0.1.8-current-code-test-execution/contract.md` | Defined live Agent smoke, helper evidence, archive E2E, allowed changes, forbidden changes, and status update rules. |
-| `docs/iterations/v0.1/0.1.8-current-code-test-execution/technical-design.md` | Documented current state, 0.1.8-A live smoke design, 0.1.8-B archive E2E design, compatibility, and risks. |
-| `docs/iterations/v0.1/0.1.8-current-code-test-execution/test-plan.md` | Added required live evidence, E2E, focused frontend, regression, and scope-check commands. |
-| `docs/iterations/v0.1/0.1.8-current-code-test-execution/plan.md` | Added file boundaries, ordered implementation steps, and verification handoff. |
-| `docs/iterations/v0.1/0.1.8-current-code-test-execution/review.md` | Recorded documentation-stage evidence. |
+| `docs/iterations/v0.1/0.1.8-current-code-test-execution/contract.md` | Defined live Agent smoke, helper evidence, archive E2E, allowed changes, forbidden changes, status update rules, helper/validator CLI evidence records, and before/after summary rules. |
+| `docs/iterations/v0.1/0.1.8-current-code-test-execution/technical-design.md` | Documented current state, 0.1.8-A live smoke design, helper/validator command audit trail, 0.1.8-B archive E2E design, compatibility, and risks. |
+| `docs/iterations/v0.1/0.1.8-current-code-test-execution/test-plan.md` | Added required live evidence, helper/validator command acceptance criteria, E2E, focused frontend, regression, and scope-check commands. |
+| `docs/iterations/v0.1/0.1.8-current-code-test-execution/plan.md` | Added file boundaries, ordered implementation steps, CLI evidence recording steps, and verification handoff. |
+| `docs/iterations/v0.1/0.1.8-current-code-test-execution/review.md` | Recorded documentation-stage and review-feedback evidence. |
 | `docs/iterations/v0.1/README.md` | Added 0.1.8 package index entry. |
 | `docs/iterations/v0.1/README.zh.md` | Synced the Chinese 0.1.8 package index entry. |
 | `docs/iterations/v0.1/v0.1-plan.md` | Added 0.1.8 package planning section. |
@@ -30,6 +30,7 @@ rg -n "dashboard-params-flow|dashboard-archive-summary|agent_smoke_evidence|api-
 git diff --name-only | rg -v '^(docs/iterations/v0\\.1/)'
 git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'
 git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'
+rg -n "result.json.commands|helper baseline|helper collect|validator command|newer summary|initial state being empty" docs/iterations/v0.1/0.1.8-current-code-test-execution
 ```
 
 Implementation-stage commands are listed in `test-plan.md` and have not been
@@ -52,6 +53,10 @@ run.
   expected no output; exit `1` with no output.
 - `git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'`:
   expected no output; exit `1` with no output.
+- Review-feedback evidence-rule scan for
+  `result.json.commands|helper baseline|helper collect|validator command|newer summary|initial state being empty`:
+  exit `0`; found the helper/validator command audit rules and before/after
+  summary rule in the 0.1.8 package docs.
 
 No backend tests, frontend tests, E2E tests, live Agent smoke, API curl smoke,
 or Codex/test-runner autonomous tests were run or claimed by this documentation

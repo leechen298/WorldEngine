@@ -75,6 +75,10 @@ Expected result for the final block: no output.
 - Live `api-summary.json` is generated or verified by project tooling.
 - `operation-log.jsonl` includes the required `dashboard-params-flow` UI
   targets and no direct API operation records.
+- `operation-log.jsonl` includes `cli` entries for helper baseline, helper
+  collect, and validator execution with `exit_code: 0`.
+- `result.json.commands` includes helper baseline, helper collect, and
+  validator commands with `exit_code: 0`.
 - `make validate-agent-smoke-result
   RESULT_DIR=test-results/agent-smoke/latest` exits `0`.
 - `dashboard-params-flow` status is updated to `live-smoke-recorded` only
@@ -83,6 +87,9 @@ Expected result for the final block: no output.
   recorded.
 - `dashboard-archive-summary` E2E uses Playwright assertions and MemoryPanel
   selectors.
+- `dashboard-archive-summary` E2E records the latest summary before stepping
+  and asserts that a newer summary is created; it must not rely on the initial
+  summary state being empty.
 - Low archive interval env vars are scoped to the Playwright backend web
   server only.
 - `make test-e2e` exits `0`.
