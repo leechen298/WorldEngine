@@ -212,3 +212,6 @@ __marimo__/
 
 # Claude Code
 .claude/settings.local.json
+
+# Local documentation repository
+.worldengine-docs/
