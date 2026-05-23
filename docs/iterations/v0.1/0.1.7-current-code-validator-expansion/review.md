@@ -250,3 +250,72 @@ Reported results:
 
 `make test-e2e` was not rerun during final review. The implementation-stage
 E2E evidence above remains the current E2E evidence for this package.
+
+### Helper Runtime Evidence Addendum
+
+Post-closeout review found one P2 evidence gap: `test-plan.md` requires proof
+that `tools/testing/agent_smoke_evidence.py` can generate deterministic checker
+artifacts from real backend state, but the initial review evidence only ran
+`--help` plus unit and fixture checks.
+
+The gap was addressed with a helper runtime smoke against a real local backend.
+This was not a live Agent smoke run: no new live UI operation transcript was
+recorded, no `test-results/agent-smoke/latest/` directory was created or
+validated, and the generated artifacts were kept under `/tmp`.
+
+Commands:
+
+```bash
+make dev-backend
+tools/testing/agent_smoke_evidence.py baseline --base-url http://127.0.0.1:8000 --out /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic/api-baseline.json
+curl -s -X POST http://127.0.0.1:8000/runtime/step
+tools/testing/agent_smoke_evidence.py collect --scenario dashboard-basic-runtime --base-url http://127.0.0.1:8000 --baseline /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic/api-baseline.json --out /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic/api-summary.json
+cp -R tools/testing/fixtures/agent-smoke/valid-basic-runtime /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic-run
+cp /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic/api-summary.json /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic-run/api-summary.json
+make validate-agent-smoke-result RESULT_DIR=/tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic-run
+
+tools/testing/agent_smoke_evidence.py baseline --base-url http://127.0.0.1:8000 --out /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params/api-baseline.json
+curl -s -H 'Content-Type: application/json' -X POST -d '{"patches":[{"op":"set","path":"counter.increment","value":{"value":2,"type":"number"}}]}' http://127.0.0.1:8000/world/params/apply
+curl -s -X POST http://127.0.0.1:8000/runtime/step
+tools/testing/agent_smoke_evidence.py collect --scenario dashboard-params-flow --base-url http://127.0.0.1:8000 --baseline /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params/api-baseline.json --out /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params/api-summary.json
+cp -R tools/testing/fixtures/agent-smoke/valid-params-flow /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params-run
+cp /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params/api-summary.json /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params-run/api-summary.json
+make validate-agent-smoke-result RESULT_DIR=/tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params-run
+
+tools/testing/agent_smoke_evidence.py baseline --base-url http://127.0.0.1:8000 --out /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid/api-baseline.json
+curl -s -H 'Content-Type: application/json' -X POST -d '{"patches":[{"op":"set","path":"system.secret","value":"blocked"}]}' http://127.0.0.1:8000/world/params/apply
+tools/testing/agent_smoke_evidence.py collect --scenario dashboard-invalid-param --base-url http://127.0.0.1:8000 --baseline /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid/api-baseline.json --operation-log tools/testing/fixtures/agent-smoke/valid-invalid-param/operation-log.jsonl --out /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid/api-summary.json
+cp -R tools/testing/fixtures/agent-smoke/valid-invalid-param /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid-run
+cp /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid/api-summary.json /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid-run/api-summary.json
+make validate-agent-smoke-result RESULT_DIR=/tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid-run
+```
+
+Results:
+
+- `make dev-backend`: first sandboxed attempt exited `2` with
+  `Operation not permitted` while binding the local port; approved escalated
+  rerun started Uvicorn on `http://0.0.0.0:8000`.
+- `dashboard-basic-runtime` baseline/collect: exit `0`; generated
+  `api-baseline.json` with `tick_id: 0` and `api-summary.json` with
+  `before_tick: 0`, `after_tick: 1`, `health_status: ok`, and scenario
+  `dashboard-basic-runtime`.
+- `make validate-agent-smoke-result RESULT_DIR=/tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic-run`:
+  exit `0`; `PASS: validated agent smoke result at
+  /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/basic-run`.
+- `dashboard-params-flow` baseline/collect: exit `0`; after applying
+  `counter.increment = 2` and stepping once, generated `api-summary.json` with
+  `before_tick: 1`, `after_tick: 2`, `observed_value: 2`,
+  `counter_event_tick: 2`, and `counter_event_increment: 2`.
+- `make validate-agent-smoke-result RESULT_DIR=/tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params-run`:
+  exit `0`; `PASS: validated agent smoke result at
+  /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/params-run`.
+- `dashboard-invalid-param` baseline/collect: exit `0`; the rejected
+  `system.secret` apply returned API code `30` with `reserved_prefix`, and the
+  generated `api-summary.json` recorded `params_unchanged: true` and
+  `ui_error_seen: true`.
+- `make validate-agent-smoke-result RESULT_DIR=/tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid-run`:
+  exit `0`; `PASS: validated agent smoke result at
+  /tmp/worldengine-agent-smoke-evidence-check-e86aedf-p2/invalid-run`.
+
+The P2 helper-runtime evidence gap is now closed. The closeout assessment
+remains: P1 none, P2 none, P3 none.
