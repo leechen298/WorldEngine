@@ -1,6 +1,6 @@
 # 0.1.5 Project Agent Workflow Skills
 
-Status: ready for implementation
+Status: review complete
 
 Type: mixed
 
@@ -26,12 +26,11 @@ or running broader Agent autonomous tests when such scenarios exist.
 - [x] Contract reviewed
 - [x] Technical design reviewed
 - [x] Test plan reviewed
-- [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Implementation complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Workflow Boundary
 
-This package has completed the documentation-stage review gate.
-Implementation may start at `plan.md` step 2 and must stay within the approved
-`contract.md`, `technical-design.md`, `test-plan.md`, and `plan.md`.
+This package completed implementation and review. Future workflow-skill changes
+should use a new package unless they are narrow review-evidence corrections.

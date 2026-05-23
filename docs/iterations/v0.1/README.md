@@ -21,7 +21,7 @@ WorldSpec, world generation, agent memory, or pseudo-self continuity.
 | `0.1.2-current-implementation-docs` | documentation-only | review complete | Document current backend, frontend, API, and test implementation. |
 | `0.1.3-e2e-agent-acceptance` | mixed | review complete | Add post-closeout E2E tests and Agent smoke evidence validation without changing product behavior. |
 | `0.1.4-codex-test-skills` | mixed | review complete | Add project-local Codex skills and sync tooling for E2E and Agent smoke workflows. |
-| `0.1.5-project-agent-workflow-skills` | mixed | ready for implementation | Add project-local workflow skills for iteration documentation and reviewed implementation gates. |
+| `0.1.5-project-agent-workflow-skills` | mixed | review complete | Add project-local workflow skills for iteration documentation and reviewed implementation gates. |
 
 ## Required Reading
 

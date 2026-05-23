@@ -18,7 +18,6 @@ help:
 	@echo "  make validate-agent-smoke-result RESULT_DIR=<dir>"
 	@echo "  make validate-agent-smoke-fixtures"
 	@echo "  make validate-codex-skills"
-	@echo "  make sync-codex-skills"
 
 setup: setup-backend setup-frontend
 
@@ -72,4 +71,5 @@ validate-codex-skills:
 	@python3 tools/testing/sync_codex_skills.py --dry-run
 
 sync-codex-skills:
-	@python3 tools/testing/sync_codex_skills.py
+	@echo "personal sync disabled; use validate-codex-skills" >&2
+	@exit 2

@@ -1,6 +1,6 @@
 ---
 name: worldengine-agent-smoke-runner
-description: Use when running, preparing, validating, or reporting WorldEngine Agent smoke tests, autonomous dashboard smoke, `operation-log.jsonl`, `result.json`, or `make validate-agent-smoke-result`.
+description: Use when running, preparing, validating, or reporting WorldEngine basic Agent smoke tests, `operation-log.jsonl`, `result.json`, or `make validate-agent-smoke-result`.
 ---
 
 # WorldEngine Agent Smoke Runner
@@ -9,6 +9,9 @@ Use this skill only inside the WorldEngine repository.
 
 Agent smoke is agent-assisted exploratory validation. Codex may operate and
 observe, but the PASS verdict must come from the deterministic checker.
+
+This is basic smoke only. Do not describe it as full Agent autonomous testing or
+as coverage for broader autonomous scenario suites.
 
 ## Required Reading
 

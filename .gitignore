@@ -221,5 +221,14 @@ __marimo__/
 # Claude Code
 .claude/settings.local.json
 
+# Project agent workflow files
+# Track reviewed project skill entrypoints only. Keep local agent state,
+# permissions, caches, secrets, and generated metadata private by default.
+.agents/**
+!.agents/
+!.agents/skills/
+!.agents/skills/*/
+!.agents/skills/*/SKILL.md
+
 # Local documentation repository
 .worldengine-docs/
