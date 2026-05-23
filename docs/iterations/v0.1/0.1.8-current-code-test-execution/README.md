@@ -1,6 +1,6 @@
 # 0.1.8 Current-Code Test Execution
 
-Status: ready for review
+Status: ready for implementation
 
 Type: mixed
 
@@ -27,10 +27,10 @@ Codex/test-runner autonomous scenarios.
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Plan reviewed
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Plan reviewed
 - [ ] Implementation complete
 - [ ] Tests/evidence complete
 - [ ] Review complete
@@ -44,4 +44,6 @@ Codex/test-runner autonomous scenarios.
 2. 0.1.8-B implements `dashboard-archive-summary` E2E only after 0.1.8-A
    validates successfully.
 
-Implementation must not start until this package is reviewed and approved.
+Implementation may start after this documentation approval gate. Implementation
+must still follow `contract.md`, `technical-design.md`, `test-plan.md`, and
+`plan.md`.

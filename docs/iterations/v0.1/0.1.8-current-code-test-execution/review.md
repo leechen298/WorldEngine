@@ -1,6 +1,6 @@
 # Review
 
-Status: documentation-stage ready for review
+Status: documentation-stage approved; ready for implementation
 
 ## Changed Files
 
@@ -31,6 +31,8 @@ git diff --name-only | rg -v '^(docs/iterations/v0\\.1/)'
 git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'
 git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'
 rg -n "result.json.commands|helper baseline|helper collect|validator command|newer summary|initial state being empty" docs/iterations/v0.1/0.1.8-current-code-test-execution
+rg -n "Status: ready for implementation|0\\.1\\.8-current-code-test-execution.*ready for implementation|Contract reviewed|Technical design reviewed|Test plan reviewed|Plan reviewed" docs/iterations/v0.1/0.1.8-current-code-test-execution/README.md docs/iterations/v0.1/0.1.8-current-code-test-execution/review.md docs/iterations/v0.1/README.md docs/iterations/v0.1/README.zh.md docs/iterations/v0.1/v0.1-plan.md docs/iterations/v0.1/v0.1-plan.zh.md
+rg -n "Status: ready for review|0\\.1\\.8-current-code-test-execution.*ready for review|Implementation must not start until" docs/iterations/v0.1/0.1.8-current-code-test-execution/README.md docs/iterations/v0.1/README.md docs/iterations/v0.1/README.zh.md docs/iterations/v0.1/v0.1-plan.md docs/iterations/v0.1/v0.1-plan.zh.md
 ```
 
 Implementation-stage commands are listed in `test-plan.md` and have not been
@@ -57,6 +59,20 @@ run.
   `result.json.commands|helper baseline|helper collect|validator command|newer summary|initial state being empty`:
   exit `0`; found the helper/validator command audit rules and before/after
   summary rule in the 0.1.8 package docs.
+- Documentation approval status scan for
+  `Status: ready for implementation`, 0.1.8 index status, and review-gate
+  checklist terms: exit `0`; found the package `ready for implementation`
+  status, checked review-gate checklist terms, and synced v0.1 index/plan
+  status.
+- Stale pre-approval status scan for `Status: ready for review`,
+  `0.1.8-current-code-test-execution.*ready for review`, and
+  `Implementation must not start until` over package README and v0.1
+  index/plan docs: expected no output; exit `1` with no output.
+- Implementation-path scan for
+  `backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/`:
+  expected no output; exit `1` with no output.
+- `git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'`: expected no
+  output; exit `1` with no output.
 
 No backend tests, frontend tests, E2E tests, live Agent smoke, API curl smoke,
 or Codex/test-runner autonomous tests were run or claimed by this documentation
@@ -82,5 +98,21 @@ or validate `test-results/agent-smoke/latest/`.
 
 ## Final Assessment
 
-The 0.1.8 documentation package is ready for user review. Implementation must
-wait for review approval.
+The 0.1.8 documentation package has been reviewed and approved. Implementation
+may start with `worldengine-iteration-dev`, following the approved contract,
+technical design, test plan, and plan.
+
+## Documentation Approval Gate
+
+User review approved commit `c8e4b2b docs: tighten 0.1.8 evidence rules` after
+confirming P2 and P3 were closed:
+
+- P1: none.
+- P2: closed by requiring helper baseline, helper collect, and validator CLI
+  commands in both `result.json.commands` and `operation-log.jsonl`.
+- P3: closed by requiring archive-summary E2E to compare before/after latest
+  summaries rather than relying on an empty initial state.
+
+No implementation command, live Agent smoke, E2E, validator run against
+`test-results/agent-smoke/latest`, API curl smoke, autonomous scenario, or
+runtime change happened as part of this approval sync.
