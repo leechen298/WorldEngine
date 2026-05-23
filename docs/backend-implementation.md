@@ -1,0 +1,217 @@
+# Backend Implementation
+
+Status: v0.1 backend map
+
+This document describes the current `backend/app/` implementation.
+
+## Application Assembly
+
+Entry points:
+
+- `backend/app/main.py`
+- `backend/app/api/app_factory.py`
+
+`create_app()` builds a FastAPI app, configures CORS, creates in-memory
+runtime services, registers exception handlers, and includes routers.
+
+Environment variables:
+
+| Variable | Default | Purpose |
+|---|---:|---|
+| `APP_HOST` | `0.0.0.0` | Host when running `python app/main.py`. |
+| `APP_PORT` | `8000` | Port when running `python app/main.py`. |
+| `CORS_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` | Allowed frontend origins. |
+| `WORLD_STEP_SECONDS` | `600` | Seconds advanced by each runtime step. |
+| `WORLD_SNAPSHOT_INTERVAL_TICKS` | `10` | Snapshot interval. |
+| `WORLD_SUMMARY_INTERVAL_TICKS` | `20` | Summary interval. |
+| `WORLD_DRYRUN_STEPS` | `20` | Dry-run simulation ticks. |
+| `WORLD_DRYRUN_MAX_AVG_EVENTS_PER_TICK` | `20` | Dry-run event-rate limit. |
+| `WORLD_DRYRUN_MAX_TOTAL_EVENTS` | `500` | Dry-run total event limit. |
+| `WORLD_DRYRUN_MAX_FINAL_COUNTER` | `100000` | Dry-run counter upper bound. |
+
+## API Envelope and Errors
+
+Success responses use:
+
+```text
+{ "code": 0, "data": ..., "msg": "ok" }
+```
+
+Error responses use:
+
+```text
+{ "code": <number>, "msg": "<message>", "data": ... }
+```
+
+HTTP errors are normalized in `app_factory.py`. Common mappings include:
+
+- `400 -> code 10`
+- `404 -> code 24`
+- `422 -> code 30`
+- `500 -> code 50`
+
+## Runtime
+
+Files:
+
+- `backend/app/core/runtime_engine.py`
+- `backend/app/core/event_bus.py`
+
+`RuntimeEngine` stores:
+
+- `tick_id`
+- `world_time_seconds`
+- `step_seconds`
+- `updated_at`
+
+`step()` appends a `tick.advanced` event and then runs the configured world
+root module.
+
+`InMemoryEventLog` stores events in insertion order and provides:
+
+- `snapshot()`
+- bounded list access.
+- cursor pagination over newest-first events.
+- grouped event-step pagination by tick.
+
+## World State and Modules
+
+Files:
+
+- `backend/app/world/state.py`
+- `backend/app/world/service.py`
+- `backend/app/world/module_types.py`
+- `backend/app/world/modules/*`
+
+`WorldState` is a nested params object with:
+
+- `get_params()`
+- `apply_patch()`
+- `set_param()`
+- `remove_param()`
+- validation override accessors.
+
+The default module tree is:
+
+```text
+root
+├── heartbeat
+└── counter
+```
+
+`HeartbeatModule` emits `module.tick` unless `heartbeat.enabled` is set to
+`false`.
+
+`CounterModule` emits `module.counter` and increments an internal counter by
+`counter.increment`. If the param is missing or invalid, it uses `1`.
+
+`CompositeModule` runs child modules, aggregates child summaries, and emits
+`module.aggregate`.
+
+## World Params
+
+Files:
+
+- `backend/app/api/routes/world_params.py`
+- `backend/app/schemas/params.py`
+- `backend/app/world/validation/*`
+- `backend/app/world/dry_run.py`
+
+Writable params in v0.1:
+
+| Path | Type | Notes |
+|---|---|---|
+| `counter.increment` | int | min `1`, max `1000`; structured values allowed. |
+| `heartbeat.enabled` | bool | controls heartbeat module event emission. |
+| `scene.weather` | string | stored as world param; no current module consumes it. |
+
+Reserved prefixes:
+
+- `system`
+- `runtime`
+- `_internal`
+
+Patch ops:
+
+- `add`
+- `set`
+- `remove`
+
+Before applying params, the route runs:
+
+1. static validation through `ParamValidator`.
+2. dry-run validation through `ParamDryRunValidator`.
+3. real `WorldState.apply_patch()`.
+4. `params.applied` event append.
+
+Dry-run validation clones `WorldState`, creates a fresh default module tree,
+runs a sandbox `RuntimeEngine`, and checks metrics such as total events, average
+events per tick, final counter value, duplicate set paths, and no-effect
+counter changes.
+
+## Archive
+
+Files:
+
+- `backend/app/world/archive.py`
+- `backend/app/world/storage/snapshot_store.py`
+- `backend/app/world/storage/summary_store.py`
+- `backend/app/schemas/snapshot.py`
+- `backend/app/schemas/summary.py`
+- `backend/app/api/routes/archive.py`
+
+Archive is callback-driven. `ArchiveService.on_tick_completed()` is registered
+on the runtime engine.
+
+Snapshots include:
+
+- snapshot id.
+- tick id.
+- world time.
+- created time.
+- runtime state.
+- params.
+
+Summaries include:
+
+- summary id.
+- from/to tick.
+- created time.
+- text summary.
+- total events and type counts.
+
+Stores are in-memory.
+
+## Params Agent
+
+Files:
+
+- `backend/app/agent/params_agent.py`
+- `backend/app/agent/llm_provider.py`
+- `backend/app/api/routes/world_agent.py`
+
+The params agent is an LLM-style patch proposer. It is not a persistent world
+agent.
+
+Flow:
+
+1. read runtime state.
+2. read current params.
+3. read recent events.
+4. ask provider for JSON patches.
+5. parse patch list.
+6. run static validation.
+7. run dry-run validation.
+8. apply patches or retry with error feedback.
+9. append `params.applied` or `params.proposal_rejected`.
+
+The app factory currently uses `MockLLMProvider`.
+
+## Placeholder Ports and Legacy Code
+
+`backend/app/infra/ports` and `backend/app/infra/sqlite` contain placeholder
+repository interfaces/adapters. They are not the active persistence path for
+runtime state in v0.1.
+
+`backend/worldengine/` is legacy code and is not wired into the active FastAPI
+app.

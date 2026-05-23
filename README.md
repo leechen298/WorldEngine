@@ -11,6 +11,8 @@ Read first:
 
 - `docs/project-north-star.md`
 - `docs/product-model.md`
+- `docs/current-implementation.md`
+- `docs/api-reference-v0.1.md`
 - `docs/releases/v0.1.md`
 - `docs/iterations/README.md`
 
@@ -94,3 +96,11 @@ Fresh results from that pass:
 - backend: `63 passed`.
 - frontend unit tests: `24 passed`.
 - frontend production build: succeeded with a chunk-size warning.
+
+Implementation docs:
+
+- `docs/current-implementation.md`
+- `docs/backend-implementation.md`
+- `docs/frontend-implementation.md`
+- `docs/api-reference-v0.1.md`
+- `docs/testing/v0.1-test-map.md`

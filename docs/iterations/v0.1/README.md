@@ -18,9 +18,16 @@ WorldSpec, world generation, agent memory, or pseudo-self continuity.
 | Package | Type | Status | Purpose |
 |---|---|---|---|
 | `0.1.1-v0.1-closeout` | documentation-only | review complete | Inventory v0.1 capability, run verification, and update closeout docs. |
+| `0.1.2-current-implementation-docs` | documentation-only | review complete | Document current backend, frontend, API, and test implementation. |
 
 ## Required Reading
 
 - `docs/releases/v0.1.md`
+- `docs/current-implementation.md`
+- `docs/backend-implementation.md`
+- `docs/frontend-implementation.md`
+- `docs/api-reference-v0.1.md`
+- `docs/testing/v0.1-test-map.md`
 - `docs/testing/results/2026-05-23-v0.1-closeout.md`
 - `docs/iterations/v0.1/0.1.1-v0.1-closeout/review.md`
+- `docs/iterations/v0.1/0.1.2-current-implementation-docs/review.md`
