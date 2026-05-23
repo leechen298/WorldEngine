@@ -1,12 +1,12 @@
 # E2E Scenario: dashboard-archive-summary
 
-Status: scenario-contract-only / blocked-by-selector-and-test-env
+Status: scenario-contract-only / not-implemented
 
 ## Current Implementation State
 
 The backend has archive snapshot and summary behavior, and the dashboard
-MemoryPanel displays the latest archive summary. The frontend does not
-currently have stable MemoryPanel selectors for E2E assertions.
+MemoryPanel displays the latest archive summary. Stable MemoryPanel selectors
+now exist for E2E assertions.
 
 This scenario is not implemented as E2E coverage today.
 
@@ -45,14 +45,17 @@ Future implementation should assert:
 
 Playwright assertion after implementation.
 
-## Selector / Checker Prerequisites
+## Remaining Prerequisites
 
-Blocked until stable selectors exist:
+Stable selectors exist:
 
 - `memory-panel`
 - `memory-summary-text`
 - `memory-summary-stats`
 - `memory-summary-empty`
 
-Blocked until E2E test environment defines low archive intervals without
-changing runtime logic.
+Remaining blockers:
+
+- Playwright scenario implementation.
+- E2E test environment must define low archive intervals without changing
+  runtime logic.

@@ -45,9 +45,10 @@ committed under `test-results/agent-smoke/latest/` for audit. Durable summaries
 belong under `docs/testing/results/`.
 
 Current Agent smoke scenario contracts live under
-`docs/testing/agent-smoke/scenarios/`. Only `dashboard-basic-runtime` is
-currently executable. `dashboard-params-flow` and `dashboard-invalid-param` are
-defined but not executable until the validator supports those scenarios.
+`docs/testing/agent-smoke/scenarios/`. `dashboard-basic-runtime` is executable.
+`dashboard-params-flow` and `dashboard-invalid-param` are validator-supported,
+but no live smoke run is recorded yet. Do not report them as passed without a
+fresh validated result directory.
 
 ## E2E Scenario Contracts
 

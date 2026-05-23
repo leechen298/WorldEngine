@@ -1,0 +1,11 @@
+{
+  "scenario": "dashboard-params-flow",
+  "health_status": "ok",
+  "param_path": "counter.increment",
+  "expected_value": 2,
+  "observed_value": 2,
+  "before_tick": 4,
+  "after_tick": 5,
+  "counter_event_tick": 5,
+  "counter_event_increment": 2
+}

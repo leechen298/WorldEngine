@@ -1,0 +1,23 @@
+{
+  "scenario": "dashboard-invalid-param",
+  "health_status": "ok",
+  "invalid_path": "system.secret",
+  "before_params": {
+    "counter": {
+      "increment": {
+        "value": 1,
+        "type": "number"
+      }
+    }
+  },
+  "after_params": {
+    "counter": {
+      "increment": {
+        "value": 1,
+        "type": "number"
+      }
+    }
+  },
+  "params_unchanged": true,
+  "ui_error_seen": true
+}

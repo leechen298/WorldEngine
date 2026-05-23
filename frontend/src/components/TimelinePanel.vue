@@ -27,6 +27,8 @@
           :row-key="(record) => record.tick_id"
           size="small"
           :scroll="{ x: 960 }"
+          :custom-row="customRow"
+          :expand-icon="renderExpandIcon"
           :expanded-row-render="renderExpandedRow"
         >
           <template #bodyCell="{ column, record }">
@@ -153,6 +155,32 @@ const columns = [
   },
 ];
 
+function customRow() {
+  return {
+    "data-test": "timeline-row",
+  };
+}
+
+type ExpandIconProps = {
+  expanded: boolean;
+  onExpand: (record: WorldEventStep, event: MouseEvent) => void;
+  record: WorldEventStep;
+};
+
+function renderExpandIcon({ expanded, onExpand, record }: ExpandIconProps) {
+  return h("button", {
+    type: "button",
+    "data-test": "timeline-row-expand",
+    class: [
+      "ant-table-row-expand-icon",
+      expanded ? "ant-table-row-expand-icon-expanded" : "ant-table-row-expand-icon-collapsed",
+    ],
+    "aria-label": expanded ? "Collapse row" : "Expand row",
+    "aria-expanded": String(expanded),
+    onClick: (event: MouseEvent) => onExpand(record, event),
+  });
+}
+
 function formatDetails(event: WorldEvent): string {
   const detailParts: string[] = [];
   const modulePath = event.payload?.module_path;
@@ -223,11 +251,20 @@ function renderExpandedRow({ record }: { record: WorldEventStep }) {
     ...step.items.map((item) =>
       h("div", { class: "timeline-step-event", key: item.id }, [
         h("div", { class: "timeline-step-event-header" }, [
-          h(ATag, { color: item.type === "tick.advanced" ? "blue" : "default" }, () => item.type),
-          h(ATypographyText, { code: true }, () => item.source),
+          h(
+            ATag,
+            {
+              "data-test": "timeline-event-type",
+              color: item.type === "tick.advanced" ? "blue" : "default",
+            },
+            () => item.type,
+          ),
+          h(ATypographyText, { "data-test": "timeline-event-source", code: true }, () => item.source),
           h(ATypographyText, { type: "secondary" }, () => item.created_at),
         ]),
-        h(ATypographyText, { class: "timeline-cell-text" }, () => formatDetails(item)),
+        h(ATypographyText, { "data-test": "timeline-event-payload", class: "timeline-cell-text" }, () =>
+          formatDetails(item),
+        ),
       ]),
     ),
   ]);

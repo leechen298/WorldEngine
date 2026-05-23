@@ -1,6 +1,6 @@
 # 0.1.7 Current-Code Validator Expansion
 
-Status: ready for implementation
+Status: review complete
 
 Type: mixed
 
@@ -30,9 +30,9 @@ smoke and must not implement archive-summary E2E.
 - [x] Technical design reviewed
 - [x] Test plan reviewed
 - [x] Plan reviewed
-- [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Implementation complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Boundary
 

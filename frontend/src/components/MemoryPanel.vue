@@ -1,9 +1,13 @@
 <template>
-  <a-card title="Memory Panel" class="memory-panel">
+  <a-card data-test="memory-panel" title="Memory Panel" class="memory-panel">
     <a-spin :spinning="loading">
       <a-alert v-if="error" type="error" show-icon :message="error" />
-      <a-empty v-else-if="!summary" description="No summaries yet. Step the simulation to generate archive data." />
-      <div v-else>
+      <a-empty
+        v-else-if="!summary"
+        data-test="memory-summary-empty"
+        description="No summaries yet. Step the simulation to generate archive data."
+      />
+      <div v-else data-test="memory-summary-stats">
         <a-descriptions :column="1" size="small" bordered>
           <a-descriptions-item label="Tick Range">
             {{ summary.from_tick }} - {{ summary.to_tick }}
@@ -18,7 +22,7 @@
 
         <div class="summary-text">
           <a-typography-text strong>Summary</a-typography-text>
-          <a-typography-paragraph class="summary-body">
+          <a-typography-paragraph data-test="memory-summary-text" class="summary-body">
             {{ summary.text }}
           </a-typography-paragraph>
         </div>

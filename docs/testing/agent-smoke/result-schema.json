@@ -15,7 +15,11 @@
   ],
   "properties": {
     "scenario": {
-      "const": "dashboard-basic-runtime"
+      "enum": [
+        "dashboard-basic-runtime",
+        "dashboard-params-flow",
+        "dashboard-invalid-param"
+      ]
     },
     "status": {
       "const": "pass"

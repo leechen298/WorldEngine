@@ -2,9 +2,10 @@
 
 Status: current-code test expansion prerequisites
 
-This document lists implementation prerequisites for future 0.1.7 or later
-test execution work. 0.1.6 records these requirements only; it does not add
-selectors, validators, checkers, fixtures, or tests.
+This document tracks implementation prerequisites for current-code test
+execution work. 0.1.7 closes the selector and Agent smoke validator
+prerequisites listed below, while later packages still own live Agent smoke
+runs and autonomous scorecard support.
 
 ## Selector Prerequisites
 
@@ -21,6 +22,8 @@ Required stable selectors:
 These selectors are needed before `dashboard-agent-autotune` can become a
 stable E2E or Codex/test-runner scenario.
 
+0.1.7 status: implemented as stable dashboard selectors.
+
 ### MemoryPanel / Summary
 
 Required stable selectors:
@@ -32,6 +35,8 @@ Required stable selectors:
 
 These selectors are needed before `dashboard-archive-summary` can assert
 latest archive summary display through the dashboard.
+
+0.1.7 status: implemented as stable dashboard selectors.
 
 ### Timeline Details
 
@@ -46,11 +51,13 @@ Required stable selectors:
 These selectors are needed before timeline navigation and autonomous timeline
 investigation scenarios can assert expanded event details robustly.
 
+0.1.7 status: implemented as stable dashboard selectors.
+
 ## Validator / Checker Prerequisites
 
 ### Agent Smoke Validator
 
-Future Agent smoke execution needs validator support for:
+Agent smoke validator support exists for:
 
 - `dashboard-params-flow`
 - `dashboard-invalid-param`
@@ -61,6 +68,9 @@ The validator must keep these existing invariants:
 - `operation-log.jsonl` may contain UI and CLI operations only.
 - direct API calls must not be recorded as Agent operations.
 - API evidence may appear only in `api-summary.json` or checker artifacts.
+
+0.1.7 status: validator support and deterministic fixture coverage are
+implemented. Live Agent smoke execution remains a later package responsibility.
 
 ### Codex/Test-Runner Autonomous Checker
 

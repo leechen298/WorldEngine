@@ -127,6 +127,38 @@ describe("WorldPanel error display", () => {
 });
 
 describe("WorldPanel agent button", () => {
+  it("exposes stable selectors for agent auto-tune controls and feedback", async () => {
+    const freshParams = { counter: { increment: { value: 2, type: "number" } } };
+    proposeAndApplyMock.mockResolvedValue({
+      applied: true,
+      patches: [{ op: "set", path: "counter.increment", value: { value: 2, type: "number" } }],
+      attempts: 1,
+    });
+    getWorldParamsMock.mockResolvedValue(freshParams);
+
+    const wrapper = mount(WorldPanel, { props: { params: {}, loading: false } });
+
+    expect(wrapper.get("[data-test='world-agent-goal-input']").exists()).toBe(true);
+    await wrapper.get("[data-test='world-agent-autotune-button']").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.get("[data-test='world-agent-success']").text()).toContain("Applied 1 patch(es)");
+    expect(wrapper.get("[data-test='world-agent-patches']").text()).toContain("counter.increment");
+
+    proposeAndApplyMock.mockRejectedValue(
+      makeApiError("Agent proposal rejected after max attempts", [
+        { path: "counter.increment", reason: "out_of_range", detail: "Value must be <= 1000." },
+      ]),
+    );
+
+    await wrapper.get("[data-test='world-agent-autotune-button']").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.get("[data-test='world-agent-error']").text()).toContain(
+      "Agent proposal rejected after max attempts",
+    );
+  });
+
   it("shows success message and emits fresh params after LLM auto-tune", async () => {
     const freshParams = { counter: { increment: { value: 2, type: "number" } } };
     proposeAndApplyMock.mockResolvedValue({

@@ -50,6 +50,7 @@ source today.
 
 ## Unverified Items
 
-- Auto-Tune stable selectors are missing.
+- Auto-Tune stable selectors exist, but autonomous selector-driven execution
+  has not been implemented.
 - Autonomous scorecard schema is not implemented.
 - Autonomous checker is not implemented.

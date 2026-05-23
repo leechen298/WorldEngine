@@ -1,6 +1,6 @@
 # E2E Scenario: dashboard-agent-autotune
 
-Status: scenario-contract-only / blocked-by-selector
+Status: scenario-contract-only / not-implemented
 
 ## Current Implementation State
 
@@ -8,9 +8,9 @@ The dashboard exposes `LLM Auto-Tune`, and the backend has a
 `ParamsAgent + MockLLMProvider` path through
 `/world/agent/params/propose-and-apply`.
 
-This scenario is not implemented as E2E coverage today. It must not be
-reported as passed until a later package adds stable selectors, implements the
-Playwright test, and runs it.
+This scenario is not implemented as E2E coverage today. Stable selectors now
+exist, but it must not be reported as passed until a later package implements
+the Playwright test, adds deterministic assertions, and runs it.
 
 ## Purpose
 
@@ -49,12 +49,17 @@ Future implementation should assert:
 
 Playwright assertion after implementation.
 
-## Selector / Checker Prerequisites
+## Remaining Prerequisites
 
-Blocked until stable selectors exist:
+Stable selectors exist:
 
 - `world-agent-goal-input`
 - `world-agent-autotune-button`
 - `world-agent-success`
 - `world-agent-patches`
 - `world-agent-error`
+
+Remaining blockers:
+
+- Playwright scenario implementation.
+- Deterministic success/error assertions and checker expectations.

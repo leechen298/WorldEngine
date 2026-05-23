@@ -65,26 +65,43 @@
 
       <a-form layout="vertical" class="world-param-form">
         <a-form-item label="Goal (optional)">
-          <a-input v-model:value="agentGoal" placeholder="e.g. speed up counter / disable heartbeat" />
+          <a-input
+            data-test="world-agent-goal-input"
+            v-model:value="agentGoal"
+            placeholder="e.g. speed up counter / disable heartbeat"
+          />
         </a-form-item>
         <a-space direction="vertical" :size="12">
           <a-button
             type="primary"
+            data-test="world-agent-autotune-button"
             :loading="agentRunning"
             @click="handleAgentApply"
             class="agent-btn"
           >
             {{ agentRunning ? "Running..." : "LLM Auto-Tune" }}
           </a-button>
-          <a-alert v-if="agentSuccess" type="success" show-icon :message="agentSuccess">
+          <a-alert
+            v-if="agentSuccess"
+            data-test="world-agent-success"
+            type="success"
+            show-icon
+            :message="agentSuccess"
+          >
             <template v-if="agentPatches.length" #description>
               <details class="agent-patches-details">
                 <summary>Show {{ agentPatches.length }} patch(es)</summary>
-                <pre class="agent-patches-pre">{{ JSON.stringify(agentPatches, null, 2) }}</pre>
+                <pre data-test="world-agent-patches" class="agent-patches-pre">{{ JSON.stringify(agentPatches, null, 2) }}</pre>
               </details>
             </template>
           </a-alert>
-          <a-alert v-if="agentError" type="error" show-icon :message="agentError">
+          <a-alert
+            v-if="agentError"
+            data-test="world-agent-error"
+            type="error"
+            show-icon
+            :message="agentError"
+          >
             <template v-if="agentErrorDetails.length" #description>
               <ul class="apply-error-list">
                 <li v-for="(detail, i) in agentErrorDetails" :key="i">{{ detail }}</li>

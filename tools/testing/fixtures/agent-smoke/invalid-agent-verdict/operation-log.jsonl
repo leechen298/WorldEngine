@@ -1,2 +1,4 @@
 {"seq":1,"type":"ui","target":"dashboard","action":"open","summary":"Opened the WorldEngine dashboard."}
-{"seq":2,"type":"ui","target":"runtime-step-button","action":"click","summary":"Clicked the Step button."}
+{"seq":2,"type":"ui","target":"runtime-tick-id","action":"read","summary":"Read before_tick from the dashboard UI.","value":4}
+{"seq":3,"type":"ui","target":"runtime-step-button","action":"click","summary":"Clicked the Step button."}
+{"seq":4,"type":"ui","target":"runtime-tick-id","action":"read","summary":"Read after_tick from the dashboard UI.","value":5}

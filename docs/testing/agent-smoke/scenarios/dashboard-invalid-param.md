@@ -1,6 +1,6 @@
 # Scenario: dashboard-invalid-param
 
-Status: defined-not-executable-until-validator-supports-scenario
+Status: validator-supported-no-live-run-recorded
 
 ## Purpose
 
@@ -10,11 +10,11 @@ world params.
 
 ## Current Executability
 
-This scenario is defined but not executable today. The current Agent smoke
-validator only supports `dashboard-basic-runtime`.
+This scenario now has validator support for deterministic checker evidence.
+No live smoke run has been recorded for it yet.
 
-Do not run this scenario or report it as passed until a later package extends
-the validator whitelist and deterministic checker logic.
+Do not report this scenario as passed without a fresh result directory that
+passes `make validate-agent-smoke-result RESULT_DIR=<run-dir>`.
 
 ## Allowed Operations
 
@@ -39,7 +39,7 @@ the validator whitelist and deterministic checker logic.
 5. Click `Apply`.
 6. Observe validation error through UI.
 7. Write required artifacts.
-8. Run the Agent smoke validator after validator support exists.
+8. Run the Agent smoke validator.
 
 ## Required Artifacts
 
@@ -52,8 +52,7 @@ the validator whitelist and deterministic checker logic.
 
 ## Required Deterministic Check
 
-After validator support exists, `api-summary.json` may include checker evidence
-such as:
+`api-summary.json` must include checker evidence such as:
 
 ```json
 {
@@ -68,7 +67,7 @@ This API evidence is checker evidence only. It is not an Agent operation.
 
 ## PASS Source
 
-Future PASS must come from:
+PASS must come from:
 
 ```bash
 make validate-agent-smoke-result RESULT_DIR=<run-dir>
@@ -76,8 +75,6 @@ make validate-agent-smoke-result RESULT_DIR=<run-dir>
 
 with `verdict_source: "deterministic_checker"`.
 
-## Implementation Prerequisites
+## Live Evidence Status
 
-- Extend the validator supported scenario whitelist.
-- Add deterministic checker logic for UI error evidence and unchanged params
-  evidence.
+No live Agent smoke result has been recorded for this scenario in 0.1.7.

@@ -1,9 +1,46 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
 
 import TimelinePanel from "./TimelinePanel.vue";
 
 describe("TimelinePanel", () => {
+  it("exposes stable selectors for rows, expand controls, and expanded event details", async () => {
+    const wrapper = mount(TimelinePanel, {
+      props: {
+        steps: [
+          {
+            tick_id: 7,
+            world_time_seconds: 4200,
+            created_at: "2026-03-09T01:10:00+00:00",
+            event_count: 1,
+            items: [
+              {
+                id: "evt-selector",
+                tick_id: 7,
+                world_time_seconds: 4200,
+                type: "module.counter",
+                source: "root.counter",
+                payload: {
+                  module_path: "root.counter",
+                  counter: 7,
+                },
+                created_at: "2026-03-09T01:10:00+00:00",
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    expect(wrapper.get("[data-test='timeline-row']").exists()).toBe(true);
+    await wrapper.get("[data-test='timeline-row-expand']").trigger("click");
+    await flushPromises();
+
+    expect(wrapper.get("[data-test='timeline-event-type']").text()).toContain("module.counter");
+    expect(wrapper.get("[data-test='timeline-event-source']").text()).toContain("root.counter");
+    expect(wrapper.get("[data-test='timeline-event-payload']").text()).toContain("counter=7");
+  });
+
   it("renders step summary for module events", () => {
     const wrapper = mount(TimelinePanel, {
       props: {

@@ -16,7 +16,33 @@ REQUIRED_KEYS = {
     "assertions",
     "failures",
 }
-SUPPORTED_SCENARIOS = {"dashboard-basic-runtime"}
+SUPPORTED_SCENARIOS = {
+    "dashboard-basic-runtime",
+    "dashboard-params-flow",
+    "dashboard-invalid-param",
+}
+REQUIRED_UI_TARGETS = {
+    "dashboard-basic-runtime": {
+        "dashboard",
+        "runtime-tick-id",
+        "runtime-step-button",
+    },
+    "dashboard-params-flow": {
+        "dashboard",
+        "world-params-path-input",
+        "world-params-type-select",
+        "world-params-value-input",
+        "world-params-apply-button",
+        "runtime-step-button",
+    },
+    "dashboard-invalid-param": {
+        "dashboard",
+        "world-params-path-input",
+        "world-params-value-input",
+        "world-params-apply-button",
+        "world-params-error",
+    },
+}
 
 
 def _load_json(path: Path, errors: list[str]) -> Any:
@@ -77,26 +103,26 @@ def _validate_artifacts(result_dir: Path, result: dict[str, Any], errors: list[s
         _validate_artifact_path(result_dir, f"screenshots[{index}]", screenshot, errors)
 
 
-def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: list[str]) -> None:
+def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: list[str]) -> set[str]:
+    ui_targets: set[str] = set()
     artifacts = result.get("artifacts")
     if not isinstance(artifacts, dict):
-        return
+        return ui_targets
     operation_log_path = artifacts.get("operation_log")
     if not isinstance(operation_log_path, str) or not operation_log_path.strip():
-        return
+        return ui_targets
 
     path = result_dir / operation_log_path
     try:
         lines = path.read_text().splitlines()
     except FileNotFoundError:
-        return
+        return ui_targets
 
     non_empty_lines = [line for line in lines if line.strip()]
     if not non_empty_lines:
         errors.append("operation-log.jsonl must contain at least one operation record")
-        return
+        return ui_targets
 
-    saw_ui_operation = False
     for index, line in enumerate(non_empty_lines, start=1):
         try:
             operation = json.loads(line)
@@ -120,9 +146,10 @@ def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: li
             errors.append(f"operation-log.jsonl line {index}.seq must be an integer")
 
         if operation_type == "ui":
-            saw_ui_operation = True
             if not isinstance(operation.get("target"), str) or not operation["target"].strip():
                 errors.append(f"operation-log.jsonl line {index}.target must be a non-empty string")
+            else:
+                ui_targets.add(operation["target"])
             if not isinstance(operation.get("action"), str) or not operation["action"].strip():
                 errors.append(f"operation-log.jsonl line {index}.action must be a non-empty string")
 
@@ -135,8 +162,16 @@ def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: li
             elif exit_code != 0:
                 errors.append(f"operation-log.jsonl line {index}.exit_code must be 0")
 
-    if result.get("scenario") == "dashboard-basic-runtime" and not saw_ui_operation:
-        errors.append("operation-log.jsonl must include at least one ui operation for dashboard-basic-runtime")
+    return ui_targets
+
+
+def _validate_required_ui_targets(result: dict[str, Any], ui_targets: set[str], errors: list[str]) -> None:
+    scenario = result.get("scenario")
+    if scenario not in REQUIRED_UI_TARGETS:
+        return
+    missing = sorted(REQUIRED_UI_TARGETS[scenario] - ui_targets)
+    if missing:
+        errors.append(f"operation-log.jsonl missing required UI target(s) for {scenario}: {', '.join(missing)}")
 
 
 def _validate_commands(result: dict[str, Any], errors: list[str]) -> None:
@@ -189,12 +224,23 @@ def _validate_api_summary(result_dir: Path, result: dict[str, Any], errors: list
         errors.append("api-summary.json must contain an object")
         return
 
-    if result.get("scenario") != "dashboard-basic-runtime":
+    scenario = result.get("scenario")
+    if api_summary.get("scenario") != scenario:
+        errors.append("api-summary.json scenario must match result.json scenario")
         return
 
     if api_summary.get("health_status") != "ok":
         errors.append("api-summary.json health_status must be ok")
 
+    if scenario == "dashboard-basic-runtime":
+        _validate_basic_runtime_api_summary(api_summary, errors)
+    elif scenario == "dashboard-params-flow":
+        _validate_params_flow_api_summary(api_summary, errors)
+    elif scenario == "dashboard-invalid-param":
+        _validate_invalid_param_api_summary(api_summary, errors)
+
+
+def _validate_basic_runtime_api_summary(api_summary: dict[str, Any], errors: list[str]) -> None:
     before_tick = api_summary.get("before_tick")
     after_tick = api_summary.get("after_tick")
     if not isinstance(before_tick, int) or not isinstance(after_tick, int):
@@ -205,6 +251,48 @@ def _validate_api_summary(result_dir: Path, result: dict[str, Any], errors: list
             "api-summary.json must prove after_tick equals before_tick + 1 "
             f"(got {before_tick} -> {after_tick})"
         )
+
+
+def _validate_params_flow_api_summary(api_summary: dict[str, Any], errors: list[str]) -> None:
+    if api_summary.get("param_path") != "counter.increment":
+        errors.append("api-summary.json param_path must be counter.increment")
+    if api_summary.get("expected_value") != 2:
+        errors.append("api-summary.json expected_value must be 2")
+    if api_summary.get("observed_value") != 2:
+        errors.append("api-summary.json observed_value must be 2")
+    if api_summary.get("counter_event_increment") != 2:
+        errors.append("api-summary.json counter_event_increment must be 2")
+
+    before_tick = api_summary.get("before_tick")
+    after_tick = api_summary.get("after_tick")
+    if not isinstance(before_tick, int) or not isinstance(after_tick, int):
+        errors.append("api-summary.json before_tick and after_tick must be integers")
+        return
+    if after_tick <= before_tick:
+        errors.append("api-summary.json must prove a runtime step happened after baseline collection")
+
+    counter_event_tick = api_summary.get("counter_event_tick")
+    if not isinstance(counter_event_tick, int):
+        errors.append("api-summary.json counter_event_tick must be an integer")
+    elif counter_event_tick <= before_tick:
+        errors.append("api-summary.json counter_event_tick must be after baseline collection")
+
+
+def _validate_invalid_param_api_summary(api_summary: dict[str, Any], errors: list[str]) -> None:
+    if api_summary.get("invalid_path") != "system.secret":
+        errors.append("api-summary.json invalid_path must be system.secret")
+    if api_summary.get("params_unchanged") is not True:
+        errors.append("api-summary.json params_unchanged must be true")
+    if api_summary.get("ui_error_seen") is not True:
+        errors.append("api-summary.json ui_error_seen must be true")
+
+    before_params = api_summary.get("before_params")
+    after_params = api_summary.get("after_params")
+    if not isinstance(before_params, dict) or not isinstance(after_params, dict):
+        errors.append("api-summary.json before_params and after_params must be objects")
+        return
+    if before_params != after_params:
+        errors.append("api-summary.json before_params and after_params must match")
 
 
 def validate_result_dir(result_dir: Path | str) -> list[str]:
@@ -224,7 +312,8 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
         errors.append(f"result.json missing required keys: {', '.join(missing_keys)}")
 
     if raw_result.get("scenario") not in SUPPORTED_SCENARIOS:
-        errors.append("scenario must be dashboard-basic-runtime")
+        supported = ", ".join(sorted(SUPPORTED_SCENARIOS))
+        errors.append(f"scenario must be one of supported scenarios: {supported}")
     if raw_result.get("status") != "pass":
         errors.append("status must be pass for a successful agent smoke result")
     if raw_result.get("verdict_source") != "deterministic_checker":
@@ -239,7 +328,8 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
     _validate_commands(raw_result, errors)
     _validate_assertions(raw_result, errors)
     _validate_artifacts(result_dir, raw_result, errors)
-    _validate_operation_log(result_dir, raw_result, errors)
+    ui_targets = _validate_operation_log(result_dir, raw_result, errors)
+    _validate_required_ui_targets(raw_result, ui_targets, errors)
     _validate_api_summary(result_dir, raw_result, errors)
 
     return errors

@@ -13,12 +13,13 @@ transcript notes, but Codex may not issue the final PASS verdict.
 | Scenario | Status | Instructions |
 |---|---|---|
 | `dashboard-basic-runtime` | `executable` | `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md` |
-| `dashboard-params-flow` | `defined-not-executable-until-validator-supports-scenario` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
-| `dashboard-invalid-param` | `defined-not-executable-until-validator-supports-scenario` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
+| `dashboard-params-flow` | `validator-supported-no-live-run-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
+| `dashboard-invalid-param` | `validator-supported-no-live-run-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
 
-Only `dashboard-basic-runtime` is executable today. The other scenario
-contracts must not be run or reported as passed until the validator supports
-them.
+`dashboard-params-flow` and `dashboard-invalid-param` now have deterministic
+validator support, but this repository has no live smoke result for them yet.
+Do not report either scenario as passed without a fresh validated result
+directory.
 
 ## Required Evidence
 

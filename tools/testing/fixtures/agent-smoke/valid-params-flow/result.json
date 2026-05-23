@@ -1,0 +1,39 @@
+{
+  "scenario": "dashboard-params-flow",
+  "status": "pass",
+  "verdict_source": "deterministic_checker",
+  "agent_summary": "Codex changed counter.increment through the dashboard UI, clicked Step, and recorded deterministic checker evidence.",
+  "commands": [
+    {
+      "command": "make dev",
+      "exit_code": 0
+    },
+    {
+      "command": "make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": {
+    "transcript": "transcript.md",
+    "console_log": "console.log",
+    "api_summary": "api-summary.json",
+    "operation_log": "operation-log.jsonl",
+    "screenshots": [
+      "screenshots/dashboard-params-flow.svg"
+    ]
+  },
+  "assertions": [
+    {
+      "name": "counter increment changes through dashboard params flow",
+      "status": "pass",
+      "evidence": {
+        "source": "api-summary.json",
+        "param_path": "counter.increment",
+        "expected_value": 2,
+        "observed_value": 2,
+        "counter_event_increment": 2
+      }
+    }
+  ],
+  "failures": []
+}

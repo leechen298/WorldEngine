@@ -1,0 +1,7 @@
+{"seq":1,"type":"cli","command":"make dev","exit_code":0,"summary":"Started backend and frontend services."}
+{"seq":2,"type":"ui","target":"dashboard","action":"open","summary":"Opened the WorldEngine dashboard."}
+{"seq":3,"type":"ui","target":"world-params-path-input","action":"fill","summary":"Filled system.secret."}
+{"seq":4,"type":"ui","target":"world-params-value-input","action":"fill","summary":"Filled blocked."}
+{"seq":5,"type":"ui","target":"world-params-apply-button","action":"click","summary":"Attempted invalid params patch."}
+{"seq":6,"type":"ui","target":"world-params-error","action":"read","summary":"Observed validation error in the dashboard."}
+{"seq":7,"type":"cli","command":"make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest","exit_code":0,"summary":"Ran deterministic checker on the saved evidence directory."}

@@ -43,8 +43,9 @@ Agent-assisted smoke tests 必须遵循 `docs/testing/agent-smoke/`。Codex 或�
 Durable summaries 应放在 `docs/testing/results/` 下。
 
 当前 Agent smoke scenario contracts 位于 `docs/testing/agent-smoke/scenarios/`。
-目前只有 `dashboard-basic-runtime` 可执行。`dashboard-params-flow` 和
-`dashboard-invalid-param` 已定义，但在 validator 支持这些 scenario 前不能执行或声称通过。
+`dashboard-basic-runtime` 可执行。`dashboard-params-flow` 和
+`dashboard-invalid-param` 已获得 validator 支持，但当前还没有 live smoke run 记录。
+没有新的 validated result directory 时，不要报告它们已经通过。
 
 ## E2E Scenario Contracts
 
