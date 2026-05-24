@@ -26,6 +26,7 @@ Agent memory 或 pseudo-self continuity。
 | `0.1.6-current-code-test-case-expansion` | documentation-only | review complete | Define current-code E2E、Agent smoke 和 Codex/test-runner autonomous scenario contracts before implementing or running more tests. |
 | `0.1.7-current-code-validator-expansion` | mixed | review complete | Add selector 和 Agent smoke validator infrastructure before live test execution. |
 | `0.1.8-current-code-test-execution` | mixed | review complete | 已记录一个 live `dashboard-params-flow` Agent smoke run，并已实现 `dashboard-archive-summary` E2E。 |
+| `0.1.9-remaining-current-code-coverage` | mixed | ready for review | 补齐 v0.1 当前代码剩余覆盖：Auto-Tune E2E、timeline-navigation E2E 和 live `dashboard-invalid-param` Agent smoke。 |
 
 ## Required Reading
 
@@ -45,3 +46,4 @@ Agent memory 或 pseudo-self continuity。
 - `docs/iterations/v0.1/0.1.6-current-code-test-case-expansion/review.md`
 - `docs/iterations/v0.1/0.1.7-current-code-validator-expansion/review.md`
 - `docs/iterations/v0.1/0.1.8-current-code-test-execution/review.md`
+- `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/review.md`

@@ -25,6 +25,7 @@ WorldSpec, world generation, agent memory, or pseudo-self continuity.
 | `0.1.6-current-code-test-case-expansion` | documentation-only | review complete | Define current-code E2E, Agent smoke, and Codex/test-runner autonomous scenario contracts before implementing or running more tests. |
 | `0.1.7-current-code-validator-expansion` | mixed | review complete | Add selector and Agent smoke validator infrastructure before live test execution. |
 | `0.1.8-current-code-test-execution` | mixed | review complete | Recorded one live `dashboard-params-flow` Agent smoke run and implemented `dashboard-archive-summary` E2E. |
+| `0.1.9-remaining-current-code-coverage` | mixed | ready for review | Close remaining v0.1 current-code coverage with Auto-Tune E2E, timeline-navigation E2E, and live `dashboard-invalid-param` Agent smoke. |
 
 ## Required Reading
 
@@ -44,3 +45,4 @@ WorldSpec, world generation, agent memory, or pseudo-self continuity.
 - `docs/iterations/v0.1/0.1.6-current-code-test-case-expansion/review.md`
 - `docs/iterations/v0.1/0.1.7-current-code-validator-expansion/review.md`
 - `docs/iterations/v0.1/0.1.8-current-code-test-execution/review.md`
+- `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/review.md`
