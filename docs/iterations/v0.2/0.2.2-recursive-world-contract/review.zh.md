@@ -1,6 +1,6 @@
 # Review
 
-Status: ready for implementation
+Status: review complete
 
 英文版本：`review.md`。
 
@@ -68,3 +68,72 @@ behavior 或 legacy backend behavior。
 0.2.2 documentation gate 已在 commit `8a7e28c` 通过 review。它现在 ready for implementation。
 Implementation 必须限制在本 package 定义的文件和 schema contract 内，不能把 schemas 接入 runtime
 behavior。
+
+## Implementation Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `backend/app/schemas/entity.py` | 新增 `EntityRef`，包含必填非空 `id` 和 `kind`、可选 `label`、默认 `metadata`。 |
+| `backend/app/schemas/world_cell.py` | 新增 `WorldCell` 和 `WorldSpec` schemas，包含 recursive child validation、literal fields、defaults 和 metadata。 |
+| `backend/app/tests/test_world_cell_schema.py` | 新增 focused schema tests，覆盖 construction、invalid inputs、nested validation、serialization、reconstruction 和 import smoke。 |
+| `docs/iterations/v0.2/0.2.2-recursive-world-contract/review.md` | 记录 implementation-stage evidence。 |
+| `docs/iterations/v0.2/0.2.2-recursive-world-contract/review.zh.md` | 记录同步的 implementation-stage evidence。 |
+
+### Commands Run
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py -q
+cd backend && .venv/bin/python -m pytest app/tests -q
+cd backend && .venv/bin/python -c "from app.schemas.entity import EntityRef; from app.schemas.world_cell import WorldCell, WorldSpec; print(EntityRef, WorldCell, WorldSpec)"
+git diff --check
+git status --short --branch
+git status --porcelain=v1 -uall
+```
+
+### Test Results
+
+- RED check：`cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py -q`
+  在 implementation 前退出 `1`，结果为 `15 failed`；失败原因是
+  `ModuleNotFoundError: No module named 'app.schemas.entity'`。
+- Focused schema test：`cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py -q`
+  退出 `0`；latest rerun reported `15 passed in 0.05s`。
+- Backend regression test：`cd backend && .venv/bin/python -m pytest app/tests -q`
+  退出 `0`；latest rerun reported `78 passed in 0.73s`。
+- Import smoke：`cd backend && .venv/bin/python -c "from app.schemas.entity import EntityRef; from app.schemas.world_cell import WorldCell, WorldSpec; print(EntityRef, WorldCell, WorldSpec)"`
+  退出 `0`，并输出三个 schema classes。
+- `git diff --check` 退出 `0`，没有 whitespace errors。
+
+### Compatibility Review
+
+没有改变 runtime service、API route、event schema、frontend、fixture、loader、generator、
+persistence 或 legacy `backend/worldengine/` behavior。本实现只新增 inert schemas 和 focused
+schema tests。
+
+### Scope Review
+
+Implementation 保持在已批准的 0.2.2 scope 内。Code changes 限制在 package 允许的三个
+implementation files，额外只按仓库流程记录本 review evidence。没有启动 0.2.3、WorldSpec
+loader、runtime migration、Tiny Village fixture、agent memory、pseudo-self、frontend 或 legacy
+backend work。
+
+### Unresolved Findings
+
+- P1: none。
+- P2: none。
+- P3: none。
+
+### Final Assessment
+
+0.2.2 implementation complete。Recursive world schema contract 现在已由 `EntityRef`、
+`WorldCell` 和 `WorldSpec` 表达；当前 session 中 required focused checks 和 backend regression
+checks 均通过。
+
+## Review Approval Closeout
+
+Review conclusion：passed。P1/P2/P3 findings：none。
+
+之前的 P2 status drift finding 已关闭。Package README files、v0.2 index files 和 v0.2
+plan files 现在都显示 `review complete`，package status checklist 已标记 implementation、
+tests/evidence 和 review complete。

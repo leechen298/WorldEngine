@@ -1,6 +1,6 @@
 # Review
 
-Status: ready for implementation
+Status: review complete
 
 ## Changed Files
 
@@ -71,3 +71,73 @@ The documentation gate for 0.2.2 passed review at commit `8a7e28c`. It is
 ready for implementation. Implementation must remain limited to the files and
 schema contract defined in this package and must not connect the schemas to
 runtime behavior.
+
+## Implementation Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `backend/app/schemas/entity.py` | Added `EntityRef` with required non-empty `id` and `kind`, optional `label`, and default `metadata`. |
+| `backend/app/schemas/world_cell.py` | Added `WorldCell` and `WorldSpec` schemas with recursive child validation, literal fields, defaults, and metadata. |
+| `backend/app/tests/test_world_cell_schema.py` | Added focused schema tests for construction, invalid inputs, nested validation, serialization, reconstruction, and import smoke. |
+| `docs/iterations/v0.2/0.2.2-recursive-world-contract/review.md` | Recorded implementation-stage evidence. |
+| `docs/iterations/v0.2/0.2.2-recursive-world-contract/review.zh.md` | Recorded synchronized implementation-stage evidence. |
+
+### Commands Run
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py -q
+cd backend && .venv/bin/python -m pytest app/tests -q
+cd backend && .venv/bin/python -c "from app.schemas.entity import EntityRef; from app.schemas.world_cell import WorldCell, WorldSpec; print(EntityRef, WorldCell, WorldSpec)"
+git diff --check
+git status --short --branch
+git status --porcelain=v1 -uall
+```
+
+### Test Results
+
+- RED check: `cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py -q`
+  exited `1` before implementation with `15 failed`; failures were due to
+  `ModuleNotFoundError: No module named 'app.schemas.entity'`.
+- Focused schema test: `cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py -q`
+  exited `0`; latest rerun reported `15 passed in 0.05s`.
+- Backend regression test: `cd backend && .venv/bin/python -m pytest app/tests -q`
+  exited `0`; latest rerun reported `78 passed in 0.73s`.
+- Import smoke: `cd backend && .venv/bin/python -c "from app.schemas.entity import EntityRef; from app.schemas.world_cell import WorldCell, WorldSpec; print(EntityRef, WorldCell, WorldSpec)"`
+  exited `0` and printed the three schema classes.
+- `git diff --check` exited `0` with no whitespace errors.
+
+### Compatibility Review
+
+No runtime service, API route, event schema, frontend, fixture, loader,
+generator, persistence, or legacy `backend/worldengine/` behavior was changed.
+The implementation adds inert schemas and focused schema tests only.
+
+### Scope Review
+
+Implementation stayed inside the approved 0.2.2 scope. Code changes are
+limited to the three implementation files allowed by the package, with this
+review evidence recorded as required by the repository process. No 0.2.3,
+WorldSpec loader, runtime migration, Tiny Village fixture, agent memory,
+pseudo-self, frontend, or legacy backend work was started.
+
+### Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: none.
+
+### Final Assessment
+
+0.2.2 implementation is complete. The recursive world schema contract is now
+represented by `EntityRef`, `WorldCell`, and `WorldSpec`, and the required
+focused and backend regression checks pass in the current session.
+
+## Review Approval Closeout
+
+Review conclusion: passed. P1/P2/P3 findings: none.
+
+The previous P2 status drift finding is closed. Package README files, v0.2
+index files, and v0.2 plan files now show `review complete`, and the package
+status checklist marks implementation, tests/evidence, and review complete.
