@@ -1,0 +1,68 @@
+# Review
+
+Status: ready for review
+
+英文版本：`review.md`。
+
+## Changed Files
+
+| File | Change |
+|---|---|
+| `docs/iterations/v0.2/0.2.2-recursive-world-contract/*` | 新增完整 0.2.2 English documentation gate 和 Chinese mirrors。 |
+| `docs/iterations/v0.2/README.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
+| `docs/iterations/v0.2/README.zh.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
+| `docs/iterations/v0.2/v0.2-plan.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
+| `docs/iterations/v0.2/v0.2-plan.zh.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
+
+## Commands Run
+
+```bash
+git status --short --branch
+git diff --check
+find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort
+rg -n "0.2.2-recursive-world-contract|ready for review|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
+git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0.2/'
+```
+
+## Test Results
+
+仅 documentation-stage package。没有修改 backend、frontend、runtime、schema implementation、
+API、UI、fixture、loader、generator 或 test implementation files。Implementation has not
+started。
+
+Verification observations：
+
+- `git status --short --branch` 显示当前分支为 `v0.2`，且只有 v0.2 documentation changes 和新的
+  0.2.2 package directory。
+- `git diff --check` 成功退出，没有 whitespace errors。
+- `find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort`
+  列出了完整 English seven-file set 和完整 `.zh.md` mirrors。
+- Status/content search 在 package 和 v0.2 index/plan documents 中找到了 `ready for review`、
+  `EntityRef`、`WorldCell` 和 `WorldSpec`。
+- Boundary search 只找到了 `RuntimeEngine`、loader、`backend/worldengine`、village、migration、
+  agent memory 和 pseudo-self 的 planned boundary references。
+- `git diff --name-only | rg -v '^(docs/iterations/v0.2/)'` 没有输出。
+- `git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0.2/'` 没有输出。
+
+## Compatibility Review
+
+本 documentation stage 没有改变 runtime behavior、API response shape、event behavior、frontend
+behavior 或 legacy backend behavior。
+
+## Scope Review
+
+本 documentation stage 保持在 `docs/iterations/v0.2/` 内。没有修改 0.2.1 package，也没有启动
+0.2.3。
+
+## Unresolved Findings
+
+- P1: none。
+- P2: none。
+- P3: none。
+
+## Final Assessment
+
+Ready for user review as the documentation gate for 0.2.2。Implementation 必须等待 review
+approval。
