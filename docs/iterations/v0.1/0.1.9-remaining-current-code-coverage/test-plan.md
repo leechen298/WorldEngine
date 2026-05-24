@@ -99,6 +99,10 @@ Expected result for the final block: no output.
   only after validation passes.
 - Docs clearly state that `test-results/agent-smoke/latest/` now points to the
   invalid-param run and that params-flow live status remains durable in docs.
+- Before replacing `test-results/agent-smoke/latest/`, implementation either
+  creates a durable `docs/testing/results/` summary for the previous
+  params-flow run or records that the 0.1.8 params-flow raw evidence remains
+  available through commit `c6da552`.
 - Full autonomous, persistence/restart, WorldSpec/WorldCell, and agent
   memory/self gaps remain future-work gaps.
 - `review.md` records changed files, commands run, test results,

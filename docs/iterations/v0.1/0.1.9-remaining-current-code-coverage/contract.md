@@ -138,6 +138,13 @@ Replacing `test-results/agent-smoke/latest/` is allowed for this package, but
 review evidence must state that it replaces the 0.1.8 params-flow latest raw
 evidence and that durable params-flow status remains recorded in docs.
 
+Before replacing `test-results/agent-smoke/latest/`, implementation must either
+copy or summarize the previous params-flow evidence into a durable
+`docs/testing/results/` result entry, or explicitly record that the 0.1.8
+params-flow raw evidence remains available through commit `c6da552`. The
+review must include the chosen durable reference so future audits do not need
+to infer the evidence location from `latest/`.
+
 ## Status Update Rules
 
 After successful implementation:

@@ -45,29 +45,33 @@ Do not touch:
 3. Implement `dashboard-timeline-navigation` E2E in
    `frontend/e2e/dashboard.spec.ts`.
 4. Run focused E2E checks for the two new scenarios.
-5. Prepare `test-results/agent-smoke/latest/` for live
+5. Before replacing `test-results/agent-smoke/latest/`, add a durable
+   reference for the previous 0.1.8 params-flow raw evidence: either write a
+   `docs/testing/results/` summary or explicitly record that the raw evidence
+   remains available through commit `c6da552`.
+6. Prepare `test-results/agent-smoke/latest/` for live
    `dashboard-invalid-param` evidence, replacing the 0.1.8 params-flow latest
-   raw evidence only after the new run is complete.
-6. Run helper `baseline` before invalid-param UI actions.
-7. Record the helper `baseline` command in both `result.json.commands` and
+   raw evidence only after the durable reference is recorded.
+7. Run helper `baseline` before invalid-param UI actions.
+8. Record the helper `baseline` command in both `result.json.commands` and
    `operation-log.jsonl` as a `cli` operation with `exit_code: 0`.
-8. Operate the dashboard UI for `dashboard-invalid-param`, recording UI
+9. Operate the dashboard UI for `dashboard-invalid-param`, recording UI
    targets, transcript, console, and screenshot evidence.
-9. Run helper `collect --scenario dashboard-invalid-param`.
-10. Record the helper `collect` command in both `result.json.commands` and
+10. Run helper `collect --scenario dashboard-invalid-param`.
+11. Record the helper `collect` command in both `result.json.commands` and
     `operation-log.jsonl` as a `cli` operation with `exit_code: 0`.
-11. Write `result.json` with `verdict_source: deterministic_checker`.
-12. Validate the run with `make validate-agent-smoke-result
+12. Write `result.json` with `verdict_source: deterministic_checker`.
+13. Validate the run with `make validate-agent-smoke-result
     RESULT_DIR=test-results/agent-smoke/latest`.
-13. Record the validator command in both `result.json.commands` and
+14. Record the validator command in both `result.json.commands` and
     `operation-log.jsonl` as a `cli` operation with `exit_code: 0`.
-14. If validation fails, stop and record the blocker in `review.md`.
-15. If validation succeeds, update Agent smoke docs to
+15. If validation fails, stop and record the blocker in `review.md`.
+16. If validation succeeds, update Agent smoke docs to
     `dashboard-invalid-param: live-smoke-recorded`.
-16. Update E2E scenario docs and test maps to mark Auto-Tune and timeline
+17. Update E2E scenario docs and test maps to mark Auto-Tune and timeline
     navigation as implemented after `make test-e2e` passes.
-17. Run the commands in `test-plan.md`.
-18. Update `review.md` with actual changed files, commands, results,
+18. Run the commands in `test-plan.md`.
+19. Update `review.md` with actual changed files, commands, results,
     compatibility review, scope review, and unresolved findings.
 
 ## Verification

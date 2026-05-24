@@ -1,6 +1,6 @@
 # Review
 
-Status: documentation-stage ready for review
+Status: documentation-stage approved; ready for implementation
 
 ## Changed Files
 
@@ -8,10 +8,10 @@ Status: documentation-stage ready for review
 |---|---|
 | `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/README.md` | Added package overview, status, documents, checklist, and boundary. |
 | `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/intent.md` | Defined remaining v0.1 current-code coverage gaps, goals, non-goals, timing, and north-star alignment. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/contract.md` | Defined allowed/forbidden changes, E2E rules, live invalid-param Agent smoke rules, and status update rules. |
+| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/contract.md` | Defined allowed/forbidden changes, E2E rules, live invalid-param Agent smoke rules, params-flow previous-evidence traceability, and status update rules. |
 | `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/technical-design.md` | Documented current state, Auto-Tune E2E design, timeline-navigation E2E design, invalid-param live smoke design, compatibility, and risks. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/test-plan.md` | Added required E2E, live smoke, focused frontend, regression, and scope-check commands. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/plan.md` | Added file boundaries, ordered implementation steps, CLI evidence recording steps, and verification handoff. |
+| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/test-plan.md` | Added required E2E, live smoke, params-flow previous-evidence traceability, focused frontend, regression, and scope-check commands. |
+| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/plan.md` | Added file boundaries, ordered implementation steps, previous-evidence traceability step, CLI evidence recording steps, and verification handoff. |
 | `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/review.md` | Recorded documentation-stage evidence. |
 | `docs/iterations/v0.1/README.md` | Added 0.1.9 package index entry. |
 | `docs/iterations/v0.1/README.zh.md` | Synced the Chinese 0.1.9 package index entry. |
@@ -30,6 +30,7 @@ rg -n "dashboard-agent-autotune|dashboard-timeline-navigation|dashboard-invalid-
 git diff --name-only | rg -v '^(docs/iterations/v0\\.1/)'
 git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'
 git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'
+rg -n "Status: ready for implementation|0\\.1\\.9-remaining-current-code-coverage.*ready for implementation|Contract reviewed|Technical design reviewed|Test plan reviewed|Plan reviewed|c6da552|docs/testing/results" docs/iterations/v0.1/0.1.9-remaining-current-code-coverage docs/iterations/v0.1/README.md docs/iterations/v0.1/README.zh.md docs/iterations/v0.1/v0.1-plan.md docs/iterations/v0.1/v0.1-plan.zh.md
 ```
 
 Implementation-stage commands are listed in `test-plan.md` and have not been
@@ -52,6 +53,20 @@ run.
   expected no output; exit `1` with no output.
 - `git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'`:
   expected no output; exit `1` with no output.
+- Documentation approval and P3 traceability scan for ready-for-implementation
+  status, review-gate checklist terms, `c6da552`, and `docs/testing/results`:
+  exit `0`; found the package `ready for implementation` status, checked
+  review-gate checklist terms, and found the previous params-flow evidence
+  traceability rules.
+- Stale pre-approval status scan for `Status: ready for review`,
+  `0.1.9-remaining-current-code-coverage.*ready for review`, and
+  `Implementation must not start until` over package README and v0.1
+  index/plan docs: expected no output; exit `1` with no output.
+- Implementation-path scan for
+  `backend/worldengine/|backend/app/|frontend/|tools/testing|test-results/`:
+  expected no output; exit `1` with no output.
+- `git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'`: expected no
+  output; exit `1` with no output.
 
 No backend tests, frontend tests, E2E tests, live Agent smoke, API curl smoke,
 or Codex/test-runner autonomous tests were run or claimed by this documentation
@@ -77,5 +92,24 @@ implement E2E, run live Agent smoke, create or replace
 
 ## Final Assessment
 
-The 0.1.9 documentation package is ready for user review. Implementation must
-wait for review approval.
+The 0.1.9 documentation package has been reviewed and approved. Implementation
+may start with `worldengine-iteration-dev`, following the approved contract,
+technical design, test plan, and plan.
+
+## Documentation Approval Gate
+
+User review approved commit `0016f9c docs: add 0.1.9 coverage package` after
+confirming P1 and P2 were clear. The non-blocking P3 was incorporated before
+implementation:
+
+- P1: none.
+- P2: none.
+- P3: implementation must preserve a durable reference for the previous 0.1.8
+  params-flow latest raw evidence before replacing `test-results/agent-smoke/latest/`.
+  The approved options are either a `docs/testing/results/` summary or an
+  explicit statement that raw params-flow evidence remains available through
+  commit `c6da552`.
+
+No implementation command, E2E, live Agent smoke, validator run against
+`test-results/agent-smoke/latest`, API curl smoke, autonomous scenario, or
+runtime change happened as part of this approval sync.
