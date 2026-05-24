@@ -3,6 +3,13 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
 
+class EventRef(BaseModel):
+    id: str = Field(min_length=1)
+    kind: str = Field(min_length=1)
+    role: Optional[str] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
 class Event(BaseModel):
     id: str
     tick_id: int
@@ -10,6 +17,7 @@ class Event(BaseModel):
     type: str
     source: str = Field(default="system")
     payload: Dict[str, Any] = Field(default_factory=dict)
+    refs: List[EventRef] = Field(default_factory=list)
     created_at: str
 
 

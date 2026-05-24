@@ -45,12 +45,12 @@ Do not touch during documentation stage:
 
 1. Create the complete 0.2.3 English package documents.
 2. Create synchronized `.zh.md` mirrors.
-3. Update v0.2 README and plan documents so 0.2.3 is `ready for review`.
+3. Update v0.2 README and plan documents so 0.2.3 is `ready for implementation`.
 4. Run documentation-stage verification commands from `test-plan.md`.
 5. Update `review.md` and `review.zh.md` with actual documentation-stage
    evidence.
-6. Stop before implementation. Wait for review approval before using
-   `worldengine-iteration-dev`.
+6. Stop before implementation. Use `worldengine-iteration-dev` only when
+   implementation is explicitly requested.
 
 ## Verification
 
@@ -60,7 +60,7 @@ Focused documentation-stage verification:
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort
-rg -n "0.2.3-event-contract-extension|ready for review|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.3-event-contract-extension|ready for implementation|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.2/'
