@@ -33,7 +33,7 @@ behavior、event log storage、modules、API routes、frontend behavior 或 `bac
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort
-rg -n "0.2.4-worldspec-reference-fixture|ready for implementation|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|village runtime|game-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
 rg -n '^Status: (implementation complete|review complete)$' docs/iterations/v0.2/0.2.4-worldspec-reference-fixture
 rg -n '^\| `0\.2\.4-worldspec-reference-fixture` \| code \| (implementation complete|review complete) \|' docs/iterations/v0.2/README.md
@@ -61,8 +61,8 @@ PY
 
 - Documentation gate 只改变 `docs/iterations/v0.2/`。
 - Package directory 包含完整 English seven-file set 和完整 `.zh.md` mirrors。
-- v0.2 README 和 plan documents 显示 0.2.4 为 `ready for implementation`。
-- 0.2.4 不标记为 implementation complete 或 review complete。
+- v0.2 README 和 plan documents 显示 0.2.4 为 `review complete`。
+- 0.2.4 implementation、tests/evidence 和 review closeout 已完成。
 - `review.md` 和 `review.zh.md` 记录 documentation-stage evidence，并说明 implementation has
   not started。
 - Documentation stage 不改变 backend、frontend、runtime、schema implementation、API、UI、

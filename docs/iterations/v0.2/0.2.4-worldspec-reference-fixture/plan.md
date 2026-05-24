@@ -1,6 +1,6 @@
 # Plan
 
-Status: ready for implementation
+Status: review complete
 
 ## Documentation Stage
 
@@ -29,8 +29,7 @@ Review confirmed:
   `EntityRef` schema language.
 - Test-only JSON reading is allowed, but production WorldSpec loader work is
   forbidden.
-- 0.2.4 is approved for implementation but is not marked as implementation
-  complete or review complete.
+- 0.2.4 is review complete after implementation and evidence closeout.
 
 ## Implementation Stage After Approval
 

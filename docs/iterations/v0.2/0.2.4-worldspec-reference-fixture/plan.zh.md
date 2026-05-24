@@ -1,6 +1,6 @@
 # Plan
 
-Status: ready for implementation
+Status: review complete
 
 英文版本：`plan.md`。
 
@@ -25,7 +25,7 @@ Review 已确认：
   `backend/app/tests/test_worldspec_fixture.py`，以及本 package 的 closeout review files。
 - Fixture contract 使用现有 0.2.2 `WorldSpec`、`WorldCell` 和 `EntityRef` schema language。
 - 允许 test-only JSON reading，但禁止 production WorldSpec loader work。
-- 0.2.4 已批准进入 implementation，但没有标记为 implementation complete 或 review complete。
+- 0.2.4 已在 implementation 和 evidence closeout 后标记为 review complete。
 
 ## Implementation Stage After Approval
 

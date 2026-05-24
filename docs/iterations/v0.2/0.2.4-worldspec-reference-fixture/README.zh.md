@@ -1,6 +1,6 @@
 # 0.2.4 WorldSpec Reference Fixture
 
-Status: ready for implementation
+Status: review complete
 
 Type: code
 
@@ -11,9 +11,9 @@ Type: code
 创建第一份 reference WorldSpec fixture 的 documentation gate。0.2.4 是“第一份可验证的世界样本”，
 不是“第一个可运行的世界”。
 
-通过 review approval 后，本包可以新增一个小型、确定性的 `tiny_village.world.json` fixture，
-以及聚焦的 validation tests，用来证明该 fixture 符合 0.2.2 的 `WorldSpec`、`WorldCell` 和
-`EntityRef` schema language。
+本包新增一个小型、确定性的 `tiny_village.world.json` fixture，以及聚焦的 validation
+tests，用来证明该 fixture 符合 0.2.2 的 `WorldSpec`、`WorldCell` 和 `EntityRef` schema
+language。
 
 ## Documents
 
@@ -35,9 +35,9 @@ Type: code
 - [x] Test plan reviewed
 - [x] Documentation gate approved
 - [x] Ready for implementation
-- [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Implementation complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Implementation Boundary
 

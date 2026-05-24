@@ -7,8 +7,8 @@ Status: review complete
 | File | Change |
 |---|---|
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/*` | Added the complete 0.2.4 documentation gate for the WorldSpec reference fixture. |
-| `docs/iterations/v0.2/README.md` | Synchronized 0.2.4 status as `ready for implementation`. |
-| `docs/iterations/v0.2/README.zh.md` | Synchronized 0.2.4 status as `ready for implementation`. |
+| `docs/iterations/v0.2/README.md` | Synchronized 0.2.4 status through documentation gate approval and final review closeout. |
+| `docs/iterations/v0.2/README.zh.md` | Synchronized 0.2.4 status through documentation gate approval and final review closeout. |
 | `docs/iterations/v0.2/v0.2-plan.md` | Synchronized 0.2.4 status and implementation boundary. |
 | `docs/iterations/v0.2/v0.2-plan.zh.md` | Synchronized 0.2.4 status and implementation boundary. |
 
@@ -20,7 +20,7 @@ Documentation-stage commands are recorded here before handoff:
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort
-rg -n "0.2.4-worldspec-reference-fixture|ready for implementation|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|village runtime|game-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
 rg -n '^Status: (implementation complete|review complete)$' docs/iterations/v0.2/0.2.4-worldspec-reference-fixture
 rg -n '^\| `0\.2\.4-worldspec-reference-fixture` \| code \| (implementation complete|review complete) \|' docs/iterations/v0.2/README.md
@@ -40,8 +40,8 @@ Documentation gate approval:
 
 - User review approved commit `6ddf2db docs: add 0.2.4 WorldSpec fixture gate`.
 - Review conclusion: P1 none, P2 none, P3 none.
-- Approved next state: move 0.2.4 from `ready for review` to
-  `ready for implementation`.
+- Approved next state: 0.2.4 could move from documentation gate review into
+  implementation.
 
 Verification observations:
 
@@ -52,7 +52,7 @@ Verification observations:
 - `find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort`
   listed the complete English seven-file set and complete `.zh.md` mirrors.
 - The status/content search found `0.2.4-worldspec-reference-fixture`,
-  `ready for implementation`, `WorldSpec`, `tiny_village`, `reference fixture`,
+  `review complete`, `WorldSpec`, `tiny_village`, `reference fixture`,
   `model_validate`, `WorldCell`, `EntityRef`, and `schema_version` in the
   package and v0.2 index/plan documents.
 - The boundary search found only planned boundary references for
@@ -94,8 +94,8 @@ frontend, API route, event log storage, or `backend/worldengine/` work.
 
 ## Final Assessment
 
-0.2.4 documentation gate is approved and ready for implementation. It is not
-implementation complete and not review complete.
+0.2.4 documentation gate was approved before implementation. The later
+implementation closeout supersedes this documentation-stage status.
 
 ## Implementation Closeout
 
@@ -182,3 +182,9 @@ required focused and backend regression checks pass in the current session.
 ## Review Approval Closeout
 
 Review conclusion: passed. P1/P2/P3 findings: none.
+
+## Status Sync Fix
+
+0.2.4 README, package plan/test-plan, v0.2 index, and v0.2 plan now all show
+`review complete`. The status checklist marks implementation, tests/evidence,
+and review complete.

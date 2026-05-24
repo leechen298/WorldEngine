@@ -9,8 +9,8 @@ Status: review complete
 | File | Change |
 |---|---|
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/*` | 新增完整 0.2.4 documentation gate，用于 WorldSpec reference fixture。 |
-| `docs/iterations/v0.2/README.md` | 同步 0.2.4 状态为 `ready for implementation`。 |
-| `docs/iterations/v0.2/README.zh.md` | 同步 0.2.4 状态为 `ready for implementation`。 |
+| `docs/iterations/v0.2/README.md` | 同步 0.2.4 documentation gate approval 和最终 review closeout 状态。 |
+| `docs/iterations/v0.2/README.zh.md` | 同步 0.2.4 documentation gate approval 和最终 review closeout 状态。 |
 | `docs/iterations/v0.2/v0.2-plan.md` | 同步 0.2.4 status 和 implementation boundary。 |
 | `docs/iterations/v0.2/v0.2-plan.zh.md` | 同步 0.2.4 status 和 implementation boundary。 |
 
@@ -22,7 +22,7 @@ Documentation-stage commands 在 handoff 前记录如下：
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort
-rg -n "0.2.4-worldspec-reference-fixture|ready for implementation|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|village runtime|game-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
 rg -n '^Status: (implementation complete|review complete)$' docs/iterations/v0.2/0.2.4-worldspec-reference-fixture
 rg -n '^\| `0\.2\.4-worldspec-reference-fixture` \| code \| (implementation complete|review complete) \|' docs/iterations/v0.2/README.md
@@ -41,7 +41,7 @@ Documentation gate approval：
 
 - 用户 review 已通过 commit `6ddf2db docs: add 0.2.4 WorldSpec fixture gate`。
 - Review conclusion：P1 none，P2 none，P3 none。
-- Approved next state：把 0.2.4 从 `ready for review` 移到 `ready for implementation`。
+- Approved next state：0.2.4 可以从 documentation gate review 进入 implementation。
 
 Verification observations：
 
@@ -52,7 +52,7 @@ Verification observations：
 - `find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort`
   列出了完整 English seven-file set 和完整 `.zh.md` mirrors。
 - Status/content search 在 package 和 v0.2 index/plan documents 中找到了
-  `0.2.4-worldspec-reference-fixture`、`ready for implementation`、`WorldSpec`、
+  `0.2.4-worldspec-reference-fixture`、`review complete`、`WorldSpec`、
   `tiny_village`、`reference fixture`、`model_validate`、`WorldCell`、`EntityRef` 和
   `schema_version`。
 - Boundary search 只找到了 `WorldSpec loader`、`runtime bridge`、`RuntimeEngine`、
@@ -88,8 +88,8 @@ pseudo-self、frontend、API route、event log storage 或 `backend/worldengine/
 
 ## Final Assessment
 
-0.2.4 documentation gate 已通过 approval，并 ready for implementation。它不是
-implementation complete，也不是 review complete。
+0.2.4 documentation gate 已在 implementation 前通过 approval。后续 implementation
+closeout 已覆盖这个 documentation-stage 状态。
 
 ## Implementation Closeout
 
@@ -172,3 +172,9 @@ recursive world schema models validate，本轮要求的 focused 和 backend reg
 ## Review Approval Closeout
 
 Review conclusion: passed. P1/P2/P3 findings: none.
+
+## Status Sync Fix
+
+0.2.4 README、package plan/test-plan、v0.2 index 和 v0.2 plan 现在都显示
+`review complete`。Status checklist 已标记 implementation、tests/evidence 和 review
+complete。

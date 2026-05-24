@@ -1,6 +1,6 @@
 # 0.2.4 WorldSpec Reference Fixture
 
-Status: ready for implementation
+Status: review complete
 
 Type: code
 
@@ -9,10 +9,9 @@ Type: code
 Create the documentation gate for the first reference WorldSpec fixture.
 0.2.4 is the first verifiable world sample, not the first runnable world.
 
-After review approval, this package may add a small deterministic
-`tiny_village.world.json` fixture and focused validation tests that prove the
-fixture conforms to the 0.2.2 `WorldSpec`, `WorldCell`, and `EntityRef` schema
-language.
+This package adds a small deterministic `tiny_village.world.json` fixture and
+focused validation tests that prove the fixture conforms to the 0.2.2
+`WorldSpec`, `WorldCell`, and `EntityRef` schema language.
 
 ## Documents
 
@@ -35,9 +34,9 @@ synchronized with the English package documents.
 - [x] Test plan reviewed
 - [x] Documentation gate approved
 - [x] Ready for implementation
-- [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Implementation complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Implementation Boundary
 
