@@ -1,6 +1,6 @@
 # 0.2.4 WorldSpec Reference Fixture
 
-Status: ready for review
+Status: ready for implementation
 
 Type: code
 
@@ -30,19 +30,18 @@ Type: code
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Documentation gate approved
-- [ ] Ready for implementation
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Documentation gate approved
+- [x] Ready for implementation
 - [ ] Implementation complete
 - [ ] Tests/evidence complete
 - [ ] Review complete
 
 ## Implementation Boundary
 
-Implementation 必须等这个 documentation gate 通过 review 后才能开始。通过后，
-implementation stage 只允许修改：
+Documentation gate 已通过 review。Implementation stage 只允许修改：
 
 - `backend/data/world_specs/tiny_village.world.json`
 - `backend/app/tests/test_worldspec_fixture.py`

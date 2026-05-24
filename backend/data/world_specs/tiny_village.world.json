@@ -1,0 +1,67 @@
+{
+  "schema_version": "0.2",
+  "id": "tiny-village",
+  "label": "Tiny Village",
+  "metadata": {
+    "purpose": "reference-fixture",
+    "version": "0.2"
+  },
+  "root": {
+    "id": "root",
+    "label": "Tiny Village Root",
+    "kind": "world",
+    "entity_refs": [
+      {
+        "id": "village-square",
+        "kind": "location",
+        "label": "Village Square",
+        "metadata": {
+          "fixture_role": "public-location-ref"
+        }
+      }
+    ],
+    "child_cells": [
+      {
+        "id": "village-square",
+        "label": "Village Square",
+        "kind": "world",
+        "entity_refs": [
+          {
+            "id": "notice-board",
+            "kind": "resource",
+            "label": "Notice Board",
+            "metadata": {
+              "fixture_role": "example-resource-ref"
+            }
+          }
+        ],
+        "child_cells": [],
+        "metadata": {
+          "fixture_role": "public-location"
+        }
+      },
+      {
+        "id": "workshop",
+        "label": "Workshop",
+        "kind": "world",
+        "entity_refs": [
+          {
+            "id": "workbench",
+            "kind": "building",
+            "label": "Workbench",
+            "metadata": {
+              "fixture_role": "example-building-ref"
+            }
+          }
+        ],
+        "child_cells": [],
+        "metadata": {
+          "fixture_role": "work-location"
+        }
+      }
+    ],
+    "metadata": {
+      "fixture_role": "root"
+    }
+  }
+}

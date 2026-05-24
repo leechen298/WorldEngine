@@ -1,6 +1,6 @@
 # Plan
 
-Status: ready for review
+Status: ready for implementation
 
 ## Documentation Stage
 
@@ -17,7 +17,7 @@ Status: ready for review
 
 ## Review Gate
 
-Review must confirm:
+Review confirmed:
 
 - The fixture is described as the first verifiable world sample, not the first
   runnable world.
@@ -29,8 +29,8 @@ Review must confirm:
   `EntityRef` schema language.
 - Test-only JSON reading is allowed, but production WorldSpec loader work is
   forbidden.
-- 0.2.4 is not marked as ready for implementation, implementation complete,
-  or review complete.
+- 0.2.4 is approved for implementation but is not marked as implementation
+  complete or review complete.
 
 ## Implementation Stage After Approval
 
