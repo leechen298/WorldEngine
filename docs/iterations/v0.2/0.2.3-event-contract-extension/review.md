@@ -6,17 +6,17 @@ Status: review complete
 
 | File | Change |
 |---|---|
-| `docs/iterations/v0.2/0.2.3-event-contract-extension/*` | Added the complete 0.2.3 documentation gate and marked it ready for implementation after review approval. |
-| `docs/iterations/v0.2/README.md` | Status sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/README.zh.md` | Status sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/v0.2-plan.md` | Status sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/v0.2-plan.zh.md` | Status sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.md` | Review approval sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md` | Review approval sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/README.md` | Review approval sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/README.zh.md` | Review approval sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/v0.2-plan.md` | Review approval sync: 0.2.3 moves to `ready for implementation`. |
-| `docs/iterations/v0.2/v0.2-plan.zh.md` | Review approval sync: 0.2.3 moves to `ready for implementation`. |
+| `docs/iterations/v0.2/0.2.3-event-contract-extension/*` | Added the complete 0.2.3 documentation gate and recorded pre-implementation approval. |
+| `docs/iterations/v0.2/README.md` | Synchronized the pre-implementation approval state for 0.2.3. |
+| `docs/iterations/v0.2/README.zh.md` | Synchronized the pre-implementation approval state for 0.2.3. |
+| `docs/iterations/v0.2/v0.2-plan.md` | Synchronized the pre-implementation approval state for 0.2.3. |
+| `docs/iterations/v0.2/v0.2-plan.zh.md` | Synchronized the pre-implementation approval state for 0.2.3. |
+| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.md` | Recorded review approval before implementation. |
+| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md` | Recorded review approval before implementation. |
+| `docs/iterations/v0.2/README.md` | Recorded review approval before implementation. |
+| `docs/iterations/v0.2/README.zh.md` | Recorded review approval before implementation. |
+| `docs/iterations/v0.2/v0.2-plan.md` | Recorded review approval before implementation. |
+| `docs/iterations/v0.2/v0.2-plan.zh.md` | Recorded review approval before implementation. |
 
 ## Commands Run
 
@@ -24,7 +24,7 @@ Status: review complete
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort
-rg -n "0.2.3-event-contract-extension|ready for implementation|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.3-event-contract-extension|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.2/'
@@ -36,7 +36,7 @@ Documentation-stage package only. Backend, frontend, runtime, schema
 implementation, API, UI, fixture, loader, generator, and test implementation
 commands are not run because this stage must not change those files.
 
-Implementation has not started.
+Implementation was intentionally deferred at the documentation gate.
 
 Verification observations:
 
@@ -45,10 +45,9 @@ Verification observations:
 - `git diff --check` exited successfully with no whitespace errors.
 - `find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort`
   listed the complete English seven-file set and complete `.zh.md` mirrors.
-- The status/content search found `ready for implementation`, `EventRef`, `refs`,
-  `Event Contract`, `backward compatible`, `payload`, `EventPage`,
-  `EventStep`, and `EventStepPage` in the package and v0.2 index/plan
-  documents.
+- The status/content search found `EventRef`, `refs`, `Event Contract`,
+  `backward compatible`, `payload`, `EventPage`, `EventStep`, and
+  `EventStepPage` in the package and v0.2 index/plan documents.
 - The boundary search found only planned boundary references for
   `RuntimeEngine`, `WorldSpec loader`, `backend/worldengine`, village,
   migration, agent memory, pseudo-self, referential integrity, resolve refs,
@@ -82,8 +81,8 @@ modify 0.2.2, does not implement `backend/app/schemas/event.py`, does not add
 
 ## Final Assessment
 
-The 0.2.3 documentation gate has completed review approval and is ready for
-implementation. Implementation has not started.
+The 0.2.3 documentation gate completed review approval before the
+implementation stage. Implementation was intentionally deferred at that gate.
 
 ## Implementation Closeout
 
@@ -114,7 +113,7 @@ PY
 git diff --check
 git diff --name-only
 rg -n "EntityRef|WorldCell|WorldSpec" backend/app/schemas/event.py
-rg -n -e "Status: ready for implementation" -e "0.2.3-event-contract-extension.*ready for implementation" docs/iterations/v0.2/0.2.3-event-contract-extension/README.md docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n -e "Status: pre-implementation approval" -e "0.2.3-event-contract-extension.*pre-implementation approval" docs/iterations/v0.2/0.2.3-event-contract-extension/README.md docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 git status --short --branch
 git status --porcelain=v1 -uall
 ```
@@ -133,7 +132,7 @@ git status --porcelain=v1 -uall
 - `git diff --check` exited `0` with no whitespace errors.
 - `rg -n "EntityRef|WorldCell|WorldSpec" backend/app/schemas/event.py`
   produced no matches; exit `1` is expected for this negative coupling check.
-- The stale-status search for `ready for implementation` in the 0.2.3 status
+- The stale-status search for the pre-implementation approval state in the 0.2.3 status
   files produced no matches; exit `1` is expected for this negative status
   guard.
 
@@ -158,8 +157,8 @@ evidence. `backend/app/schemas/event.py` does not import or reference
 `EntityRef`, `WorldCell`, or `WorldSpec`.
 
 The 0.2.3 package README and v0.2 index/plan status files were updated only to
-reflect implementation closeout and avoid a stale `ready for implementation`
-state after evidence was recorded. No 0.2.4, WorldSpec loader, runtime bridge,
+reflect implementation closeout and avoid a stale pre-implementation state
+after evidence was recorded. No 0.2.4, WorldSpec loader, runtime bridge,
 village runtime, frontend, agent memory, pseudo-self, or legacy backend work
 was started.
 
@@ -178,8 +177,6 @@ v0.2 status files now show `review complete`.
 
 ## Review Approval Closeout
 
-Review conclusion: passed. P1/P2/P3 findings: none.
-
-The contract, technical design, test plan, and execution plan are approved for
-implementation. 0.2.3 is now ready for implementation, but implementation has
-not started in this documentation-stage closeout.
+The documentation gate was approved before implementation. Implementation has
+now completed and this package is review complete. No P1/P2/P3 findings
+remain.

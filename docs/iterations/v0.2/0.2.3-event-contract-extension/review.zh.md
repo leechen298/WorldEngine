@@ -8,17 +8,17 @@ Status: review complete
 
 | File | Change |
 |---|---|
-| `docs/iterations/v0.2/0.2.3-event-contract-extension/*` | 新增完整 0.2.3 documentation gate，并在 review approval 后标记为 ready for implementation。 |
-| `docs/iterations/v0.2/README.md` | Status sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/README.zh.md` | Status sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/v0.2-plan.md` | Status sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/v0.2-plan.zh.md` | Status sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.md` | Review approval sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md` | Review approval sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/README.md` | Review approval sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/README.zh.md` | Review approval sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/v0.2-plan.md` | Review approval sync：0.2.3 移到 `ready for implementation`。 |
-| `docs/iterations/v0.2/v0.2-plan.zh.md` | Review approval sync：0.2.3 移到 `ready for implementation`。 |
+| `docs/iterations/v0.2/0.2.3-event-contract-extension/*` | 新增完整 0.2.3 documentation gate，并记录 implementation 前的 review approval。 |
+| `docs/iterations/v0.2/README.md` | 同步 0.2.3 implementation 前 approval state。 |
+| `docs/iterations/v0.2/README.zh.md` | 同步 0.2.3 implementation 前 approval state。 |
+| `docs/iterations/v0.2/v0.2-plan.md` | 同步 0.2.3 implementation 前 approval state。 |
+| `docs/iterations/v0.2/v0.2-plan.zh.md` | 同步 0.2.3 implementation 前 approval state。 |
+| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.md` | 记录 implementation 前的 review approval。 |
+| `docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md` | 记录 implementation 前的 review approval。 |
+| `docs/iterations/v0.2/README.md` | 记录 implementation 前的 review approval。 |
+| `docs/iterations/v0.2/README.zh.md` | 记录 implementation 前的 review approval。 |
+| `docs/iterations/v0.2/v0.2-plan.md` | 记录 implementation 前的 review approval。 |
+| `docs/iterations/v0.2/v0.2-plan.zh.md` | 记录 implementation 前的 review approval。 |
 
 ## Commands Run
 
@@ -26,7 +26,7 @@ Status: review complete
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort
-rg -n "0.2.3-event-contract-extension|ready for implementation|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.3-event-contract-extension|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.2/'
@@ -37,7 +37,7 @@ git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.
 这是 documentation-stage package。Backend、frontend、runtime、schema implementation、API、UI、
 fixture、loader、generator 和 test implementation commands 未运行，因为本阶段不能改变这些文件。
 
-Implementation has not started.
+Implementation was intentionally deferred at the documentation gate.
 
 Verification observations：
 
@@ -45,8 +45,8 @@ Verification observations：
 - `git diff --check` 成功退出，没有 whitespace errors。
 - `find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort`
   列出了完整 English seven-file set 和完整 `.zh.md` mirrors。
-- Status/content search 在 package 和 v0.2 index/plan documents 中找到了 `ready for implementation`、
-  `EventRef`、`refs`、`Event Contract`、`backward compatible`、`payload`、`EventPage`、
+- Status/content search 在 package 和 v0.2 index/plan documents 中找到了 `EventRef`、
+  `refs`、`Event Contract`、`backward compatible`、`payload`、`EventPage`、
   `EventStep` 和 `EventStepPage`。
 - Boundary search 只找到了 `RuntimeEngine`、`WorldSpec loader`、`backend/worldengine`、
   village、migration、agent memory、pseudo-self、referential integrity、resolve refs、
@@ -77,8 +77,8 @@ empty list，`payload` 保持不变并完全 backward compatible。
 
 ## Final Assessment
 
-0.2.3 documentation gate 已完成 review approval，并且 ready for implementation。Implementation
-has not started。
+0.2.3 documentation gate 已在 implementation stage 前完成 review approval。Implementation
+在该 gate 阶段被有意延后。
 
 ## Implementation Closeout
 
@@ -109,7 +109,7 @@ PY
 git diff --check
 git diff --name-only
 rg -n "EntityRef|WorldCell|WorldSpec" backend/app/schemas/event.py
-rg -n -e "Status: ready for implementation" -e "0.2.3-event-contract-extension.*ready for implementation" docs/iterations/v0.2/0.2.3-event-contract-extension/README.md docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n -e "Status: pre-implementation approval" -e "0.2.3-event-contract-extension.*pre-implementation approval" docs/iterations/v0.2/0.2.3-event-contract-extension/README.md docs/iterations/v0.2/0.2.3-event-contract-extension/README.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 git status --short --branch
 git status --porcelain=v1 -uall
 ```
@@ -128,7 +128,7 @@ git status --porcelain=v1 -uall
 - `git diff --check` exit `0`，没有 whitespace errors。
 - `rg -n "EntityRef|WorldCell|WorldSpec" backend/app/schemas/event.py`
   没有输出匹配；exit `1` 对这个 negative coupling check 是预期结果。
-- 0.2.3 status files 中针对 `ready for implementation` 的 stale-status search
+- 0.2.3 status files 中针对 pre-implementation approval state 的 stale-status search
   没有输出匹配；exit `1` 对这个 negative status guard 是预期结果。
 
 ### Compatibility Review
@@ -151,7 +151,7 @@ Implementation 保持在 approved 0.2.3 scope 内：`backend/app/schemas/event.p
 `WorldSpec`。
 
 0.2.3 package README 和 v0.2 index/plan status files 只同步了 implementation closeout
-状态，避免 evidence 已记录后仍停留在 stale `ready for implementation`。本轮没有启动
+状态，避免 evidence 已记录后仍停留在 stale pre-implementation state。本轮没有启动
 0.2.4、WorldSpec loader、runtime bridge、village runtime、frontend、agent memory、
 pseudo-self 或 legacy backend work。
 
@@ -169,7 +169,5 @@ event-local `EventRef` layer；当前会话内 required focused 和 backend regr
 
 ## Review Approval Closeout
 
-Review conclusion：passed。P1/P2/P3 findings：none。
-
-Contract、technical design、test plan 和 execution plan 已 approved for implementation。0.2.3
-现在 ready for implementation，但本 documentation-stage closeout 没有启动 implementation。
+Documentation gate 已在 implementation 前通过 review。当前 implementation 已完成，本
+package 状态为 review complete。没有遗留 P1/P2/P3 findings。
