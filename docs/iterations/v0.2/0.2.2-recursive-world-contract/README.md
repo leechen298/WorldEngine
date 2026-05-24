@@ -1,6 +1,6 @@
 # 0.2.2 Recursive World Contract
 
-Status: ready for review
+Status: ready for implementation
 
 Type: code
 
@@ -26,9 +26,10 @@ synchronized with the English package documents.
 ## Status Checklist
 
 - [x] Docs drafted
-- [x] Contract ready for review
-- [x] Technical design ready for review
-- [x] Test plan ready for review
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Documentation gate approved
 - [ ] Implementation complete
 - [ ] Tests/evidence complete
 - [ ] Review complete

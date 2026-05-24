@@ -35,7 +35,7 @@ Documentation-stage commands for this package:
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort
-rg -n "0.2.2-recursive-world-contract|ready for review|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.2-recursive-world-contract|ready for implementation|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 ```
@@ -58,7 +58,7 @@ PY
 - The documentation gate changes only `docs/iterations/v0.2/`.
 - The package directory contains the complete English seven-file set and
   complete `.zh.md` mirrors.
-- v0.2 README and plan documents show 0.2.2 as `ready for review`.
+- v0.2 README and plan documents show 0.2.2 as `ready for implementation`.
 - `review.md` and `review.zh.md` record documentation-stage evidence and state
   that implementation has not started.
 - No backend, frontend, runtime, test implementation, fixture, or legacy

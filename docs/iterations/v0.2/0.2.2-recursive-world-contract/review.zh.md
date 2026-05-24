@@ -1,6 +1,6 @@
 # Review
 
-Status: ready for review
+Status: ready for implementation
 
 英文版本：`review.md`。
 
@@ -8,11 +8,11 @@ Status: ready for review
 
 | File | Change |
 |---|---|
-| `docs/iterations/v0.2/0.2.2-recursive-world-contract/*` | 新增完整 0.2.2 English documentation gate 和 Chinese mirrors。 |
-| `docs/iterations/v0.2/README.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
-| `docs/iterations/v0.2/README.zh.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
-| `docs/iterations/v0.2/v0.2-plan.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
-| `docs/iterations/v0.2/v0.2-plan.zh.md` | Planned status sync：0.2.2 变为 `ready for review`。 |
+| `docs/iterations/v0.2/0.2.2-recursive-world-contract/*` | 新增完整 0.2.2 documentation gate，记录 review approval，并标记为 ready for implementation。 |
+| `docs/iterations/v0.2/README.md` | Status sync：0.2.2 变为 `ready for implementation`。 |
+| `docs/iterations/v0.2/README.zh.md` | Status sync：0.2.2 变为 `ready for implementation`。 |
+| `docs/iterations/v0.2/v0.2-plan.md` | Status sync：0.2.2 变为 `ready for implementation`。 |
+| `docs/iterations/v0.2/v0.2-plan.zh.md` | Status sync：0.2.2 变为 `ready for implementation`。 |
 
 ## Commands Run
 
@@ -20,7 +20,8 @@ Status: ready for review
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort
-rg -n "0.2.2-recursive-world-contract|ready for review|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "0.2.2-recursive-world-contract|ready for implementation|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n 'Status: ready for review|\| .*ready for review| - ready for review' docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md --glob '!review.md' --glob '!review.zh.md'
 rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0.2/'
@@ -34,13 +35,13 @@ started。
 
 Verification observations：
 
-- `git status --short --branch` 显示当前分支为 `v0.2`，且只有 v0.2 documentation changes 和新的
-  0.2.2 package directory。
+- `git status --short --branch` 显示当前分支为 `v0.2`，且只有 v0.2 documentation changes。
 - `git diff --check` 成功退出，没有 whitespace errors。
 - `find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort`
   列出了完整 English seven-file set 和完整 `.zh.md` mirrors。
-- Status/content search 在 package 和 v0.2 index/plan documents 中找到了 `ready for review`、
+- Status/content search 在 package 和 v0.2 index/plan documents 中找到了 `ready for implementation`、
   `EntityRef`、`WorldCell` 和 `WorldSpec`。
+- Stale status search for `ready for review` 没有输出。
 - Boundary search 只找到了 `RuntimeEngine`、loader、`backend/worldengine`、village、migration、
   agent memory 和 pseudo-self 的 planned boundary references。
 - `git diff --name-only | rg -v '^(docs/iterations/v0.2/)'` 没有输出。
@@ -64,5 +65,6 @@ behavior 或 legacy backend behavior。
 
 ## Final Assessment
 
-Ready for user review as the documentation gate for 0.2.2。Implementation 必须等待 review
-approval。
+0.2.2 documentation gate 已在 commit `8a7e28c` 通过 review。它现在 ready for implementation。
+Implementation 必须限制在本 package 定义的文件和 schema contract 内，不能把 schemas 接入 runtime
+behavior。

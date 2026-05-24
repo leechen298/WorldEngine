@@ -21,7 +21,7 @@ pseudo-self continuity, game UI, or a separate game repository.
 | Package | Type | Status | Purpose |
 |---|---|---|---|
 | `0.2.1-project-north-star` | documentation-only | review complete | Establish north star, product model, scope, roadmap, iteration templates, and docs governance. |
-| `0.2.2-recursive-world-contract` | code | ready for review | Add EntityRef, WorldCell, WorldSpec schemas, and schema tests. |
+| `0.2.2-recursive-world-contract` | code | ready for implementation | Add EntityRef, WorldCell, WorldSpec schemas, and schema tests. |
 | `0.2.3-event-contract-extension` | code | planned | Extend Event with optional structured references while preserving compatibility. |
 | `0.2.4-worldspec-reference-fixture` | code | planned | Add and validate the first reference WorldSpec fixture. |
 | `0.2.5-legacy-boundary-cleanup` | documentation-only | planned | Mark legacy backend path and update architecture boundary. |
