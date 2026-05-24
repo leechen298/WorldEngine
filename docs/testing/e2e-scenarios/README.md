@@ -23,8 +23,8 @@ evidence. Those API reads are not Agent operations.
 | `dashboard-params-flow` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts`. |
 | `dashboard-invalid-param` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts`. |
 | `dashboard-archive-summary` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with low archive intervals scoped to the Playwright backend web server. |
-| `dashboard-agent-autotune` | `scenario-contract-only / not-implemented` | Current UI/backend capability and stable selectors exist; Playwright implementation and deterministic assertions are still missing. |
-| `dashboard-timeline-navigation` | `scenario-contract-only / not-implemented` | Timeline controls and expanded-detail selectors exist; Playwright implementation is still missing. |
+| `dashboard-agent-autotune` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with deterministic params-agent patch assertions. |
+| `dashboard-timeline-navigation` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with generated events, pagination, and expanded-detail assertions. |
 
 ## Execution Rule
 

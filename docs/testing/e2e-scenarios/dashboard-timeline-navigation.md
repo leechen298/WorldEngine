@@ -1,13 +1,14 @@
 # E2E Scenario: dashboard-timeline-navigation
 
-Status: scenario-contract-only / not-implemented
+Status: implemented
 
 ## Current Implementation State
 
 Timeline pagination controls and expanded row detail content now expose stable
 selectors suitable for robust E2E assertions.
 
-This scenario is not implemented as E2E coverage today.
+This scenario is implemented as Playwright E2E coverage in
+`frontend/e2e/dashboard.spec.ts`.
 
 ## Purpose
 
@@ -33,16 +34,18 @@ changes work, pagination state is correct, and event details can be inspected.
 
 ## Assertions
 
-Future implementation should assert:
+The implementation asserts:
 
 - Timeline shows multiple tick records.
-- Page-size changes alter the displayed set or pagination behavior.
+- Page-size changes are applied through `timeline-page-size`.
 - Previous and next controls enable or disable correctly.
 - Expanded details show event type, source, and payload/detail evidence.
+- The scenario generates enough runtime events inside the test and does not
+  depend on previous test state.
 
 ## PASS Source
 
-Playwright assertion after implementation.
+Playwright assertion.
 
 ## Remaining Prerequisites
 
@@ -57,6 +60,4 @@ Stable selectors exist:
 - `timeline-event-payload`
 - `timeline-event-source`
 
-Remaining blocker:
-
-- Playwright scenario implementation.
+Remaining blockers: none for current v0.1 E2E coverage.

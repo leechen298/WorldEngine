@@ -46,9 +46,11 @@ belong under `docs/testing/results/`.
 
 Current Agent smoke scenario contracts live under
 `docs/testing/agent-smoke/scenarios/`. `dashboard-basic-runtime` is executable.
-`dashboard-params-flow` and `dashboard-invalid-param` are validator-supported,
-but no live smoke run is recorded yet. Do not report them as passed without a
-fresh validated result directory.
+`dashboard-params-flow` and `dashboard-invalid-param` are
+`live-smoke-recorded`. The current raw `latest/` directory points to
+`dashboard-invalid-param`; 0.1.8 params-flow evidence is preserved through
+`docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` and commit
+`c6da552`.
 
 ## E2E Scenario Contracts
 
@@ -60,15 +62,11 @@ Implemented current E2E coverage:
 - `dashboard-basic-runtime`
 - `dashboard-params-flow`
 - `dashboard-invalid-param`
-
-Contract-only E2E scenarios:
-
 - `dashboard-agent-autotune`
 - `dashboard-timeline-navigation`
 - `dashboard-archive-summary`
 
-Contract-only scenarios must not be reported as passed until implemented and
-verified by Playwright assertion.
+E2E PASS still requires a current-session Playwright assertion result.
 
 ## Codex/Test-Runner Autonomous Contracts
 

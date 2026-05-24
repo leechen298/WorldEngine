@@ -16,6 +16,12 @@ type WorldEvent = {
 
 type WorldParams = Record<string, unknown>;
 
+type ParamPatch = {
+  op: string;
+  path: string;
+  value?: unknown;
+};
+
 type WorldSummary = {
   id: string;
   from_tick: number;
@@ -34,6 +40,13 @@ async function getApiData<T>(request: APIRequestContext, path: string): Promise<
   const payload = (await response.json()) as { code: number; data: T; msg: string };
   expect(payload.code).toBe(0);
   return payload.data;
+}
+
+function readParamValue(value: unknown): unknown {
+  if (value && typeof value === "object" && "value" in value) {
+    return (value as Record<string, unknown>).value;
+  }
+  return value;
 }
 
 async function getRuntimeState(request: APIRequestContext): Promise<RuntimeState> {
@@ -63,10 +76,7 @@ function readCounterIncrement(params: WorldParams): unknown {
     return undefined;
   }
   const increment = (counter as Record<string, unknown>).increment;
-  if (increment && typeof increment === "object" && "value" in increment) {
-    return (increment as Record<string, unknown>).value;
-  }
-  return increment;
+  return readParamValue(increment);
 }
 
 async function setWorldParam(page: Page, path: string, type: string, value: string): Promise<void> {
@@ -123,6 +133,7 @@ async function stepRuntimeOnce(page: Page, request: APIRequestContext): Promise<
   const before = await getRuntimeState(request);
   await page.getByTestId("runtime-step-button").click();
   await expect.poll(async () => (await getRuntimeState(request)).tick_id).toBe(before.tick_id + 1);
+  await expect(page.getByTestId("runtime-tick-id")).toHaveText(String(before.tick_id + 1));
   return before.tick_id + 1;
 }
 
@@ -178,6 +189,82 @@ test("dashboard-invalid-param shows an error and leaves params unchanged", async
 
   const afterParams = await getWorldParams(request);
   expect(afterParams).toEqual(beforeParams);
+});
+
+test("dashboard-agent-autotune applies the deterministic params-agent patch", async ({ page, request }) => {
+  await page.goto("/");
+  await expect(page.getByTestId("backend-health-status")).toHaveText("ok");
+
+  await setWorldParam(page, "counter.increment", "number", "2");
+  await expect.poll(async () => readCounterIncrement(await getWorldParams(request))).toBe(2);
+
+  await page.getByTestId("world-agent-goal-input").fill("speed up counter");
+  await page.getByTestId("world-agent-autotune-button").click();
+
+  await expect(page.getByTestId("world-agent-success")).toContainText("Applied 1 patch(es)");
+  const patchesText = await page.getByTestId("world-agent-patches").textContent();
+  expect(patchesText).toBeTruthy();
+  const patches = JSON.parse(patchesText ?? "[]") as ParamPatch[];
+  expect(patches).toHaveLength(1);
+
+  const [patch] = patches;
+  expect(patch.op).toBe("set");
+  expect(patch.path).toBe("counter.increment");
+  const patchIncrement = readParamValue(patch.value);
+  expect(typeof patchIncrement).toBe("number");
+  expect(patchIncrement).not.toBe(2);
+
+  await expect.poll(async () => readCounterIncrement(await getWorldParams(request))).toBe(patchIncrement);
+  await expect(page.getByTestId("world-params-json")).toContainText('"increment"');
+  await expect(page.getByTestId("world-params-json")).toContainText(String(patchIncrement));
+});
+
+test("dashboard-timeline-navigation paginates and expands generated event details", async ({ page, request }) => {
+  await page.goto("/");
+  await expect(page.getByTestId("backend-health-status")).toHaveText("ok");
+
+  const pageSizeSelect = page.getByTestId("timeline-page-size");
+  await pageSizeSelect.selectOption("20");
+
+  for (let step = 0; step < 21; step += 1) {
+    await stepRuntimeOnce(page, request);
+  }
+
+  await expect.poll(async () => page.getByTestId("timeline-row").count()).toBe(20);
+  await expect(page.getByTestId("timeline-next-page")).toBeEnabled();
+
+  await pageSizeSelect.selectOption("50");
+  await expect(pageSizeSelect).toHaveValue("50");
+  await expect.poll(async () => page.getByTestId("timeline-row").count()).toBeGreaterThan(0);
+  expect(await page.getByTestId("timeline-row").count()).toBeLessThanOrEqual(50);
+
+  await pageSizeSelect.selectOption("20");
+  await expect(pageSizeSelect).toHaveValue("20");
+  await expect.poll(async () => page.getByTestId("timeline-row").count()).toBe(20);
+  await expect(page.getByTestId("timeline-prev-page")).toBeDisabled();
+  await expect(page.getByTestId("timeline-next-page")).toBeEnabled();
+
+  const firstPageFirstRow = await page.getByTestId("timeline-row").first().innerText();
+  await page.getByTestId("timeline-next-page").click();
+  await expect(page.getByTestId("timeline-panel")).toContainText("Page 2");
+  await expect(page.getByTestId("timeline-prev-page")).toBeEnabled();
+  await expect.poll(async () => page.getByTestId("timeline-row").first().innerText()).not.toBe(firstPageFirstRow);
+
+  await page.getByTestId("timeline-prev-page").click();
+  await expect(page.getByTestId("timeline-panel")).toContainText("Page 1");
+  await expect.poll(async () => page.getByTestId("timeline-row").first().innerText()).toBe(firstPageFirstRow);
+
+  await page.getByTestId("timeline-row-expand").first().click();
+  await expect(page.getByTestId("timeline-event-type").first()).not.toHaveText("");
+  await expect(page.getByTestId("timeline-event-source").first()).not.toHaveText("");
+  await expect
+    .poll(async () =>
+      (await page.getByTestId("timeline-event-payload").allTextContents()).some((text) => {
+        const trimmed = text.trim();
+        return trimmed.length > 0 && trimmed !== "-";
+      }),
+    )
+    .toBe(true);
 });
 
 test("dashboard-archive-summary creates and renders a newer archive summary", async ({ page, request }) => {

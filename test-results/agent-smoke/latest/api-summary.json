@@ -1,11 +1,9 @@
 {
-  "after_tick": 1,
-  "before_tick": 0,
-  "counter_event_increment": 2,
-  "counter_event_tick": 1,
-  "expected_value": 2,
+  "after_params": {},
+  "before_params": {},
   "health_status": "ok",
-  "observed_value": 2,
-  "param_path": "counter.increment",
-  "scenario": "dashboard-params-flow"
+  "invalid_path": "system.secret",
+  "params_unchanged": true,
+  "scenario": "dashboard-invalid-param",
+  "ui_error_seen": true
 }

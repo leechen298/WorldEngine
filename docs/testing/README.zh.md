@@ -44,8 +44,10 @@ Durable summaries 应放在 `docs/testing/results/` 下。
 
 当前 Agent smoke scenario contracts 位于 `docs/testing/agent-smoke/scenarios/`。
 `dashboard-basic-runtime` 可执行。`dashboard-params-flow` 和
-`dashboard-invalid-param` 已获得 validator 支持，但当前还没有 live smoke run 记录。
-没有新的 validated result directory 时，不要报告它们已经通过。
+`dashboard-invalid-param` 都是 `live-smoke-recorded`。当前 raw `latest/`
+目录指向 `dashboard-invalid-param`；0.1.8 params-flow evidence 已通过
+`docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` 和 commit
+`c6da552` 保留。
 
 ## E2E Scenario Contracts
 
@@ -56,14 +58,11 @@ Durable summaries 应放在 `docs/testing/results/` 下。
 - `dashboard-basic-runtime`
 - `dashboard-params-flow`
 - `dashboard-invalid-param`
-
-仅契约定义、尚未实现的 E2E scenarios：
-
 - `dashboard-agent-autotune`
 - `dashboard-timeline-navigation`
 - `dashboard-archive-summary`
 
-这些 contract-only scenarios 只有在后续实现并由 Playwright assertion 验证后，才能报告为通过。
+E2E PASS 仍必须来自当前会话的 Playwright assertion result。
 
 ## Codex/Test-Runner Autonomous Contracts
 

@@ -1,11 +1,24 @@
 # Latest Agent Smoke Evidence
 
-This directory is intentionally trackable so the latest raw Agent smoke evidence
-can be committed and pushed.
+Scenario: `dashboard-invalid-param`
 
-Historical timestamped runs under `test-results/agent-smoke/<timestamp>/`
-remain local-only by default. After a real Agent smoke run, copy or sync the
-validated latest evidence into this directory before commit.
+Status: validated
 
-This directory currently contains the reviewed 0.1.8 live smoke evidence for
-`dashboard-params-flow`.
+This directory contains the 0.1.9 live Agent smoke evidence for
+`dashboard-invalid-param`.
+
+Validation command:
+
+```bash
+make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest
+```
+
+Validated result:
+
+```text
+PASS: validated agent smoke result at test-results/agent-smoke/latest
+```
+
+The previous 0.1.8 `dashboard-params-flow` raw `latest/` evidence remains
+available through commit `c6da552` and is summarized in
+`docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md`.

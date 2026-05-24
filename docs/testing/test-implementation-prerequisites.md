@@ -24,6 +24,9 @@ stable E2E or Codex/test-runner scenario.
 
 0.1.7 status: implemented as stable dashboard selectors.
 
+0.1.9 status: current-code Playwright E2E implemented; Codex/test-runner
+autonomous coverage remains future work.
+
 ### MemoryPanel / Summary
 
 Required stable selectors:
@@ -37,6 +40,8 @@ These selectors are needed before `dashboard-archive-summary` can assert
 latest archive summary display through the dashboard.
 
 0.1.7 status: implemented as stable dashboard selectors.
+
+0.1.8 status: current-code Playwright E2E implemented.
 
 ### Timeline Details
 
@@ -52,6 +57,9 @@ These selectors are needed before timeline navigation and autonomous timeline
 investigation scenarios can assert expanded event details robustly.
 
 0.1.7 status: implemented as stable dashboard selectors.
+
+0.1.9 status: current-code Playwright timeline-navigation E2E implemented;
+autonomous timeline investigation remains future work.
 
 ## Validator / Checker Prerequisites
 
@@ -70,7 +78,14 @@ The validator must keep these existing invariants:
 - API evidence may appear only in `api-summary.json` or checker artifacts.
 
 0.1.7 status: validator support and deterministic fixture coverage are
-implemented. Live Agent smoke execution remains a later package responsibility.
+implemented.
+
+0.1.8 status: `dashboard-params-flow` live Agent smoke recorded.
+
+0.1.9 status: `dashboard-invalid-param` live Agent smoke recorded. The current
+`test-results/agent-smoke/latest/` raw evidence points to invalid-param;
+params-flow raw evidence remains available through commit `c6da552` and the
+durable summary under `docs/testing/results/`.
 
 ### Codex/Test-Runner Autonomous Checker
 
@@ -95,6 +110,5 @@ intervals, such as:
 - `WORLD_SUMMARY_INTERVAL_TICKS=2`
 - `WORLD_SNAPSHOT_INTERVAL_TICKS=2`
 
-Future implementation should set these through test web-server environment or
-equivalent test configuration. It must not change runtime logic just to make
-the scenario pass.
+0.1.8 status: implemented through Playwright web-server environment. Runtime
+logic was not changed to make the scenario pass.

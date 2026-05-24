@@ -14,12 +14,13 @@ PASS verdict。
 |---|---|---|
 | `dashboard-basic-runtime` | `executable` | `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md` |
 | `dashboard-params-flow` | `live-smoke-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
-| `dashboard-invalid-param` | `validator-supported-no-live-run-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
+| `dashboard-invalid-param` | `live-smoke-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
 
-`dashboard-params-flow` 已有 deterministic validator 支持，并且已有
-`test-results/agent-smoke/latest/` live smoke result。`dashboard-invalid-param`
-已有 deterministic validator 支持，但仓库中还没有对应 live smoke result。没有新的
-validated result directory 时，不要报告 `dashboard-invalid-param` 已经通过。
+`dashboard-invalid-param` 已有 deterministic validator 支持，并且已有
+`test-results/agent-smoke/latest/` live smoke result。`dashboard-params-flow`
+保留 0.1.8 live smoke status；它之前的 raw `latest/` evidence 仍可通过
+commit `c6da552` 查看，并已摘要到
+`docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md`。
 
 ## Required Evidence
 

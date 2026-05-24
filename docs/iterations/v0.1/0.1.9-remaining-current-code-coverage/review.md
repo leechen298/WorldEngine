@@ -1,88 +1,165 @@
 # Review
 
-Status: documentation-stage approved; ready for implementation
+Status: review complete
 
 ## Changed Files
 
 | File | Change |
 |---|---|
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/README.md` | Added package overview, status, documents, checklist, and boundary. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/intent.md` | Defined remaining v0.1 current-code coverage gaps, goals, non-goals, timing, and north-star alignment. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/contract.md` | Defined allowed/forbidden changes, E2E rules, live invalid-param Agent smoke rules, params-flow previous-evidence traceability, and status update rules. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/technical-design.md` | Documented current state, Auto-Tune E2E design, timeline-navigation E2E design, invalid-param live smoke design, compatibility, and risks. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/test-plan.md` | Added required E2E, live smoke, params-flow previous-evidence traceability, focused frontend, regression, and scope-check commands. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/plan.md` | Added file boundaries, ordered implementation steps, previous-evidence traceability step, CLI evidence recording steps, and verification handoff. |
-| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/review.md` | Recorded documentation-stage evidence. |
-| `docs/iterations/v0.1/README.md` | Added 0.1.9 package index entry. |
-| `docs/iterations/v0.1/README.zh.md` | Synced the Chinese 0.1.9 package index entry. |
-| `docs/iterations/v0.1/v0.1-plan.md` | Added 0.1.9 package planning section. |
-| `docs/iterations/v0.1/v0.1-plan.zh.md` | Synced the Chinese 0.1.9 package planning section. |
+| `frontend/e2e/dashboard.spec.ts` | Added `dashboard-agent-autotune` and `dashboard-timeline-navigation` Playwright scenarios. |
+| `test-results/agent-smoke/latest/README.md` | Replaced latest evidence note with 0.1.9 `dashboard-invalid-param` evidence note. |
+| `test-results/agent-smoke/latest/api-baseline.json` | Added helper-generated pre-action baseline for invalid-param live smoke. |
+| `test-results/agent-smoke/latest/api-summary.json` | Added helper-generated invalid-param deterministic checker evidence. |
+| `test-results/agent-smoke/latest/console.log` | Added browser console evidence for invalid-param live smoke. |
+| `test-results/agent-smoke/latest/operation-log.jsonl` | Replaced params-flow operation log with invalid-param UI and CLI operations. |
+| `test-results/agent-smoke/latest/result.json` | Replaced params-flow result with invalid-param deterministic checker result. |
+| `test-results/agent-smoke/latest/screenshots/dashboard-invalid-param.png` | Added invalid-param UI screenshot evidence. |
+| `test-results/agent-smoke/latest/screenshots/dashboard-params-flow.png` | Removed previous latest screenshot after preserving 0.1.8 durable reference. |
+| `test-results/agent-smoke/latest/transcript.md` | Replaced params-flow transcript with invalid-param transcript. |
+| `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` | Added durable 0.1.8 params-flow evidence reference before replacing latest. |
+| `docs/testing/e2e-scenarios/README.md` | Marked Auto-Tune and timeline-navigation E2E scenarios implemented. |
+| `docs/testing/e2e-scenarios/dashboard-agent-autotune.md` | Updated scenario status, assertions, and PASS source to implemented. |
+| `docs/testing/e2e-scenarios/dashboard-timeline-navigation.md` | Updated scenario status, assertions, and PASS source to implemented. |
+| `docs/testing/agent-smoke/README.md` / `README.zh.md` | Marked invalid-param live-smoke-recorded and documented params-flow durable reference. |
+| `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` | Marked invalid-param live-smoke-recorded and linked params-flow durable reference. |
+| `docs/testing/README.md` / `README.zh.md` | Updated current E2E and Agent smoke status. |
+| `docs/testing/test-implementation-prerequisites.md` | Added 0.1.8/0.1.9 closure status for selector, validator, and archive prerequisites. |
+| `docs/testing/v0.1-test-map.md` / `v0.1-test-map.zh.md` | Updated current coverage map for 0.1.9 E2E and live smoke closure. |
+| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/README.md` | Marked package review complete. |
+| `docs/iterations/v0.1/README.md` / `README.zh.md` | Marked 0.1.9 review complete in the v0.1 index. |
+| `docs/iterations/v0.1/v0.1-plan.md` / `v0.1-plan.zh.md` | Marked 0.1.9 review complete in the v0.1 plan. |
+| `docs/iterations/v0.1/0.1.9-remaining-current-code-coverage/review.md` | Replaced documentation-stage-only review with implementation closeout evidence. |
 
 ## Commands Run
 
-Documentation-stage commands:
+Documentation approval gate:
+
+- User review approved implementation after commit
+  `e87ba14 docs: approve 0.1.9 implementation gate`.
+- The approved P3 required preserving a durable 0.1.8 params-flow evidence
+  reference before replacing `test-results/agent-smoke/latest/`.
+
+Pre-implementation and focused implementation checks:
 
 ```bash
 git status --short --branch
-git diff --check
-find docs/iterations/v0.1/0.1.9-remaining-current-code-coverage -maxdepth 1 -type f | sort
-rg -n "dashboard-agent-autotune|dashboard-timeline-navigation|dashboard-invalid-param|live-smoke-recorded|agent_smoke_evidence|api-summary.json|API curl smoke|backend/worldengine|backend/app|WorldSpec|WorldCell|pseudo-self|v0.2" docs/iterations/v0.1/0.1.9-remaining-current-code-coverage docs/iterations/v0.1/README.md docs/iterations/v0.1/README.zh.md docs/iterations/v0.1/v0.1-plan.md docs/iterations/v0.1/v0.1-plan.zh.md
-git diff --name-only | rg -v '^(docs/iterations/v0\\.1/)'
-git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'
-git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'
-rg -n "Status: ready for implementation|0\\.1\\.9-remaining-current-code-coverage.*ready for implementation|Contract reviewed|Technical design reviewed|Test plan reviewed|Plan reviewed|c6da552|docs/testing/results" docs/iterations/v0.1/0.1.9-remaining-current-code-coverage docs/iterations/v0.1/README.md docs/iterations/v0.1/README.zh.md docs/iterations/v0.1/v0.1-plan.md docs/iterations/v0.1/v0.1-plan.zh.md
+make check-backend
+make check-frontend
+cd frontend && pnpm exec playwright test e2e/dashboard.spec.ts --grep "dashboard-agent-autotune|dashboard-timeline-navigation"
 ```
 
-Implementation-stage commands are listed in `test-plan.md` and have not been
-run.
+The first scoped Playwright attempt inside the sandbox failed to bind
+`127.0.0.1:8000` with `Operation not permitted`. It was rerun with port-binding
+permission and exited `1` with `No tests found`, confirming the two scenario
+names were not implemented yet.
+
+After implementation:
+
+```bash
+cd frontend && pnpm exec playwright test e2e/dashboard.spec.ts --grep "dashboard-agent-autotune|dashboard-timeline-navigation"
+```
+
+Live Agent smoke evidence commands:
+
+```bash
+tools/testing/agent_smoke_evidence.py baseline --base-url http://127.0.0.1:8000 --out test-results/agent-smoke/latest/api-baseline.json
+tools/testing/agent_smoke_evidence.py collect --scenario dashboard-invalid-param --base-url http://127.0.0.1:8000 --baseline test-results/agent-smoke/latest/api-baseline.json --operation-log test-results/agent-smoke/latest/operation-log.jsonl --out test-results/agent-smoke/latest/api-summary.json
+make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest
+```
+
+The first helper baseline attempt inside the sandbox failed to access
+`127.0.0.1:8000` with `Operation not permitted`. It was rerun with local backend
+access and exited `0`.
+
+Required test-plan verification:
+
+```bash
+git diff --check
+find test-results/agent-smoke/latest -maxdepth 2 -type f | sort
+make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest
+make test-e2e
+cd frontend && pnpm test -- WorldPanel.test.ts TimelinePanel.test.ts DashboardPage.test.ts
+make check-backend
+make check-frontend
+if git diff --name-only | rg '^(backend/worldengine/|backend/app/)'; then
+  echo "Unexpected backend runtime or legacy change"
+  exit 1
+fi
+```
+
+Not run by contract:
+
+- API curl smoke.
+- full Codex/test-runner autonomous scenarios.
+- autonomous scorecard verdicts.
+- persistence/restart tests.
+- WorldSpec, WorldCell, recursive world, or world generation tests.
+- agent memory or pseudo-self tests.
+- v0.2 implementation.
 
 ## Test Results
 
-- `git status --short --branch`: passed; branch was
-  `## v0.1...origin/v0.1`, and changed paths were limited to the new 0.1.9
-  package plus v0.1 index/plan docs.
+- `git status --short --branch`: initial implementation-stage check showed
+  branch `v0.1...origin/v0.1` with no changed files.
+- `make check-backend`: exit `0`.
+- `make check-frontend`: exit `0`.
+- Pre-implementation scoped Playwright rerun:
+  `cd frontend && pnpm exec playwright test e2e/dashboard.spec.ts --grep "dashboard-agent-autotune|dashboard-timeline-navigation"`
+  exited `1` with `No tests found`.
+- Post-implementation scoped Playwright:
+  `2 passed (4.2s)`.
+- `tools/testing/agent_smoke_evidence.py baseline ...`: exit `0` after
+  rerun with local backend access.
+- `tools/testing/agent_smoke_evidence.py collect --scenario dashboard-invalid-param ...`:
+  exit `0`; generated `api-summary.json`.
+- `make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest`:
+  exit `0`; output
+  `PASS: validated agent smoke result at test-results/agent-smoke/latest`.
 - `git diff --check`: exit `0`; no output.
-- `find docs/iterations/v0.1/0.1.9-remaining-current-code-coverage -maxdepth 1 -type f | sort`:
-  exit `0`; listed the seven required package documents.
-- `rg -n "dashboard-agent-autotune|dashboard-timeline-navigation|dashboard-invalid-param|live-smoke-recorded|agent_smoke_evidence|api-summary.json|API curl smoke|backend/worldengine|backend/app|WorldSpec|WorldCell|pseudo-self|v0.2" docs/iterations/v0.1/0.1.9-remaining-current-code-coverage docs/iterations/v0.1/README.md docs/iterations/v0.1/README.zh.md docs/iterations/v0.1/v0.1-plan.md docs/iterations/v0.1/v0.1-plan.zh.md`:
-  exit `0`; found the required scenario, live-smoke, helper, curl-smoke,
-  backend-boundary, and v0.2+ exclusion terms.
-- `git diff --name-only | rg -v '^(docs/iterations/v0\\.1/)'`:
-  expected no output; exit `1` with no output.
-- `git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'`:
-  expected no output; exit `1` with no output.
-- `git diff --name-only | rg '^(backend/worldengine/|backend/app/|frontend/|tools/testing/|test-results/)'`:
-  expected no output; exit `1` with no output.
-- Documentation approval and P3 traceability scan for ready-for-implementation
-  status, review-gate checklist terms, `c6da552`, and `docs/testing/results`:
-  exit `0`; found the package `ready for implementation` status, checked
-  review-gate checklist terms, and found the previous params-flow evidence
-  traceability rules.
-- Stale pre-approval status scan for `Status: ready for review`,
-  `0.1.9-remaining-current-code-coverage.*ready for review`, and
-  `Implementation must not start until` over package README and v0.1
-  index/plan docs: expected no output; exit `1` with no output.
-- Implementation-path scan for
-  `backend/worldengine/|backend/app/|frontend/|tools/testing|test-results/`:
-  expected no output; exit `1` with no output.
-- `git status --short | rg -v '^(.. )?docs/iterations/v0\\.1/'`: expected no
-  output; exit `1` with no output.
-
-No backend tests, frontend tests, E2E tests, live Agent smoke, API curl smoke,
-or Codex/test-runner autonomous tests were run or claimed by this documentation
-stage.
+- `find test-results/agent-smoke/latest -maxdepth 2 -type f | sort`:
+  exit `0`; listed `README.md`, `api-baseline.json`, `api-summary.json`,
+  `console.log`, `operation-log.jsonl`, `result.json`,
+  `screenshots/dashboard-invalid-param.png`, and `transcript.md`.
+- `make test-e2e`: exit `0`; `6 passed (6.2s)`.
+- `cd frontend && pnpm test -- WorldPanel.test.ts TimelinePanel.test.ts DashboardPage.test.ts`:
+  exit `0`; Vitest selected the current frontend unit suite and reported
+  `Test Files 6 passed (6)` and `Tests 28 passed (28)`.
+- Final `make check-backend`: exit `0`.
+- Final `make check-frontend`: exit `0`.
+- Backend runtime and legacy diff guard:
+  `if git diff --name-only | rg '^(backend/worldengine/|backend/app/)'; then ... fi`
+  exited `0` with no output.
 
 ## Compatibility Review
 
-Documentation stage only. No runtime, API, schema, frontend, validator,
-fixture, skill, test implementation, live Agent smoke evidence, or
-`backend/worldengine/` file has been changed by this package draft.
+- No `backend/app/` files were changed.
+- No `backend/worldengine/` files were changed.
+- No backend runtime behavior, API contract, schema, validator implementation,
+  fixture, autonomous runner, or scorecard was changed.
+- E2E changes are additive in `frontend/e2e/dashboard.spec.ts`.
+- `dashboard-agent-autotune` asserts the actual patch value emitted by the
+  current `MockLLMProvider`; it does not hardcode the previous params-flow
+  value `2` as the Auto-Tune expectation.
+- `dashboard-timeline-navigation` generates enough runtime events inside the
+  test before asserting pagination and expanded event details.
+- `test-results/agent-smoke/latest/` now points to 0.1.9
+  `dashboard-invalid-param` evidence. The previous 0.1.8 params-flow raw
+  latest evidence remains available through commit `c6da552` and is summarized
+  in `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md`.
 
 ## Scope Review
 
-The draft package describes 0.1.9 implementation scope only. It does not
-implement E2E, run live Agent smoke, create or replace
-`test-results/agent-smoke/latest/`, or start v0.2 work.
+0.1.9 implemented only:
+
+- `dashboard-agent-autotune` E2E.
+- `dashboard-timeline-navigation` E2E.
+- live `dashboard-invalid-param` Agent smoke evidence.
+- documentation/test-map status synchronization for those items.
+
+The package did not add API curl smoke, did not run or implement full
+autonomous scenarios, did not add persistence/restart coverage, did not start
+WorldSpec or WorldCell work, and did not implement recursive world generation,
+agent memory, or pseudo-self behavior.
 
 ## Unresolved Findings
 
@@ -92,24 +169,7 @@ implement E2E, run live Agent smoke, create or replace
 
 ## Final Assessment
 
-The 0.1.9 documentation package has been reviewed and approved. Implementation
-may start with `worldengine-iteration-dev`, following the approved contract,
-technical design, test plan, and plan.
-
-## Documentation Approval Gate
-
-User review approved commit `0016f9c docs: add 0.1.9 coverage package` after
-confirming P1 and P2 were clear. The non-blocking P3 was incorporated before
-implementation:
-
-- P1: none.
-- P2: none.
-- P3: implementation must preserve a durable reference for the previous 0.1.8
-  params-flow latest raw evidence before replacing `test-results/agent-smoke/latest/`.
-  The approved options are either a `docs/testing/results/` summary or an
-  explicit statement that raw params-flow evidence remains available through
-  commit `c6da552`.
-
-No implementation command, E2E, live Agent smoke, validator run against
-`test-results/agent-smoke/latest`, API curl smoke, autonomous scenario, or
-runtime change happened as part of this approval sync.
+0.1.9 implementation is complete and review evidence is recorded. The remaining
+v0.1 current-code coverage items are closed, while autonomous, persistence,
+WorldSpec/WorldCell, recursive world, and agent memory/self work remain future
+scope.

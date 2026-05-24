@@ -1,6 +1,6 @@
 # 0.1.9 Remaining Current-Code Coverage
 
-Status: ready for implementation
+Status: review complete
 
 Type: mixed
 
@@ -30,9 +30,9 @@ Codex/test-runner autonomous scenarios.
 - [x] Technical design reviewed
 - [x] Test plan reviewed
 - [x] Plan reviewed
-- [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Implementation complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Boundary
 
@@ -42,6 +42,5 @@ Codex/test-runner autonomous scenarios.
 2. `dashboard-timeline-navigation` E2E.
 3. Live `dashboard-invalid-param` Agent smoke evidence.
 
-Implementation may start after this documentation approval gate. Implementation
-must still follow `contract.md`, `technical-design.md`, `test-plan.md`, and
-`plan.md`.
+Implementation followed `contract.md`, `technical-design.md`, `test-plan.md`,
+and `plan.md`; closeout evidence is recorded in `review.md`.

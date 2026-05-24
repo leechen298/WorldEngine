@@ -1,6 +1,6 @@
 # E2E Scenario: dashboard-agent-autotune
 
-Status: scenario-contract-only / not-implemented
+Status: implemented
 
 ## Current Implementation State
 
@@ -8,9 +8,8 @@ The dashboard exposes `LLM Auto-Tune`, and the backend has a
 `ParamsAgent + MockLLMProvider` path through
 `/world/agent/params/propose-and-apply`.
 
-This scenario is not implemented as E2E coverage today. Stable selectors now
-exist, but it must not be reported as passed until a later package implements
-the Playwright test, adds deterministic assertions, and runs it.
+This scenario is implemented as Playwright E2E coverage in
+`frontend/e2e/dashboard.spec.ts`.
 
 ## Purpose
 
@@ -29,25 +28,25 @@ and display deterministic patch evidence.
 1. Open the dashboard.
 2. Enter a goal such as `keep counter stable`.
 3. Click `LLM Auto-Tune`.
-4. Wait for success or deterministic error feedback.
-5. If successful, inspect patch details.
-6. Verify params or event evidence reflects the result.
+4. Wait for deterministic success feedback.
+5. Inspect patch details from `world-agent-patches`.
+6. Verify the observed params reflect the actual patch value.
 
 ## Assertions
 
-Future implementation should assert:
+The implementation asserts:
 
-- Auto-tune action produces explicit success or failure feedback.
+- Auto-tune action produces explicit success feedback.
 - Successful result displays `Applied ... patch(es)`.
-- Patch details are inspectable.
-- Params JSON or deterministic `/world/params` test-script evidence reflects
-  the applied patch.
-- Timeline or event evidence includes params-agent related evidence when
-  available.
+- Patch details include a `counter.increment` `set` patch.
+- The test reads the actual patch value and verifies `/world/params` and
+  dashboard params JSON reflect that value.
+- The test does not hardcode the previous params-flow value as the Auto-Tune
+  expected result.
 
 ## PASS Source
 
-Playwright assertion after implementation.
+Playwright assertion.
 
 ## Remaining Prerequisites
 
@@ -59,7 +58,4 @@ Stable selectors exist:
 - `world-agent-patches`
 - `world-agent-error`
 
-Remaining blockers:
-
-- Playwright scenario implementation.
-- Deterministic success/error assertions and checker expectations.
+Remaining blockers: none for current v0.1 E2E coverage.
