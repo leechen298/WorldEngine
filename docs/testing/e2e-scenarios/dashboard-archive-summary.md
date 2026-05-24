@@ -1,14 +1,14 @@
 # E2E Scenario: dashboard-archive-summary
 
-Status: scenario-contract-only / not-implemented
+Status: implemented
 
 ## Current Implementation State
 
 The backend has archive snapshot and summary behavior, and the dashboard
 MemoryPanel displays the latest archive summary. Stable MemoryPanel selectors
-now exist for E2E assertions.
+exist for E2E assertions.
 
-This scenario is not implemented as E2E coverage today.
+This scenario is implemented in `frontend/e2e/dashboard.spec.ts`.
 
 ## Purpose
 
@@ -34,16 +34,18 @@ displayed in the dashboard MemoryPanel.
 
 ## Assertions
 
-Future implementation should assert:
+The implementation asserts:
 
+- The latest summary before stepping is recorded.
+- A newer summary is created after stepping.
 - Latest summary becomes visible.
-- Summary includes a tick range or equivalent interval evidence.
+- Summary includes tick range evidence.
 - Summary stats include total event count.
 - Summary stats include event type counts such as `tick.advanced`.
 
 ## PASS Source
 
-Playwright assertion after implementation.
+Playwright assertion through `make test-e2e`.
 
 ## Remaining Prerequisites
 
@@ -54,8 +56,5 @@ Stable selectors exist:
 - `memory-summary-stats`
 - `memory-summary-empty`
 
-Remaining blockers:
-
-- Playwright scenario implementation.
-- E2E test environment must define low archive intervals without changing
-  runtime logic.
+The Playwright backend web server defines low archive intervals for this E2E
+environment without changing backend runtime defaults or API behavior.

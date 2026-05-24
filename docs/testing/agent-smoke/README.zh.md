@@ -13,12 +13,13 @@ PASS verdict。
 | Scenario | Status | Instructions |
 |---|---|---|
 | `dashboard-basic-runtime` | `executable` | `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md` |
-| `dashboard-params-flow` | `validator-supported-no-live-run-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
+| `dashboard-params-flow` | `live-smoke-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
 | `dashboard-invalid-param` | `validator-supported-no-live-run-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
 
-`dashboard-params-flow` 和 `dashboard-invalid-param` 已有 deterministic validator
-支持，但仓库中还没有对应 live smoke result。没有新的 validated result directory 时，
-不要报告这两个 scenario 已经通过。
+`dashboard-params-flow` 已有 deterministic validator 支持，并且已有
+`test-results/agent-smoke/latest/` live smoke result。`dashboard-invalid-param`
+已有 deterministic validator 支持，但仓库中还没有对应 live smoke result。没有新的
+validated result directory 时，不要报告 `dashboard-invalid-param` 已经通过。
 
 ## Required Evidence
 

@@ -1,6 +1,6 @@
 # Scenario: dashboard-params-flow
 
-Status: validator-supported-no-live-run-recorded
+Status: live-smoke-recorded
 
 ## Purpose
 
@@ -11,10 +11,10 @@ while PASS remains deterministic.
 ## Current Executability
 
 This scenario now has validator support for deterministic checker evidence.
-No live smoke run has been recorded for it yet.
+One live smoke run is recorded under `test-results/agent-smoke/latest/`.
 
-Do not report this scenario as passed without a fresh result directory that
-passes `make validate-agent-smoke-result RESULT_DIR=<run-dir>`.
+Do not report refreshed evidence for this scenario without a fresh result
+directory that passes `make validate-agent-smoke-result RESULT_DIR=<run-dir>`.
 
 ## Allowed Operations
 
@@ -81,4 +81,7 @@ with `verdict_source: "deterministic_checker"`.
 
 ## Live Evidence Status
 
-No live Agent smoke result has been recorded for this scenario in 0.1.7.
+0.1.8 recorded live Agent smoke evidence under
+`test-results/agent-smoke/latest/`. The recorded run uses helper-generated
+`api-summary.json` and passed
+`make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest`.

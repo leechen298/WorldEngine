@@ -25,7 +25,7 @@ Agent memory 或 pseudo-self continuity。
 | `0.1.5-project-agent-workflow-skills` | mixed | review complete | Add project-local workflow skills for iteration documentation and reviewed implementation gates. |
 | `0.1.6-current-code-test-case-expansion` | documentation-only | review complete | Define current-code E2E、Agent smoke 和 Codex/test-runner autonomous scenario contracts before implementing or running more tests. |
 | `0.1.7-current-code-validator-expansion` | mixed | review complete | Add selector 和 Agent smoke validator infrastructure before live test execution. |
-| `0.1.8-current-code-test-execution` | mixed | ready for implementation | 文档审核通过后，先执行一个 live `dashboard-params-flow` Agent smoke，再实现 `dashboard-archive-summary` E2E。 |
+| `0.1.8-current-code-test-execution` | mixed | review complete | 已记录一个 live `dashboard-params-flow` Agent smoke run，并已实现 `dashboard-archive-summary` E2E。 |
 
 ## Required Reading
 

@@ -16,6 +16,18 @@ type WorldEvent = {
 
 type WorldParams = Record<string, unknown>;
 
+type WorldSummary = {
+  id: string;
+  from_tick: number;
+  to_tick: number;
+  created_at: string;
+  text: string;
+  stats: {
+    total_events: number;
+    type_counts: Record<string, number>;
+  };
+};
+
 async function getApiData<T>(request: APIRequestContext, path: string): Promise<T> {
   const response = await request.get(`${API_BASE_URL}${path}`);
   expect(response.ok()).toBeTruthy();
@@ -30,6 +42,11 @@ async function getRuntimeState(request: APIRequestContext): Promise<RuntimeState
 
 async function getWorldParams(request: APIRequestContext): Promise<WorldParams> {
   return getApiData<WorldParams>(request, "/world/params");
+}
+
+async function getLatestSummary(request: APIRequestContext): Promise<WorldSummary | null> {
+  const page = await getApiData<{ items: WorldSummary[] }>(request, "/world/summaries?limit=1&order=desc");
+  return page.items[0] ?? null;
 }
 
 async function getEventsForTick(request: APIRequestContext, tickId: number): Promise<WorldEvent[]> {
@@ -72,6 +89,41 @@ async function setWorldParam(page: Page, path: string, type: string, value: stri
   }
   await page.getByTestId("world-params-value-input").fill(value);
   await page.getByTestId("world-params-apply-button").click();
+}
+
+function isNewerSummary(summary: WorldSummary | null, before: WorldSummary | null): summary is WorldSummary {
+  if (summary === null) {
+    return false;
+  }
+  if (before === null) {
+    return true;
+  }
+  return summary.id !== before.id && summary.to_tick > before.to_tick;
+}
+
+async function waitForNewerSummary(
+  request: APIRequestContext,
+  before: WorldSummary | null,
+): Promise<WorldSummary> {
+  let latest: WorldSummary | null = null;
+  await expect
+    .poll(
+      async () => {
+        latest = await getLatestSummary(request);
+        return isNewerSummary(latest, before);
+      },
+      { timeout: 15_000 },
+    )
+    .toBe(true);
+  expect(latest).not.toBeNull();
+  return latest as WorldSummary;
+}
+
+async function stepRuntimeOnce(page: Page, request: APIRequestContext): Promise<number> {
+  const before = await getRuntimeState(request);
+  await page.getByTestId("runtime-step-button").click();
+  await expect.poll(async () => (await getRuntimeState(request)).tick_id).toBe(before.tick_id + 1);
+  return before.tick_id + 1;
 }
 
 test.describe.configure({ mode: "serial" });
@@ -126,4 +178,27 @@ test("dashboard-invalid-param shows an error and leaves params unchanged", async
 
   const afterParams = await getWorldParams(request);
   expect(afterParams).toEqual(beforeParams);
+});
+
+test("dashboard-archive-summary creates and renders a newer archive summary", async ({ page, request }) => {
+  const beforeSummary = await getLatestSummary(request);
+
+  await page.goto("/");
+  await expect(page.getByTestId("memory-panel")).toBeVisible();
+
+  for (let step = 0; step < 4; step += 1) {
+    await stepRuntimeOnce(page, request);
+  }
+
+  const latestSummary = await waitForNewerSummary(request, beforeSummary);
+  expect(latestSummary.to_tick).toBeGreaterThanOrEqual(latestSummary.from_tick);
+  expect(latestSummary.stats.total_events).toBeGreaterThan(0);
+  expect(latestSummary.stats.type_counts["tick.advanced"]).toBeGreaterThan(0);
+
+  await expect(page.getByTestId("memory-summary-stats")).toContainText(
+    `${latestSummary.from_tick} - ${latestSummary.to_tick}`,
+  );
+  await expect(page.getByTestId("memory-summary-stats")).toContainText(String(latestSummary.stats.total_events));
+  await expect(page.getByTestId("memory-summary-stats")).toContainText("tick.advanced");
+  await expect(page.getByTestId("memory-summary-text")).toContainText(latestSummary.text);
 });

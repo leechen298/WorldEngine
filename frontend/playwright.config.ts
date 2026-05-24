@@ -21,7 +21,8 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: ".venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
+      command:
+        "WORLD_SUMMARY_INTERVAL_TICKS=2 WORLD_SNAPSHOT_INTERVAL_TICKS=2 .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
       cwd: "../backend",
       url: `${apiBaseUrl}/health`,
       reuseExistingServer: !process.env.CI,
