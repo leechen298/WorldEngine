@@ -20,7 +20,7 @@ Tiny Village 可以作为 reference fixture 或 acceptance target，但不能成
 
 - `0.2.1-project-north-star` - documentation governance and north star。
 - `0.2.2-recursive-world-contract` - review complete。
-- `0.2.3-event-contract-extension` - planned。
+- `0.2.3-event-contract-extension` - ready for review。
 - `0.2.4-worldspec-reference-fixture` - planned。
 - `0.2.5-legacy-boundary-cleanup` - planned。
 - `0.2.6-release-closeout` - planned。
