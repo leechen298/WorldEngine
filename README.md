@@ -90,14 +90,25 @@ Default frontend API target is `http://localhost:8000` (configure via `VITE_API_
 
 ## Verification
 
-Latest v0.1 closeout verification is recorded in
-`docs/testing/results/2026-05-23-v0.1-closeout.md`.
+Recorded v0.1 closeout evidence is mapped in
+`docs/testing/v0.1-test-map.md`.
 
-Fresh results from that pass:
+Key recorded evidence includes:
 
-- backend: `63 passed`.
-- frontend unit tests: `24 passed`.
-- frontend production build: succeeded with a chunk-size warning.
+- `make check-backend` and `make check-frontend`.
+- backend pytest: `63 passed`.
+- frontend unit tests: `24 passed`; focused frontend coverage later recorded
+  `28 passed`.
+- frontend production build: succeeded with a documented chunk-size warning.
+- `make test-e2e`: `6 passed`.
+- live Agent smoke:
+  - `dashboard-params-flow`: 0.1.8 evidence preserved by
+    `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` and
+    commit `c6da552`.
+  - `dashboard-invalid-param`: current validated evidence under
+    `test-results/agent-smoke/latest/`.
+
+These are recorded closeout results, not tests rerun by this README update.
 
 Implementation docs:
 

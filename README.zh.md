@@ -87,14 +87,25 @@ pnpm dev
 
 ## Verification
 
-最新 v0.1 closeout verification 记录在
-`docs/testing/results/2026-05-23-v0.1-closeout.md`。
+已记录的 v0.1 closeout evidence 汇总在
+`docs/testing/v0.1-test-map.md`。
 
-该次验证的新鲜结果：
+关键已记录证据包括：
 
-- backend: `63 passed`。
-- frontend unit tests: `24 passed`。
-- frontend production build: 成功，但有 chunk-size warning。
+- `make check-backend` 和 `make check-frontend`。
+- backend pytest: `63 passed`。
+- frontend unit tests: `24 passed`；后续 focused frontend coverage 记录为
+  `28 passed`。
+- frontend production build: 成功，并保留已记录的 chunk-size warning。
+- `make test-e2e`: `6 passed`。
+- live Agent smoke：
+  - `dashboard-params-flow`: 0.1.8 evidence 通过
+    `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` 和 commit
+    `c6da552` 保留。
+  - `dashboard-invalid-param`: 当前 validated evidence 位于
+    `test-results/agent-smoke/latest/`。
+
+这些是已经记录的 closeout results，不是本次 README 更新重新运行的测试。
 
 Implementation docs：
 
