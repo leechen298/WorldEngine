@@ -31,10 +31,13 @@
   0.2.6 through 0.2.12 planning.
 - Update `docs/releases/v0.2.md` and `docs/releases/v0.2.zh.md` as draft /
   planned / not released documents.
-- Add this package directory and documents.
-- Add `docs/iterations/v0.2/00-chatgpt-plan.md`.
-- Add `docs/iterations/v0.2/development-workflow.md`.
-- Add `docs/iterations/v0.2/final-review-bundle-template.md`.
+- Add this package directory and English / Chinese mirror documents.
+- Add `docs/iterations/v0.2/00-chatgpt-plan.md` and
+  `docs/iterations/v0.2/00-chatgpt-plan.zh.md`.
+- Add `docs/iterations/v0.2/development-workflow.md` and
+  `docs/iterations/v0.2/development-workflow.zh.md`.
+- Add `docs/iterations/v0.2/final-review-bundle-template.md` and
+  `docs/iterations/v0.2/final-review-bundle-template.zh.md`.
 - Abstract historical concrete demo details inside `docs/iterations/v0.2/**`
   and v0.2 release docs.
 

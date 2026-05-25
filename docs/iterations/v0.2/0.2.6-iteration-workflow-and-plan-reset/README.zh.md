@@ -1,25 +1,26 @@
-# 0.2.6 Iteration Workflow and Plan Reset
+# 0.2.6 迭代工作流与计划重排
 
-Status: ready for review
+英文版本：`README.md`
 
-Type: documentation-only
+状态：`ready for review`
 
-## Goal
+类型：`documentation-only`
 
-Reset the remaining v0.2 plan, establish the automatic iteration workflow, and
-make the remaining v0.2 packages precise enough for future documentation and
-implementation passes.
+## 目标
 
-## Scope
+重排 v0.2 剩余计划，建立自动迭代工作流，并把剩余 v0.2 packages 写到足够精确，
+让后续文档规划和实现工作可以逐包执行。
 
-This package updates v0.2 planning, workflow, release-draft, and historical
-iteration documentation only. It does not implement code, schemas, APIs,
-runtime behavior, frontend behavior, tests, fixtures, or external repositories.
+## 范围
 
-This package is not a v0.2 final closeout. v0.2 remains planned / in progress
-after this package.
+本 package 只更新 v0.2 planning、workflow、release draft 和历史迭代文档。
+它不实现 code、schemas、APIs、runtime behavior、frontend behavior、tests、
+fixtures 或 external repositories。
 
-## Documents
+本 package 不是 v0.2 final closeout。完成本 package 后，v0.2 仍保持
+`planned / in progress`。
+
+## 文档
 
 - [x] `README.md`
 - [x] `README.zh.md`
@@ -36,7 +37,7 @@ after this package.
 - [x] `review.md`
 - [x] `review.zh.md`
 
-## Status Checklist
+## 状态检查表
 
 - [x] Docs drafted
 - [ ] Contract reviewed
@@ -46,7 +47,7 @@ after this package.
 - [ ] Tests/evidence complete
 - [ ] Review complete
 
-## Deliverables
+## 交付
 
 - `docs/iterations/v0.2/0.2.6-iteration-workflow-and-plan-reset/**`
 - `docs/iterations/v0.2/00-chatgpt-plan.md`
@@ -55,8 +56,8 @@ after this package.
 - `docs/iterations/v0.2/development-workflow.zh.md`
 - `docs/iterations/v0.2/final-review-bundle-template.md`
 - `docs/iterations/v0.2/final-review-bundle-template.zh.md`
-- updated v0.2 index, plan, roadmap, and release draft docs.
+- updated v0.2 index、plan、roadmap 和 release draft docs。
 
-## Final Assessment
+## 最终评估
 
 ready for human / ChatGPT review

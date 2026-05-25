@@ -55,9 +55,9 @@ ready.
 ## Acceptance Criteria
 
 - `0.2.6-iteration-workflow-and-plan-reset` exists with the required package
-  files.
-- `00-chatgpt-plan.md`, `development-workflow.md`, and
-  `final-review-bundle-template.md` exist.
+  files and Chinese mirrors.
+- `00-chatgpt-plan.md` / `.zh.md`, `development-workflow.md` / `.zh.md`, and
+  `final-review-bundle-template.md` / `.zh.md` exist.
 - v0.2 index and plan docs point to 0.2.6 as workflow and plan reset, not
   final closeout.
 - `v0.2-plan.md` and `v0.2-plan.zh.md` include full quasi-package

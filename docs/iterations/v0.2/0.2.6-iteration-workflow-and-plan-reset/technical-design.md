@@ -23,11 +23,14 @@ historical evidence.
 
 ## Proposed Implementation
 
-1. Add the 0.2.6 package document set.
-2. Add `00-chatgpt-plan.md` as the seed plan for later automation.
-3. Add `development-workflow.md` with the ChatGPT / Codex A / Codex B loop,
+1. Add the 0.2.6 package document set with English / Chinese mirrors.
+2. Add `00-chatgpt-plan.md` and `00-chatgpt-plan.zh.md` as the seed plan for
+   later automation.
+3. Add `development-workflow.md` and `development-workflow.zh.md` with the
+   ChatGPT / Codex A / Codex B loop,
    gates, severity model, evidence rules, and WorldEngine boundaries.
-4. Add `final-review-bundle-template.md` with required review fields.
+4. Add `final-review-bundle-template.md` and
+   `final-review-bundle-template.zh.md` with required review fields.
 5. Update v0.2 index and plan docs so 0.2.7 through 0.2.12 have stable planned
    names, types, boundaries, deliverables, verification expectations, and
    handoffs.

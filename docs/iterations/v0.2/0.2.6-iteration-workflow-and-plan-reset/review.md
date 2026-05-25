@@ -3,13 +3,14 @@
 ## Changed Files
 
 - `docs/iterations/v0.2/0.2.6-iteration-workflow-and-plan-reset/**`:
-  added the 0.2.6 documentation-only package for workflow and plan reset.
-- `docs/iterations/v0.2/00-chatgpt-plan.md`: added the v0.2 automatic
-  iteration seed plan.
-- `docs/iterations/v0.2/development-workflow.md`: added the ChatGPT /
-  Codex A / Codex B iterative workflow.
-- `docs/iterations/v0.2/final-review-bundle-template.md`: added the final
-  review bundle template.
+  added the 0.2.6 documentation-only package for workflow and plan reset,
+  including Chinese mirrors.
+- `docs/iterations/v0.2/00-chatgpt-plan.md` / `.zh.md`: added the v0.2
+  automatic iteration seed plan.
+- `docs/iterations/v0.2/development-workflow.md` / `.zh.md`: added the
+  ChatGPT / Codex A / Codex B iterative workflow.
+- `docs/iterations/v0.2/final-review-bundle-template.md` / `.zh.md`: added the
+  final review bundle template.
 - `docs/iterations/v0.2/README.md`, `README.zh.md`: replaced the old 0.2.6
   direction with workflow and plan reset, and summarized 0.2.7 through 0.2.12.
 - `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md`: added
@@ -21,6 +22,10 @@
   planned / not released and moved final closeout behind 0.2.12 approval.
 - `docs/iterations/v0.2/**`: abstracted residual concrete demo details while
   preserving historical facts.
+- Follow-up bilingual sync: added Chinese mirrors for v0.2 workflow docs and
+  the 0.2.5 / 0.2.6 package documents; polished active Chinese docs so fields
+  and explanatory text read as Chinese while keeping package names, paths,
+  commands, status literals, and technical identifiers stable.
 
 ## Commands Run
 
@@ -30,6 +35,9 @@ git diff --check
 concrete demo anchor sweep using a temporary untracked pattern file
 detailed plan acceptance gate check for 0.2.7 through 0.2.12
 release-status wording check
+bilingual mirror check for active v0.2 Markdown files
+English / Chinese detailed plan acceptance gate check
+Chinese Markdown readability check
 ```
 
 ## Test Results
@@ -46,6 +54,12 @@ release-status wording check
   `v0.2-plan.md` and `v0.2-plan.zh.md`.
 - Directory inspection confirmed that no 0.2.7 through 0.2.12 package
   directories were created.
+- Follow-up bilingual mirror check reported `PASS` for active v0.2 Markdown
+  files, including the 0.2.5 and 0.2.6 package directories.
+- Follow-up English / Chinese detailed plan acceptance gate checks reported
+  `PASS` for 0.2.7 through 0.2.12.
+- Follow-up Chinese Markdown readability check reported no lines longer than
+  160 characters in the touched Chinese v0.2 docs.
 
 Backend and frontend tests were not run because this is a documentation-only
 package and no runtime, schema, API, frontend, backend test, or fixture files
