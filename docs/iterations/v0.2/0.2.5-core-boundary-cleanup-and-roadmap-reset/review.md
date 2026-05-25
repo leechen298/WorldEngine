@@ -27,6 +27,8 @@ Status: review complete
 | `docs/external-fixture-boundary.md` | Added the external fixture and validation consumer boundary guide. |
 | `docs/validation-report-template.md` | Added a redacted validation report template using `redacted target id`. |
 | `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/review.md` | Recorded implementation closeout evidence. |
+| `docs/current-implementation.md`, `docs/current-implementation.zh.md` | Follow-up docs polish replaced the stale `game surface` limitation with external projection application consumer wording. |
+| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md` | Follow-up docs polish clarified that the planning-only scope text describes the initial pass and that implementation closeout evidence is in this review. |
 
 ## Commands Run
 
@@ -47,6 +49,9 @@ cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.p
 cd backend && .venv/bin/python -m pytest app/tests -q
 git diff --name-status
 git diff --stat
+git status --short --branch
+rg -n "No game surface|还没有 game surface|This documentation-planning pass creates only this iteration package" docs/current-implementation.md docs/current-implementation.zh.md docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md
+git diff --check
 ```
 
 ## Test Results
@@ -59,6 +64,9 @@ git diff --stat
   `91 passed in 0.94s`.
 - Frontend tests were not run because this package did not modify frontend
   files and the contract forbids frontend dashboard changes.
+- Follow-up docs polish: `git diff --check` exited `0`; the targeted stale-text
+  grep for `No game surface`, `还没有 game surface`, and the obsolete
+  planning-only Scope sentence exited with no matches.
 
 ## Grep Residuals
 
@@ -113,7 +121,9 @@ concrete world was introduced.
 ## Unresolved Findings
 
 - P1: none.
-- P2: none.
+- P2: none. The follow-up docs polish resolved the stale
+  `docs/current-implementation*` wording and the 0.2.5 README planning-pass
+  wording.
 - P3: none.
 
 ## Final Assessment

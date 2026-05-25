@@ -22,11 +22,14 @@ validation consumers without creating those repositories in this package.
 
 ## Scope
 
-This documentation-planning pass creates only this iteration package. It does
-not modify active roadmap, north star, scope, README, AGENTS, runtime, schema,
-API, frontend, tests, fixtures, or release files.
+The initial documentation-planning pass created only this iteration package and
+did not modify active roadmap, north star, scope, README, AGENTS, runtime,
+schema, API, frontend, tests, fixtures, or release files.
 
-The implementation stage for this package may later:
+The implementation pass later cleaned active docs, fixtures, and tests
+according to this contract. See `review.md` for closeout evidence.
+
+The implementation stage for this package covered:
 
 - remove Tiny Village, village-like game, and reference village anchors from
   active project direction documents.

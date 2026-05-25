@@ -147,4 +147,4 @@ Latest recorded closeout results:
 - No WorldCell or WorldSpec exists yet.
 - No world generation exists yet.
 - No agent perception/action/memory loop exists yet.
-- No game surface exists yet.
+- No external projection application consumer exists yet.

@@ -145,4 +145,4 @@ High-level groups：
 - 还没有 WorldCell 或 WorldSpec。
 - 还没有 world generation。
 - 还没有 Agent perception/action/memory loop。
-- 还没有 game surface。
+- 还没有 external projection application consumer。
