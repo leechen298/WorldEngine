@@ -60,7 +60,7 @@ git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort
 rg -n "0.2.2-recursive-world-contract|ready for implementation|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
-rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
+rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|concrete demo|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 ```
 

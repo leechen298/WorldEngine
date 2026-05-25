@@ -22,25 +22,25 @@ fixture yet.
 - Existing schema files must remain unchanged.
 - Runtime, event log, modules, API routes, frontend, and `backend/worldengine/`
   must remain unchanged.
-- The fixture is not a runtime world and not a game-specific backend feature.
+- The fixture is not a runtime world and not an application-specific backend feature.
 
 ## Proposed Implementation
 
 After review approval, add:
 
-- `backend/data/world_specs/tiny_village.world.json`
+- `backend/data/world_specs/historical concrete fixture path`
 - `backend/app/tests/test_worldspec_fixture.py`
 
 The JSON fixture should be small and deterministic. It should include:
 
 - `schema_version: "0.2"`
-- `id: "tiny-village"`
-- `label: "Tiny Village"`
+- `id: "historical-concrete-fixture"`
+- `label: "historical concrete fixture"`
 - top-level metadata with `purpose: "reference-fixture"` and `version: "0.2"`
-- a root `WorldCell` with `id: "root"`, `label: "Tiny Village Root"`, and
+- a root `WorldCell` with `id: "root"`, `label: "historical concrete fixture root"`, and
   `kind: "world"`
 - at least one root `entity_ref`
-- at least two nested child cells, such as `village-square` and `workshop`
+- at least two nested child cells, such as `historical child cell` and `historical-child-cell`
 - at least one nested child cell with an `entity_ref`
 - fixture-specific metadata only
 
@@ -53,7 +53,7 @@ from pathlib import Path
 from app.schemas.world_cell import WorldCell, WorldSpec
 
 
-FIXTURE_PATH = Path(__file__).resolve().parents[2] / "data" / "world_specs" / "tiny_village.world.json"
+FIXTURE_PATH = Path(__file__).resolve().parents[2] / "data" / "world_specs" / "historical concrete fixture path"
 
 
 def load_fixture() -> dict:
@@ -79,7 +79,7 @@ local to the test and does not become production loader logic.
 
 No runtime or service design changes are included. The package must not add a
 WorldSpec loader, runtime bridge, API route, app factory dependency,
-projection integration, persistence/restart behavior, or village runtime.
+projection integration, persistence/restart behavior, or concrete demo runtime.
 
 ## Compatibility
 
@@ -99,6 +99,6 @@ unchanged.
 - Risk: implementation modifies schemas to satisfy the fixture. Detection:
   changed-file scope checks must confirm `entity.py`, `world_cell.py`, and
   `event.py` were not modified.
-- Risk: Tiny Village becomes game-specific backend logic. Detection: scope
-  review must confirm no runtime, API, frontend, generator, or game-specific
+- Risk: historical concrete fixture becomes application-specific backend logic. Detection: scope
+  review must confirm no runtime, API, frontend, generator, or application-specific
   behavior was added.

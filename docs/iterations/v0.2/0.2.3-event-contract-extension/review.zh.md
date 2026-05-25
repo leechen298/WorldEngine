@@ -27,7 +27,7 @@ git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort
 rg -n "0.2.3-event-contract-extension|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
-rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
+rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|concrete demo|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.2/'
 ```
@@ -49,7 +49,7 @@ Verification observations：
   `refs`、`Event Contract`、`backward compatible`、`payload`、`EventPage`、
   `EventStep` 和 `EventStepPage`。
 - Boundary search 只找到了 `RuntimeEngine`、`WorldSpec loader`、`backend/worldengine`、
-  village、migration、agent memory、pseudo-self、referential integrity、resolve refs、
+  concrete demo、migration、agent memory、pseudo-self、referential integrity、resolve refs、
   frontend 和 API route 的 planned boundary references。
 - `git diff --name-only | rg -v '^(docs/iterations/v0.2/)'` 没有输出匹配。
 - `git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.2/'`
@@ -140,7 +140,7 @@ git status --porcelain=v1 -uall
 
 本轮没有改变 event log storage、runtime engine behavior、module behavior、API route、
 frontend、fixture、loader、generator、migration、reference resolution、referential
-integrity、WorldSpec loader、village runtime、agent memory、pseudo-self 或 legacy
+integrity、WorldSpec loader、concrete demo runtime、agent memory、pseudo-self 或 legacy
 `backend/worldengine/` behavior。
 
 ### Scope Review
@@ -152,7 +152,7 @@ Implementation 保持在 approved 0.2.3 scope 内：`backend/app/schemas/event.p
 
 0.2.3 package README 和 v0.2 index/plan status files 只同步了 implementation closeout
 状态，避免 evidence 已记录后仍停留在 stale pre-implementation state。本轮没有启动
-0.2.4、WorldSpec loader、runtime bridge、village runtime、frontend、agent memory、
+0.2.4、WorldSpec loader、runtime bridge、concrete demo runtime、frontend、agent memory、
 pseudo-self 或 legacy backend work。
 
 ### Unresolved Findings

@@ -35,10 +35,10 @@ Implementation after this documentation gate is approved may only:
 - Do not modify `backend/app/schemas/event.py`.
 - Do not modify `frontend/`.
 - Do not modify `backend/worldengine/`.
-- Do not add `backend/data/world_specs/tiny_village.world.json`.
+- Do not add `backend/data/world_specs/historical concrete fixture path`.
 - Do not implement a WorldSpec loader.
 - Do not migrate `RuntimeEngine` to `WorldCell`.
-- Do not implement village runtime.
+- Do not implement concrete demo runtime.
 - Do not implement world generation.
 - Do not implement agent memory, agent inner-world, or pseudo-self continuity.
 - Do not start 0.2.3.
@@ -96,7 +96,7 @@ references, load files, or connect schemas to runtime execution.
 ## North Star Check
 
 The contract defines the first structural bone for recursive worlds without
-making the engine village-specific. It creates schema language for future
+making the engine demo-specific. It creates schema language for future
 generation, loading, runtime bridge, and projection work while keeping those
 follow-ups out of this package.
 
@@ -106,4 +106,4 @@ follow-ups out of this package.
 - 0.2.4 WorldSpec Reference Fixture.
 - v0.3 WorldSpec loader and runtime bridge.
 - Agent memory and pseudo-self continuity.
-- Reference village runtime and game surface.
+- Reference concrete demo runtime and product surface.

@@ -20,7 +20,7 @@ After the contract, technical design, test plan, and plan are reviewed and
 approved, the implementation stage should run:
 
 ```bash
-rg -n "tiny|village|Village|Tiny|workshop|square|notice-board|reference village|village-like" .
+rg -n "historical concrete anchor|concrete demo|Concrete demo|historical concrete anchor|historical-child-cell|historical area|historical-nested-entity|historical concrete fixture|concrete demo-like" .
 make check-backend
 cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.py -q
 cd backend && .venv/bin/python -m pytest app/tests -q

@@ -18,8 +18,8 @@ behavior, memory behavior, or generation behavior changes are included.
 Replace concrete Demo world language in active docs with generic consumer
 language:
 
-- replace first village-like game wording with external projection application.
-- replace reference village world wording with external validation world or
+- replace concrete demo surface wording with external projection application.
+- replace superseded concrete fixture direction wording with external validation world or
   external fixture world.
 - replace validation interface wording with external validation consumer.
 - keep the point that external consumers validate WorldEngine through public
@@ -35,7 +35,7 @@ the mirror in the same implementation pass.
 
 Remove the concrete fixture:
 
-- delete `backend/data/world_specs/tiny_village.world.json`; or
+- delete `backend/data/world_specs/historical concrete fixture path`; or
 - replace it with `backend/data/world_specs/schema_smoke_world.json`.
 
 If replacement is chosen, the new fixture must be domain-neutral. Use generic
@@ -76,14 +76,14 @@ The test should verify only generic schema behavior:
 The test must not assert concrete Demo semantics. The active test file must not
 contain these terms:
 
-- `tiny`
-- `village`
-- `Village`
-- `Tiny`
-- `workshop`
-- `square`
-- `notice-board`
-- `villager`
+- `historical concrete anchor`
+- `concrete demo`
+- `Concrete demo`
+- `historical concrete anchor`
+- `historical-child-cell`
+- `historical area`
+- `historical-nested-entity`
+- `historical actor`
 
 ## External Fixture Boundary Documentation
 
@@ -118,11 +118,11 @@ locations, resources, plot rules, or internal validation implementation files.
 
 ## Roadmap Reset
 
-Update active roadmap docs to remove the Reference Village World direction and
+Update active roadmap docs to remove the superseded concrete fixture direction direction and
 use generic engine milestones:
 
 - v0.2.5: core boundary cleanup and roadmap reset.
-- v0.2.6: generic WorldSpec / WorldCell schema foundation closeout.
+- v0.2.6: iteration workflow and plan reset.
 - v0.3: WorldSpec loader and runtime bridge, loading generic WorldSpec only.
 - v0.3.5: external fixture contract readiness, defining how external runners
   call the main repository without creating those repositories.

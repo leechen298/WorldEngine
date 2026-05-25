@@ -22,7 +22,7 @@ git diff --check
 find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort
 rg -n "0.2.2-recursive-world-contract|ready for implementation|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n 'Status: ready for review|\| .*ready for review| - ready for review' docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md --glob '!review.md' --glob '!review.zh.md'
-rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
+rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|concrete demo|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0.2/'
 ```
@@ -42,7 +42,7 @@ Verification observations：
 - Status/content search 在 package 和 v0.2 index/plan documents 中找到了 `ready for implementation`、
   `EntityRef`、`WorldCell` 和 `WorldSpec`。
 - Stale status search for `ready for review` 没有输出。
-- Boundary search 只找到了 `RuntimeEngine`、loader、`backend/worldengine`、village、migration、
+- Boundary search 只找到了 `RuntimeEngine`、loader、`backend/worldengine`、concrete demo、migration、
   agent memory 和 pseudo-self 的 planned boundary references。
 - `git diff --name-only | rg -v '^(docs/iterations/v0.2/)'` 没有输出。
 - `git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0.2/'` 没有输出。
@@ -115,7 +115,7 @@ schema tests。
 
 Implementation 保持在已批准的 0.2.2 scope 内。Code changes 限制在 package 允许的三个
 implementation files，额外只按仓库流程记录本 review evidence。没有启动 0.2.3、WorldSpec
-loader、runtime migration、Tiny Village fixture、agent memory、pseudo-self、frontend 或 legacy
+loader、runtime migration、historical concrete fixture、agent memory、pseudo-self、frontend 或 legacy
 backend work。
 
 ### Unresolved Findings

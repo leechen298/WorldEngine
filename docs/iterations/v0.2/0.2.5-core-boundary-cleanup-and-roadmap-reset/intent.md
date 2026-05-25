@@ -4,18 +4,18 @@
 
 WorldEngine's core mission is a recursive world generation and runtime engine
 with event, agent, memory, feedback, projection, and pseudo-self continuity
-substrates. It is not a specific village Demo, electronic-pet Demo, or game
+substrates. It is not a specific concrete demo, concrete demo surface, or product
 backend.
 
-Previous v0.2 documents and implementation artifacts used Tiny Village,
-village-like game, reference village world, and related concrete terms as
+Previous v0.2 documents and implementation artifacts used historical concrete fixture,
+concrete demo surface, superseded concrete fixture direction, and related concrete terms as
 fixture or validation anchors. Those anchors were meant to make schema work
 concrete, but they now create a direction risk:
 
 - Codex, Claude, or other coding agents may infer that the core repository is
   supposed to know Demo world details.
 - Future implementation may drift from generic recursive world infrastructure
-  into a game-specific backend.
+  into an application-specific backend.
 - Tests and fixtures may begin shaping engine contracts around concrete
   locations, roles, resources, or narrative rules.
 - External fixture worlds may accidentally become upstream design drivers

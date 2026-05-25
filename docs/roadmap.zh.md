@@ -15,9 +15,11 @@ Goal: 建立 monorepo、FastAPI backend、Vue dashboard、runtime tick、event l
 
 ## v0.2 - Recursive World Foundation
 
+Status: planned / in progress
+
 Goal: 建立 documentation governance、north star、recursive world schema/spec language、additive
-event contract、generic schema smoke validation、external fixture boundary 和 legacy
-boundary。
+event contract、generic schema smoke validation、external fixture boundary、legacy boundary、
+iterative development workflow 和 reviewable release-candidate evidence。
 
 Non-goal: 不迁移 RuntimeEngine 到 WorldCell，不构建 demo-specific runtime。
 
@@ -30,10 +32,35 @@ contracts 和 redacted validation reports 消费 WorldEngine。
 Goal: 从 active core docs、fixtures 和 tests 中移除 concrete external-world anchors，并围绕
 generic engine consumers 重置后续 roadmap。
 
-### v0.2.6 - Generic Recursive World Foundation Closeout
+### v0.2.6 - Iteration Workflow and Plan Reset
 
-Goal: 围绕 generic WorldCell、WorldSpec、EntityRef、EventRef、schema smoke validation 和
-external consumer boundaries 关闭 v0.2。
+Goal: 重排 v0.2 剩余 package sequence，增加 ChatGPT / Codex A / Codex B 自动迭代 workflow，并抽象化
+v0.2 iteration documentation 中的 residual concrete demo anchors。
+
+### v0.2.7 - Recursive Schema Contract Hardening
+
+Goal: 加固 EntityRef、WorldCell、WorldSpec schema contracts 和 generic schema tests，不实现 runtime
+loading。
+
+### v0.2.8 - Event Reference Contract Hardening
+
+Goal: 加固 EventRef 和 Event.refs additive event reference contracts，不实现 resolver 或 causality engine。
+
+### v0.2.9 - Generic Schema Evidence and Boundary Audit
+
+Goal: 在 compatibility review 前审计 v0.2 schema、event、external boundary 和 legacy boundary evidence。
+
+### v0.2.10 - Legacy Boundary and Compatibility Review
+
+Goal: 在 v0.3 bridge work 前明确 v0.1 runtime scaffold compatibility 和 legacy boundaries。
+
+### v0.2.11 - v0.2 Release Candidate Bundle
+
+Goal: 准备 release-candidate evidence，供 human / ChatGPT review，不声明 final release。
+
+### v0.2.12 - v0.2 Final Closeout
+
+Goal: 仅在 release-candidate bundle 通过 human / ChatGPT review 后执行 final closeout。
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 

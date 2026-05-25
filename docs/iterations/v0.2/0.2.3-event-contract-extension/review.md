@@ -25,7 +25,7 @@ git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.3-event-contract-extension -maxdepth 1 -type f | sort
 rg -n "0.2.3-event-contract-extension|EventRef|refs|Event Contract|backward compatible|payload|EventPage|EventStep|EventStepPage" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
-rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
+rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|concrete demo|migration|agent memory|pseudo-self|referential integrity|resolve refs|frontend|API route" docs/iterations/v0.2/0.2.3-event-contract-extension docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | awk '{print $2}' | rg -v '^docs/iterations/v0.2/'
 ```
@@ -49,7 +49,7 @@ Verification observations:
   `backward compatible`, `payload`, `EventPage`, `EventStep`, and
   `EventStepPage` in the package and v0.2 index/plan documents.
 - The boundary search found only planned boundary references for
-  `RuntimeEngine`, `WorldSpec loader`, `backend/worldengine`, village,
+  `RuntimeEngine`, `WorldSpec loader`, `backend/worldengine`, concrete demo,
   migration, agent memory, pseudo-self, referential integrity, resolve refs,
   frontend, and API route.
 - `git diff --name-only | rg -v '^(docs/iterations/v0.2/)'` produced no
@@ -146,7 +146,7 @@ and `EventStepPage`.
 
 No event log storage, runtime engine behavior, module behavior, API route,
 frontend, fixture, loader, generator, migration, reference resolution,
-referential integrity, WorldSpec loader, village runtime, agent memory,
+referential integrity, WorldSpec loader, concrete demo runtime, agent memory,
 pseudo-self, or legacy `backend/worldengine/` behavior was changed.
 
 ### Scope Review
@@ -159,7 +159,7 @@ evidence. `backend/app/schemas/event.py` does not import or reference
 The 0.2.3 package README and v0.2 index/plan status files were updated only to
 reflect implementation closeout and avoid a stale pre-implementation state
 after evidence was recorded. No 0.2.4, WorldSpec loader, runtime bridge,
-village runtime, frontend, agent memory, pseudo-self, or legacy backend work
+concrete demo runtime, frontend, agent memory, pseudo-self, or legacy backend work
 was started.
 
 ### Unresolved Findings

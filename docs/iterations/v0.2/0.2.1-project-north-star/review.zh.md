@@ -24,7 +24,7 @@ Status: complete
 
 ```bash
 git status --short --branch
-rg -n "released|implemented|complete|village game backend|game backend|WorldEngine is.*game|just a village" AGENTS.md docs
+rg -n "released|implemented|complete|demo-specific backend|application-specific backend|WorldEngine is.*application-specific|application-specific only" AGENTS.md docs
 rg -n "TODO|TBD|to be filled|Pending verification|in progress" AGENTS.md docs
 git ls-files --others --exclude-standard -- AGENTS.md docs | sort
 rg -n "[ \t]+$" AGENTS.md docs
@@ -38,7 +38,7 @@ tests。
 Docs verification：
 
 - status check 确认 working tree 只包含 docs/governance changes。
-- wording scan 没有发现把 WorldEngine 写成 game backend 的错误方向。
+- wording scan 没有发现把 WorldEngine 写成 application-specific backend 的错误方向。
 - placeholder scan 没有发现 TODO/TBD placeholder。
 - untracked file check 列出 expected new `AGENTS.md` 和 `docs/` files。
 - trailing whitespace scan 没有 matches。

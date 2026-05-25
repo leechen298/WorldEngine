@@ -86,5 +86,5 @@ route behavior。
   validation tests。
 - Risk：添加 refs 时改变 payload semantics。Detection：测试 old event examples 并 review event
   schema diff。
-- Risk：implementation 扩大到 runtime、API route、frontend、loader、village、migration、agent
+- Risk：implementation 扩大到 runtime、API route、frontend、loader、concrete demo、migration、agent
   memory 或 pseudo-self work。Detection：changed-file scope checks。

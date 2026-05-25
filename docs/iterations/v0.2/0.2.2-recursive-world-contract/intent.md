@@ -5,7 +5,7 @@
 WorldEngine has a v0.1 runtime/event scaffold and v0.2 direction documents,
 but it does not yet have a reviewed schema contract for recursive world
 structure. Without that contract, follow-up work can accidentally jump into
-runtime migration, village-specific behavior, loader design, or agent memory
+runtime migration, demo-specific behavior, loader design, or agent memory
 before the minimal world structure is stable.
 
 ## Goal
@@ -27,7 +27,7 @@ behavior.
 - Do not migrate `RuntimeEngine` to `WorldCell`.
 - Do not implement a WorldSpec loader.
 - Do not add the reference WorldSpec fixture.
-- Do not implement village runtime or game-specific logic.
+- Do not implement concrete demo runtime or application-specific logic.
 - Do not modify the dashboard or frontend.
 - Do not implement world generation.
 - Do not implement agent memory, agent inner-world, or pseudo-self continuity.
@@ -43,5 +43,5 @@ before event extensions, reference fixtures, loader work, or runtime bridging.
 ## North Star Alignment
 
 This package supports recursive world structures by defining how a world can
-contain child worlds. It keeps the first village-like surface as a future
-projection and avoids turning WorldEngine into a village-specific backend.
+contain child worlds. It keeps the first concrete demo surface as a future
+projection and avoids turning WorldEngine into a demo-specific backend.

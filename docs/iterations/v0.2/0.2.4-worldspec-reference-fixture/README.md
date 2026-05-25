@@ -14,7 +14,7 @@ direction.
 Create the documentation gate for the first reference WorldSpec fixture.
 0.2.4 is the first verifiable world sample, not the first runnable world.
 
-This package adds a small deterministic `tiny_village.world.json` fixture and
+This package adds a small deterministic `historical concrete fixture path` fixture and
 focused validation tests that prove the fixture conforms to the 0.2.2
 `WorldSpec`, `WorldCell`, and `EntityRef` schema language.
 
@@ -48,7 +48,7 @@ synchronized with the English package documents.
 The documentation gate has been reviewed and approved. The implementation
 stage is limited to:
 
-- `backend/data/world_specs/tiny_village.world.json`
+- `backend/data/world_specs/historical concrete fixture path`
 - `backend/app/tests/test_worldspec_fixture.py`
 - this package's `review.md` and `review.zh.md` during closeout
 
@@ -56,6 +56,6 @@ The documentation stage must not create the fixture or test file.
 
 No schema implementation, production WorldSpec loader, runtime bridge,
 RuntimeEngine behavior, event log storage, module, API route, frontend,
-`backend/worldengine/`, village runtime, game-specific backend logic, world
+`backend/worldengine/`, concrete demo runtime, application-specific backend logic, world
 generation, agent memory, pseudo-self, persistence/restart logic, or 0.2.5
 work is included in this package.

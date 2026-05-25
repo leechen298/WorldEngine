@@ -46,5 +46,5 @@ implementation stage 只允许修改：
 
 本包不包含 event log storage、runtime engine、module、API route、frontend、
 `backend/worldengine/`、WorldCell runtime connection、reference resolution、
-referential integrity、WorldSpec loader、village runtime、agent memory、pseudo-self 或
+referential integrity、WorldSpec loader、concrete demo runtime、agent memory、pseudo-self 或
 0.2.4 工作。

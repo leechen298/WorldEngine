@@ -53,7 +53,7 @@ only:
 - Do not resolve refs.
 - Do not enforce referential integrity.
 - Do not implement a WorldSpec loader.
-- Do not implement village runtime.
+- Do not implement concrete demo runtime.
 - Do not implement agent memory or pseudo-self.
 - Do not start 0.2.4.
 
@@ -118,4 +118,4 @@ engine north star and narrow enough to preserve current behavior.
 - v0.3 WorldSpec loader and runtime bridge.
 - Runtime ref resolution and referential integrity.
 - Event-driven agent memory or pseudo-self continuity.
-- Village runtime and game surface.
+- Concrete demo runtime and product surface.

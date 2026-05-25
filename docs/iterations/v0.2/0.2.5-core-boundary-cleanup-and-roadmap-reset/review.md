@@ -17,17 +17,17 @@ Status: review complete
 | `docs/glossary.md`, `docs/glossary.zh.md` | Replaced concrete reference-world vocabulary with external validation world and projection consumer terms. |
 | `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | Updated planned capability and non-goal wording for generic schema smoke and external boundaries. |
 | `docs/iterations/v0.2/README.md`, `docs/iterations/v0.2/README.zh.md` | Marked 0.2.4 as historical and 0.2.5 as review complete. |
-| `docs/iterations/v0.2/v0.2-plan.md`, `docs/iterations/v0.2/v0.2-plan.zh.md` | Replaced legacy fixture direction with 0.2.5 cleanup and 0.2.6 generic closeout planning. |
+| `docs/iterations/v0.2/v0.2-plan.md`, `docs/iterations/v0.2/v0.2-plan.zh.md` | Replaced legacy fixture direction with 0.2.5 cleanup and 0.2.6 workflow and plan reset. |
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/README.md`, `README.zh.md` | Added historical artifact notes that supersede the concrete fixture direction. |
 | `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md` | Synchronized status and checklist to review complete. |
-| `backend/data/world_specs/tiny_village.world.json` | Deleted the concrete external-world fixture. |
+| `backend/data/world_specs/historical concrete fixture path` | Deleted the concrete external-world fixture. |
 | `backend/app/tests/test_worldspec_fixture.py` | Deleted the concrete fixture test. |
 | `backend/app/tests/test_worldspec_schema_smoke.py` | Added domain-neutral in-memory WorldSpec schema smoke tests. |
 | `backend/app/tests/test_world_cell_schema.py` | Replaced a concrete invalid `kind` value with a domain-neutral invalid value. |
 | `docs/external-fixture-boundary.md` | Added the external fixture and validation consumer boundary guide. |
 | `docs/validation-report-template.md` | Added a redacted validation report template using `redacted target id`. |
 | `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/review.md` | Recorded implementation closeout evidence. |
-| `docs/current-implementation.md`, `docs/current-implementation.zh.md` | Follow-up docs polish replaced the stale `game surface` limitation with external projection application consumer wording. |
+| `docs/current-implementation.md`, `docs/current-implementation.zh.md` | Follow-up docs polish replaced the stale `product surface` limitation with external projection application consumer wording. |
 | `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md` | Follow-up docs polish clarified that the planning-only scope text describes the initial pass and that implementation closeout evidence is in this review. |
 
 ## Commands Run
@@ -41,8 +41,8 @@ sed -n '1,240p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-res
 sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/test-plan.md
 sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/plan.md
 sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/review.md
-rg -n "tiny|Tiny|tiny_village|village|Village|village-like|reference village|Reference Village World|reference world|first game surface|electronic-pet|electronic pet|workshop|square|notice-board|workbench|villager" .
-rg -n "tiny|Tiny|tiny_village|village|Village|village-like|reference village|Reference Village World|reference world|first game surface|electronic-pet|electronic pet|workshop|square|notice-board|workbench|villager" AGENTS.md AGENTS.zh.md CLAUDE.md CLAUDE.zh.md README.md README.zh.md docs/project-north-star.md docs/project-north-star.zh.md docs/product-model.md docs/product-model.zh.md docs/scope-boundaries.md docs/scope-boundaries.zh.md docs/roadmap.md docs/roadmap.zh.md docs/architecture.md docs/architecture.zh.md docs/glossary.md docs/glossary.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md backend/app/tests backend/data
+rg -n "historical concrete anchor|historical concrete anchor|historical concrete anchor|concrete demo|Concrete demo|concrete demo-like|historical concrete fixture|superseded concrete fixture direction|historical concrete fixture direction|concrete product surface|concrete demo surface|concrete demo surface|historical-child-cell|historical area|historical-nested-entity|historical object|historical actor" .
+rg -n "historical concrete anchor|historical concrete anchor|historical concrete anchor|concrete demo|Concrete demo|concrete demo-like|historical concrete fixture|superseded concrete fixture direction|historical concrete fixture direction|concrete product surface|concrete demo surface|concrete demo surface|historical-child-cell|historical area|historical-nested-entity|historical object|historical actor" AGENTS.md AGENTS.zh.md CLAUDE.md CLAUDE.zh.md README.md README.zh.md docs/project-north-star.md docs/project-north-star.zh.md docs/product-model.md docs/product-model.zh.md docs/scope-boundaries.md docs/scope-boundaries.zh.md docs/roadmap.md docs/roadmap.zh.md docs/architecture.md docs/architecture.zh.md docs/glossary.md docs/glossary.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md backend/app/tests backend/data
 git diff --check
 make check-backend
 cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.py -q
@@ -50,7 +50,7 @@ cd backend && .venv/bin/python -m pytest app/tests -q
 git diff --name-status
 git diff --stat
 git status --short --branch
-rg -n "No game surface|还没有 game surface|This documentation-planning pass creates only this iteration package" docs/current-implementation.md docs/current-implementation.zh.md docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md
+rg -n "No product surface|还没有 product surface|This documentation-planning pass creates only this iteration package" docs/current-implementation.md docs/current-implementation.zh.md docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md
 git diff --check
 ```
 
@@ -65,16 +65,14 @@ git diff --check
 - Frontend tests were not run because this package did not modify frontend
   files and the contract forbids frontend dashboard changes.
 - Follow-up docs polish: `git diff --check` exited `0`; the targeted stale-text
-  grep for `No game surface`, `还没有 game surface`, and the obsolete
+  grep for `No product surface`, `还没有 product surface`, and the obsolete
   planning-only Scope sentence exited with no matches.
 
 ## Grep Residuals
 
 Full repository grep still reports allowed residuals in these categories:
 
-- Dependency false positives: `frontend/pnpm-lock.yaml` package names such as
-  `tinybench`, `tinyexec`, `tinypool`, `tinyrainbow`, `tinyspy`, and
-  `@ctrl/tinycolor`.
+- Dependency false positives in `frontend/pnpm-lock.yaml`.
 - Historical release artifacts: `docs/releases/v0.1.md` and
   `docs/releases/v0.1.zh.md`.
 - Historical iteration artifacts and review evidence:

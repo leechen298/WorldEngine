@@ -46,5 +46,5 @@ approved. When approved, the implementation stage is limited to:
 
 No event log storage, runtime engine, module, API route, frontend,
 `backend/worldengine/`, WorldCell runtime connection, reference resolution,
-referential integrity, WorldSpec loader, village runtime, agent memory,
+referential integrity, WorldSpec loader, concrete demo runtime, agent memory,
 pseudo-self, or 0.2.4 work is included in this package.

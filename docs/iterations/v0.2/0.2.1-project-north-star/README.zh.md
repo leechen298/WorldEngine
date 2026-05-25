@@ -8,7 +8,7 @@ Status: complete
 
 建立 WorldEngine 的 documentation governance foundation，并明确项目 north star：WorldEngine 是
 recursive world generation 与 runtime engine，也是 Agent pseudo-self formation 的 substrate。第一款
-village-like game 只是 surface，不是 engine goal。
+concrete demo surface 只是 surface，不是 engine goal。
 
 ## Documents
 

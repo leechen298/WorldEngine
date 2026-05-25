@@ -52,7 +52,7 @@ API response compatibility 必须保持不变。
 - 不 resolve refs。
 - 不 enforce referential integrity。
 - 不实现 WorldSpec loader。
-- 不实现 village runtime。
+- 不实现 concrete demo runtime。
 - 不实现 agent memory 或 pseudo-self。
 - 不启动 0.2.4。
 
@@ -114,4 +114,4 @@ engine north star，同时足够窄以保留当前行为。
 - v0.3 WorldSpec loader and runtime bridge。
 - Runtime ref resolution 和 referential integrity。
 - Event-driven agent memory 或 pseudo-self continuity。
-- Village runtime 和 game surface。
+- Concrete demo runtime 和 product surface。

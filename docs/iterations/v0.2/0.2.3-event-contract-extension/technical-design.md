@@ -92,5 +92,5 @@ reinterpreted.
 - Risk: payload semantics are changed while adding refs. Detection: test old
   event examples and review the event schema diff.
 - Risk: implementation widens into runtime, API route, frontend, loader,
-  village, migration, agent memory, or pseudo-self work. Detection:
+  concrete demo, migration, agent memory, or pseudo-self work. Detection:
   changed-file scope checks.

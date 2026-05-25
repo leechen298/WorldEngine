@@ -25,7 +25,7 @@ Status: review complete
 git status --short
 git status --porcelain=v1 -uall
 find docs -maxdepth 5 -type f | sort
-rg -n "released|implemented|complete|village game backend|game backend|WorldEngine is.*game|just a village" AGENTS.md docs
+rg -n "released|implemented|complete|demo-specific backend|application-specific backend|WorldEngine is.*application-specific|application-specific only" AGENTS.md docs
 rg -n "TODO|TBD|to be filled|Pending verification|in progress" AGENTS.md docs
 git ls-files --others --exclude-standard -- AGENTS.md docs | sort
 rg -n "[ \t]+$" AGENTS.md docs

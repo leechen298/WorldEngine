@@ -4,27 +4,27 @@
 
 - Reference WorldSpec fixture: a small deterministic JSON document that
   demonstrates a valid `WorldSpec` shape.
-- Tiny Village fixture: the first named reference fixture for the recursive
+- historical concrete fixture: the first named reference fixture for the recursive
   world schema language.
 - Fixture validation test: a focused test that reads the JSON fixture and
   validates it through `WorldSpec.model_validate(...)`.
 
 The fixture is a reference data fixture, not a runtime world, not a generated
-world, and not a game backend.
+world, and not an application-specific backend.
 
 ## Allowed Changes
 
 After this documentation gate is reviewed and approved, implementation may
 only:
 
-- Add `backend/data/world_specs/tiny_village.world.json`.
+- Add `backend/data/world_specs/historical concrete fixture path`.
 - Add `backend/app/tests/test_worldspec_fixture.py`.
 - Update this package's `review.md` and `review.zh.md` during closeout.
 
 ## Forbidden Changes
 
 - Do not implement code in this documentation stage.
-- Do not create `backend/data/world_specs/tiny_village.world.json` yet.
+- Do not create `backend/data/world_specs/historical concrete fixture path` yet.
 - Do not create `backend/app/tests/test_worldspec_fixture.py` yet.
 - Do not modify `backend/app/schemas/entity.py`.
 - Do not modify `backend/app/schemas/world_cell.py`.
@@ -37,8 +37,8 @@ only:
 - Do not modify `backend/worldengine/`.
 - Do not implement a WorldSpec loader.
 - Do not implement a runtime bridge.
-- Do not implement village runtime.
-- Do not implement game-specific backend logic.
+- Do not implement concrete demo runtime.
+- Do not implement application-specific backend logic.
 - Do not implement world generation.
 - Do not implement agent memory, pseudo-self, or agent behavior loops.
 - Do not add persistence/restart logic.
@@ -53,33 +53,33 @@ Recommended shape:
 ```json
 {
   "schema_version": "0.2",
-  "id": "tiny-village",
-  "label": "Tiny Village",
+  "id": "historical-concrete-fixture",
+  "label": "historical concrete fixture",
   "metadata": {
     "purpose": "reference-fixture",
     "version": "0.2"
   },
   "root": {
     "id": "root",
-    "label": "Tiny Village Root",
+    "label": "historical concrete fixture root",
     "kind": "world",
     "entity_refs": [
       {
-        "id": "village-square",
+        "id": "historical child cell",
         "kind": "location",
-        "label": "Village Square"
+        "label": "Historical Child Cell"
       }
     ],
     "child_cells": [
       {
-        "id": "village-square",
-        "label": "Village Square",
+        "id": "historical child cell",
+        "label": "Historical Child Cell",
         "kind": "world",
         "entity_refs": [
           {
-            "id": "notice-board",
+            "id": "historical-nested-entity",
             "kind": "resource",
-            "label": "Notice Board"
+            "label": "Historical Entity"
           }
         ],
         "child_cells": [],
@@ -88,8 +88,8 @@ Recommended shape:
         }
       },
       {
-        "id": "workshop",
-        "label": "Workshop",
+        "id": "historical-child-cell",
+        "label": "Historical Child Cell",
         "kind": "world",
         "entity_refs": [],
         "child_cells": [],
@@ -109,16 +109,16 @@ The exact implementation may adjust labels or metadata, but it must preserve
 these constraints:
 
 - `schema_version` is `"0.2"`.
-- `id` is `"tiny-village"`.
-- `label` is `"Tiny Village"`.
+- `id` is `"historical-concrete-fixture"`.
+- `label` is `"historical concrete fixture"`.
 - `metadata.purpose` is `"reference-fixture"`.
 - `metadata.version` is `"0.2"`.
 - `root.id` is `"root"`.
-- `root.label` is `"Tiny Village Root"`.
+- `root.label` is `"historical concrete fixture root"`.
 - `root.kind` is `"world"`.
 - `root.entity_refs` has at least one `EntityRef`-like entry.
 - `root.child_cells` has at least two nested `WorldCell` examples, including
-  examples such as `village-square` and `workshop`.
+  examples such as `historical child cell` and `historical-child-cell`.
 - At least one child cell may contain an `entity_ref`.
 - Metadata is fixture-specific only.
 
@@ -128,9 +128,9 @@ Fixture entries in `entity_refs` must use `EntityRef`-like dictionaries:
 
 ```json
 {
-  "id": "notice-board",
+  "id": "historical-nested-entity",
   "kind": "resource",
-  "label": "Notice Board",
+  "label": "Historical Entity",
   "metadata": {
     "fixture_role": "example-resource"
   }
@@ -153,7 +153,7 @@ in this package.
 
 Implementation-stage tests must verify:
 
-- fixture file exists at `backend/data/world_specs/tiny_village.world.json`.
+- fixture file exists at `backend/data/world_specs/historical concrete fixture path`.
 - JSON parses successfully.
 - `WorldSpec.model_validate(fixture_dict)` succeeds.
 - `schema_version` is `"0.2"`.
@@ -188,7 +188,7 @@ systems in 0.2.4.
 
 - v0.3 WorldSpec loader and runtime bridge.
 - Runtime reference resolution and referential integrity.
-- Village runtime and game surface.
+- Concrete demo runtime and product surface.
 - Full world generation.
 - Agent memory, pseudo-self, or agent behavior loops.
 - 0.2.5 legacy boundary cleanup.

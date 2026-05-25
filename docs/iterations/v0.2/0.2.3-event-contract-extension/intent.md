@@ -41,12 +41,12 @@ to recursive-world schemas before the runtime bridge exists.
 - Do not resolve refs or enforce referential integrity.
 - Do not change runtime engine behavior, event log storage, API routes,
   modules, frontend, or `backend/worldengine/`.
-- Do not implement WorldSpec loader, village runtime, agent memory,
+- Do not implement WorldSpec loader, concrete demo runtime, agent memory,
   pseudo-self, or 0.2.4.
 
 ## North Star Fit
 
 The Event Contract extension supports the north star by making future world,
 agent, memory, and projection evidence easier to structure. It does not turn
-WorldEngine into a game-specific backend and does not move v0.2 beyond its
+WorldEngine into an application-specific backend and does not move v0.2 beyond its
 recursive-world foundation boundary.

@@ -34,10 +34,10 @@
 - 不修改 `backend/app/schemas/event.py`。
 - 不修改 `frontend/`。
 - 不修改 `backend/worldengine/`。
-- 不添加 `backend/data/world_specs/tiny_village.world.json`。
+- 不添加 `backend/data/world_specs/historical concrete fixture path`。
 - 不实现 WorldSpec loader。
 - 不迁移 `RuntimeEngine` 到 `WorldCell`。
-- 不实现 village runtime。
+- 不实现 concrete demo runtime。
 - 不实现 world generation。
 - 不实现 agent memory、agent inner-world 或 pseudo-self continuity。
 - 不启动 0.2.3。
@@ -94,7 +94,7 @@ runtime execution。
 
 ## North Star Check
 
-本 contract 为 recursive worlds 定义第一根结构骨架，但不把 engine 写成 village-specific。它为
+本 contract 为 recursive worlds 定义第一根结构骨架，但不把 engine 写成 demo-specific。它为
 future generation、loading、runtime bridge 和 projection work 创建 schema language，同时把这些
 follow-ups 保持在本包之外。
 
@@ -104,4 +104,4 @@ follow-ups 保持在本包之外。
 - 0.2.4 WorldSpec Reference Fixture。
 - v0.3 WorldSpec loader and runtime bridge。
 - Agent memory and pseudo-self continuity。
-- Reference village runtime and game surface。
+- Reference concrete demo runtime and product surface。

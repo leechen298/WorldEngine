@@ -10,10 +10,10 @@ Remove concrete Demo world anchors from WorldEngine core planning and prepare
 the follow-up cleanup that keeps the repository focused on a generic recursive
 world runtime substrate.
 
-This package exists because previous v0.2 work introduced Tiny Village,
-village-like game, and reference village wording as fixture or validation
+This package exists because previous v0.2 work introduced historical concrete fixture,
+concrete demo surface, and historical concrete fixture wording as fixture or validation
 language. That wording is now risky because it can cause future coding agents
-to treat WorldEngine as a Demo game backend instead of a general engine.
+to treat WorldEngine as a Demo application-specific backend instead of a general engine.
 
 0.2.5 will reset that boundary by documenting the later cleanup of active
 project direction, roadmap language, fixture data, and fixture tests. It will
@@ -31,7 +31,7 @@ according to this contract. See `review.md` for closeout evidence.
 
 The implementation stage for this package covered:
 
-- remove Tiny Village, village-like game, and reference village anchors from
+- remove historical concrete fixture, concrete demo surface, and historical concrete fixture anchors from
   active project direction documents.
 - replace concrete Demo world fixture data with a domain-neutral schema smoke
   fixture.
@@ -41,7 +41,7 @@ The implementation stage for this package covered:
 - reset v0.3 and later roadmap language around generic engine consumers.
 
 The implementation stage must not create an external fixture repository,
-external validation repository, concrete Demo world, game UI, runtime bridge,
+external validation repository, concrete Demo world, application UI, runtime bridge,
 WorldSpec loader, Agent loop, memory substrate, or world generation system.
 
 ## Documents
@@ -71,7 +71,7 @@ WorldSpec loader, Agent loop, memory substrate, or world generation system.
 The proposed roadmap direction after this package is:
 
 - v0.2.5: core boundary cleanup and roadmap reset.
-- v0.2.6: generic WorldSpec / WorldCell schema foundation closeout.
+- v0.2.6: iteration workflow and plan reset.
 - v0.3: WorldSpec loader and runtime bridge for generic WorldSpec data only.
 - v0.3.5: external fixture contract readiness.
 - v0.4: Agent-in-World minimal loop.

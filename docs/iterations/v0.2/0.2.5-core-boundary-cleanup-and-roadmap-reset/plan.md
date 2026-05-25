@@ -6,7 +6,7 @@
 2. Search for concrete Demo world anchors:
 
    ```bash
-   rg -n "tiny|village|Village|Tiny|workshop|square|notice-board|reference village|village-like" AGENTS.md AGENTS.zh.md README.md README.zh.md docs backend/app/tests backend/data
+   rg -n "historical concrete anchor|concrete demo|Concrete demo|historical concrete anchor|historical-child-cell|historical area|historical-nested-entity|historical concrete fixture|concrete demo-like" AGENTS.md AGENTS.zh.md README.md README.zh.md docs backend/app/tests backend/data
    ```
 
 3. Update `docs/project-north-star.md` and `docs/project-north-star.zh.md` to
@@ -17,14 +17,14 @@
 5. Update `docs/scope-boundaries.md` and `docs/scope-boundaries.zh.md` to
    remove permission for concrete Demo fixtures inside the core repository.
 6. Update `docs/roadmap.md` and `docs/roadmap.zh.md` with the reset roadmap:
-   v0.2.5 boundary cleanup, v0.2.6 generic schema foundation closeout, v0.3
+   v0.2.5 boundary cleanup, v0.2.6 iteration workflow and plan reset, v0.3
    generic WorldSpec loader/runtime bridge, v0.3.5 external fixture contract
    readiness, v0.4 Agent-in-World loop, v0.5 memory/self-continuity, v0.6 world
    generation, v0.7 external validation/projection readiness, and v0.8 first
    external projection application readiness.
 7. Update `AGENTS.md` and `AGENTS.zh.md` to remove first concrete Demo surface
    guidance from active agent instructions.
-8. Update `README.md` and `README.zh.md` to remove reference world runtime
+8. Update `README.md` and `README.zh.md` to remove historical concrete fixture direction runtime
    wording from current capability limitations.
 9. Update other active docs found by the search, including architecture,
    glossary, release planning, and v0.2 index or plan docs when they contain
@@ -37,7 +37,7 @@
 
 ## Phase 2: Code And Test Cleanup
 
-1. Delete `backend/data/world_specs/tiny_village.world.json` or replace it with
+1. Delete `backend/data/world_specs/historical concrete fixture path` or replace it with
    `backend/data/world_specs/schema_smoke_world.json`.
 2. Delete or rewrite `backend/app/tests/test_worldspec_fixture.py` as a generic
    schema smoke test, preferably `backend/app/tests/test_worldspec_schema_smoke.py`.
@@ -49,8 +49,8 @@
    - generic `EntityRef` support.
    - `model_dump()` / `model_validate(...)` round-trip.
 4. Ensure the active test file does not contain concrete Demo terms:
-   `tiny`, `village`, `Village`, `Tiny`, `workshop`, `square`,
-   `notice-board`, or `villager`.
+   `historical concrete anchor`, `concrete demo`, `Concrete demo`, `historical concrete anchor`, `historical-child-cell`, `historical area`,
+   `historical-nested-entity`, or `historical actor`.
 5. Run the implementation-stage verification commands from `test-plan.md`.
 6. Update this package's `review.md` with changed files, exact commands run,
    test results, compatibility review, scope review, unresolved findings, and

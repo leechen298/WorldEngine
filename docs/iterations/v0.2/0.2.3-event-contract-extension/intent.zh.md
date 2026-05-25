@@ -40,10 +40,10 @@ resources、memory records 或 external projections，但现在不 import、不�
 - 不 resolve refs，也不 enforce referential integrity。
 - 不改变 runtime engine behavior、event log storage、API routes、modules、frontend 或
   `backend/worldengine/`。
-- 不实现 WorldSpec loader、village runtime、agent memory、pseudo-self 或 0.2.4。
+- 不实现 WorldSpec loader、concrete demo runtime、agent memory、pseudo-self 或 0.2.4。
 
 ## North Star Fit
 
 Event Contract extension 让未来 world、agent、memory 和 projection evidence 更容易结构化，符合
-north star。它不会把 WorldEngine 变成 game-specific backend，也不会让 v0.2 越过
+north star。它不会把 WorldEngine 变成 application-specific backend，也不会让 v0.2 越过
 recursive-world foundation boundary。

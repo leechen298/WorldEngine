@@ -22,7 +22,7 @@ Review confirmed:
 - The fixture is described as the first verifiable world sample, not the first
   runnable world.
 - The implementation boundary is limited to
-  `backend/data/world_specs/tiny_village.world.json`,
+  `backend/data/world_specs/historical concrete fixture path`,
   `backend/app/tests/test_worldspec_fixture.py`, and this package's closeout
   review files.
 - The fixture contract uses the existing 0.2.2 `WorldSpec`, `WorldCell`, and
@@ -35,7 +35,7 @@ Review confirmed:
 
 After review approval only:
 
-1. Add `backend/data/world_specs/tiny_village.world.json`.
+1. Add `backend/data/world_specs/historical concrete fixture path`.
 2. Add `backend/app/tests/test_worldspec_fixture.py`.
 3. Run the focused fixture test.
 4. Run the broader backend app test suite.
@@ -51,6 +51,6 @@ Stop and return to documentation review if implementation reveals any need to:
 - connect the fixture to `RuntimeEngine`.
 - add API route, frontend, event log, module, generator, persistence, or
   `backend/worldengine/` behavior.
-- add village runtime, game-specific backend logic, world generation, agent
+- add concrete demo runtime, application-specific backend logic, world generation, agent
   memory, pseudo-self, or agent behavior loops.
 - start 0.2.5.

@@ -22,8 +22,8 @@ Documentation-stage commands 在 handoff 前记录如下：
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort
-rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
-rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|village runtime|game-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
+rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|historical concrete anchor|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|concrete demo runtime|application-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
 rg -n '^Status: (implementation complete|review complete)$' docs/iterations/v0.2/0.2.4-worldspec-reference-fixture
 rg -n '^\| `0\.2\.4-worldspec-reference-fixture` \| code \| (implementation complete|review complete) \|' docs/iterations/v0.2/README.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
@@ -53,10 +53,10 @@ Verification observations：
   列出了完整 English seven-file set 和完整 `.zh.md` mirrors。
 - Status/content search 在 package 和 v0.2 index/plan documents 中找到了
   `0.2.4-worldspec-reference-fixture`、`review complete`、`WorldSpec`、
-  `tiny_village`、`reference fixture`、`model_validate`、`WorldCell`、`EntityRef` 和
+  `historical concrete anchor`、`reference fixture`、`model_validate`、`WorldCell`、`EntityRef` 和
   `schema_version`。
 - Boundary search 只找到了 `WorldSpec loader`、`runtime bridge`、`RuntimeEngine`、
-  `backend/worldengine`、`village runtime`、`game-specific`、`world generation`、
+  `backend/worldengine`、`concrete demo runtime`、`application-specific`、`world generation`、
   `agent memory`、`pseudo-self`、`frontend`、`API route` 和 `event log` 的 planned
   boundary references。
 - 0.2.4 `implementation complete` 和 `review complete` negative status guards 没有输出匹配。
@@ -75,9 +75,9 @@ storage、API response shape、frontend behavior 或 legacy backend behavior。
 ## Scope Review
 
 本 documentation stage 限定在 `docs/iterations/v0.2/`。它没有创建
-`backend/data/world_specs/tiny_village.world.json`，没有创建
+`backend/data/world_specs/historical concrete fixture path`，没有创建
 `backend/app/tests/test_worldspec_fixture.py`，没有修改 schemas，也没有新增 WorldSpec loader、
-runtime bridge、village runtime、game-specific backend logic、world generation、agent memory、
+runtime bridge、concrete demo runtime、application-specific backend logic、world generation、agent memory、
 pseudo-self、frontend、API route、event log storage 或 `backend/worldengine/` work。
 
 ## Unresolved Findings
@@ -97,7 +97,7 @@ closeout 已覆盖这个 documentation-stage 状态。
 
 | File | Change |
 |---|---|
-| `backend/data/world_specs/tiny_village.world.json` | 新增 Tiny Village reference WorldSpec fixture。 |
+| `backend/data/world_specs/historical concrete fixture path` | 新增 historical concrete fixture reference WorldSpec fixture。 |
 | `backend/app/tests/test_worldspec_fixture.py` | 新增 focused fixture validation tests，使用 `json`、`pathlib`、`WorldSpec`、`WorldCell` 和 `EntityRef`。 |
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/review.md` | 记录 implementation-stage evidence。 |
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/review.zh.md` | 记录同步的 implementation-stage evidence。 |
@@ -112,7 +112,7 @@ import json
 from pathlib import Path
 from app.schemas.world_cell import WorldSpec
 
-path = Path("data/world_specs/tiny_village.world.json")
+path = Path("data/world_specs/historical concrete fixture path")
 spec = WorldSpec.model_validate(json.loads(path.read_text()))
 print(spec.id, spec.schema_version, spec.root.id)
 PY
@@ -127,12 +127,12 @@ git status --porcelain=v1 -uall
 
 - RED check：`cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_fixture.py -q`
   在新增 fixture 前退出 `1`，结果为 `1 passed, 4 failed`。失败原因是缺少
-  `backend/data/world_specs/tiny_village.world.json` fixture path。
+  `backend/data/world_specs/historical concrete fixture path` fixture path。
 - Focused fixture test：`cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_fixture.py -q`
   退出 `0`；latest rerun 为 `5 passed`。
 - Backend regression test：`cd backend && .venv/bin/python -m pytest app/tests -q`
   退出 `0`；latest rerun 为 `92 passed`。
-- Import/validation smoke 退出 `0`，输出 `tiny-village 0.2 root`。
+- Import/validation smoke 退出 `0`，输出 `historical-concrete-fixture 0.2 root`。
 - `git diff --check` 退出 `0`，没有 whitespace errors。
 
 ### Compatibility Review
@@ -142,14 +142,14 @@ git status --porcelain=v1 -uall
 schema implementation behavior。
 
 没有改变 runtime engine behavior、event log storage、module behavior、API route、
-frontend behavior、production WorldSpec loader、runtime bridge、village runtime、
-game-specific backend logic、world generation、agent memory、pseudo-self、
+frontend behavior、production WorldSpec loader、runtime bridge、concrete demo runtime、
+application-specific backend logic、world generation、agent memory、pseudo-self、
 persistence/restart behavior 或 legacy `backend/worldengine/` behavior。
 
 ### Scope Review
 
 Implementation 保持在 approved 0.2.4 scope 内：
-`backend/data/world_specs/tiny_village.world.json`、
+`backend/data/world_specs/historical concrete fixture path`、
 `backend/app/tests/test_worldspec_fixture.py`，以及本 package 的 review evidence。没有启动
 schema、runtime、API、frontend、loader、generator、0.2.5 或 `backend/worldengine/` work。
 
@@ -165,7 +165,7 @@ synchronization 扩大到 allowed review evidence files 之外。
 
 ### Final Assessment
 
-0.2.4 implementation complete。Tiny Village reference WorldSpec fixture 已通过现有
+0.2.4 implementation complete。historical concrete fixture reference WorldSpec fixture 已通过现有
 recursive world schema models validate，本轮要求的 focused 和 backend regression checks 均在
 当前 session 通过。
 

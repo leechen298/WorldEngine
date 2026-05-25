@@ -20,8 +20,8 @@ Documentation-stage commands are recorded here before handoff:
 git status --short --branch
 git diff --check
 find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort
-rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|tiny_village|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
-rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|village runtime|game-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
+rg -n "0.2.4-worldspec-reference-fixture|review complete|WorldSpec|historical concrete anchor|reference fixture|model_validate|WorldCell|EntityRef|schema_version" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
+rg -n "WorldSpec loader|runtime bridge|RuntimeEngine|backend/worldengine|concrete demo runtime|application-specific|world generation|agent memory|pseudo-self|frontend|API route|event log" docs/iterations/v0.2/0.2.4-worldspec-reference-fixture docs/iterations/v0.2/v0.2-plan.md
 rg -n '^Status: (implementation complete|review complete)$' docs/iterations/v0.2/0.2.4-worldspec-reference-fixture
 rg -n '^\| `0\.2\.4-worldspec-reference-fixture` \| code \| (implementation complete|review complete) \|' docs/iterations/v0.2/README.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
@@ -52,12 +52,12 @@ Verification observations:
 - `find docs/iterations/v0.2/0.2.4-worldspec-reference-fixture -maxdepth 1 -type f | sort`
   listed the complete English seven-file set and complete `.zh.md` mirrors.
 - The status/content search found `0.2.4-worldspec-reference-fixture`,
-  `review complete`, `WorldSpec`, `tiny_village`, `reference fixture`,
+  `review complete`, `WorldSpec`, `historical concrete anchor`, `reference fixture`,
   `model_validate`, `WorldCell`, `EntityRef`, and `schema_version` in the
   package and v0.2 index/plan documents.
 - The boundary search found only planned boundary references for
   `WorldSpec loader`, `runtime bridge`, `RuntimeEngine`, `backend/worldengine`,
-  `village runtime`, `game-specific`, `world generation`, `agent memory`,
+  `concrete demo runtime`, `application-specific`, `world generation`, `agent memory`,
   `pseudo-self`, `frontend`, `API route`, and `event log`.
 - The negative status guards for 0.2.4 `implementation complete` and
   `review complete` produced no matches.
@@ -80,10 +80,10 @@ It does not extend or reinterpret the schema contract.
 ## Scope Review
 
 This documentation stage is limited to `docs/iterations/v0.2/`. It does not
-create `backend/data/world_specs/tiny_village.world.json`, does not create
+create `backend/data/world_specs/historical concrete fixture path`, does not create
 `backend/app/tests/test_worldspec_fixture.py`, does not modify schemas, and
-does not add a WorldSpec loader, runtime bridge, village runtime,
-game-specific backend logic, world generation, agent memory, pseudo-self,
+does not add a WorldSpec loader, runtime bridge, concrete demo runtime,
+application-specific backend logic, world generation, agent memory, pseudo-self,
 frontend, API route, event log storage, or `backend/worldengine/` work.
 
 ## Unresolved Findings
@@ -103,7 +103,7 @@ implementation closeout supersedes this documentation-stage status.
 
 | File | Change |
 |---|---|
-| `backend/data/world_specs/tiny_village.world.json` | Added the Tiny Village reference WorldSpec fixture. |
+| `backend/data/world_specs/historical concrete fixture path` | Added the historical concrete fixture reference WorldSpec fixture. |
 | `backend/app/tests/test_worldspec_fixture.py` | Added focused fixture validation tests using `json`, `pathlib`, `WorldSpec`, `WorldCell`, and `EntityRef`. |
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/review.md` | Recorded implementation-stage evidence. |
 | `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/review.zh.md` | Recorded synchronized implementation-stage evidence. |
@@ -118,7 +118,7 @@ import json
 from pathlib import Path
 from app.schemas.world_cell import WorldSpec
 
-path = Path("data/world_specs/tiny_village.world.json")
+path = Path("data/world_specs/historical concrete fixture path")
 spec = WorldSpec.model_validate(json.loads(path.read_text()))
 print(spec.id, spec.schema_version, spec.root.id)
 PY
@@ -134,12 +134,12 @@ git status --porcelain=v1 -uall
 - RED check: `cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_fixture.py -q`
   exited `1` before the fixture was added; it reported `1 passed, 4 failed`.
   The failures were due to the missing
-  `backend/data/world_specs/tiny_village.world.json` fixture path.
+  `backend/data/world_specs/historical concrete fixture path` fixture path.
 - Focused fixture test: `cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_fixture.py -q`
   exited `0`; latest rerun reported `5 passed`.
 - Backend regression test: `cd backend && .venv/bin/python -m pytest app/tests -q`
   exited `0`; latest rerun reported `92 passed`.
-- Import/validation smoke exited `0` and printed `tiny-village 0.2 root`.
+- Import/validation smoke exited `0` and printed `historical-concrete-fixture 0.2 root`.
 - `git diff --check` exited `0` with no whitespace errors.
 
 ### Compatibility Review
@@ -149,15 +149,15 @@ existing 0.2.2 `WorldSpec`, `WorldCell`, and `EntityRef` models as validation
 targets and does not change schema implementation behavior.
 
 No runtime engine behavior, event log storage, module behavior, API route,
-frontend behavior, production WorldSpec loader, runtime bridge, village
-runtime, game-specific backend logic, world generation, agent memory,
+frontend behavior, production WorldSpec loader, runtime bridge, concrete demo
+runtime, application-specific backend logic, world generation, agent memory,
 pseudo-self, persistence/restart behavior, or legacy `backend/worldengine/`
 behavior was changed.
 
 ### Scope Review
 
 Implementation stayed inside the approved 0.2.4 scope:
-`backend/data/world_specs/tiny_village.world.json`,
+`backend/data/world_specs/historical concrete fixture path`,
 `backend/app/tests/test_worldspec_fixture.py`, and this package's review
 evidence. No schema, runtime, API, frontend, loader, generator, 0.2.5, or
 `backend/worldengine/` work was started.
@@ -175,7 +175,7 @@ review evidence files.
 
 ### Final Assessment
 
-0.2.4 implementation is complete. The Tiny Village reference WorldSpec
+0.2.4 implementation is complete. The historical concrete fixture reference WorldSpec
 fixture validates through the existing recursive world schema models, and the
 required focused and backend regression checks pass in the current session.
 

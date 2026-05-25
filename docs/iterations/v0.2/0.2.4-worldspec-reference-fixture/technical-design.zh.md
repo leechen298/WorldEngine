@@ -22,24 +22,24 @@ Active backend path 是 `backend/app/`。0.2.2 已新增：
 - 不允许 production loading behavior。
 - Existing schema files 必须保持不变。
 - Runtime、event log、modules、API routes、frontend 和 `backend/worldengine/` 必须保持不变。
-- Fixture 不是 runtime world，也不是 game-specific backend feature。
+- Fixture 不是 runtime world，也不是 application-specific backend feature。
 
 ## Proposed Implementation
 
 通过 review approval 后，新增：
 
-- `backend/data/world_specs/tiny_village.world.json`
+- `backend/data/world_specs/historical concrete fixture path`
 - `backend/app/tests/test_worldspec_fixture.py`
 
 JSON fixture 应该小型、确定性，并包含：
 
 - `schema_version: "0.2"`
-- `id: "tiny-village"`
-- `label: "Tiny Village"`
+- `id: "historical-concrete-fixture"`
+- `label: "historical concrete fixture"`
 - top-level metadata，包含 `purpose: "reference-fixture"` 和 `version: "0.2"`
-- root `WorldCell`，包含 `id: "root"`、`label: "Tiny Village Root"` 和 `kind: "world"`
+- root `WorldCell`，包含 `id: "root"`、`label: "historical concrete fixture root"` 和 `kind: "world"`
 - 至少一个 root `entity_ref`
-- 至少两个 nested child cells，例如 `village-square` 和 `workshop`
+- 至少两个 nested child cells，例如 `historical child cell` 和 `historical-child-cell`
 - 至少一个 nested child cell 包含 `entity_ref`
 - 仅 fixture-specific metadata
 
@@ -52,7 +52,7 @@ from pathlib import Path
 from app.schemas.world_cell import WorldCell, WorldSpec
 
 
-FIXTURE_PATH = Path(__file__).resolve().parents[2] / "data" / "world_specs" / "tiny_village.world.json"
+FIXTURE_PATH = Path(__file__).resolve().parents[2] / "data" / "world_specs" / "historical concrete fixture path"
 
 
 def load_fixture() -> dict:
@@ -76,7 +76,7 @@ def load_fixture() -> dict:
 ## Runtime / Service Design
 
 本包不包含 runtime 或 service design changes。不得新增 WorldSpec loader、runtime bridge、API route、
-app factory dependency、projection integration、persistence/restart behavior 或 village runtime。
+app factory dependency、projection integration、persistence/restart behavior 或 concrete demo runtime。
 
 ## Compatibility
 
@@ -91,5 +91,5 @@ event contract、API behavior、frontend behavior 和 legacy backend behavior �
   service API、CLI loader、runtime bridge 或 dashboard integration。
 - Risk：implementation 为了适配 fixture 修改 schemas。Detection：changed-file scope checks 必须确认
   `entity.py`、`world_cell.py` 和 `event.py` 未修改。
-- Risk：Tiny Village 变成 game-specific backend logic。Detection：scope review 必须确认没有新增
-  runtime、API、frontend、generator 或 game-specific behavior。
+- Risk：historical concrete fixture 变成 application-specific backend logic。Detection：scope review 必须确认没有新增
+  runtime、API、frontend、generator 或 application-specific behavior。

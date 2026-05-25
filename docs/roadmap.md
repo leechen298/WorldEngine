@@ -14,9 +14,12 @@ event log, params, archive, and basic API envelope.
 
 ## v0.2 - Recursive World Foundation
 
+Status: planned / in progress
+
 Goal: establish the documentation governance, north star, recursive world
 schema/spec language, additive event contract, generic schema smoke
-validation, external fixture boundary, and legacy boundary.
+validation, external fixture boundary, legacy boundary, iterative development
+workflow, and reviewable release-candidate evidence.
 
 Non-goal: do not migrate RuntimeEngine to WorldCell or build demo-specific
 runtime.
@@ -31,10 +34,41 @@ contracts, and redacted validation reports.
 Goal: remove concrete external-world anchors from active core docs, fixtures,
 and tests, and reset the later roadmap around generic engine consumers.
 
-### v0.2.6 - Generic Recursive World Foundation Closeout
+### v0.2.6 - Iteration Workflow and Plan Reset
 
-Goal: close v0.2 around generic WorldCell, WorldSpec, EntityRef, EventRef,
-schema smoke validation, and external consumer boundaries.
+Goal: reset the remaining v0.2 package sequence, add the automation workflow
+for ChatGPT / Codex A / Codex B iteration, and abstract residual concrete demo
+anchors from v0.2 iteration documentation.
+
+### v0.2.7 - Recursive Schema Contract Hardening
+
+Goal: harden EntityRef, WorldCell, and WorldSpec schema contracts and generic
+schema tests without implementing runtime loading.
+
+### v0.2.8 - Event Reference Contract Hardening
+
+Goal: harden EventRef and Event.refs as additive event reference contracts
+without implementing a resolver or causality engine.
+
+### v0.2.9 - Generic Schema Evidence and Boundary Audit
+
+Goal: audit v0.2 schema, event, external boundary, and legacy boundary
+evidence before compatibility review.
+
+### v0.2.10 - Legacy Boundary and Compatibility Review
+
+Goal: clarify v0.1 runtime scaffold compatibility and legacy boundaries before
+v0.3 bridge work.
+
+### v0.2.11 - v0.2 Release Candidate Bundle
+
+Goal: prepare release-candidate evidence for human / ChatGPT review without
+declaring final release.
+
+### v0.2.12 - v0.2 Final Closeout
+
+Goal: perform final closeout only after the release-candidate bundle passes
+human / ChatGPT review.
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 

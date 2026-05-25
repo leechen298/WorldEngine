@@ -6,25 +6,25 @@
 
 - Reference WorldSpec fixture：一个小型、确定性的 JSON document，用来展示 valid
   `WorldSpec` shape。
-- Tiny Village fixture：recursive world schema language 的第一份具名 reference fixture。
+- historical concrete fixture：recursive world schema language 的第一份具名 reference fixture。
 - Fixture validation test：聚焦测试，读取 JSON fixture 并通过 `WorldSpec.model_validate(...)`
   validate。
 
 该 fixture 是 reference data fixture，不是 runtime world，不是 generated world，也不是
-game backend。
+application-specific backend。
 
 ## Allowed Changes
 
 通过 documentation gate review approval 后，implementation 只允许：
 
-- 新增 `backend/data/world_specs/tiny_village.world.json`。
+- 新增 `backend/data/world_specs/historical concrete fixture path`。
 - 新增 `backend/app/tests/test_worldspec_fixture.py`。
 - 在 closeout 阶段更新本 package 的 `review.md` 和 `review.zh.md`。
 
 ## Forbidden Changes
 
 - 本 documentation stage 不实现代码。
-- 暂不创建 `backend/data/world_specs/tiny_village.world.json`。
+- 暂不创建 `backend/data/world_specs/historical concrete fixture path`。
 - 暂不创建 `backend/app/tests/test_worldspec_fixture.py`。
 - 不修改 `backend/app/schemas/entity.py`。
 - 不修改 `backend/app/schemas/world_cell.py`。
@@ -37,8 +37,8 @@ game backend。
 - 不修改 `backend/worldengine/`。
 - 不实现 WorldSpec loader。
 - 不实现 runtime bridge。
-- 不实现 village runtime。
-- 不实现 game-specific backend logic。
+- 不实现 concrete demo runtime。
+- 不实现 application-specific backend logic。
 - 不实现 world generation。
 - 不实现 agent memory、pseudo-self 或 agent behavior loops。
 - 不增加 persistence/restart logic。
@@ -53,33 +53,33 @@ game backend。
 ```json
 {
   "schema_version": "0.2",
-  "id": "tiny-village",
-  "label": "Tiny Village",
+  "id": "historical-concrete-fixture",
+  "label": "historical concrete fixture",
   "metadata": {
     "purpose": "reference-fixture",
     "version": "0.2"
   },
   "root": {
     "id": "root",
-    "label": "Tiny Village Root",
+    "label": "historical concrete fixture root",
     "kind": "world",
     "entity_refs": [
       {
-        "id": "village-square",
+        "id": "historical child cell",
         "kind": "location",
-        "label": "Village Square"
+        "label": "Historical Child Cell"
       }
     ],
     "child_cells": [
       {
-        "id": "village-square",
-        "label": "Village Square",
+        "id": "historical child cell",
+        "label": "Historical Child Cell",
         "kind": "world",
         "entity_refs": [
           {
-            "id": "notice-board",
+            "id": "historical-nested-entity",
             "kind": "resource",
-            "label": "Notice Board"
+            "label": "Historical Entity"
           }
         ],
         "child_cells": [],
@@ -88,8 +88,8 @@ game backend。
         }
       },
       {
-        "id": "workshop",
-        "label": "Workshop",
+        "id": "historical-child-cell",
+        "label": "Historical Child Cell",
         "kind": "world",
         "entity_refs": [],
         "child_cells": [],
@@ -108,16 +108,16 @@ game backend。
 实际实现可以调整 label 或 metadata，但必须保留这些约束：
 
 - `schema_version` 是 `"0.2"`。
-- `id` 是 `"tiny-village"`。
-- `label` 是 `"Tiny Village"`。
+- `id` 是 `"historical-concrete-fixture"`。
+- `label` 是 `"historical concrete fixture"`。
 - `metadata.purpose` 是 `"reference-fixture"`。
 - `metadata.version` 是 `"0.2"`。
 - `root.id` 是 `"root"`。
-- `root.label` 是 `"Tiny Village Root"`。
+- `root.label` 是 `"historical concrete fixture root"`。
 - `root.kind` 是 `"world"`。
 - `root.entity_refs` 至少有一个 `EntityRef`-like entry。
-- `root.child_cells` 至少有两个 nested `WorldCell` examples，例如 `village-square` 和
-  `workshop`。
+- `root.child_cells` 至少有两个 nested `WorldCell` examples，例如 `historical child cell` 和
+  `historical-child-cell`。
 - 至少一个 child cell 可以包含一个 `entity_ref`。
 - Metadata 只用于 fixture-specific metadata。
 
@@ -127,9 +127,9 @@ game backend。
 
 ```json
 {
-  "id": "notice-board",
+  "id": "historical-nested-entity",
   "kind": "resource",
-  "label": "Notice Board",
+  "label": "Historical Entity",
   "metadata": {
     "fixture_role": "example-resource"
   }
@@ -149,7 +149,7 @@ fixture，然后用 `WorldSpec.model_validate(...)` validate parsed dictionary�
 
 Implementation-stage tests 必须验证：
 
-- fixture file 存在于 `backend/data/world_specs/tiny_village.world.json`。
+- fixture file 存在于 `backend/data/world_specs/historical concrete fixture path`。
 - JSON 可以成功 parse。
 - `WorldSpec.model_validate(fixture_dict)` 成功。
 - `schema_version` 是 `"0.2"`。
@@ -179,7 +179,7 @@ north star。它支持未来 generation、loading、runtime bridge、projection 
 
 - v0.3 WorldSpec loader and runtime bridge。
 - Runtime reference resolution and referential integrity。
-- Village runtime and game surface。
+- Concrete demo runtime and product surface。
 - Full world generation。
 - Agent memory、pseudo-self 或 agent behavior loops。
 - 0.2.5 legacy boundary cleanup。

@@ -40,18 +40,18 @@ After this documentation gate is reviewed and approved, implementation may:
 - Update `docs/scope-boundaries.md` and `docs/scope-boundaries.zh.md` to remove
   allowances for concrete Demo fixtures inside the core repository.
 - Update `docs/roadmap.md` and `docs/roadmap.zh.md` to remove the v0.7
-  Reference Village World milestone and replace it with external validation
+  superseded concrete fixture direction milestone and replace it with external validation
   readiness / projection consumer readiness.
-- Update `AGENTS.md` and `AGENTS.zh.md` to remove first village-like game or
-  electronic-pet surface wording from current guidance.
+- Update `AGENTS.md` and `AGENTS.zh.md` to remove concrete demo surface or
+  concrete demo surface surface wording from current guidance.
 - Update `README.md` and `README.zh.md` to remove references to running a
-  reference village world.
+  superseded concrete fixture direction.
 - Update other active core docs if they contain the same concrete Demo anchors,
   including architecture, glossary, release planning, and v0.2 index or plan
   docs.
 - Mark `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/` as a
   historical iteration artifact that no longer defines future direction.
-- Delete `backend/data/world_specs/tiny_village.world.json` or replace it with
+- Delete `backend/data/world_specs/historical concrete fixture path` or replace it with
   `backend/data/world_specs/schema_smoke_world.json`.
 - Delete or rewrite `backend/app/tests/test_worldspec_fixture.py` as
   `backend/app/tests/test_worldspec_schema_smoke.py`.
@@ -59,7 +59,7 @@ After this documentation gate is reviewed and approved, implementation may:
 - Add `docs/validation-report-template.md`.
 - Reset later roadmap direction to generic engine milestones:
   - v0.2.5: core boundary cleanup and roadmap reset.
-  - v0.2.6: generic WorldSpec / WorldCell schema foundation closeout.
+  - v0.2.6: iteration workflow and plan reset.
   - v0.3: WorldSpec loader and runtime bridge.
   - v0.3.5: external fixture contract readiness.
   - v0.4: Agent-in-World minimal loop.
@@ -86,9 +86,9 @@ After this documentation gate is reviewed and approved, implementation may:
 - Do not modify `backend/worldengine/` runtime behavior.
 - Do not delete WorldCell, WorldSpec, EntityRef, EventRef, or other generic
   schema contracts.
-- Do not replace Tiny Village with another concrete Demo world.
+- Do not replace historical concrete fixture with another concrete Demo world.
 - Do not introduce any new concrete world, role, location, resource, plot rule,
-  narrative rule, game UI, seed data, or internal external-validation world
+  narrative rule, application UI, seed data, or internal external-validation world
   implementation detail.
 - Do not keep active tests or active fixtures coupled to concrete Demo world
   words, entities, locations, resources, or assertions.

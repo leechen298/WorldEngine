@@ -21,7 +21,7 @@ Review 已确认：
 
 - Fixture 被描述为第一份可验证的世界样本，而不是第一个可运行的世界。
 - Implementation boundary 限定在
-  `backend/data/world_specs/tiny_village.world.json`、
+  `backend/data/world_specs/historical concrete fixture path`、
   `backend/app/tests/test_worldspec_fixture.py`，以及本 package 的 closeout review files。
 - Fixture contract 使用现有 0.2.2 `WorldSpec`、`WorldCell` 和 `EntityRef` schema language。
 - 允许 test-only JSON reading，但禁止 production WorldSpec loader work。
@@ -31,7 +31,7 @@ Review 已确认：
 
 只有 review approval 后才能：
 
-1. 新增 `backend/data/world_specs/tiny_village.world.json`。
+1. 新增 `backend/data/world_specs/historical concrete fixture path`。
 2. 新增 `backend/app/tests/test_worldspec_fixture.py`。
 3. 运行 focused fixture test。
 4. 运行 broader backend app test suite。
@@ -47,6 +47,6 @@ Review 已确认：
 - 把 fixture 连接到 `RuntimeEngine`。
 - 新增 API route、frontend、event log、module、generator、persistence 或
   `backend/worldengine/` behavior。
-- 新增 village runtime、game-specific backend logic、world generation、agent memory、
+- 新增 concrete demo runtime、application-specific backend logic、world generation、agent memory、
   pseudo-self 或 agent behavior loops。
 - 启动 0.2.5。

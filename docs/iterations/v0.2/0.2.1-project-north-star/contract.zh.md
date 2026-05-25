@@ -20,7 +20,7 @@ Status: complete
 - 不改变 API shape。
 - 不改变 tests。
 - 不把 v0.2 标记为 released。
-- 不把 village game 写成 WorldEngine purpose。
+- 不把 concrete demo application 写成 WorldEngine purpose。
 
 ## Allowed Changes
 
@@ -35,7 +35,7 @@ Status: complete
 - Do not modify backend code。
 - Do not modify frontend code。
 - Do not add schema implementation。
-- Do not add `backend/data/world_specs/tiny_village.world.json`。
+- Do not add `backend/data/world_specs/historical concrete fixture path`。
 - Do not modify `backend/worldengine/`。
 - Do not run or claim E2E/UI/runtime smoke tests。
 
@@ -43,7 +43,7 @@ Status: complete
 
 - North star 明确 world generation、world runtime、recursive worlds、Agent lived experience 和
   pseudo-self。
-- Product model 明确 WorldEngine 不是 village game backend。
+- Product model 明确 WorldEngine 不是 demo-specific backend。
 - Scope boundaries 明确 v0.2 does/does not。
 - Iteration templates 足以支持后续 code packages。
 

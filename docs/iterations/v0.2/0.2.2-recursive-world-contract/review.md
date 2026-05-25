@@ -20,7 +20,7 @@ git diff --check
 find docs/iterations/v0.2/0.2.2-recursive-world-contract -maxdepth 1 -type f | sort
 rg -n "0.2.2-recursive-world-contract|ready for implementation|WorldCell|EntityRef|WorldSpec" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 rg -n 'Status: ready for review|\| .*ready for review| - ready for review' docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md --glob '!review.md' --glob '!review.zh.md'
-rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|village|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
+rg -n "RuntimeEngine|WorldSpec loader|backend/worldengine|concrete demo|migration|agent memory|pseudo-self" docs/iterations/v0.2/0.2.2-recursive-world-contract docs/iterations/v0.2/v0.2-plan.md
 git diff --name-only | rg -v '^(docs/iterations/v0.2/)'
 git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0.2/'
 ```
@@ -42,7 +42,7 @@ Verification observations:
   `WorldCell`, and `WorldSpec` in the package and v0.2 index/plan documents.
 - The stale status search for `ready for review` produced no matches.
 - The boundary search found only planned boundary references for
-  `RuntimeEngine`, loader, `backend/worldengine`, village, migration, agent
+  `RuntimeEngine`, loader, `backend/worldengine`, concrete demo, migration, agent
   memory, and pseudo-self.
 - `git diff --name-only | rg -v '^(docs/iterations/v0.2/)'` produced no
   matches.
@@ -119,7 +119,7 @@ The implementation adds inert schemas and focused schema tests only.
 Implementation stayed inside the approved 0.2.2 scope. Code changes are
 limited to the three implementation files allowed by the package, with this
 review evidence recorded as required by the repository process. No 0.2.3,
-WorldSpec loader, runtime migration, Tiny Village fixture, agent memory,
+WorldSpec loader, runtime migration, historical concrete fixture, agent memory,
 pseudo-self, frontend, or legacy backend work was started.
 
 ### Unresolved Findings

@@ -5,7 +5,7 @@
 WorldEngine v0.1 has a working scaffold, but the repository does not yet have
 an authoritative north star, product model, scope boundary, or iteration
 governance layer. Without those documents, future work can drift toward a
-village-game backend instead of the broader recursive world engine.
+concrete demo-application-specific backend instead of the broader recursive world engine.
 
 ## Goal
 
@@ -27,8 +27,8 @@ Create the documentation governance foundation for v0.2:
 - Do not modify backend runtime code.
 - Do not modify frontend code.
 - Do not create WorldCell schemas yet.
-- Do not create a village runtime.
-- Do not create a game repository.
+- Do not create a concrete demo runtime.
+- Do not create an application repository.
 - Do not claim v0.2 is implemented or released.
 
 ## Why Now
@@ -40,5 +40,5 @@ before schema and runtime work begin.
 
 This package makes the north star explicit: generate worlds, run worlds over
 time, support recursive world structures, and let agents develop continuity and
-pseudo-self through world feedback. The first game remains a surface, not the
+pseudo-self through world feedback. The future product surface remains a surface, not the
 engine goal.
