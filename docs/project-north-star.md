@@ -28,23 +28,25 @@ WorldEngine does not claim real consciousness. "Pseudo-self" means an
 engineered continuity model whose behavior can be inspected, tested, and
 improved. It is a product and engineering target, not a metaphysical claim.
 
-## First User Surface
+## External Projection Applications
 
-The first village-like electronic-pet game is a surface, reference world, and
-validation interface for WorldEngine.
+External projection applications are consumers and validation surfaces for
+WorldEngine. They exercise public engine contracts without becoming part of
+the core repository.
 
-It is:
+They are:
 
-- the first user-facing projection of the engine.
-- the first reference world that ordinary users can understand.
-- a practical acceptance harness for world runtime, events, memory, and agent
+- public consumers of the engine.
+- external validation consumers for runtime, events, memory, and agent
   continuity.
+- places where product-specific UI and application behavior may live outside
+  the core repository.
 
-It is not:
+They are not:
 
 - the purpose of WorldEngine.
-- a reason to make the engine village-specific.
-- a reason to replace recursive world architecture with game-only state.
+- a reason to make the engine demo-specific.
+- a reason to replace recursive world architecture with application-only state.
 
 ## Architecture Anchor
 

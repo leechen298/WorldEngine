@@ -15,7 +15,7 @@ Status: authoritative product model
 
 ## WorldEngine Is Not
 
-- Just a village game backend.
+- A demo-specific or application-specific backend.
 - Just an NPC chat system.
 - Just a story generator.
 - Just a game client.
@@ -53,8 +53,8 @@ Projection exposes the running world to different consumers. A dashboard,
 game, API client, or external system sees a projection of the same underlying
 world model.
 
-## First Product Surface
+## External Product Surfaces
 
-The first product surface may be a village-like electronic-pet world. It should
-consume WorldEngine capabilities instead of owning world runtime or agent
-self-continuity logic.
+Product surfaces should live as public WorldEngine consumers. They consume
+schemas, APIs, events, projections, and exported contracts instead of owning
+world runtime or agent self-continuity logic inside the core repository.

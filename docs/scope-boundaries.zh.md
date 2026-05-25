@@ -7,9 +7,15 @@ Status: authoritative boundary guide
 ## Global Rules
 
 - WorldEngine 必须与 `docs/project-north-star.md` 保持一致。
-- 第一款 game surface 不能把 engine 重新定义成 village-game backend。
-- Tiny Village 可以提前作为 reference fixture 或 acceptance target 使用，但在 iteration
-  contract 明确允许之前，不能变成 game-specific runtime logic。
+- WorldEngine core repository 不能包含 concrete demo worlds。
+- External fixture 和 validation worlds 不能作为 core repository 内的 fixtures、
+  acceptance targets、loader test inputs 或 projection targets 保存。
+- External fixture 和 validation worlds 只能通过 public APIs、CLI commands、schemas、
+  exported contracts 和 redacted validation reports 消费 WorldEngine。
+- Core repository 可以定义 schemas、runtime contracts、event contracts、agent contracts、
+  memory/self-continuity contracts、projection contracts 和 redacted report formats。
+- Core repository 不能保存 external-world seed data、characters、locations、story rules、
+  validation oracle internals 或 application-specific backend logic。
 - Code work 必须限定在一个 iteration package 内。
 - Schema changes 必须 additive，除非当前 contract 允许 breaking changes。
 - Runtime behavior 必须保留，除非当前 contract 明确改变它。
@@ -22,7 +28,8 @@ v0.2 Recursive World Foundation 可以：
 - 在 schema/spec layer 定义 WorldCell 和 WorldSpec。
 - 定义 EntityRef 等 shared references。
 - 增加 optional event structure fields。
-- 增加 reference WorldSpec fixture。
+- 增加 generic schema smoke validation。
+- 定义 external fixture 和 validation consumers 的边界。
 - 标记 `backend/worldengine/` 为 legacy。
 - 保留现有 runtime behavior。
 
@@ -33,7 +40,7 @@ v0.2 不能：
 - 完整迁移 RuntimeEngine 到 WorldCell。
 - 把 Agent inner-world 实现为 WorldCell。
 - 实现完整 world generation。
-- 实现 village game runtime。
+- 实现 demo-specific runtime。
 - 创建单独的 game repository。
 - 增加 vector memory。
 - 增加 multi-agent society simulation。
@@ -42,9 +49,10 @@ v0.2 不能：
 
 ## Future Boundaries
 
-- v0.3 可以把 WorldSpec 桥接进 runtime loading。
+- v0.3 可以把 generic WorldSpec 桥接进 runtime loading。
+- v0.3.5 可以定义 external fixture contract readiness。
 - v0.4 可以加入 minimal agent-in-world loop。
 - v0.5 可以加入 memory 和 self-continuity。
 - v0.6 可以加入 world generation v1。
-- v0.7 可以构建 reference village world。
-- v0.8 可以开始 first game surface。
+- v0.7 可以准备 external validation 和 projection consumer readiness。
+- v0.8 可以准备 first external projection application。

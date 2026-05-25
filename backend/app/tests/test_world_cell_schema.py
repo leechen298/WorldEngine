@@ -99,7 +99,7 @@ def test_world_cell_rejects_non_world_kind() -> None:
     _, WorldCell, _ = _schema_classes()
 
     with pytest.raises(ValidationError):
-        WorldCell(id="root", kind="village")
+        WorldCell(id="root", kind="invalid-kind")
 
 
 def test_world_spec_rejects_unsupported_schema_version() -> None:

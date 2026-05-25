@@ -16,25 +16,41 @@ Goal: 建立 monorepo、FastAPI backend、Vue dashboard、runtime tick、event l
 ## v0.2 - Recursive World Foundation
 
 Goal: 建立 documentation governance、north star、recursive world schema/spec language、additive
-event contract、reference WorldSpec fixture 和 legacy boundary。
+event contract、generic schema smoke validation、external fixture boundary 和 legacy
+boundary。
 
-Non-goal: 不迁移 RuntimeEngine 到 WorldCell，不构建 village runtime。
+Non-goal: 不迁移 RuntimeEngine 到 WorldCell，不构建 demo-specific runtime。
 
-Tiny Village 可以在 v0.7 之前作为 reference fixture、schema validation target、loader test input
-或 projection acceptance target 出现。它不能在 roadmap 明确允许之前，变成 WorldEngine 内部的
-game-specific runtime logic。
+Concrete external worlds 不能作为 core repository 内的 fixtures、loader inputs、projection
+targets 或 acceptance targets 出现。它们只能通过 public APIs、CLI contracts、schemas、exported
+contracts 和 redacted validation reports 消费 WorldEngine。
+
+### v0.2.5 - Core Boundary Cleanup and Roadmap Reset
+
+Goal: 从 active core docs、fixtures 和 tests 中移除 concrete external-world anchors，并围绕
+generic engine consumers 重置后续 roadmap。
+
+### v0.2.6 - Generic Recursive World Foundation Closeout
+
+Goal: 围绕 generic WorldCell、WorldSpec、EntityRef、EventRef、schema smoke validation 和
+external consumer boundaries 关闭 v0.2。
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 
-Goal: 在不破坏 v0.1 runtime compatibility 的前提下，把 validated WorldSpec data 加载进
-runtime context。
+Goal: 在不破坏 v0.1 runtime compatibility 的前提下，把 validated generic WorldSpec data
+加载进 runtime context。
+
+## v0.3.5 - External Fixture Contract Readiness
+
+Goal: 定义 external fixture runners 如何通过 public contracts 调用 core repository，同时不在
+WorldEngine 内创建这些 repositories。
 
 ## v0.4 - Agent-in-World Minimal Loop
 
 Goal: 让 Agent perceive world events、produce action intents、receive action results，并通过一个
 minimal validated loop 影响 world state。
 
-## v0.5 - Memory and Self Continuity
+## v0.5 - Memory and Self-Continuity Substrate
 
 Goal: 引入 working memory、episodic memory、relationship state、self-summary、reflection records
 和会影响 future action 的 personality drift signals。
@@ -44,12 +60,12 @@ Goal: 引入 working memory、episodic memory、relationship state、self-summar
 Goal: 从 templates 和 structured AI-assisted generation 生成 runnable WorldSpec data，并包含
 validation、metadata、preview 和 regeneration support。
 
-## v0.7 - Reference Village World
+## v0.7 - External Validation Readiness / Projection Consumer Readiness
 
-Goal: 构建第一个完整 reference world，用于验证 world generation、world runtime、recursive
-structure、Agent continuity 和 player projection，同时不把 engine 改成 game-specific backend code。
+Goal: 通过 public contracts、redacted reports 和 compatibility evidence，让 WorldEngine 为
+external validation suites 和 projection consumers 做好准备。
 
-## v0.8 - First Game Surface
+## v0.8 - First External Projection Application Readiness
 
-Goal: 启动 user-facing game surface，让它 consume WorldEngine APIs 和 projections，同时把 world
-runtime 与 Agent self-continuity 留在 engine 内。
+Goal: 准备 engine interfaces、evidence 和 projection contracts，让第一个 external product
+application 能消费 WorldEngine，而不把 application-specific behavior 移入 core repository。

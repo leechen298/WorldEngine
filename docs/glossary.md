@@ -34,10 +34,12 @@ An engineered model of sustained identity and behavior continuity. It can
 include self-narrative, memory retrieval, relationship history, long-term
 preferences, and personality drift. It is not a claim of real consciousness.
 
-## Reference World
+## External Validation World
 
-A standard world instance used to validate and demonstrate engine capability.
-The first reference world may be a tiny village.
+An out-of-repository world used by an external validation suite or product
+consumer. It may validate engine capability through public contracts, but its
+seed data and internal validation details do not belong in the core
+repository.
 
 ## Recursive World
 
@@ -45,10 +47,10 @@ A world structure where one world can contain child worlds or specialized
 sub-worlds. Later milestones may model memory spaces or subjective agent
 spaces as specialized recursive world cells.
 
-## Surface
+## Projection Consumer
 
-A user-facing or system-facing entry point that consumes WorldEngine state,
-events, and projections. A game is a surface.
+A user-facing or system-facing consumer that reads WorldEngine state, events,
+and projections through public contracts. It does not own core engine logic.
 
 ## WorldCell
 

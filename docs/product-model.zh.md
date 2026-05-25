@@ -15,7 +15,7 @@ Status: authoritative product model
 
 ## WorldEngine Is Not
 
-- 不只是 village game backend。
+- 不是 demo-specific 或 application-specific backend。
 - 不只是 NPC chat system。
 - 不只是 story generator。
 - 不只是 game client。
@@ -50,7 +50,8 @@ state、memory records 和 reviewable evidence。
 Projection 把 running world 暴露给不同 consumers。Dashboard、game、API client 或 external
 system 都看到同一个 underlying world model 的 projection。
 
-## First Product Surface
+## External Product Surfaces
 
-第一款 product surface 可以是 village-like electronic-pet world。它应该 consume WorldEngine
-capabilities，而不是拥有 world runtime 或 Agent self-continuity logic。
+Product surfaces 应该作为 public WorldEngine consumers 存在。它们 consume schemas、APIs、
+events、projections 和 exported contracts，而不是在 core repository 内拥有 world runtime
+或 Agent self-continuity logic。

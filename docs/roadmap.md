@@ -15,27 +15,43 @@ event log, params, archive, and basic API envelope.
 ## v0.2 - Recursive World Foundation
 
 Goal: establish the documentation governance, north star, recursive world
-schema/spec language, additive event contract, reference WorldSpec fixture, and
-legacy boundary.
+schema/spec language, additive event contract, generic schema smoke
+validation, external fixture boundary, and legacy boundary.
 
-Non-goal: do not migrate RuntimeEngine to WorldCell or build village runtime.
+Non-goal: do not migrate RuntimeEngine to WorldCell or build demo-specific
+runtime.
 
-Tiny Village may appear before v0.7 as a reference fixture, schema validation
-target, loader test input, or projection acceptance target. It must not become
-game-specific runtime logic inside WorldEngine before the roadmap explicitly
-allows that work.
+Concrete external worlds must not appear inside the core repository as
+fixtures, loader inputs, projection targets, or acceptance targets. They may
+consume WorldEngine only through public APIs, CLI contracts, schemas, exported
+contracts, and redacted validation reports.
+
+### v0.2.5 - Core Boundary Cleanup and Roadmap Reset
+
+Goal: remove concrete external-world anchors from active core docs, fixtures,
+and tests, and reset the later roadmap around generic engine consumers.
+
+### v0.2.6 - Generic Recursive World Foundation Closeout
+
+Goal: close v0.2 around generic WorldCell, WorldSpec, EntityRef, EventRef,
+schema smoke validation, and external consumer boundaries.
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 
-Goal: load validated WorldSpec data into runtime context without losing v0.1
-runtime compatibility.
+Goal: load validated generic WorldSpec data into runtime context without
+losing v0.1 runtime compatibility.
+
+## v0.3.5 - External Fixture Contract Readiness
+
+Goal: define how external fixture runners invoke the core repository through
+public contracts without creating those repositories inside WorldEngine.
 
 ## v0.4 - Agent-in-World Minimal Loop
 
 Goal: let agents perceive world events, produce action intents, receive action
 results, and affect world state through a minimal validated loop.
 
-## v0.5 - Memory and Self Continuity
+## v0.5 - Memory and Self-Continuity Substrate
 
 Goal: introduce working memory, episodic memory, relationship state,
 self-summary, reflection records, and personality drift signals that can affect
@@ -47,14 +63,14 @@ Goal: generate runnable WorldSpec data from templates and structured
 AI-assisted generation with validation, metadata, preview, and regeneration
 support.
 
-## v0.7 - Reference Village World
+## v0.7 - External Validation Readiness / Projection Consumer Readiness
 
-Goal: build the first complete reference world that validates world generation,
-world runtime, recursive structure, agent continuity, and player projection
-without turning the engine into game-specific backend code.
+Goal: make WorldEngine ready for external validation suites and projection
+consumers through public contracts, redacted reports, and compatibility
+evidence.
 
-## v0.8 - First Game Surface
+## v0.8 - First External Projection Application Readiness
 
-Goal: start a user-facing game surface that consumes WorldEngine APIs and
-projections while leaving world runtime and agent self-continuity inside the
-engine.
+Goal: prepare the engine interfaces, evidence, and projection contracts needed
+for a first external product application to consume WorldEngine without moving
+application-specific behavior into the core repository.

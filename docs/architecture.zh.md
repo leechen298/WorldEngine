@@ -32,7 +32,8 @@ v0.2 是 Recursive World Foundation。它应该先建立 schema 和 spec languag
   shared reference shape。
 - additive `Event` fields，用于 source、target、location、visibility、importance 和 causal
   references。
-- 一个可验证为 WorldSpec 的 reference `tiny_village.world.json` fixture。
+- generic schema smoke validation，用于证明 WorldSpec recursion、entity references 和
+  round-trip behavior，而不保存 external-world details。
 
 ## Runtime Boundary
 

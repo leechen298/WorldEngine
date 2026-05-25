@@ -38,19 +38,16 @@ relationships、actions、feedback 和 self-narrative。
 
 Pseudo-self 是 Agent 长期 continuity 的 engineered behavior model。它不是 real consciousness claim。
 
-## Surface
+## Projection Consumer
 
-Surface 是面向用户或外部系统的 projection，例如 dashboard、game client、API 或 integration。
+Projection consumer 是面向用户或外部系统的 consumer，通过 public contracts 读取 WorldEngine
+state、events 和 projections。它不拥有 core engine logic。
 
-## Reference World
+## External Validation World
 
-Reference world 是用于 validation、testing 和 product demonstration 的标准 world。第一款
-village-like game surface 会建立在 reference village world 上。
-
-## Tiny Village
-
-Tiny Village 是 future reference fixture / reference world。它不能把 WorldEngine 变成 village-specific
-backend。
+External validation world 是外部 validation suite 或 product consumer 使用的 out-of-repository
+world。它可以通过 public contracts 验证 engine capability，但它的 seed data 和内部 validation
+details 不属于 core repository。
 
 ## Legacy Path
 

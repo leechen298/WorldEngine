@@ -48,8 +48,8 @@ v0.1 不能：
 - 从 templates 或 prompts 生成 worlds。
 - 运行 Agent perception/action/memory loop。
 - 建模 Agent pseudo-self continuity。
-- 运行 reference village world。
-- 提供 user-facing game surface。
+- 以 engine consumer 形式运行 external projection applications。
+- 提供 packaged external product surface。
 
 ## Root-Level Quick Start
 

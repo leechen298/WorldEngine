@@ -19,9 +19,8 @@ formation 形成持续变化的主体表现。
 - `docs/roadmap.md`
 - `docs/iterations/README.md`
 
-第一款 village-like game 或 electronic-pet surface 只是 WorldEngine 第一个
-user-facing projection。它不是 engine goal，也不能把仓库变成 game-specific
-backend。
+External fixture、validation 和 projection applications 是 WorldEngine 的 consumers。
+它们不是 engine core 的一部分，也不能把本仓库变成 application-specific backend code。
 
 ## Active Code Path
 
@@ -98,14 +97,24 @@ contract/design 更新并通过 review 后，才能继续。
    World、Agent、memory、runtime 和 external projection 应该通过 Event contract
    与 evidence 收敛，而不是通过 hidden side effects。
 
-6. Game surface is not engine goal.
-   不要把 WorldEngine 收窄成 village game backend。
+6. Application surfaces are not the engine goal.
+   不要把 WorldEngine 收窄成 demo-specific 或 application-specific backend logic。
 
 7. Agent pseudo-self is core, but not automatic current scope.
    roadmap 或 iteration contract 可以只定义边界，把 Agent self-continuity 的实现放到
    后续版本。
 
-8. Review must include evidence.
+8. Keep WorldEngine core generic.
+   不要在本仓库加入 concrete demo-world names、maps、characters、locations、
+   resources、story rules、seed data、UI code 或 game/application-specific backend
+   logic。
+
+9. External validation worlds are consumers.
+   不要用 external validation world 反向驱动 internal engine abstractions。External
+   fixture 和 validation applications 只能通过 public APIs、CLI contracts、schemas、
+   exported contracts 或 redacted reports 消费 WorldEngine。
+
+10. Review must include evidence.
    每个 code iteration 都必须在 `review.md` 记录 changed files、commands run、
    test results、compatibility review、scope review 和 unresolved findings。
 

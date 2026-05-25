@@ -51,8 +51,8 @@ v0.1 cannot:
 - generate worlds from templates or prompts.
 - run agents through a perception/action/memory loop.
 - model agent pseudo-self continuity.
-- run a reference village world.
-- provide a user-facing game surface.
+- run external projection applications as engine consumers.
+- provide a packaged external product surface.
 
 ## Root-Level Quick Start
 

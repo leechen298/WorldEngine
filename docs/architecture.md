@@ -33,7 +33,8 @@ language before runtime migration:
   rules, locations, and future memory links.
 - additive `Event` fields for source, target, location, visibility,
   importance, and causal references.
-- a reference `tiny_village.world.json` fixture that validates as a WorldSpec.
+- generic schema smoke validation that proves WorldSpec recursion, entity
+  references, and round-trip behavior without storing external-world details.
 
 ## Runtime Boundary
 

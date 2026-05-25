@@ -1,6 +1,6 @@
 # 0.2.5 Core Boundary Cleanup And Roadmap Reset
 
-Status: planned
+Status: review complete
 
 Type: mixed
 
@@ -54,14 +54,14 @@ WorldSpec loader, Agent loop, memory substrate, or world generation system.
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Documentation gate approved
-- [ ] Ready for implementation
-- [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Documentation gate approved
+- [x] Ready for implementation
+- [x] Implementation complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Roadmap Reset Summary
 

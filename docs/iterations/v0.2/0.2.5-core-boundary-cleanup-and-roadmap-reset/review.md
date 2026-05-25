@@ -1,73 +1,124 @@
 # Review
 
-Status: documentation draft; implementation not started
+Status: review complete
 
 ## Changed Files
 
 | File | Change |
 |---|---|
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md` | Added package overview, status, scope, checklist, and roadmap reset summary. |
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/intent.md` | Added motivation for removing concrete Demo world anchors from core planning. |
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/contract.md` | Added allowed changes, forbidden changes, compatibility constraints, and historical documentation rule. |
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/technical-design.md` | Added implementation strategy for documentation cleanup, generic fixture replacement, schema smoke tests, and external validation docs. |
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/test-plan.md` | Added documentation-stage checks and later implementation-stage verification commands. |
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/plan.md` | Added two-phase execution plan for documentation cleanup and fixture/test cleanup. |
-| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/review.md` | Added documentation-stage review template and current evidence. |
+| `AGENTS.md`, `AGENTS.zh.md` | Replaced concrete projection wording with external consumer boundaries and added hard rules for generic core scope. |
+| `CLAUDE.md`, `CLAUDE.zh.md` | Mirrored the agent guidance cleanup for the existing Claude entry files. |
+| `README.md`, `README.zh.md` | Removed the concrete reference-world limitation and described external projection applications as consumers. |
+| `docs/project-north-star.md`, `docs/project-north-star.zh.md` | Replaced first concrete user-surface wording with external projection application guidance. |
+| `docs/product-model.md`, `docs/product-model.zh.md` | Removed concrete product-surface wording and kept product surfaces as public consumers. |
+| `docs/scope-boundaries.md`, `docs/scope-boundaries.zh.md` | Added explicit core-vs-external fixture and validation boundaries. |
+| `docs/roadmap.md`, `docs/roadmap.zh.md` | Reset v0.2.5 through v0.8 around generic engine and external consumer milestones. |
+| `docs/architecture.md`, `docs/architecture.zh.md` | Replaced concrete fixture direction with generic schema smoke validation. |
+| `docs/glossary.md`, `docs/glossary.zh.md` | Replaced concrete reference-world vocabulary with external validation world and projection consumer terms. |
+| `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | Updated planned capability and non-goal wording for generic schema smoke and external boundaries. |
+| `docs/iterations/v0.2/README.md`, `docs/iterations/v0.2/README.zh.md` | Marked 0.2.4 as historical and 0.2.5 as review complete. |
+| `docs/iterations/v0.2/v0.2-plan.md`, `docs/iterations/v0.2/v0.2-plan.zh.md` | Replaced legacy fixture direction with 0.2.5 cleanup and 0.2.6 generic closeout planning. |
+| `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/README.md`, `README.zh.md` | Added historical artifact notes that supersede the concrete fixture direction. |
+| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md` | Synchronized status and checklist to review complete. |
+| `backend/data/world_specs/tiny_village.world.json` | Deleted the concrete external-world fixture. |
+| `backend/app/tests/test_worldspec_fixture.py` | Deleted the concrete fixture test. |
+| `backend/app/tests/test_worldspec_schema_smoke.py` | Added domain-neutral in-memory WorldSpec schema smoke tests. |
+| `backend/app/tests/test_world_cell_schema.py` | Replaced a concrete invalid `kind` value with a domain-neutral invalid value. |
+| `docs/external-fixture-boundary.md` | Added the external fixture and validation consumer boundary guide. |
+| `docs/validation-report-template.md` | Added a redacted validation report template using `redacted target id`. |
+| `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/review.md` | Recorded implementation closeout evidence. |
 
 ## Commands Run
 
 ```bash
 git status --short --branch
-test -e docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset
-sed -n '1,220p' docs/iterations/README.md
-sed -n '1,220p' docs/iterations/templates/review.md
-mkdir -p docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset
+sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/README.md
+sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/intent.md
+sed -n '1,260p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/contract.md
+sed -n '1,240p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/technical-design.md
+sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/test-plan.md
+sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/plan.md
+sed -n '1,220p' docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/review.md
+rg -n "tiny|Tiny|tiny_village|village|Village|village-like|reference village|Reference Village World|reference world|first game surface|electronic-pet|electronic pet|workshop|square|notice-board|workbench|villager" .
+rg -n "tiny|Tiny|tiny_village|village|Village|village-like|reference village|Reference Village World|reference world|first game surface|electronic-pet|electronic pet|workshop|square|notice-board|workbench|villager" AGENTS.md AGENTS.zh.md CLAUDE.md CLAUDE.zh.md README.md README.zh.md docs/project-north-star.md docs/project-north-star.zh.md docs/product-model.md docs/product-model.zh.md docs/scope-boundaries.md docs/scope-boundaries.zh.md docs/roadmap.md docs/roadmap.zh.md docs/architecture.md docs/architecture.zh.md docs/glossary.md docs/glossary.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md backend/app/tests backend/data
+git diff --check
+make check-backend
+cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.py -q
+cd backend && .venv/bin/python -m pytest app/tests -q
+git diff --name-status
+git diff --stat
 ```
 
 ## Test Results
 
-No backend, frontend, E2E, runtime smoke, schema, fixture, or API tests were run
-because this pass only created iteration planning documents and the user
-explicitly requested no runtime, schema, API, frontend, test, or fixture
-changes.
+- `git diff --check` exited `0`; no whitespace errors.
+- `make check-backend` exited `0`; backend virtual environment exists.
+- `cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.py -q`
+  exited `0`; result: `4 passed in 0.08s`.
+- `cd backend && .venv/bin/python -m pytest app/tests -q` exited `0`; result:
+  `91 passed in 0.94s`.
+- Frontend tests were not run because this package did not modify frontend
+  files and the contract forbids frontend dashboard changes.
 
-Implementation has not started.
+## Grep Residuals
+
+Full repository grep still reports allowed residuals in these categories:
+
+- Dependency false positives: `frontend/pnpm-lock.yaml` package names such as
+  `tinybench`, `tinyexec`, `tinypool`, `tinyrainbow`, `tinyspy`, and
+  `@ctrl/tinycolor`.
+- Historical release artifacts: `docs/releases/v0.1.md` and
+  `docs/releases/v0.1.zh.md`.
+- Historical iteration artifacts and review evidence:
+  `docs/iterations/v0.1/**`, `docs/iterations/v0.2/0.2.1-*`,
+  `docs/iterations/v0.2/0.2.2-*`, `docs/iterations/v0.2/0.2.3-*`, and
+  `docs/iterations/v0.2/0.2.4-worldspec-reference-fixture/**`.
+- 0.2.5 cleanup-scope mentions:
+  `docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/**`.
+
+The targeted active-docs/tests/fixtures grep over `AGENTS*`, `CLAUDE*`,
+`README*`, current project direction docs, v0.2 active index/plan docs,
+`backend/app/tests`, and `backend/data` exited with no matches. Active docs,
+active tests, and active fixtures no longer retain concrete Demo-world
+semantic anchors.
 
 ## Compatibility Review
 
-No runtime behavior, API response shape, schema implementation, frontend
-behavior, fixture data, backend tests, or legacy backend behavior changed in
-this documentation-planning pass.
+Generic schema contracts are preserved. `WorldCell`, `WorldSpec`, `EntityRef`,
+and `EventRef` were not deleted or narrowed. Runtime behavior, API routes,
+API response shapes, production event log storage, frontend dashboard behavior,
+and `backend/worldengine/` behavior were not changed.
 
-The package contract prepares later cleanup of active docs, fixture data, and
-fixture tests, but those implementation changes still require review and
-approval before execution.
+The test cleanup removes concrete fixture data and replaces concrete fixture
+assertions with in-memory, domain-neutral schema smoke coverage. No production
+WorldSpec loader was added.
 
 ## Scope Review
 
-This pass stayed inside
-`docs/iterations/v0.2/0.2.5-core-boundary-cleanup-and-roadmap-reset/`.
+Implementation stayed inside the 0.2.5 contract:
 
-It did not modify:
+- cleaned active documentation anchors.
+- reset active roadmap language.
+- marked 0.2.4 as historical in the package README files.
+- deleted concrete fixture data.
+- replaced concrete fixture tests with generic schema smoke tests.
+- added external fixture and redacted validation report docs.
+- updated this review evidence.
 
-- runtime files.
-- schema files.
-- API files.
-- frontend files.
-- test files.
-- fixture files.
-- active roadmap, north star, scope, README, AGENTS, architecture, glossary, or
-  release docs.
-- external repositories.
+No external fixture repository, external validation repository, loader, runtime
+bridge, Agent loop, memory/self-continuity implementation, world generation,
+frontend work, API work, event storage change, generic schema deletion, or new
+concrete world was introduced.
 
 ## Unresolved Findings
 
 - P1: none.
 - P2: none.
-- P3: implementation-stage cleanup still needs review approval before active
-  docs, fixtures, or tests are changed.
+- P3: none.
 
 ## Final Assessment
 
-0.2.5 documentation package is drafted for review. It is not yet approved for
-implementation, and no code/test/fixture cleanup has started.
+0.2.5 implementation is review complete. The WorldEngine core repository no
+longer has active concrete Demo-world anchors in current docs, tests, or
+fixtures; the roadmap is reset around generic engine and external consumer
+milestones; and the focused and full backend tests pass in the current session.

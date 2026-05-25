@@ -4,6 +4,11 @@ Status: review complete
 
 Type: code
 
+Historical note: 0.2.4 is a historical iteration artifact. Its concrete
+fixture direction is superseded by 0.2.5 and must not be used as future
+roadmap, fixture, loader-input, projection-target, or core repository
+direction.
+
 ## Goal
 
 Create the documentation gate for the first reference WorldSpec fixture.

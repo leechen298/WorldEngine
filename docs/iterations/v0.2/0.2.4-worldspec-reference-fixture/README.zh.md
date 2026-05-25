@@ -4,6 +4,10 @@ Status: review complete
 
 Type: code
 
+Historical note：0.2.4 是 historical iteration artifact。其 concrete fixture
+direction 已被 0.2.5 supersede，不能再作为 future roadmap、fixture、loader-input、
+projection-target 或 core repository direction。
+
 英文版本：`README.md`。
 
 ## Goal

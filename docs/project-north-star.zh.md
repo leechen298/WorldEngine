@@ -28,22 +28,22 @@ WorldEngine 存在是为了支持五个长期能力：
 WorldEngine 不宣称 real consciousness。`pseudo-self` 指可工程化、可检查、可测试、可改进的
 continuity model。它是 product 和 engineering target，不是 metaphysical claim。
 
-## First User Surface
+## External Projection Applications
 
-第一款 village-like electronic-pet game 是 WorldEngine 的 surface、reference world 和
-validation interface。
+External projection applications 是 WorldEngine 的 consumers 和 validation surfaces。它们通过
+public engine contracts 验证 engine，但不是 core repository 的一部分。
 
-它是：
+它们是：
 
-- engine 的第一个 user-facing projection。
-- 普通用户能理解的第一个 reference world。
-- world runtime、events、memory 和 Agent continuity 的 practical acceptance harness。
+- engine 的 public consumers。
+- runtime、events、memory 和 Agent continuity 的 external validation consumers。
+- product-specific UI 与 application behavior 在 core repository 外部落地的位置。
 
-它不是：
+它们不是：
 
 - WorldEngine 的 purpose。
-- 让 engine 变成 village-specific 的理由。
-- 用 game-only state 替代 recursive world architecture 的理由。
+- 让 engine 变成 demo-specific 的理由。
+- 用 application-only state 替代 recursive world architecture 的理由。
 
 ## Architecture Anchor
 

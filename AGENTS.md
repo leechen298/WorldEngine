@@ -19,9 +19,9 @@ Read these documents before proposing or implementing project-direction work:
 
 Chinese mirror: `AGENTS.zh.md`.
 
-The first village-like game or electronic-pet surface is only the first
-user-facing projection of WorldEngine. It is not the engine goal and must not
-turn the repository into a game-specific backend.
+External fixture, validation, and projection applications are consumers of
+WorldEngine. They are not part of the engine core and must not turn this
+repository into application-specific backend code.
 
 ## Active Code Path
 
@@ -101,14 +101,25 @@ reviewed.
    World, agent, memory, runtime, and external projection work should converge
    through event contracts and evidence, not hidden side effects.
 
-6. Game surface is not engine goal.
-   Do not narrow WorldEngine into a village game backend.
+6. Application surfaces are not the engine goal.
+   Do not narrow WorldEngine into demo-specific or application-specific backend
+   logic.
 
 7. Agent pseudo-self is core, but not automatic current scope.
    A version may define boundaries without implementing agent self-continuity
    if the roadmap or iteration contract places that implementation later.
 
-8. Review must include evidence.
+8. Keep WorldEngine core generic.
+   Do not add concrete demo-world names, maps, characters, locations,
+   resources, story rules, seed data, UI code, or game/application-specific
+   backend logic to this repository.
+
+9. External validation worlds are consumers.
+   Do not use an external validation world to drive internal engine
+   abstractions. External fixture and validation applications consume public
+   APIs, CLI contracts, schemas, exported contracts, or redacted reports.
+
+10. Review must include evidence.
    Every code iteration must record changed files, commands run, test results,
    compatibility review, scope review, and unresolved findings in `review.md`.
 
