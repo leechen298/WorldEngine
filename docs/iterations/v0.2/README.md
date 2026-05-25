@@ -26,20 +26,86 @@ This file is the summary index. The execution-grade remaining-package plan is
 
 ## Package Index
 
-| Package | Type | Status | Purpose |
-|---|---|---|---|
-| `0.2.1-project-north-star` | documentation-only | review complete | Establish north star, product model, scope, roadmap, iteration templates, and docs governance. |
-| `0.2.2-recursive-world-contract` | code | review complete | Add EntityRef, WorldCell, WorldSpec schemas, and schema tests. |
-| `0.2.3-event-contract-extension` | code | review complete | Extend Event with optional structured references while preserving compatibility. |
-| `0.2.4-worldspec-reference-fixture` | code | historical artifact | Historical concrete fixture package superseded by 0.2.5 for future direction. |
-| `0.2.5-core-boundary-cleanup-and-roadmap-reset` | mixed | review complete | Remove concrete external-world anchors, reset roadmap, and replace fixture tests with generic schema smoke coverage. |
-| `0.2.6-iteration-workflow-and-plan-reset` | documentation-only | ready for review | Reset the remaining v0.2 plan, add iterative automation workflow docs, and abstract residual concrete demo anchors in v0.2 iteration docs. |
-| `0.2.7-recursive-schema-contract-hardening` | mixed | planned | Harden EntityRef, WorldCell, and WorldSpec contracts and generic schema tests without runtime loading. |
-| `0.2.8-event-reference-contract-hardening` | mixed | planned | Harden EventRef and Event.refs as additive event reference contracts without resolver or causality runtime. |
-| `0.2.9-generic-schema-evidence-and-boundary-audit` | documentation-only or mixed | planned | Audit schema, event, external boundary, and legacy boundary evidence. |
-| `0.2.10-legacy-boundary-and-compatibility-review` | documentation-only or mixed | planned | Clarify v0.1 runtime scaffold compatibility and legacy boundary before v0.3 bridge work. |
-| `0.2.11-v0.2-release-candidate-bundle` | documentation-only | planned | Prepare release-candidate evidence for human / ChatGPT review without declaring final release. |
-| `0.2.12-v0.2-final-closeout` | documentation-only | planned | Perform final closeout only after 0.2.11 review approval. |
+### `0.2.1-project-north-star`
+
+Type: documentation-only
+Status: review complete
+Purpose: Establish north star, product model, scope, roadmap, iteration
+templates, and docs governance.
+
+### `0.2.2-recursive-world-contract`
+
+Type: code
+Status: review complete
+Purpose: Add EntityRef, WorldCell, WorldSpec schemas, and schema tests.
+
+### `0.2.3-event-contract-extension`
+
+Type: code
+Status: review complete
+Purpose: Extend Event with optional structured references while preserving
+compatibility.
+
+### `0.2.4-worldspec-reference-fixture`
+
+Type: code
+Status: historical artifact
+Purpose: Historical concrete fixture package superseded by 0.2.5 for future
+direction.
+
+### `0.2.5-core-boundary-cleanup-and-roadmap-reset`
+
+Type: mixed
+Status: review complete
+Purpose: Remove concrete external-world anchors, reset roadmap, and replace
+fixture tests with generic schema smoke coverage.
+
+### `0.2.6-iteration-workflow-and-plan-reset`
+
+Type: documentation-only
+Status: ready for review
+Purpose: Reset the remaining v0.2 plan, add iterative automation workflow
+docs, and abstract residual concrete demo anchors in v0.2 iteration docs.
+
+### `0.2.7-recursive-schema-contract-hardening`
+
+Type: mixed
+Status: planned
+Purpose: Harden EntityRef, WorldCell, and WorldSpec contracts and generic
+schema tests without runtime loading.
+
+### `0.2.8-event-reference-contract-hardening`
+
+Type: mixed
+Status: planned
+Purpose: Harden EventRef and Event.refs as additive event reference contracts
+without resolver or causality runtime.
+
+### `0.2.9-generic-schema-evidence-and-boundary-audit`
+
+Type: documentation-only or mixed
+Status: planned
+Purpose: Audit schema, event, external boundary, and legacy boundary evidence.
+
+### `0.2.10-legacy-boundary-and-compatibility-review`
+
+Type: documentation-only or mixed
+Status: planned
+Purpose: Clarify v0.1 runtime scaffold compatibility and legacy boundary
+before v0.3 bridge work.
+
+### `0.2.11-v0.2-release-candidate-bundle`
+
+Type: documentation-only
+Status: planned
+Purpose: Prepare release-candidate evidence for human / ChatGPT review
+without declaring final release.
+
+### `0.2.12-v0.2-final-closeout`
+
+Type: documentation-only
+Status: planned
+Purpose: Perform final closeout only after 0.2.11 review approval.
 
 ## Required Reading
 

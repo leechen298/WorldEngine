@@ -2,17 +2,25 @@
 
 ## Changed Files
 
-| File | Change |
-|---|---|
-| `docs/iterations/v0.2/0.2.6-iteration-workflow-and-plan-reset/**` | Added the 0.2.6 documentation-only package for workflow and plan reset. |
-| `docs/iterations/v0.2/00-chatgpt-plan.md` | Added the v0.2 automatic iteration seed plan. |
-| `docs/iterations/v0.2/development-workflow.md` | Added the ChatGPT / Codex A / Codex B iterative workflow. |
-| `docs/iterations/v0.2/final-review-bundle-template.md` | Added the final review bundle template. |
-| `docs/iterations/v0.2/README.md`, `README.zh.md` | Replaced the old 0.2.6 direction with workflow and plan reset, and summarized 0.2.7 through 0.2.12. |
-| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | Added quasi-package specifications for 0.2.7 through 0.2.12 and the detailed acceptance gate. |
-| `docs/roadmap.md`, `docs/roadmap.zh.md` | Updated only the v0.2 package sequence. |
-| `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | Kept v0.2 draft / planned / not released and moved final closeout behind 0.2.12 approval. |
-| `docs/iterations/v0.2/**` | Abstracted residual concrete demo details while preserving historical facts. |
+- `docs/iterations/v0.2/0.2.6-iteration-workflow-and-plan-reset/**`:
+  added the 0.2.6 documentation-only package for workflow and plan reset.
+- `docs/iterations/v0.2/00-chatgpt-plan.md`: added the v0.2 automatic
+  iteration seed plan.
+- `docs/iterations/v0.2/development-workflow.md`: added the ChatGPT /
+  Codex A / Codex B iterative workflow.
+- `docs/iterations/v0.2/final-review-bundle-template.md`: added the final
+  review bundle template.
+- `docs/iterations/v0.2/README.md`, `README.zh.md`: replaced the old 0.2.6
+  direction with workflow and plan reset, and summarized 0.2.7 through 0.2.12.
+- `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md`: added
+  quasi-package specifications for 0.2.7 through 0.2.12 and the detailed
+  acceptance gate.
+- `docs/roadmap.md`, `docs/roadmap.zh.md`: updated only the v0.2 package
+  sequence.
+- `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md`: kept v0.2 draft /
+  planned / not released and moved final closeout behind 0.2.12 approval.
+- `docs/iterations/v0.2/**`: abstracted residual concrete demo details while
+  preserving historical facts.
 
 ## Commands Run
 

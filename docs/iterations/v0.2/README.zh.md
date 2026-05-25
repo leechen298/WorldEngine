@@ -25,20 +25,85 @@ fixture repository、external validation repository 或 concrete demo world fixt
 
 ## Package Index
 
-| Package | Type | Status | Purpose |
-|---|---|---|---|
-| `0.2.1-project-north-star` | documentation-only | review complete | 建立 north star、product model、scope、roadmap、iteration templates 和 docs governance。 |
-| `0.2.2-recursive-world-contract` | code | review complete | 增加 EntityRef、WorldCell、WorldSpec schemas 和 schema tests。 |
-| `0.2.3-event-contract-extension` | code | review complete | 扩展 Event optional structured references，并保持 compatibility。 |
-| `0.2.4-worldspec-reference-fixture` | code | historical artifact | historical concrete fixture package；future direction 已被 0.2.5 supersede。 |
-| `0.2.5-core-boundary-cleanup-and-roadmap-reset` | mixed | review complete | 清理 concrete external-world anchors、重置 roadmap，并用 generic schema smoke coverage 替换 fixture tests。 |
-| `0.2.6-iteration-workflow-and-plan-reset` | documentation-only | ready for review | 重排 v0.2 剩余计划，增加 iterative automation workflow docs，并抽象化 v0.2 iteration docs 中的 residual concrete demo anchors。 |
-| `0.2.7-recursive-schema-contract-hardening` | mixed | planned | 加固 EntityRef、WorldCell、WorldSpec contracts 和 generic schema tests，不做 runtime loading。 |
-| `0.2.8-event-reference-contract-hardening` | mixed | planned | 加固 EventRef 和 Event.refs additive event reference contracts，不做 resolver 或 causality runtime。 |
-| `0.2.9-generic-schema-evidence-and-boundary-audit` | documentation-only or mixed | planned | 审计 schema、event、external boundary 和 legacy boundary evidence。 |
-| `0.2.10-legacy-boundary-and-compatibility-review` | documentation-only or mixed | planned | 在 v0.3 bridge work 前明确 v0.1 runtime scaffold compatibility 和 legacy boundary。 |
-| `0.2.11-v0.2-release-candidate-bundle` | documentation-only | planned | 准备 release-candidate evidence，供 human / ChatGPT review，不声明 final release。 |
-| `0.2.12-v0.2-final-closeout` | documentation-only | planned | 仅在 0.2.11 review approval 后执行 final closeout。 |
+### `0.2.1-project-north-star`
+
+Type: documentation-only
+Status: review complete
+Purpose: 建立 north star、product model、scope、roadmap、iteration templates
+和 docs governance。
+
+### `0.2.2-recursive-world-contract`
+
+Type: code
+Status: review complete
+Purpose: 增加 EntityRef、WorldCell、WorldSpec schemas 和 schema tests。
+
+### `0.2.3-event-contract-extension`
+
+Type: code
+Status: review complete
+Purpose: 扩展 Event optional structured references，并保持 compatibility。
+
+### `0.2.4-worldspec-reference-fixture`
+
+Type: code
+Status: historical artifact
+Purpose: historical concrete fixture package；future direction 已被 0.2.5
+supersede。
+
+### `0.2.5-core-boundary-cleanup-and-roadmap-reset`
+
+Type: mixed
+Status: review complete
+Purpose: 清理 concrete external-world anchors、重置 roadmap，并用 generic
+schema smoke coverage 替换 fixture tests。
+
+### `0.2.6-iteration-workflow-and-plan-reset`
+
+Type: documentation-only
+Status: ready for review
+Purpose: 重排 v0.2 剩余计划，增加 iterative automation workflow docs，并抽象化
+v0.2 iteration docs 中的 residual concrete demo anchors。
+
+### `0.2.7-recursive-schema-contract-hardening`
+
+Type: mixed
+Status: planned
+Purpose: 加固 EntityRef、WorldCell、WorldSpec contracts 和 generic schema
+tests，不做 runtime loading。
+
+### `0.2.8-event-reference-contract-hardening`
+
+Type: mixed
+Status: planned
+Purpose: 加固 EventRef 和 Event.refs additive event reference contracts，不做
+resolver 或 causality runtime。
+
+### `0.2.9-generic-schema-evidence-and-boundary-audit`
+
+Type: documentation-only or mixed
+Status: planned
+Purpose: 审计 schema、event、external boundary 和 legacy boundary evidence。
+
+### `0.2.10-legacy-boundary-and-compatibility-review`
+
+Type: documentation-only or mixed
+Status: planned
+Purpose: 在 v0.3 bridge work 前明确 v0.1 runtime scaffold compatibility 和
+legacy boundary。
+
+### `0.2.11-v0.2-release-candidate-bundle`
+
+Type: documentation-only
+Status: planned
+Purpose: 准备 release-candidate evidence，供 human / ChatGPT review，不声明
+final release。
+
+### `0.2.12-v0.2-final-closeout`
+
+Type: documentation-only
+Status: planned
+Purpose: 仅在 0.2.11 review approval 后执行 final closeout。
 
 ## Required Reading
 
