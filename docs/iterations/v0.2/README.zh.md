@@ -99,8 +99,8 @@ tests；不做 runtime loading。
 
 ### `0.2.10-legacy-boundary-and-compatibility-review`
 
-类型：`documentation-only or mixed`
-状态：`planned`
+类型：`documentation-only`
+状态：`ready for review`
 目的：在 v0.3 bridge work 前明确 v0.1 runtime scaffold 的兼容性和 legacy
 boundary。
 
