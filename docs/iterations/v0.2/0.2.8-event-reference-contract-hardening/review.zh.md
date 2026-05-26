@@ -1,8 +1,91 @@
 # Review
 
-状态：documentation package ready for review
+状态：implementation complete / ready for implementation review
 
 英文版本：`review.md`
+
+## Implementation Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `docs/contracts/event-ref-contract.md` | 新增 v0.2 EventRef 与 Event.refs contract，覆盖 field semantics、validation behavior、compatibility guarantees、event-local limits 和 non-goals。 |
+| `backend/app/tests/test_event_schema_compat.py` | 新增 focused coverage，证明 EventRef accepts free-form metadata without interpretation。 |
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | 新增 implementation closeout evidence。 |
+
+未修改 schema code。当前 EventRef 与 Event.refs schema 已覆盖 optional refs、
+default refs、non-empty id/kind validation、default metadata、nested event
+containers，以及 model dump / validate round trips。
+
+### Commands Run
+
+```bash
+git status --short --branch
+git diff --check
+cd backend && .venv/bin/python -m pytest app/tests/test_event_schema_compat.py -q
+make check-backend
+backend/.venv/bin/python - <<'PY'
+from pathlib import Path
+import base64
+encoded = b'aGlzdG9yaWNhbC1jaGlsZC1jZWxsCmhpc3RvcmljYWwgYXJlYQpoaXN0b3JpY2FsLW5lc3RlZC1lbnRpdHkKaGlzdG9yaWNhbCBvYmplY3QKaGlzdG9yaWNhbCBhY3Rvcgpjb25jcmV0ZSBkZW1vIHN1cmZhY2UKY29uY3JldGUgcHJvZHVjdCBzdXJmYWNlCmhpc3RvcmljYWwgY29uY3JldGUgZml4dHVyZQo='
+Path('/tmp/worldengine-0.2.8-anchor-patterns.txt').write_text(base64.b64decode(encoded).decode('utf-8'))
+PY
+rg -n -i -f /tmp/worldengine-0.2.8-anchor-patterns.txt docs/contracts/event-ref-contract.md backend/app/tests/test_event_schema_compat.py docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.zh.md
+git add docs/contracts/event-ref-contract.md backend/app/tests/test_event_schema_compat.py docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.zh.md
+```
+
+Temporary anchor pattern file 创建在 `/tmp`，未被 tracked。Encoded command
+payload 是为了避免把 concrete pattern lists 写入 tracked review evidence。
+
+### Test Results
+
+- `git status --short --branch` exited `0`；branch `v0.2` ahead of
+  `origin/v0.2` by 5 commits，并显示本 package 修改的 event test、review files、
+  untracked `docs/contracts/event-ref-contract.md`，以及 pre-existing untracked
+  `docs/iterations/v0.2/findings.md`。
+- `git diff --check` exited `0`；无 whitespace errors。
+- `cd backend && .venv/bin/python -m pytest app/tests/test_event_schema_compat.py -q`
+  exited `0`；result: `10 passed in 0.05s`。
+- `make check-backend` exited `0`。
+- Concrete demo anchor sweep 覆盖 touched contract doc、focused event test 和
+  review evidence，exited `1` with no matches。
+- `git add ...` exited `128`，因为当前 sandbox 无法创建 `.git/index.lock`
+  (`Operation not permitted`)。本 session 未创建 checkpoint commit。
+- Full backend app tests 未运行，因为 event schema code 未改变。
+- Recursive schema tests 未运行，因为 shared schema behavior 与 recursive schema
+  imports 未触及。
+
+### Compatibility Review
+
+未改变 runtime behavior、event log behavior、payload behavior、API response
+shapes、frontend behavior、fixtures、migrations 或 legacy `backend/worldengine/`
+behavior。`Event.refs` 仍是 optional，并默认 `[]`；existing events without refs
+继续 validate。EventRef validation behavior 未改变。
+
+### Scope Review
+
+Implementation 保持在 0.2.8 scope 内：
+
+- 新增 approved EventRef contract document。
+- 新增一个 focused、domain-neutral event schema compatibility test。
+- 只更新本 package 的 review evidence files。
+- 未添加 resolver、causality engine、runtime bridge、memory behavior、
+  projection behavior、generation、frontend work、fixtures、migrations、
+  external repository、API route 或 `backend/worldengine/` change。
+
+### Unresolved Findings
+
+- P1: none.
+- P2: detailed v0.2 plan status 仍将 0.2.7 标为 `ready for review`，但
+  milestone index 将其标为 `review complete`；documentation review 已识别该问题，
+  并 defer 到 0.2.9。
+- P3: none.
+
+### Final Assessment
+
+0.2.8 implementation is complete，但 implementation review handoff 仍被阻塞，
+需要在当前 Git metadata write restriction 之外创建 checkpoint commit。
 
 ## Changed Files
 
@@ -11,6 +94,9 @@
 | `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/**` | 新增 documentation-stage package docs，并保持 English / Chinese mirrors。 |
 | `docs/iterations/v0.2/README.md`, `README.zh.md` | 将 0.2.8 package status 更新为 `ready for review`。 |
 | `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | 将 0.2.8 package status 更新为 `ready for review`。 |
+| `docs/contracts/event-ref-contract.md` | 新增 v0.2 EventRef 与 Event.refs contract。 |
+| `backend/app/tests/test_event_schema_compat.py` | 新增 focused free-form metadata compatibility 覆盖。 |
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | 新增 implementation-stage evidence。 |
 
 ## Commands Run
 
@@ -43,6 +129,29 @@ git diff --check
 rg -n '[[:blank:]]$' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md
 git diff --name-only
 git diff --stat
+sed -n '1,220p' /Users/leechen/projects/WorldEnginProjects/WorldEngine/.agents/skills/worldengine-iteration-dev/SKILL.md
+sed -n '1,240p' AGENTS.md
+sed -n '1,240p' CLAUDE.md
+sed -n '1,240p' docs/iterations/README.md
+sed -n '1,520p' docs/iterations/v0.2/v0.2-plan.md
+sed -n '1,220p' docs/iterations/v0.2/README.md
+sed -n '1,220p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/README.md
+sed -n '1,260p' /Users/leechen/projects/WorldEnginProjects/WorldEngine/.agent-runs/20260526-202736-v0.2-0.2.8-event-reference-contract-hardening/docs-review.md
+sed -n '1,260p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/intent.md
+sed -n '1,320p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/contract.md
+sed -n '1,320p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/technical-design.md
+sed -n '1,320p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/test-plan.md
+sed -n '1,360p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/plan.md
+sed -n '1,360p' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md
+sed -n '1,260p' docs/backend-implementation.md
+sed -n '1,260p' docs/current-implementation.md
+sed -n '1,280p' docs/scope-boundaries.md
+sed -n '1,280p' backend/app/schemas/event.py
+sed -n '1,360p' backend/app/tests/test_event_schema_compat.py
+find docs/contracts -maxdepth 1 -type f -print | sort
+sed -n '1,260p' docs/contracts/entity-ref-contract.md
+sed -n '1,260p' docs/contracts/worldcell-contract.md
+sed -n '1,260p' docs/contracts/worldspec-contract.md
 ```
 
 ## Test Results
@@ -93,9 +202,11 @@ documentation review 明确批准 breaking change。
 ## Unresolved Findings
 
 - P1: none.
-- P2: none.
+- P2: detailed v0.2 plan status 仍将 0.2.7 标为 `ready for review`，但
+  milestone index 将其标为 `review complete`；documentation review 已识别该问题，
+  并 defer 到 0.2.9。
 - P3: none.
 
 ## Final Assessment
 
-ready for human / ChatGPT documentation review
+implementation complete; see implementation closeout above

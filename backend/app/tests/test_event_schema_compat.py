@@ -81,6 +81,19 @@ def test_event_ref_role_is_optional_and_metadata_defaults_to_empty_dict() -> Non
     assert event_ref.metadata == {}
 
 
+def test_event_ref_accepts_free_form_metadata_without_interpretation() -> None:
+    _, _, EventRef, _, _ = _event_classes()
+    metadata = {
+        "labels": ["alpha", "beta"],
+        "weights": {"primary": 1, "secondary": 0.5},
+        "active": True,
+    }
+
+    event_ref = EventRef(id="ref-1", kind="generic_ref", metadata=metadata)
+
+    assert event_ref.metadata == metadata
+
+
 def test_event_model_dump_and_validate_round_trip_preserves_refs() -> None:
     Event, _, _, _, _ = _event_classes()
     original = Event(

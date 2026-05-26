@@ -1,0 +1,5 @@
+# v0.2 Deferred Findings
+
+| ID | Source Package | Review Stage | Priority | Status | Target Package | Summary | Resolution |
+|---|---|---|---|---|---|---|---|
+| v0.2-P2-001 | 0.2.8-event-reference-contract-hardening | docs-review | P2 | open | 0.2.9-generic-schema-evidence-and-boundary-audit | Detailed v0.2 plan still marks 0.2.7 as ready for review while the milestone index marks it review complete. file: docs/iterations/v0.2/v0.2-plan.md defer_reason: This is a milestone status synchronization issue, not a blocker for the reviewed 0.2.8 package; 0.2.9 is explicitly scoped to audit schema/event evidence and boundary/status support. | |
