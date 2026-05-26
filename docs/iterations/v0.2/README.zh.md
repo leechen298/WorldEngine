@@ -94,7 +94,7 @@ tests；不做 runtime loading。
 ### `0.2.9-generic-schema-evidence-and-boundary-audit`
 
 类型：`documentation-only`
-状态：`ready for review`
+状态：`review complete`
 目的：审计 schema、event、external boundary 和 legacy boundary 的 evidence。
 
 ### `0.2.10-legacy-boundary-and-compatibility-review`
