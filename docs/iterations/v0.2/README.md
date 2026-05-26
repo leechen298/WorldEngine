@@ -70,7 +70,7 @@ docs, and abstract residual concrete demo anchors in v0.2 iteration docs.
 ### `0.2.7-recursive-schema-contract-hardening`
 
 Type: mixed
-Status: ready for review
+Status: review complete
 Purpose: Harden EntityRef, WorldCell, and WorldSpec contracts and generic
 schema tests without runtime loading.
 

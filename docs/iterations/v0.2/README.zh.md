@@ -80,7 +80,7 @@ iteration docs 中残留的 concrete demo anchors。
 ### `0.2.7-recursive-schema-contract-hardening`
 
 类型：`mixed`
-状态：`ready for review`
+状态：`review complete`
 目的：加固 EntityRef、WorldCell 和 WorldSpec contract，并补强通用 schema
 tests；不做 runtime loading。
 

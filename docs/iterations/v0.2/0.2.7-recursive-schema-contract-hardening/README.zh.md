@@ -1,6 +1,6 @@
 # 0.2.7 Recursive Schema Contract Hardening
 
-Status: ready for review
+Status: review complete
 
 Type: mixed
 
@@ -36,13 +36,13 @@ Type: mixed
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Documentation gate approved
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Documentation gate approved
 - [ ] Implementation complete
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Planned Deliverables After Review
 
