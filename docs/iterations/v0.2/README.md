@@ -90,7 +90,7 @@ Purpose: Audit schema, event, external boundary, and legacy boundary evidence.
 ### `0.2.10-legacy-boundary-and-compatibility-review`
 
 Type: documentation-only
-Status: review complete
+Status: ready for review
 Purpose: Clarify v0.1 runtime scaffold compatibility and legacy boundary
 before v0.3 bridge work.
 
