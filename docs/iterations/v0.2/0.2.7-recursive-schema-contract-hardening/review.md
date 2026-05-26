@@ -1,5 +1,101 @@
 # Review
 
+Status: implementation complete / ready for implementation review
+
+## Implementation Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `docs/contracts/entity-ref-contract.md` | Added the v0.2 EntityRef schema contract with field semantics, validation behavior, compatibility guarantees, and non-goals. |
+| `docs/contracts/worldcell-contract.md` | Added the v0.2 WorldCell schema contract with recursive child-cell semantics, validation boundaries, compatibility guarantees, and non-runtime limits. |
+| `docs/contracts/worldspec-contract.md` | Added the v0.2 WorldSpec schema contract with versioning, root semantics, serialization expectations, compatibility guarantees, and v0.3 loader boundary. |
+| `docs/iterations/v0.2/0.2.7-recursive-schema-contract-hardening/review.md`, `review.zh.md` | Added implementation closeout evidence. |
+
+No schema or test code changes were required. Existing focused schema tests
+already covered the package acceptance list for EntityRef defaults and invalid
+identity fields, recursive WorldCell validation, invalid generic values,
+WorldSpec version validation, and model dump / validate round trips.
+
+### Commands Run
+
+```bash
+git status --short --branch
+git diff --check
+cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py app/tests/test_worldspec_schema_smoke.py -q
+make check-backend
+python - <<'PY'
+from pathlib import Path
+import base64
+encoded = b'aGlzdG9yaWNhbC1jaGlsZC1jZWxsCmhpc3RvcmljYWwgYXJlYQpoaXN0b3JpY2FsLW5lc3RlZC1lbnRpdHkKaGlzdG9yaWNhbCBvYmplY3QKaGlzdG9yaWNhbCBhY3Rvcgpjb25jcmV0ZSBkZW1vIHN1cmZhY2UKY29uY3JldGUgcHJvZHVjdCBzdXJmYWNlCmhpc3RvcmljYWwgY29uY3JldGUgZml4dHVyZQo='
+Path('/tmp/worldengine-0.2.7-anchor-patterns.txt').write_text(base64.b64decode(encoded).decode('utf-8'))
+PY
+rg -n -i -f /tmp/worldengine-0.2.7-anchor-patterns.txt docs/contracts/entity-ref-contract.md docs/contracts/worldcell-contract.md docs/contracts/worldspec-contract.md backend/app/tests/test_world_cell_schema.py backend/app/tests/test_worldspec_schema_smoke.py
+backend/.venv/bin/python - <<'PY'
+from pathlib import Path
+import base64
+encoded = b'aGlzdG9yaWNhbC1jaGlsZC1jZWxsCmhpc3RvcmljYWwgYXJlYQpoaXN0b3JpY2FsLW5lc3RlZC1lbnRpdHkKaGlzdG9yaWNhbCBvYmplY3QKaGlzdG9yaWNhbCBhY3Rvcgpjb25jcmV0ZSBkZW1vIHN1cmZhY2UKY29uY3JldGUgcHJvZHVjdCBzdXJmYWNlCmhpc3RvcmljYWwgY29uY3JldGUgZml4dHVyZQo='
+Path('/tmp/worldengine-0.2.7-anchor-patterns.txt').write_text(base64.b64decode(encoded).decode('utf-8'))
+PY
+rg -n -i -f /tmp/worldengine-0.2.7-anchor-patterns.txt docs/contracts/entity-ref-contract.md docs/contracts/worldcell-contract.md docs/contracts/worldspec-contract.md backend/app/tests/test_world_cell_schema.py backend/app/tests/test_worldspec_schema_smoke.py
+```
+
+The temporary anchor pattern file was created under `/tmp` and was not tracked.
+The encoded command payload intentionally avoids writing concrete pattern lists
+into tracked review evidence.
+
+### Test Results
+
+- `git status --short --branch` exited `0`; branch `v0.2` is ahead of
+  `origin/v0.2` by 2 commits and showed untracked `docs/contracts/` before
+  closeout evidence was updated.
+- `git diff --check` exited `0`; no whitespace errors.
+- `cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py app/tests/test_worldspec_schema_smoke.py -q`
+  exited `0`; result: `19 passed in 0.08s`.
+- `make check-backend` exited `0`.
+- First concrete demo anchor sweep setup using `python` exited `2` because
+  `python` is not on PATH in this environment; no sweep evidence was accepted
+  from that failed setup.
+- Corrected concrete demo anchor sweep using `backend/.venv/bin/python` to
+  create `/tmp/worldengine-0.2.7-anchor-patterns.txt`, then `rg -n -i -f ...`
+  over the new contract docs and focused schema tests exited `1` with no
+  matches.
+- Full backend app tests were not run because no schema code changed.
+- Event schema compatibility tests were not run because no schema imports,
+  shared model behavior, or event schema code changed.
+
+### Compatibility Review
+
+Runtime behavior, API response shapes, frontend behavior, event contracts,
+fixtures, migrations, and legacy `backend/worldengine/` behavior were not
+changed. EntityRef, WorldCell, and WorldSpec schema code was left unchanged,
+so existing valid and invalid payload behavior remains governed by the
+pre-existing Pydantic models and focused tests.
+
+### Scope Review
+
+Implementation stayed inside 0.2.7 scope:
+
+- added the three approved generic contract documents.
+- reused existing domain-neutral schema tests as sufficient acceptance
+  evidence.
+- updated only this package's review evidence files.
+- did not add a loader, runtime bridge, generation, projection, memory,
+  agent loop, frontend work, fixtures, migrations, external repository, API
+  route, or `backend/worldengine/` change.
+
+### Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: none.
+
+### Final Assessment
+
+0.2.7 implementation is complete and ready for implementation review after a
+checkpoint commit is created.
+
 ## Changed Files
 
 | File | Change |

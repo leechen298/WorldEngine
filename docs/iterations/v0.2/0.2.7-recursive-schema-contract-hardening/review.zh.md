@@ -1,8 +1,97 @@
 # Review
 
-Status: ready for review
+Status: implementation complete / ready for implementation review
 
 英文版本：`review.md`。
+
+## Implementation Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `docs/contracts/entity-ref-contract.md` | 添加 v0.2 EntityRef schema contract，覆盖字段语义、validation behavior、compatibility guarantees 和 non-goals。 |
+| `docs/contracts/worldcell-contract.md` | 添加 v0.2 WorldCell schema contract，覆盖 recursive child-cell semantics、validation boundaries、compatibility guarantees 和 non-runtime limits。 |
+| `docs/contracts/worldspec-contract.md` | 添加 v0.2 WorldSpec schema contract，覆盖 versioning、root semantics、serialization expectations、compatibility guarantees 和 v0.3 loader boundary。 |
+| `docs/iterations/v0.2/0.2.7-recursive-schema-contract-hardening/review.md`, `review.zh.md` | 添加 implementation closeout evidence。 |
+
+未修改 schema 或 test code。现有 focused schema tests 已覆盖 package
+acceptance list，包括 EntityRef defaults 与 invalid identity fields、
+recursive WorldCell validation、invalid generic values、WorldSpec version
+validation，以及 model dump / validate round trips。
+
+### Commands Run
+
+```bash
+git status --short --branch
+git diff --check
+cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py app/tests/test_worldspec_schema_smoke.py -q
+make check-backend
+python - <<'PY'
+from pathlib import Path
+import base64
+encoded = b'aGlzdG9yaWNhbC1jaGlsZC1jZWxsCmhpc3RvcmljYWwgYXJlYQpoaXN0b3JpY2FsLW5lc3RlZC1lbnRpdHkKaGlzdG9yaWNhbCBvYmplY3QKaGlzdG9yaWNhbCBhY3Rvcgpjb25jcmV0ZSBkZW1vIHN1cmZhY2UKY29uY3JldGUgcHJvZHVjdCBzdXJmYWNlCmhpc3RvcmljYWwgY29uY3JldGUgZml4dHVyZQo='
+Path('/tmp/worldengine-0.2.7-anchor-patterns.txt').write_text(base64.b64decode(encoded).decode('utf-8'))
+PY
+rg -n -i -f /tmp/worldengine-0.2.7-anchor-patterns.txt docs/contracts/entity-ref-contract.md docs/contracts/worldcell-contract.md docs/contracts/worldspec-contract.md backend/app/tests/test_world_cell_schema.py backend/app/tests/test_worldspec_schema_smoke.py
+backend/.venv/bin/python - <<'PY'
+from pathlib import Path
+import base64
+encoded = b'aGlzdG9yaWNhbC1jaGlsZC1jZWxsCmhpc3RvcmljYWwgYXJlYQpoaXN0b3JpY2FsLW5lc3RlZC1lbnRpdHkKaGlzdG9yaWNhbCBvYmplY3QKaGlzdG9yaWNhbCBhY3Rvcgpjb25jcmV0ZSBkZW1vIHN1cmZhY2UKY29uY3JldGUgcHJvZHVjdCBzdXJmYWNlCmhpc3RvcmljYWwgY29uY3JldGUgZml4dHVyZQo='
+Path('/tmp/worldengine-0.2.7-anchor-patterns.txt').write_text(base64.b64decode(encoded).decode('utf-8'))
+PY
+rg -n -i -f /tmp/worldengine-0.2.7-anchor-patterns.txt docs/contracts/entity-ref-contract.md docs/contracts/worldcell-contract.md docs/contracts/worldspec-contract.md backend/app/tests/test_world_cell_schema.py backend/app/tests/test_worldspec_schema_smoke.py
+```
+
+Temporary anchor pattern file 创建在 `/tmp`，未纳入 tracked files。Encoded
+command payload 避免在 tracked review evidence 中写入 concrete pattern list。
+
+### Test Results
+
+- `git status --short --branch` exited `0`；branch `v0.2` ahead of
+  `origin/v0.2` by 2 commits，并在 closeout evidence 更新前显示 untracked
+  `docs/contracts/`。
+- `git diff --check` exited `0`；无 whitespace errors。
+- `cd backend && .venv/bin/python -m pytest app/tests/test_world_cell_schema.py app/tests/test_worldspec_schema_smoke.py -q`
+  exited `0`；result: `19 passed in 0.08s`。
+- `make check-backend` exited `0`。
+- 第一次 concrete demo anchor sweep setup 使用 `python` exited `2`，因为
+  当前环境 PATH 中没有 `python`；该失败 setup 未作为 sweep evidence。
+- 修正后的 concrete demo anchor sweep 使用 `backend/.venv/bin/python` 创建
+  `/tmp/worldengine-0.2.7-anchor-patterns.txt`，然后对 new contract docs 和
+  focused schema tests 运行 `rg -n -i -f ...`，exited `1` with no matches。
+- Full backend app tests 未运行，因为未修改 schema code。
+- Event schema compatibility tests 未运行，因为未修改 schema imports、shared
+  model behavior 或 event schema code。
+
+### Compatibility Review
+
+Runtime behavior、API response shapes、frontend behavior、event contracts、
+fixtures、migrations 和 legacy `backend/worldengine/` behavior 均未改变。
+EntityRef、WorldCell 和 WorldSpec schema code 未改变，因此现有 valid 和
+invalid payload behavior 仍由既有 Pydantic models 与 focused tests 约束。
+
+### Scope Review
+
+Implementation 保持在 0.2.7 scope 内：
+
+- 添加三个 approved generic contract documents。
+- 复用现有 domain-neutral schema tests 作为 sufficient acceptance evidence。
+- 仅更新本 package 的 review evidence files。
+- 未添加 loader、runtime bridge、generation、projection、memory、agent loop、
+  frontend work、fixtures、migrations、external repository、API route 或
+  `backend/worldengine/` change。
+
+### Unresolved Findings
+
+- P1: none。
+- P2: none。
+- P3: none。
+
+### Final Assessment
+
+0.2.7 implementation complete，并在创建 checkpoint commit 后 ready for
+implementation review。
 
 ## Changed Files
 
