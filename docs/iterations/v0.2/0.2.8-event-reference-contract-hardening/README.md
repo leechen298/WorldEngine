@@ -1,6 +1,6 @@
 # 0.2.8 Event Reference Contract Hardening
 
-Status: ready for review
+Status: review complete
 
 Type: mixed
 
@@ -43,13 +43,13 @@ approved.
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Documentation gate approved
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Documentation gate approved
 - [ ] Implementation complete
 - [x] Documentation-stage evidence complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Planned Deliverables After Review
 

@@ -87,7 +87,7 @@ tests；不做 runtime loading。
 ### `0.2.8-event-reference-contract-hardening`
 
 类型：`mixed`
-状态：`ready for review`
+状态：`review complete`
 目的：加固 EventRef 和 Event.refs 的增量式事件引用契约；不实现 resolver
 或 causality runtime。
 

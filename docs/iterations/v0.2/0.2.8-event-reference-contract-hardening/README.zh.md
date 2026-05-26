@@ -1,6 +1,6 @@
 # 0.2.8 Event Reference Contract Hardening
 
-状态：`ready for review`
+状态：`review complete`
 
 类型：`mixed`
 
@@ -43,13 +43,13 @@ package documents 被 review 和 approve 后开始。
 ## 状态清单
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Documentation gate approved
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Documentation gate approved
 - [ ] Implementation complete
 - [x] Documentation-stage evidence complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Review 通过后的计划交付
 
