@@ -1,6 +1,6 @@
 # Review
 
-状态：documentation-stage evidence
+状态：review complete
 
 英文版本：`review.md`
 
@@ -123,3 +123,85 @@ behavior、test behavior 或 legacy `backend/worldengine/` behavior。
 
 Documentation package is ready for review。Final closeout implementation 必须等待
 human / ChatGPT approval，并且必须限制在 `contract.md` 允许的 documentation paths。
+
+## Implementation Changed Files
+
+| File | Change |
+|---|---|
+| `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | 将 release docs 从 release-candidate / not-final wording 更新为 final closeout status，并保留 documentation-only evidence limits。 |
+| `docs/iterations/v0.2/README.md`, `README.zh.md` | 标记 v0.2 final / complete，并标记 0.2.12 review complete。 |
+| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | 标记 v0.2 final / complete、0.2.12 review complete，以及 v0.3 handoff status。 |
+| `docs/iterations/v0.2/findings.md` | 将 `v0.2-P3-003` 接受为 non-blocking v0.3 handoff。 |
+| `docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.md`, `README.zh.md` | 标记 closeout checklist complete，并同步 accepted P3 handoff wording。 |
+| `docs/iterations/v0.2/0.2.12-v0.2-final-closeout/review.md`, `review.zh.md` | 记录 implementation closeout evidence。 |
+
+## Implementation Commands Run
+
+```bash
+git diff --check
+for f in README intent contract technical-design test-plan plan review; do test -f "docs/iterations/v0.2/0.2.12-v0.2-final-closeout/$f.md" && test -f "docs/iterations/v0.2/0.2.12-v0.2-final-closeout/$f.zh.md" || exit 1; done
+rg -n 'Status: final / closeout complete|状态：`final / closeout complete`|Status: final / complete|状态：`final / complete`|Status: review complete|状态：`review complete`|final closeout complete|accepted handoff' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.zh.md docs/iterations/v0.2/findings.md
+rg -n 'final / closeout complete|final closeout complete|final review for closeout|no unresolved P1/P2|0\.2\.12|review complete|non-blocking v0\.3 handoff' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.zh.md docs/iterations/v0.2/findings.md
+if rg -n '^\| [^|]+ \| [^|]+ \| [^|]+ \| P[12] \| (open|accepted handoff)' docs/iterations/v0.2/findings.md; then exit 1; else exit 0; fi
+tmp_patterns="$(mktemp)"; p1="historical-child"; p2="historical"; p3="historical-nested"; p4="historical"; p5="historical"; p6="historical-concrete"; p7="historical concrete"; printf '%s\n' "${p1}-cell" "$p2 area" "${p3}-entity" "$p4 object" "$p5 actor" "${p6}-fixture" "$p7 fixture path" > "$tmp_patterns"; rg -n -i -f "$tmp_patterns" docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/findings.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout; rc=$?; rm -f "$tmp_patterns"; test "$rc" -eq 1
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/(releases/v0\.2|iterations/v0\.2/)'
+rg -n '[[:blank:]]$' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/findings.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout
+git status --short --branch
+```
+
+## Implementation Test Results
+
+- `git diff --check` exited `0`；未报告 whitespace errors。
+- Package mirror presence loop exited `0`。
+- Status consistency grep exited `0`；release docs、milestone docs、plan docs、
+  package README docs 和 findings 已显示 final / complete、review complete、final
+  closeout complete 或 accepted handoff wording。
+- Release-status wording check exited `0`；匹配 final closeout、final-review、
+  no-unresolved-P1/P2、0.2.12、review-complete 和 non-blocking v0.3 handoff
+  wording。
+- P1/P2 blocker guard exited `0`；`findings.md` 中没有 remaining open 或
+  accepted-handoff P1/P2 finding。
+- Concrete demo anchor sweep 使用 temporary untracked pattern file 和 historical
+  concrete fixture anchors。Underlying `rg` exited `1` 且没有 matches，wrapper
+  check exited `0`。
+- Changed-file scope guard exited `1` 且没有输出，这是预期结果，表示所有 changed
+  files 都限制在 approved `docs/releases/v0.2*` 和 `docs/iterations/v0.2/`
+  paths。
+- Trailing-whitespace grep exited `1` 且没有输出。
+- `git status --short --branch` exited `0`；branch `v0.2` ahead of
+  `origin/v0.2`，并且只显示 approved v0.2 documentation changes。
+
+Backend、frontend、API smoke、E2E、Agent smoke、runtime、schema execution、
+fixture、migration 和 test implementation checks 未运行，因为本 package 是
+documentation-only，且没有修改 implementation files。
+
+## Implementation Compatibility Review
+
+Runtime behavior、schema behavior、event behavior、API response shapes、frontend
+behavior、fixture behavior、migration behavior、test behavior 和 legacy
+`backend/worldengine/` behavior 均未改变。本 package 只更新 v0.2 release、
+iteration、findings 和 closeout review documentation。
+
+## Implementation Scope Review
+
+Implementation 保持在 approved 0.2.12 contract 内：
+
+- documentation review 报告 no blocking issues 且 `ready_for_implementation:
+  true` 后，才更新 final status。
+- 将 existing P3 记录为 accepted non-blocking v0.3 handoff。
+- 未增加 functionality、tests、runtime behavior、schema behavior、API behavior、
+  frontend behavior、fixtures、migrations、external repositories 或 concrete
+  external-world details。
+- 未启动 v0.3 implementation。
+
+## Implementation Unresolved Findings
+
+- P1：none。
+- P2：none。
+- P3：`v0.2-P3-003` 已接受为 first v0.3 bridge package 的 non-blocking handoff。
+
+## Implementation Final Assessment
+
+0.2.12 final closeout complete。v0.2 已在 release docs、milestone index、
+detailed plan、package README 和 review evidence 中标记为 final / complete。v0.3
+仍需通过单独 reviewed iteration package 才能启动。

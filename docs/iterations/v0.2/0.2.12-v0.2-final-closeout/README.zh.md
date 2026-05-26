@@ -1,6 +1,6 @@
 # 0.2.12 v0.2 Final Closeout
 
-状态：`ready for review`
+状态：`review complete`
 
 类型：`documentation-only`
 
@@ -46,9 +46,9 @@ plan、findings 和 package review documentation。不得增加 functionality，
 - [x] Technical design drafted
 - [x] Test plan drafted
 - [x] Documentation-stage evidence complete
-- [ ] Human / ChatGPT review complete
-- [ ] Final closeout implemented
-- [ ] Review complete
+- [x] Human / ChatGPT review complete
+- [x] Final closeout implemented
+- [x] Review complete
 
 ## Review 后计划交付
 
@@ -67,14 +67,13 @@ plan、findings 和 package review documentation。不得增加 functionality，
 - 0.2.1 到 0.2.11 保持 `review complete`。
 - 0.2.11 release-candidate bundle 是 final closeout 的 evidence basis。
 - 标记 v0.2 final 前需要 human / ChatGPT approval。
-- Open P3 finding `v0.2-P3-003` 只有在 final review 明确接受为 non-blocking
-  时，才可保留为 v0.3 handoff。
+- P3 finding `v0.2-P3-003` 已被接受为 non-blocking v0.3 handoff。
 - Final closeout 时不得存在 unresolved P1/P2 finding。
 
 ## Open Risks
 
-- Final review 可能发现 P1/P2 evidence gap。如发生，本包必须记录 blocker，且不得把
-  v0.2 标记为 final。
+- Final review 原本可能发现 P1/P2 evidence gap。Final closeout 未发现 P1/P2
+  blocker。
 - Release wording 可能误导读者以为 runtime behavior 或 tests 已重新运行。Final
   closeout 必须区分 historical package evidence 和 0.2.12 中运行的 commands。
 - 如果 implementation stage 不验证 consistency，release docs、milestone index、plan

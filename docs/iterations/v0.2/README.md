@@ -1,11 +1,12 @@
 # v0.2 Recursive World Foundation
 
-Status: planned / in progress
+Status: final / complete
 
 ## Goal
 
 v0.2 establishes the recursive world foundation for WorldEngine without
-turning the project into a demo-specific backend.
+turning the project into a demo-specific backend. Final closeout is complete
+through `0.2.12-v0.2-final-closeout`.
 
 ## Version Boundary
 
@@ -104,8 +105,8 @@ without declaring final release.
 ### `0.2.12-v0.2-final-closeout`
 
 Type: documentation-only
-Status: ready for review
-Purpose: Perform final closeout only after 0.2.11 review approval.
+Status: review complete
+Purpose: Performed final closeout after 0.2.11 review approval.
 
 ## Required Reading
 

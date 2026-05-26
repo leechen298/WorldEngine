@@ -1,6 +1,6 @@
 # Review
 
-Status: documentation-stage evidence
+Status: review complete
 
 ## Documentation-Stage Changed Files
 
@@ -128,3 +128,86 @@ This pass is scoped to documentation-stage preparation:
 Documentation package is ready for review. Final closeout implementation must
 wait for human / ChatGPT approval and must remain limited to the documentation
 paths allowed in `contract.md`.
+
+## Implementation Changed Files
+
+| File | Change |
+|---|---|
+| `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | Updated release docs from release-candidate / not-final wording to final closeout status with documentation-only evidence limits. |
+| `docs/iterations/v0.2/README.md`, `README.zh.md` | Marked v0.2 final / complete and 0.2.12 review complete. |
+| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | Marked v0.2 final / complete, 0.2.12 review complete, and v0.3 handoff status. |
+| `docs/iterations/v0.2/findings.md` | Accepted `v0.2-P3-003` as a non-blocking v0.3 handoff. |
+| `docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.md`, `README.zh.md` | Marked closeout checklist complete and synchronized the accepted P3 handoff wording. |
+| `docs/iterations/v0.2/0.2.12-v0.2-final-closeout/review.md`, `review.zh.md` | Recorded implementation closeout evidence. |
+
+## Implementation Commands Run
+
+```bash
+git diff --check
+for f in README intent contract technical-design test-plan plan review; do test -f "docs/iterations/v0.2/0.2.12-v0.2-final-closeout/$f.md" && test -f "docs/iterations/v0.2/0.2.12-v0.2-final-closeout/$f.zh.md" || exit 1; done
+rg -n 'Status: final / closeout complete|状态：`final / closeout complete`|Status: final / complete|状态：`final / complete`|Status: review complete|状态：`review complete`|final closeout complete|accepted handoff' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.zh.md docs/iterations/v0.2/findings.md
+rg -n 'final / closeout complete|final closeout complete|final review for closeout|no unresolved P1/P2|0\.2\.12|review complete|non-blocking v0\.3 handoff' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout/README.zh.md docs/iterations/v0.2/findings.md
+if rg -n '^\| [^|]+ \| [^|]+ \| [^|]+ \| P[12] \| (open|accepted handoff)' docs/iterations/v0.2/findings.md; then exit 1; else exit 0; fi
+tmp_patterns="$(mktemp)"; p1="historical-child"; p2="historical"; p3="historical-nested"; p4="historical"; p5="historical"; p6="historical-concrete"; p7="historical concrete"; printf '%s\n' "${p1}-cell" "$p2 area" "${p3}-entity" "$p4 object" "$p5 actor" "${p6}-fixture" "$p7 fixture path" > "$tmp_patterns"; rg -n -i -f "$tmp_patterns" docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/findings.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout; rc=$?; rm -f "$tmp_patterns"; test "$rc" -eq 1
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/(releases/v0\.2|iterations/v0\.2/)'
+rg -n '[[:blank:]]$' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/findings.md docs/iterations/v0.2/0.2.12-v0.2-final-closeout
+git status --short --branch
+```
+
+## Implementation Test Results
+
+- `git diff --check` exited `0`; no whitespace errors were reported.
+- Package mirror presence loop exited `0`.
+- Status consistency grep exited `0`; release docs, milestone docs, plan docs,
+  package README docs, and findings now show final / complete, review
+  complete, final closeout complete, or accepted handoff wording.
+- Release-status wording check exited `0`; it matched final closeout,
+  final-review, no-unresolved-P1/P2, 0.2.12, review-complete, and
+  non-blocking v0.3 handoff wording.
+- P1/P2 blocker guard exited `0`; no open or accepted-handoff P1/P2 finding
+  remains in `findings.md`.
+- Concrete demo anchor sweep used a temporary untracked pattern file with the
+  historical concrete fixture anchors. The underlying `rg` exited `1` with no
+  matches, and the wrapper check exited `0`.
+- Changed-file scope guard exited `1` with no output, which is expected and
+  means all changed files are limited to approved `docs/releases/v0.2*` and
+  `docs/iterations/v0.2/` paths.
+- Trailing-whitespace grep exited `1` with no output.
+- `git status --short --branch` exited `0`; branch `v0.2` is ahead of
+  `origin/v0.2` and shows only approved v0.2 documentation changes.
+
+Backend, frontend, API smoke, E2E, Agent smoke, runtime, schema execution,
+fixture, migration, and test implementation checks were not run because this
+package is documentation-only and changed no implementation files.
+
+## Implementation Compatibility Review
+
+Runtime behavior, schema behavior, event behavior, API response shapes,
+frontend behavior, fixture behavior, migration behavior, test behavior, and
+legacy `backend/worldengine/` behavior are unchanged. This package only
+updated v0.2 release, iteration, findings, and closeout review documentation.
+
+## Implementation Scope Review
+
+The implementation stayed inside the approved 0.2.12 contract:
+
+- updated final status only after documentation review reported no blocking
+  issues and `ready_for_implementation: true`.
+- recorded the existing P3 as an accepted non-blocking v0.3 handoff.
+- did not add functionality, tests, runtime behavior, schema behavior, API
+  behavior, frontend behavior, fixtures, migrations, external repositories, or
+  concrete external-world details.
+- did not start v0.3 implementation.
+
+## Implementation Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: `v0.2-P3-003` is accepted as a non-blocking handoff to the first v0.3
+  bridge package.
+
+## Implementation Final Assessment
+
+0.2.12 final closeout is complete. v0.2 is marked final / complete in the
+release docs, milestone index, detailed plan, package README, and review
+evidence. v0.3 remains gated on a separate reviewed iteration package.

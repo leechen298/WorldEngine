@@ -1,6 +1,6 @@
 # 0.2.12 v0.2 Final Closeout
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -45,9 +45,9 @@ release without approval.
 - [x] Technical design drafted
 - [x] Test plan drafted
 - [x] Documentation-stage evidence complete
-- [ ] Human / ChatGPT review complete
-- [ ] Final closeout implemented
-- [ ] Review complete
+- [x] Human / ChatGPT review complete
+- [x] Final closeout implemented
+- [x] Review complete
 
 ## Planned Deliverables After Review
 
@@ -67,14 +67,13 @@ release without approval.
 - The 0.2.11 release-candidate bundle is the evidence basis for final
   closeout.
 - Human / ChatGPT approval is required before v0.2 can be marked final.
-- The open P3 finding `v0.2-P3-003` may remain as a v0.3 handoff if final
-  review explicitly accepts it as non-blocking.
+- The P3 finding `v0.2-P3-003` is accepted as a non-blocking v0.3 handoff.
 - No unresolved P1/P2 finding may remain open at final closeout.
 
 ## Open Risks
 
-- Final review may discover a P1/P2 evidence gap. If so, this package must
-  record the blocker and must not mark v0.2 final.
+- Final review could have discovered a P1/P2 evidence gap. No P1/P2 blocker
+  was found during final closeout.
 - Release wording may accidentally imply runtime behavior or tests were rerun.
   Final closeout must distinguish historical package evidence from commands
   run during 0.2.12.
