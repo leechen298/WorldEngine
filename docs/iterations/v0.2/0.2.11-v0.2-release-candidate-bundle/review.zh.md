@@ -1,6 +1,6 @@
 # Review
 
-状态：`ready for review`
+状态：`review complete`
 
 英文版本：`review.md`
 
@@ -112,3 +112,89 @@ behavior、test behavior 或 legacy `backend/worldengine/` behavior。
 本 documentation package ready for review。Release-candidate bundle
 implementation 必须等待 review approval，并限于 `contract.md` 允许的
 documentation paths。
+
+## Implementation Changed Files
+
+| File | Change |
+|---|---|
+| `docs/iterations/v0.2/v0.2-release-candidate-bundle.md` | 新增 release-candidate evidence bundle，包含 scope、package summary、claim-to-evidence matrix、limitations、findings 和 closeout prerequisites。 |
+| `docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md` | 新增同步中文 release-candidate evidence bundle。 |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md` | 使用 package template structure 新增 final-review handoff。 |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md` | 新增同步中文 final-review handoff。 |
+| `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | 将 release draft wording 更新为 release-candidate / not final，并汇总 evidence 和 limits。 |
+| `docs/iterations/v0.2/README.md`, `README.zh.md` | 将 0.2.11 status 更新为 `review complete`。 |
+| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | 将 0.2.11 status 更新为 `review complete`，保持 0.2.12 planned。 |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md`, `README.zh.md` | 标记 release-candidate bundle 和 package review complete，同时保留 human / ChatGPT review pending。 |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/review.md`, `review.zh.md` | 新增 implementation closeout evidence。 |
+
+## Implementation Commands Run
+
+```bash
+git diff --check
+test -f docs/iterations/v0.2/v0.2-release-candidate-bundle.md && test -f docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md && test -f docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md && test -f docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md
+for f in README intent contract technical-design test-plan plan review; do test -f "docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/$f.md" && test -f "docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/$f.zh.md" || exit 1; done
+rg -n '0\.2\.11-v0\.2-release-candidate-bundle|Status: ready for review|状态：`ready for review`|Status: review complete|状态：`review complete`' docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.zh.md
+rg -n 'final release|not released|release candidate|release-candidate|0\.2\.12|final closeout' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md
+rg -n '0\.2\.[1-9]|0\.2\.10|evidence-index|boundary-audit|compatibility-review|findings|review\.md|implemented|documented|tested|reviewed|planned|not implemented|historical artifact|finding' docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md
+tmp_patterns="$(mktemp)"; printf '%s\n' '<concrete demo anchor patterns omitted>' > "$tmp_patterns"; rg -n -f "$tmp_patterns" docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/evidence-index.md docs/iterations/v0.2/boundary-audit.md docs/iterations/v0.2/compatibility-review.md docs/iterations/v0.2/findings.md; rc=$?; rm -f "$tmp_patterns"; test "$rc" -eq 1
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/(releases/v0\.2|iterations/v0\.2/)'
+rg -n '\[[^\]]+\]\([^\)]+\)' docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md
+rg -n '[[:blank:]]$' docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.zh.md
+git status --short --branch
+```
+
+## Implementation Test Results
+
+- `git diff --check` exited `0`；tracked changes 未报告 whitespace errors。
+- Release-candidate 和 final-review bundle files 的 required file presence check
+  exited `0`。
+- Package mirror presence loop exited `0`。
+- Status consistency grep exited `0`；status docs 现在显示 0.2.11 为
+  `review complete`。
+- Release-status wording check exited `0`；匹配到 candidate / not final /
+  0.2.12 final-closeout guardrail wording。
+- Evidence traceability check exited `0`；匹配到 package IDs、evidence docs、
+  review references 和 status classes。
+- Concrete demo anchor sweep 使用 temporary untracked pattern file。Underlying
+  `rg` exited `1` 且无 matches，wrapper check exited `0`。
+- Changed-file scope guard exited `1` 且无输出，这是 expected result，表示所有
+  changed files 都限于 approved v0.2 iteration/release docs。
+- Markdown link sanity grep exited `1` 且无输出；没有 inline Markdown links 需要
+  path validation。
+- Trailing whitespace grep exited `1` 且无输出。
+- `git status --short --branch` exited `0`；branch `v0.2` ahead of
+  `origin/v0.2` by 17 commits，只显示 approved v0.2 documentation changes。
+
+Backend、frontend、API smoke、E2E、Agent smoke、runtime、schema execution、
+fixture 和 migration tests 未运行，因为本 package 是 documentation-only，且没有修改
+implementation files。
+
+## Implementation Compatibility Review
+
+Runtime behavior、schema behavior、event behavior、API response shapes、frontend
+behavior、fixture behavior、migration behavior、test behavior 和 legacy
+`backend/worldengine/` behavior 均未改变。本 package 只更新 v0.2 iteration 和
+release documentation。
+
+## Implementation Scope Review
+
+Implementation 保持在 approved 0.2.11 contract 内：
+
+- 创建 release-candidate bundle 和 final-review bundle，并包含英文和中文 mirrors。
+- 更新 v0.2 release draft、milestone status、plan status、package README 和
+  review evidence。
+- 没有更新 `findings.md`，因为未发现新的 P1/P2/P3 finding。
+- 没有扩展到 0.2.12 final closeout 或 v0.3 implementation。
+
+## Implementation Unresolved Findings
+
+- P1：无。
+- P2：无。
+- P3：`v0.2-P3-003` 保持 open，交给 first v0.3 bridge package。如果作为 v0.3
+  handoff 接受，它不阻塞本 release-candidate bundle。
+
+## Implementation Final Assessment
+
+0.2.11 release-candidate bundle implementation complete，并已 ready for human /
+ChatGPT final review。v0.2 仍不是 final；只有 0.2.12 可以在 approval 后执行 final
+closeout。

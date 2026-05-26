@@ -1,6 +1,6 @@
 # 0.2.11 v0.2 Release Candidate Bundle
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -45,9 +45,9 @@ files.
 - [x] Technical design drafted
 - [x] Test plan drafted
 - [x] Documentation-stage evidence complete
-- [ ] Release-candidate bundle complete
+- [x] Release-candidate bundle complete
 - [ ] Human / ChatGPT review complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Planned Deliverables After Review
 

@@ -1,6 +1,6 @@
 # 0.2.11 v0.2 Release Candidate Bundle
 
-状态：`ready for review`
+状态：`review complete`
 
 类型：`documentation-only`
 
@@ -45,9 +45,9 @@ test implementation files 来填补 evidence gaps。
 - [x] Technical design drafted
 - [x] Test plan drafted
 - [x] Documentation-stage evidence complete
-- [ ] Release-candidate bundle complete
+- [x] Release-candidate bundle complete
 - [ ] Human / ChatGPT review complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Review 后计划交付
 

@@ -97,7 +97,7 @@ before v0.3 bridge work.
 ### `0.2.11-v0.2-release-candidate-bundle`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Prepare release-candidate evidence for human / ChatGPT review
 without declaring final release.
 

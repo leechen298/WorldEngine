@@ -1,6 +1,6 @@
 # Review
 
-Status: ready for review
+Status: review complete
 
 ## Documentation-Stage Changed Files
 
@@ -118,3 +118,93 @@ This pass is scoped to documentation-stage preparation:
 Documentation package is ready for review. Release-candidate bundle
 implementation must wait for review approval and remain limited to the
 documentation paths allowed in `contract.md`.
+
+## Implementation Changed Files
+
+| File | Change |
+|---|---|
+| `docs/iterations/v0.2/v0.2-release-candidate-bundle.md` | Added release-candidate evidence bundle with scope, package summary, claim-to-evidence matrix, limitations, findings, and closeout prerequisites. |
+| `docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md` | Added synchronized Chinese release-candidate evidence bundle. |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md` | Added final-review handoff using the package template structure. |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md` | Added synchronized Chinese final-review handoff. |
+| `docs/releases/v0.2.md`, `docs/releases/v0.2.zh.md` | Updated release draft wording to release-candidate / not final and summarized evidence and limits. |
+| `docs/iterations/v0.2/README.md`, `README.zh.md` | Updated 0.2.11 status to `review complete`. |
+| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | Updated 0.2.11 status to `review complete`, leaving 0.2.12 planned. |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md`, `README.zh.md` | Marked release-candidate bundle and package review complete while leaving human / ChatGPT review pending. |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/review.md`, `review.zh.md` | Added implementation closeout evidence. |
+
+## Implementation Commands Run
+
+```bash
+git diff --check
+test -f docs/iterations/v0.2/v0.2-release-candidate-bundle.md && test -f docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md && test -f docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md && test -f docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md
+for f in README intent contract technical-design test-plan plan review; do test -f "docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/$f.md" && test -f "docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/$f.zh.md" || exit 1; done
+rg -n '0\.2\.11-v0\.2-release-candidate-bundle|Status: ready for review|状态：`ready for review`|Status: review complete|状态：`review complete`' docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.zh.md
+rg -n 'final release|not released|release candidate|release-candidate|0\.2\.12|final closeout' docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md
+rg -n '0\.2\.[1-9]|0\.2\.10|evidence-index|boundary-audit|compatibility-review|findings|review\.md|implemented|documented|tested|reviewed|planned|not implemented|historical artifact|finding' docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md
+tmp_patterns="$(mktemp)"; printf '%s\n' '<concrete demo anchor patterns omitted>' > "$tmp_patterns"; rg -n -f "$tmp_patterns" docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/evidence-index.md docs/iterations/v0.2/boundary-audit.md docs/iterations/v0.2/compatibility-review.md docs/iterations/v0.2/findings.md; rc=$?; rm -f "$tmp_patterns"; test "$rc" -eq 1
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/(releases/v0\.2|iterations/v0\.2/)'
+rg -n '\[[^\]]+\]\([^\)]+\)' docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md
+rg -n '[[:blank:]]$' docs/iterations/v0.2/v0.2-release-candidate-bundle.md docs/iterations/v0.2/v0.2-release-candidate-bundle.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/final-review-bundle.zh.md docs/releases/v0.2.md docs/releases/v0.2.zh.md docs/iterations/v0.2/README.md docs/iterations/v0.2/README.zh.md docs/iterations/v0.2/v0.2-plan.md docs/iterations/v0.2/v0.2-plan.zh.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.zh.md
+git status --short --branch
+```
+
+## Implementation Test Results
+
+- `git diff --check` exited `0`; no whitespace errors were reported for
+  tracked changes.
+- Required file presence check for release-candidate and final-review bundle
+  files exited `0`.
+- Package mirror presence loop exited `0`.
+- Status consistency grep exited `0`; status docs now show 0.2.11 as
+  `review complete`.
+- Release-status wording check exited `0`; matched candidate / not final /
+  0.2.12 final-closeout guardrail wording.
+- Evidence traceability check exited `0`; matched package IDs, evidence docs,
+  review references, and status classes.
+- Concrete demo anchor sweep used a temporary untracked pattern file. The
+  underlying `rg` exited `1` with no matches, and the wrapper check exited
+  `0`.
+- Changed-file scope guard exited `1` with no output, which is expected and
+  means all changed files are limited to approved v0.2 iteration/release docs.
+- Markdown link sanity grep exited `1` with no output; no inline Markdown
+  links requiring path validation were present.
+- Trailing whitespace grep exited `1` with no output.
+- `git status --short --branch` exited `0`; branch `v0.2` is ahead of
+  `origin/v0.2` by 17 commits and shows only approved v0.2 documentation
+  changes.
+
+Backend, frontend, API smoke, E2E, Agent smoke, runtime, schema execution,
+fixture, and migration tests were not run because this package is
+documentation-only and changed no implementation files.
+
+## Implementation Compatibility Review
+
+Runtime behavior, schema behavior, event behavior, API response shapes,
+frontend behavior, fixture behavior, migration behavior, test behavior, and
+legacy `backend/worldengine/` behavior are unchanged. This package only
+updated v0.2 iteration and release documentation.
+
+## Implementation Scope Review
+
+The implementation stayed inside the approved 0.2.11 contract:
+
+- created the release-candidate bundle and final-review bundle with English
+  and Chinese mirrors.
+- updated v0.2 release draft, milestone status, plan status, package README,
+  and review evidence.
+- did not update `findings.md` because no new P1/P2/P3 finding was found.
+- did not broaden into 0.2.12 final closeout or v0.3 implementation.
+
+## Implementation Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: `v0.2-P3-003` remains open for the first v0.3 bridge package. It does
+  not block this release-candidate bundle if accepted as a v0.3 handoff.
+
+## Implementation Final Assessment
+
+0.2.11 release-candidate bundle implementation is complete and ready for
+human / ChatGPT final review. v0.2 is still not final; 0.2.12 remains the
+only package allowed to perform final closeout after approval.
