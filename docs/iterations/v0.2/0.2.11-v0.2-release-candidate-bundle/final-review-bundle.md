@@ -8,13 +8,19 @@
 
 `v0.2`
 
-## Base Commit
+## Reviewed Base Commit
 
 `4cf5fd7bb17b0bc5c671b82daee127b1ddda0d1d`
 
-## Head Commit
+## Reviewed Head
 
-`0ac53b73c9ae29597056433572c1a12bc26afb47`
+`HEAD at review time`
+
+Implementation review recorded checkpoint
+`a730704e0beb0372cbecc16962b27e6ad091745a` as the reviewed head after the
+latest committed fix. Because fix agents and runners may create follow-up
+checkpoint commits, reviewers must verify the current head with
+`git rev-parse HEAD` before final closeout.
 
 ## Status
 

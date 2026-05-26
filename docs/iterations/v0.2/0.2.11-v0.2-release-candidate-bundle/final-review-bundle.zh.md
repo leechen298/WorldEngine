@@ -10,13 +10,18 @@
 
 `v0.2`
 
-## 基准提交
+## 已审核基准提交
 
 `4cf5fd7bb17b0bc5c671b82daee127b1ddda0d1d`
 
-## 当前提交
+## 已审核头部
 
-`0ac53b73c9ae29597056433572c1a12bc26afb47`
+`HEAD at review time`
+
+Implementation review 将
+`a730704e0beb0372cbecc16962b27e6ad091745a` 记录为 latest committed fix 后的
+reviewed head。由于 fix agents 和 runners 可能继续创建 checkpoint commits，
+reviewers 必须在 final closeout 前用 `git rev-parse HEAD` 验证 current head。
 
 ## 状态
 
