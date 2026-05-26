@@ -104,7 +104,7 @@ without declaring final release.
 ### `0.2.12-v0.2-final-closeout`
 
 Type: documentation-only
-Status: planned
+Status: ready for review
 Purpose: Perform final closeout only after 0.2.11 review approval.
 
 ## Required Reading

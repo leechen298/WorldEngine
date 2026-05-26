@@ -114,7 +114,7 @@ final release。
 ### `0.2.12-v0.2-final-closeout`
 
 类型：`documentation-only`
-状态：`planned`
+状态：`ready for review`
 目的：仅在 0.2.11 review approval 后执行 final closeout。
 
 ## 必读文件
