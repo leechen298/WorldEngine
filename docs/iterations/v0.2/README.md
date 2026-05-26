@@ -63,14 +63,14 @@ fixture tests with generic schema smoke coverage.
 ### `0.2.6-iteration-workflow-and-plan-reset`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Reset the remaining v0.2 plan, add iterative automation workflow
 docs, and abstract residual concrete demo anchors in v0.2 iteration docs.
 
 ### `0.2.7-recursive-schema-contract-hardening`
 
 Type: mixed
-Status: planned
+Status: ready for review
 Purpose: Harden EntityRef, WorldCell, and WorldSpec contracts and generic
 schema tests without runtime loading.
 

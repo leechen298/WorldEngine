@@ -73,14 +73,14 @@ v0.2 不实现以下内容：
 ### `0.2.6-iteration-workflow-and-plan-reset`
 
 类型：`documentation-only`
-状态：`ready for review`
+状态：`review complete`
 目的：重排 v0.2 剩余计划，增加自动迭代工作流文档，并抽象化 v0.2
 iteration docs 中残留的 concrete demo anchors。
 
 ### `0.2.7-recursive-schema-contract-hardening`
 
 类型：`mixed`
-状态：`planned`
+状态：`ready for review`
 目的：加固 EntityRef、WorldCell 和 WorldSpec contract，并补强通用 schema
 tests；不做 runtime loading。
 
