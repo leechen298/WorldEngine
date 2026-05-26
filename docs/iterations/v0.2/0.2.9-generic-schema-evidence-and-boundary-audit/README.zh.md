@@ -1,6 +1,6 @@
 # 0.2.9 Generic Schema Evidence and Boundary Audit
 
-状态：`review complete`
+状态：`ready for review`
 
 类型：`documentation-only`
 
@@ -47,7 +47,7 @@ Missing evidence 必须记录为 findings 或 next-package input，不得通过�
 - [x] Test plan reviewed
 - [x] Documentation-stage evidence complete
 - [ ] Audit documents complete
-- [x] Review complete
+- [ ] Review complete
 
 ## Review 通过后的计划交付
 
