@@ -83,8 +83,8 @@ without resolver or causality runtime.
 
 ### `0.2.9-generic-schema-evidence-and-boundary-audit`
 
-Type: documentation-only or mixed
-Status: planned
+Type: documentation-only
+Status: ready for review
 Purpose: Audit schema, event, external boundary, and legacy boundary evidence.
 
 ### `0.2.10-legacy-boundary-and-compatibility-review`
