@@ -4,6 +4,39 @@
 
 英文版本：`review.md`
 
+## Implementation Review Fix Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | 修复 P1 stale implementation evidence：记录已提交 checkpoint，并补充遗漏的 `docs/iterations/v0.2/findings.md` changed-file evidence。 |
+
+### Commands Run
+
+```bash
+git log --oneline --decorate -8
+git diff --check
+sed '/^```bash$/,/^```$/d' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.zh.md | rg -n 'No checkpoint commit|handoff is blocked|未创建 checkpoint|仍被阻塞'
+git show --name-only --oneline --no-renames --format='%h %s' HEAD
+git status --short --branch
+```
+
+### Test Results
+
+- `git diff --check` exited `0`；无 whitespace errors。
+- Stale checkpoint-blocker text sweep 排除 fenced command blocks 后 exited
+  `1` with no matches。
+- `git show --name-only --oneline --no-renames --format='%h %s' HEAD`
+  exited `0`；commit `19282d9` includes `docs/iterations/v0.2/findings.md`。
+- Backend tests 未运行，因为本 fix 只修改 review evidence documentation。
+
+### Remaining Risks
+
+- P1: none.
+- P2: detailed v0.2 plan status 仍将 0.2.7 标为 `ready for review`，但
+  milestone index 将其标为 `review complete`；该项继续 defer 到 0.2.9。
+
 ## Implementation Closeout
 
 ### Changed Files
@@ -13,6 +46,7 @@
 | `docs/contracts/event-ref-contract.md` | 新增 v0.2 EventRef 与 Event.refs contract，覆盖 field semantics、validation behavior、compatibility guarantees、event-local limits 和 non-goals。 |
 | `backend/app/tests/test_event_schema_compat.py` | 新增 focused coverage，证明 EventRef accepts free-form metadata without interpretation。 |
 | `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | 新增 implementation closeout evidence。 |
+| `docs/iterations/v0.2/findings.md` | 记录 defer 到 0.2.9 的 0.2.7 milestone status synchronization finding。 |
 
 未修改 schema code。当前 EventRef 与 Event.refs schema 已覆盖 optional refs、
 default refs、non-empty id/kind validation、default metadata、nested event
@@ -50,8 +84,9 @@ payload 是为了避免把 concrete pattern lists 写入 tracked review evidence
 - `make check-backend` exited `0`。
 - Concrete demo anchor sweep 覆盖 touched contract doc、focused event test 和
   review evidence，exited `1` with no matches。
-- `git add ...` exited `128`，因为当前 sandbox 无法创建 `.git/index.lock`
-  (`Operation not permitted`)。本 session 未创建 checkpoint commit。
+- `git add ...` 在 implementation session 中初次 exited `128`，因为当时的
+  sandbox 无法创建 `.git/index.lock` (`Operation not permitted`)；implementation
+  checkpoint 后续已提交为 `19282d9`。
 - Full backend app tests 未运行，因为 event schema code 未改变。
 - Recursive schema tests 未运行，因为 shared schema behavior 与 recursive schema
   imports 未触及。
@@ -69,7 +104,7 @@ Implementation 保持在 0.2.8 scope 内：
 
 - 新增 approved EventRef contract document。
 - 新增一个 focused、domain-neutral event schema compatibility test。
-- 只更新本 package 的 review evidence files。
+- 只更新本 package 的 review evidence files 和 deferred findings register。
 - 未添加 resolver、causality engine、runtime bridge、memory behavior、
   projection behavior、generation、frontend work、fixtures、migrations、
   external repository、API route 或 `backend/worldengine/` change。
@@ -84,8 +119,8 @@ Implementation 保持在 0.2.8 scope 内：
 
 ### Final Assessment
 
-0.2.8 implementation is complete，但 implementation review handoff 仍被阻塞，
-需要在当前 Git metadata write restriction 之外创建 checkpoint commit。
+0.2.8 implementation is complete，并且 ready for implementation review。
+Implementation checkpoint 已存在：`19282d9`。
 
 ## Changed Files
 
@@ -97,6 +132,7 @@ Implementation 保持在 0.2.8 scope 内：
 | `docs/contracts/event-ref-contract.md` | 新增 v0.2 EventRef 与 Event.refs contract。 |
 | `backend/app/tests/test_event_schema_compat.py` | 新增 focused free-form metadata compatibility 覆盖。 |
 | `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | 新增 implementation-stage evidence。 |
+| `docs/iterations/v0.2/findings.md` | 记录 defer 到 0.2.9 的 0.2.7 milestone status synchronization finding。 |
 
 ## Commands Run
 

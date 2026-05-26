@@ -2,6 +2,41 @@
 
 Status: implementation complete / ready for implementation review
 
+## Implementation Review Fix Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | Fixed P1 stale implementation evidence by recording the committed checkpoint and adding omitted `docs/iterations/v0.2/findings.md` changed-file evidence. |
+
+### Commands Run
+
+```bash
+git log --oneline --decorate -8
+git diff --check
+sed '/^```bash$/,/^```$/d' docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.zh.md | rg -n 'No checkpoint commit|handoff is blocked|未创建 checkpoint|仍被阻塞'
+git show --name-only --oneline --no-renames --format='%h %s' HEAD
+git status --short --branch
+```
+
+### Test Results
+
+- `git diff --check` exited `0`; no whitespace errors.
+- Stale checkpoint-blocker text sweep, excluding fenced command blocks, exited
+  `1` with no matches.
+- `git show --name-only --oneline --no-renames --format='%h %s' HEAD`
+  exited `0`; commit `19282d9` includes `docs/iterations/v0.2/findings.md`.
+- Backend tests were not run for this fix because only review evidence
+  documentation changed.
+
+### Remaining Risks
+
+- P1: none.
+- P2: detailed v0.2 plan status still marks 0.2.7 as `ready for review`
+  while the milestone index marks it `review complete`; this remains deferred
+  to 0.2.9.
+
 ## Implementation Closeout
 
 ### Changed Files
@@ -11,6 +46,7 @@ Status: implementation complete / ready for implementation review
 | `docs/contracts/event-ref-contract.md` | Added the v0.2 EventRef and Event.refs contract with field semantics, validation behavior, compatibility guarantees, event-local limits, and non-goals. |
 | `backend/app/tests/test_event_schema_compat.py` | Added focused coverage proving EventRef accepts free-form metadata without interpretation. |
 | `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | Added implementation closeout evidence. |
+| `docs/iterations/v0.2/findings.md` | Recorded the deferred 0.2.7 milestone status synchronization finding for 0.2.9 follow-up. |
 
 No schema code changes were required. The current EventRef and Event.refs
 schema already preserves optional refs, default refs, non-empty id/kind
@@ -50,9 +86,9 @@ pattern lists into tracked review evidence.
 - `make check-backend` exited `0`.
 - Concrete demo anchor sweep over the touched contract doc, focused event
   test, and review evidence exited `1` with no matches.
-- `git add ...` exited `128` because this sandbox could not create
-  `.git/index.lock` (`Operation not permitted`). No checkpoint commit was
-  created in this session.
+- `git add ...` initially exited `128` in the implementation session because
+  that sandbox could not create `.git/index.lock` (`Operation not permitted`);
+  the implementation checkpoint was later committed as `19282d9`.
 - Full backend app tests were not run because event schema code did not
   change.
 - Recursive schema tests were not run because shared schema behavior and
@@ -72,7 +108,8 @@ Implementation stayed inside 0.2.8 scope:
 
 - added the approved EventRef contract document.
 - added one focused, domain-neutral event schema compatibility test.
-- updated only this package's review evidence files.
+- updated only this package's review evidence files and the deferred findings
+  register.
 - did not add a resolver, causality engine, runtime bridge, memory behavior,
   projection behavior, generation, frontend work, fixtures, migrations,
   external repository, API route, or `backend/worldengine/` change.
@@ -87,9 +124,8 @@ Implementation stayed inside 0.2.8 scope:
 
 ### Final Assessment
 
-0.2.8 implementation is complete, but implementation review handoff is blocked
-until a checkpoint commit can be created outside the current Git metadata
-write restriction.
+0.2.8 implementation is complete and ready for implementation review. The
+implementation checkpoint exists as commit `19282d9`.
 
 ## Changed Files
 
@@ -101,6 +137,7 @@ write restriction.
 | `docs/contracts/event-ref-contract.md` | Added the v0.2 EventRef and Event.refs contract. |
 | `backend/app/tests/test_event_schema_compat.py` | Added focused free-form metadata compatibility coverage. |
 | `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | Added implementation-stage evidence. |
+| `docs/iterations/v0.2/findings.md` | Recorded the deferred 0.2.7 milestone status synchronization finding for 0.2.9 follow-up. |
 
 ## Commands Run
 
