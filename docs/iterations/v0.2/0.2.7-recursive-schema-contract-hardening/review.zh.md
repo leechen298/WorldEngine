@@ -9,8 +9,9 @@ Status: ready for review
 | File | Change |
 |---|---|
 | `docs/iterations/v0.2/0.2.7-recursive-schema-contract-hardening/**` | 添加 documentation-stage package docs，并包含 English 和 Chinese mirrors。 |
+| `docs/iterations/v0.2/0.2.6-iteration-workflow-and-plan-reset/README.md`, `README.zh.md` | 在 0.2.6 documentation review 通过后，将其标记为 `review complete`。 |
 | `docs/iterations/v0.2/README.md`, `README.zh.md` | 将 0.2.7 package status 更新为 `ready for review`。 |
-| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | 为 status consistency，将 0.2.7 plan status 更新为 `ready for review`。 |
+| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | 为 status consistency，同步 0.2.6 为 `review complete`、0.2.7 为 `ready for review`。 |
 
 ## Commands Run
 
@@ -64,7 +65,8 @@ Planned implementation contract 保持 additive schema compatibility，除非未
 本 pass 保持在 documentation-stage scope 内：
 
 - 只创建 0.2.7 package documents。
-- 只更新 0.2.7 的 v0.2 package status lines。
+- 同步已完成 review 的 0.2.6 status documentation，以及新的 0.2.7 review
+  gate status。
 - 没有在 `docs/contracts/` 下创建 contract deliverables。
 - 没有实现 schema、runtime、API、frontend、fixture、migration 或 test changes。
 

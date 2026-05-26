@@ -5,8 +5,9 @@
 | File | Change |
 |---|---|
 | `docs/iterations/v0.2/0.2.7-recursive-schema-contract-hardening/**` | Added documentation-stage package docs with English and Chinese mirrors. |
+| `docs/iterations/v0.2/0.2.6-iteration-workflow-and-plan-reset/README.md`, `README.zh.md` | Marked 0.2.6 review complete after its documentation review passed. |
 | `docs/iterations/v0.2/README.md`, `README.zh.md` | Updated 0.2.7 package status to `ready for review`. |
-| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | Updated 0.2.7 plan status to `ready for review` for status consistency. |
+| `docs/iterations/v0.2/v0.2-plan.md`, `v0.2-plan.zh.md` | Synchronized 0.2.6 as `review complete` and 0.2.7 as `ready for review` for status consistency. |
 
 ## Commands Run
 
@@ -73,7 +74,8 @@ unless a future documentation review explicitly approves a breaking change.
 This pass stayed inside documentation-stage scope:
 
 - created only the 0.2.7 package documents.
-- updated only v0.2 package status lines for 0.2.7.
+- synchronized v0.2 status documentation for the completed 0.2.6 review and
+  the new 0.2.7 review gate.
 - did not create contract deliverables under `docs/contracts/`.
 - did not implement schema, runtime, API, frontend, fixture, migration, or
   test changes.
