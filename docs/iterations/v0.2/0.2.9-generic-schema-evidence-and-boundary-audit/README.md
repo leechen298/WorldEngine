@@ -1,6 +1,6 @@
 # 0.2.9 Generic Schema Evidence and Boundary Audit
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -46,7 +46,7 @@ with unreviewed implementation work.
 - [x] Test plan reviewed
 - [x] Documentation-stage evidence complete
 - [ ] Audit documents complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Planned Deliverables After Review
 
