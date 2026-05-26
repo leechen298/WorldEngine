@@ -107,7 +107,7 @@ boundary。
 ### `0.2.11-v0.2-release-candidate-bundle`
 
 类型：`documentation-only`
-状态：`planned`
+状态：`ready for review`
 目的：准备 release-candidate evidence，供 human / ChatGPT review；不声明
 final release。
 
