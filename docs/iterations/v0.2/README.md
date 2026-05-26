@@ -77,7 +77,7 @@ schema tests without runtime loading.
 ### `0.2.8-event-reference-contract-hardening`
 
 Type: mixed
-Status: planned
+Status: ready for review
 Purpose: Harden EventRef and Event.refs as additive event reference contracts
 without resolver or causality runtime.
 
