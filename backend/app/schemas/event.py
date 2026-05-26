@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_serializer
 
 
 class EventRef(BaseModel):
@@ -19,6 +19,13 @@ class Event(BaseModel):
     payload: Dict[str, Any] = Field(default_factory=dict)
     refs: List[EventRef] = Field(default_factory=list)
     created_at: str
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler: Any) -> Dict[str, Any]:
+        data = handler(self)
+        if not self.refs:
+            data.pop("refs", None)
+        return data
 
 
 class EventPage(BaseModel):

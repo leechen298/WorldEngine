@@ -2,6 +2,74 @@
 
 Status: implementation complete / ready for implementation review
 
+## Post-Review API Compatibility Fix Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `backend/app/schemas/event.py` | Preserved `Event.refs == []` as the validation default while excluding empty refs from serialization, so existing event API responses keep their pre-refs key set. |
+| `backend/app/tests/test_event_api_compat.py` | Added endpoint-level compatibility tests for `/world/events` and `/world/event-steps`, covering both omission of empty refs and inclusion of non-empty refs. |
+| `docs/iterations/v0.2/0.2.7-recursive-schema-contract-hardening/README.md`, `README.zh.md` | Marked implementation complete to match the package review evidence and v0.2 final index. |
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/README.md`, `README.zh.md` | Marked implementation complete to match the package review evidence and v0.2 final index. |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md`, `README.zh.md` | Marked human / ChatGPT review complete to match the final closeout index. |
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | Added this post-review fix evidence. |
+
+### Commands Run
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py -q
+cd backend && .venv/bin/python -m pytest app/tests -q
+make check-backend
+git diff --check
+rg -n "\[ \] Implementation complete|\[ \] Human / ChatGPT review complete|\[ \] 实现完成|\[ \] 人工 / ChatGPT 评审完成" docs/iterations/v0.2
+```
+
+### Test Results
+
+- Initial TDD red run, `cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py -q`, exited `1`; expected failure showed existing event API responses still included `refs: []`.
+- Focused compatibility run exited `0`; result: `12 passed in 0.20s`.
+- Full backend app test run exited `0`; result: `94 passed in 0.79s`.
+- `make check-backend` exited `0`.
+- `git diff --check` exited `0`; no whitespace errors.
+- Status-drift grep exited `1` with no matches, confirming no remaining unchecked `Implementation complete` or `Human / ChatGPT review complete` items under `docs/iterations/v0.2`.
+- Frontend and E2E tests were not run because this fix changed backend event serialization/tests and v0.2 status documentation only.
+
+### Compatibility Review
+
+The event schema still validates missing refs as `[]`, so existing Event
+dictionaries without refs continue to validate. Empty refs are now excluded
+only from serialized output, preserving existing `/world/events` and
+`/world/event-steps` response shapes for old events. Events with non-empty refs
+still serialize refs through both endpoints.
+
+No API route, frontend, fixture, migration, runtime service, event log
+persistence, or legacy `backend/worldengine/` code was changed.
+
+### Scope Review
+
+This fix stays inside the reviewed 0.2.8 compatibility contract and the v0.2
+documentation closeout surface:
+
+- fixes the response-shape regression without accepting a contract change.
+- adds endpoint-level regression coverage for the affected event APIs.
+- synchronizes stale README status checkboxes with existing review/closeout
+  evidence.
+- does not add resolver, causality, runtime bridge, memory, projection,
+  generation, frontend, fixture, migration, or external repository behavior.
+
+### Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: none.
+
+### Final Assessment
+
+The post-review P2 API response-shape finding and P3 v0.2 status-drift finding
+are resolved.
+
 ## Implementation Review Fix Closeout
 
 ### Changed Files

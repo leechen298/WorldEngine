@@ -46,7 +46,7 @@ test implementation files 来填补 evidence gaps。
 - [x] Test plan drafted
 - [x] Documentation-stage evidence complete
 - [x] Release-candidate bundle complete
-- [ ] Human / ChatGPT review complete
+- [x] Human / ChatGPT review complete
 - [x] Review complete
 
 ## Review 后计划交付

@@ -47,7 +47,7 @@ package documents 被 review 和 approve 后开始。
 - [x] Technical design reviewed
 - [x] Test plan reviewed
 - [x] Documentation gate approved
-- [ ] Implementation complete
+- [x] Implementation complete
 - [x] Documentation-stage evidence complete
 - [x] Review complete
 

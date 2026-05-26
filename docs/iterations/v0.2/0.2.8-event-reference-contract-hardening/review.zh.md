@@ -4,6 +4,72 @@
 
 英文版本：`review.md`
 
+## Post-Review API Compatibility Fix Closeout
+
+### Changed Files
+
+| File | Change |
+|---|---|
+| `backend/app/schemas/event.py` | 保留 `Event.refs == []` 作为 validation default，同时在 serialization 时排除 empty refs，使 existing event API responses 保持引入 refs 前的 key set。 |
+| `backend/app/tests/test_event_api_compat.py` | 新增 endpoint-level compatibility tests，覆盖 `/world/events` 和 `/world/event-steps` 中 empty refs omission 与 non-empty refs inclusion。 |
+| `docs/iterations/v0.2/0.2.7-recursive-schema-contract-hardening/README.md`, `README.zh.md` | 将 implementation complete 标为完成，以匹配 package review evidence 和 v0.2 final index。 |
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/README.md`, `README.zh.md` | 将 implementation complete 标为完成，以匹配 package review evidence 和 v0.2 final index。 |
+| `docs/iterations/v0.2/0.2.11-v0.2-release-candidate-bundle/README.md`, `README.zh.md` | 将 human / ChatGPT review complete 标为完成，以匹配 final closeout index。 |
+| `docs/iterations/v0.2/0.2.8-event-reference-contract-hardening/review.md`, `review.zh.md` | 记录本次 post-review fix evidence。 |
+
+### Commands Run
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py -q
+cd backend && .venv/bin/python -m pytest app/tests -q
+make check-backend
+git diff --check
+rg -n "\[ \] Implementation complete|\[ \] Human / ChatGPT review complete|\[ \] 实现完成|\[ \] 人工 / ChatGPT 评审完成" docs/iterations/v0.2
+```
+
+### Test Results
+
+- Initial TDD red run：`cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py -q` exited `1`；expected failure 显示 existing event API responses 仍包含 `refs: []`。
+- Focused compatibility run exited `0`；result: `12 passed in 0.20s`。
+- Full backend app test run exited `0`；result: `94 passed in 0.79s`。
+- `make check-backend` exited `0`。
+- `git diff --check` exited `0`；无 whitespace errors。
+- Status-drift grep exited `1` with no matches，确认 `docs/iterations/v0.2` 下已无 unchecked `Implementation complete` 或 `Human / ChatGPT review complete` 项。
+- Frontend 与 E2E tests 未运行，因为本 fix 只修改 backend event serialization/tests 和 v0.2 status documentation。
+
+### Compatibility Review
+
+Event schema 仍会把缺失 refs validate 为 `[]`，因此 existing Event
+dictionaries without refs 继续 validate。Empty refs 只在 serialized output 中被
+排除，从而保留 old events 在 `/world/events` 和 `/world/event-steps` 中的既有
+response shape。包含 non-empty refs 的 events 仍会通过两个 endpoint 输出 refs。
+
+未修改 API route、frontend、fixture、migration、runtime service、event log
+persistence 或 legacy `backend/worldengine/` code。
+
+### Scope Review
+
+本 fix 保持在已 review 的 0.2.8 compatibility contract 和 v0.2 documentation
+closeout surface 内：
+
+- 修复 response-shape regression，而不是接受 contract 变更。
+- 为受影响的 event APIs 添加 endpoint-level regression coverage。
+- 将 stale README status checkboxes 与既有 review/closeout evidence 同步。
+- 未新增 resolver、causality、runtime bridge、memory、projection、
+  generation、frontend、fixture、migration 或 external repository behavior。
+
+### Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: none.
+
+### Final Assessment
+
+Post-review P2 API response-shape finding 和 P3 v0.2 status-drift finding
+均已解决。
+
 ## Implementation Review Fix Closeout
 
 ### Changed Files
