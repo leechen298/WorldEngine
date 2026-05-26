@@ -1,6 +1,6 @@
 # 0.2.10 Legacy Boundary and Compatibility Review
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -46,9 +46,9 @@ not fixed through unreviewed implementation work.
 - [x] Technical design reviewed
 - [x] Test plan reviewed
 - [x] Documentation-stage evidence complete
-- [ ] Legacy boundary docs complete
-- [ ] Compatibility review docs complete
-- [ ] Review complete
+- [x] Legacy boundary docs complete
+- [x] Compatibility review docs complete
+- [x] Review complete
 
 ## Planned Deliverables After Review
 

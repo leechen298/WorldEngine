@@ -1,6 +1,6 @@
 # 0.2.10 Legacy Boundary and Compatibility Review
 
-状态：`ready for review`
+状态：`review complete`
 
 类型：`documentation-only`
 
@@ -47,9 +47,9 @@ implementation work 修复。
 - [x] Technical design reviewed
 - [x] Test plan reviewed
 - [x] Documentation-stage evidence complete
-- [ ] Legacy boundary docs complete
-- [ ] Compatibility review docs complete
-- [ ] Review complete
+- [x] Legacy boundary docs complete
+- [x] Compatibility review docs complete
+- [x] Review complete
 
 ## 评审后计划交付物
 
