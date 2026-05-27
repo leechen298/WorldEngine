@@ -104,7 +104,7 @@ reviewed.
 ### `0.3.3-runtime-context-bridge-contract`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Define how validated WorldSpec-derived context may reach the runtime
 without changing runtime behavior yet.
 

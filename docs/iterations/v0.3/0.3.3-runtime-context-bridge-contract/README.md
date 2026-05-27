@@ -1,6 +1,6 @@
 # 0.3.3 Runtime Context Bridge Contract
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -46,12 +46,12 @@ documentation-only package prepares a later code package.
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
 - [ ] Implementation complete
 - [x] Documentation evidence complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Handoff
 
