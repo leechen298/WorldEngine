@@ -12,6 +12,11 @@ Add `backend/app/tests/test_worldspec_loader.py` with focused tests for:
 - malformed JSON returning `parse_error`.
 - unsupported `schema_version` returning `schema_validation_error`.
 - invalid root cell data returning `schema_validation_error`.
+- error `path` normalization using JSON Pointer-style paths, including
+  `/schema_version` for unsupported schema versions and a `/root/...` path for
+  invalid root cell data.
+- non-locatable loader errors, such as unsupported input or unlocatable parse
+  failures, returning `path = None`.
 - successful result metadata: `source_type`, optional `source_label`, and
   validated `schema_version`.
 - no `RuntimeEngine`, API, event, archive, params, persistence, frontend,
@@ -45,7 +50,7 @@ test -f docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.
 test -f docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/plan.zh.md
 test -f docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/review.zh.md
 rg -n 'Status: ready for review|状态：`待评审`|状态：待评审|0\.3\.2-worldspec-loader-implementation' docs/iterations/v0.3/README.md docs/iterations/v0.3/README.zh.md docs/iterations/v0.3/v0.3-plan.md docs/iterations/v0.3/v0.3-plan.zh.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation
-rg -n 'unsupported_input|parse_error|schema_validation_error|io_error|RuntimeEngine|WorldSpec|source_type|source_label' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation
+rg -n 'unsupported_input|parse_error|schema_validation_error|io_error|RuntimeEngine|WorldSpec|source_type|source_label|JSON Pointer|/schema_version|/root' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation
 ! git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
 ```
 
@@ -71,7 +76,8 @@ the rationale in `review.md` before implementation closes.
 - Package README and milestone index mark 0.3.2 as `ready for review` /
   `待评审`.
 - Documentation states assumptions, open risks, allowed changes, forbidden
-  changes, and testable acceptance requirements.
+  changes, deterministic loader error path style, and testable acceptance
+  requirements.
 - Implementation adds only the approved loader module and focused tests unless
   review approves a narrower local helper.
 - Focused loader tests pass in the current implementation session.

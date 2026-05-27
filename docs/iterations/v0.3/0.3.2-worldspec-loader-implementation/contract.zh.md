@@ -56,6 +56,8 @@
 - 加载器对格式错误的 JSON 输入返回 `parse_error`。
 - 加载器对无效 `WorldSpec` schema 数据返回 `schema_validation_error`，包括
   不支持的 `schema_version` 和无效 root cell 数据。
+- 加载器错误 `path` 值使用 `technical-design.zh.md` 定义的 JSON Pointer 风格
+  约定，包括当失败位置是该字段时，不支持 schema 版本返回 `/schema_version`。
 - 成功输出包含中立 `source_type`、可选 `source_label` 和已校验
   `schema_version`。
 - 测试证明没有改变运行时、API、事件、归档、参数、持久化、前端、fixture、

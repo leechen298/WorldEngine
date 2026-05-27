@@ -10,6 +10,8 @@
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | 在里程碑索引中把 0.3.2 标记为待评审。 |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 将 0.3.2 状态同步为文档阶段待评审。 |
 | `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md` | 根据文档评审，把实现阶段禁止术语扫描修订为明确的无匹配检查。 |
+| `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.zh.md` | 根据文档评审定义确定性 JSON Pointer 风格加载器错误路径约定。 |
+| `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.zh.md` | 新增加载器错误路径约定验收要求。 |
 
 ## 已运行命令
 
@@ -62,6 +64,17 @@ rg -n "^! rg -n 'concrete demo\|character\|location\|story rule\|external valida
 git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
 ```
 
+第二次文档评审对应的修订命令：
+
+```bash
+sed -n '1,260p' .agent-runs/20260527-213936-v0.3-0.3.2-worldspec-loader-implementation/docs-review.md
+sed -n '1,180p' docs/contracts/worldspec-loader-contract.md
+git diff --check
+rg -n 'JSON Pointer|/schema_version|/root|path = None' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.zh.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.zh.md
+git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
+git status --short
+```
+
 ## 测试结果
 
 - `git status --short --branch` 退出码为 `0`；工作区包含新增 0.3.2 package
@@ -79,6 +92,11 @@ git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|sc
 - 文档修订阶段的 `git diff --check` 退出码为 `0`；未报告空白错误。
 - 文档修订阶段的实现范围状态检查退出码为 `1` 且无匹配；未修改后端、前端、
   schema、fixture、迁移、测试实现或旧运行时路径。
+- 第二次文档评审 P1 修订已在 `technical-design.zh.md` 中定义 JSON Pointer
+  风格 `WorldSpecLoaderError.path` 语义，在 `contract.zh.md` 中加入对应验收
+  覆盖，并在 `test-plan.zh.md` 中要求聚焦 path 断言。
+- 第二次文档修订的 `git diff --check` 退出码为 `0`；路径约定 grep 退出码为
+  `0`；实现范围状态检查退出码为 `1` 且无匹配，确认未修改实现路径。
 
 文档阶段未运行后端、前端、API、E2E、Agent smoke 或运行时测试，因为本包尚未
 修改运行时、schema、API、前端、fixture、迁移或测试实现文件。
@@ -98,6 +116,8 @@ git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|sc
 
 - P1：文档评审发现的实现阶段禁止术语扫描未取反问题，已在 `test-plan.md` 和
   `test-plan.zh.md` 中解决。
+- P1：文档评审发现的加载器错误 `path` 风格未指定问题，已在
+  `technical-design.md`、`contract.md` 和 `test-plan.md` 中解决，并同步中文镜像。
 - P2：文档阶段未发现。
 - P3：实现评审仍需在写代码后验证聚焦加载器测试、schema smoke 测试，以及
   runtime / API 非耦合。

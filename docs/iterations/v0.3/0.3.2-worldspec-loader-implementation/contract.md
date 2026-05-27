@@ -64,6 +64,9 @@ The normative public contract remains
 - Loader returns `parse_error` for malformed JSON input.
 - Loader returns `schema_validation_error` for invalid `WorldSpec` schema data,
   including unsupported `schema_version` and invalid root cell data.
+- Loader error `path` values use the JSON Pointer-style convention defined in
+  `technical-design.md`, including `/schema_version` for unsupported schema
+  versions when that field is the failing location.
 - Successful output includes neutral `source_type`, optional `source_label`,
   and validated `schema_version`.
 - Tests prove no runtime, API, event, archive, params, persistence, frontend,

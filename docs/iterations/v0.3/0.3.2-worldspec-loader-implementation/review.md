@@ -10,6 +10,8 @@ Status: ready for review
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | Marked 0.3.2 ready for review in milestone indexes. |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronized 0.3.2 status with documentation-stage review readiness. |
 | `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md` | Revised implementation-stage forbidden-term sweeps into explicit no-match checks after documentation review. |
+| `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.zh.md` | Defined deterministic JSON Pointer-style loader error path convention after documentation review. |
+| `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.zh.md` | Added acceptance requirement for loader error path convention. |
 
 ## Commands Run
 
@@ -62,6 +64,17 @@ rg -n "^! rg -n 'concrete demo\|character\|location\|story rule\|external valida
 git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
 ```
 
+Documentation revision commands run for the second docs review:
+
+```bash
+sed -n '1,260p' .agent-runs/20260527-213936-v0.3-0.3.2-worldspec-loader-implementation/docs-review.md
+sed -n '1,180p' docs/contracts/worldspec-loader-contract.md
+git diff --check
+rg -n 'JSON Pointer|/schema_version|/root|path = None' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.md
+git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
+git status --short
+```
+
 ## Test Results
 
 - `git status --short --branch` exited `0`; working tree includes the new
@@ -84,6 +97,13 @@ git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|sc
 - Documentation revision implementation-scope status check exited `1` with no
   matches; no backend, frontend, schema, fixture, migration, test
   implementation, or legacy runtime paths were modified.
+- Second documentation review P1 revision defines JSON Pointer-style
+  `WorldSpecLoaderError.path` semantics in `technical-design.md`, adds matching
+  acceptance coverage in `contract.md`, and requires focused path assertions in
+  `test-plan.md`.
+- Second documentation revision `git diff --check` exited `0`; the path
+  convention grep exited `0`; the implementation-scope status check exited `1`
+  with no matches, confirming no implementation paths were modified.
 
 Backend, frontend, API, E2E, Agent smoke, and runtime tests were not run during
 documentation stage because this package has not modified runtime, schema,
@@ -106,6 +126,9 @@ frontend, fixture, migration, or test implementation files.
 
 - P1: documentation review finding on un-negated implementation-stage
   forbidden-term sweeps is resolved in `test-plan.md` and `test-plan.zh.md`.
+- P1: documentation review finding on unspecified loader error `path` style is
+  resolved in `technical-design.md`, `contract.md`, and `test-plan.md`, with
+  synchronized Chinese mirrors.
 - P2: none identified during documentation stage.
 - P3: implementation review still must verify focused loader tests, schema
   smoke tests, and runtime/API non-coupling after code is written.

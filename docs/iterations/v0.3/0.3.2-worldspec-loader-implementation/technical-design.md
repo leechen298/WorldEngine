@@ -68,6 +68,25 @@ No schema changes are allowed. `LoadedWorldSpec`, `WorldSpecLoaderError`, and
 `WorldSpecLoaderResult` are loader boundary structures, not persisted schema
 objects and not API response models in this package.
 
+## Error Path Style
+
+`WorldSpecLoaderError.path` must use a deterministic JSON Pointer-style string
+when the failing location inside the input is known:
+
+- root-level validation failures use `/`.
+- object fields use slash-separated segments, such as `/schema_version` or
+  `/root/id`.
+- list indexes use numeric segments, such as `/cells/0/id`.
+- literal `~` and `/` characters inside a path segment are escaped as `~0`
+  and `~1`.
+- unsupported input, file I/O failures, and parse failures that cannot be
+  tied to a stable input location use `path = None`.
+
+Schema validation normalization must convert framework validation locations
+into this style before returning `WorldSpecLoaderError` objects. Tests must
+assert representative paths for invalid `schema_version` and invalid root cell
+data without depending on Pydantic's private error message formatting.
+
 ## Runtime / Service Design
 
 The loader is a pure data-boundary utility:

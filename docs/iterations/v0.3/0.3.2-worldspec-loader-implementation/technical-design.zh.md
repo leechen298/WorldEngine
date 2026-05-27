@@ -62,6 +62,22 @@
 `WorldSpecLoaderResult` 是加载器边界结构，不是持久化 schema 对象，也不是本包
 的 API 响应模型。
 
+## 错误路径风格
+
+当输入内部的失败位置已知时，`WorldSpecLoaderError.path` 必须使用确定性的
+JSON Pointer 风格字符串：
+
+- 根级校验失败使用 `/`。
+- 对象字段使用斜杠分隔的段，例如 `/schema_version` 或 `/root/id`。
+- 列表索引使用数字段，例如 `/cells/0/id`。
+- 路径段中的字面量 `~` 和 `/` 分别转义为 `~0` 和 `~1`。
+- 不支持输入、文件 I/O 失败，以及无法绑定到稳定输入位置的解析失败使用
+  `path = None`。
+
+Schema 校验规范化必须先把框架校验位置转换成此风格，再返回
+`WorldSpecLoaderError` 对象。测试必须断言不支持 `schema_version` 和无效 root
+cell 数据的代表性路径，不依赖 Pydantic 私有错误消息格式。
+
 ## 运行时 / 服务设计
 
 加载器是纯数据边界工具：
