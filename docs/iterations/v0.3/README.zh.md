@@ -107,8 +107,8 @@ v0.1 运行时脚手架。
 
 ### `0.3.5-external-fixture-contract-readiness`
 
-类型：仅文档或文档与代码混合
-状态：`已规划`
+类型：仅文档
+状态：`待评审`
 目的：定义外部验证样例运行器如何通过公开 WorldEngine 契约消费核心代码，不在核心代码内创建外部仓库。
 
 ### `0.3.6-runtime-bridge-evidence-and-compatibility-audit`
