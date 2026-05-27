@@ -1,6 +1,6 @@
 # 0.3.5 External Fixture Contract Readiness
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -49,12 +49,12 @@ evidence workflow.
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
 - [ ] Implementation complete
 - [x] Documentation evidence complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Handoff
 

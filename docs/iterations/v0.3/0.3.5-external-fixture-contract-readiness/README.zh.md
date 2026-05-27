@@ -1,6 +1,6 @@
 # 0.3.5 External Fixture Contract Readiness
 
-状态：`待评审`
+状态：`review complete`
 
 类型：仅文档
 

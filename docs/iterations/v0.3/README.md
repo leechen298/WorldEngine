@@ -118,7 +118,7 @@ existing runtime and API behavior.
 ### `0.3.5-external-fixture-contract-readiness`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Define how external fixture runners may consume public WorldEngine
 contracts without creating external repositories inside core.
 
