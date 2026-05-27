@@ -49,6 +49,36 @@ and review bundle templates that external automation controllers may consume.
 WorldEngine does not implement the controller. Agent roles, retry loops,
 scheduling, and orchestration belong to external automation.
 
+## Why This Version Exists
+
+v0.3 is infrastructure work, not product validation. It answers whether a
+generic `WorldSpec` can move from schema data into the active runtime boundary
+without breaking the v0.1 runtime scaffold.
+
+The version should make later Agent and generation work possible by proving:
+
+- a `WorldSpec` can be loaded and validated as generic engine input.
+- loaded world data can become runtime context without replacing
+  `RuntimeEngine`.
+- existing runtime ticks, events, params, archive behavior, and API response
+  shapes remain compatible.
+- future external validation can consume public contracts instead of private
+  core internals.
+
+## Capability Progression
+
+| Package | Capability question answered |
+|---|---|
+| 0.3.0 | Do we have the v0.3 boundary and compatibility gate? |
+| 0.3.1 | Do we know what a WorldSpec loader must accept, return, and reject? |
+| 0.3.2 | Can the core load and validate generic WorldSpec data? |
+| 0.3.3 | Do we know how loaded world data may reach runtime context safely? |
+| 0.3.4 | Can runtime hold optional world context without breaking old behavior? |
+| 0.3.5 | Can external fixture runners consume only public contracts? |
+| 0.3.6 | Do loader and bridge evidence prove compatibility and v0.4 handoff readiness? |
+| 0.3.7 | Is the v0.3 release candidate reviewable? |
+| 0.3.8 | Can v0.3 be closed out after review approval? |
+
 ## Package Index
 
 ### `0.3.0-v0.3-planning-and-compatibility-baseline`

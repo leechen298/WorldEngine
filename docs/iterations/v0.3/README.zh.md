@@ -1,106 +1,130 @@
 # v0.3 WorldSpec Loader and Runtime Bridge
 
-状态：`planned / in progress`
+状态：`已规划 / 进行中`
 
 ## 目标
 
-v0.3 把 v0.2 的 recursive schema foundation 推进到 validated generic
-WorldSpec loader 与 minimal runtime context bridge，同时保持 v0.1 runtime
-compatibility。
+v0.3 把 v0.2 已经定义好的递归世界结构，推进到“可以加载、可以校验、
+可以交给运行时上下文”的阶段，同时保持 v0.1 运行时兼容。
 
 ## 版本边界
 
 v0.3 可以定义并在后续包中实现：
 
-- WorldSpec loader contract。
-- minimal generic WorldSpec loader。
-- runtime context bridge contract。
-- minimal optional runtime context bridge。
-- runtime、API、event、archive、params、frontend-facing 和 legacy-path
-  compatibility evidence。
-- external fixture runner contract readiness。
-- evidence and compatibility audit。
-- release-candidate 和 final closeout documentation。
+- WorldSpec 加载器契约。
+- 最小通用 WorldSpec 加载器。
+- 运行时上下文桥接契约。
+- 最小可选运行时上下文桥接层。
+- 运行时、API、事件、归档、参数、前端可见行为和旧路径兼容性证据。
+- 外部验证样例运行器契约准备。
+- 证据索引和兼容性审计。
+- 发布候选和最终收口文档。
 
 v0.3 不可以实现：
 
-- Agent-in-World loop。
-- memory 或 self-continuity substrate。
-- world generation。
-- 面向 external product surface 的 projection API。
-- product UI 或 game UI。
-- concrete demo world fixture。
-- concrete external validation world。
-- external fixture repository。
-- external validation repository。
-- story generation。
-- NPC chat system。
-- self-awareness claims。
+- 世界内 Agent 闭环。
+- 记忆或自我连续性基座。
+- 世界生成。
+- 面向外部产品界面的投影 API。
+- 产品 UI 或游戏 UI。
+- 具体演示世界样例。
+- 具体外部验证世界。
+- 外部样例仓库。
+- 外部验证仓库。
+- 剧情生成。
+- NPC 聊天系统。
+- 自我意识声明。
 
 ## 计划来源
 
 - 规划种子：`docs/iterations/v0.3/00-chatgpt-plan.md`
-- 详细 package plan：`docs/iterations/v0.3/v0.3-plan.md`
+- 详细迭代包计划：`docs/iterations/v0.3/v0.3-plan.md`
 
-## External Automation Consumption
+## 外部自动化消费边界
 
-WorldEngine 提供 iteration docs、package specs、verification expectations 和
-review bundle templates，供 external automation controllers 消费。
-WorldEngine 不实现 controller。Agent roles、retry loops、scheduling 和
-orchestration 属于外部自动化。
+WorldEngine 提供迭代文档、迭代包规格、验证要求和评审包模板，供外部自动化
+控制器消费。WorldEngine 不实现控制器本身。Agent 角色分配、重试循环、
+调度和编排属于外部自动化系统。
 
-## Package Index
+## 为什么要做 v0.3
+
+v0.3 是基础设施阶段，不是产品级验证阶段。它要回答的是：一个通用
+`WorldSpec` 能不能从“结构化世界数据”进入当前运行时边界，同时不破坏
+v0.1 运行时脚手架。
+
+本版本应为后续 Agent 和生成能力证明：
+
+- `WorldSpec` 可以作为通用引擎输入被加载和校验。
+- 已加载的世界数据可以变成运行时上下文，但不替换 `RuntimeEngine`。
+- 现有 tick（运行步进）、事件、参数、归档行为和 API 返回形状保持兼容。
+- 后续外部验证可以消费公开契约，而不是依赖核心代码内部的私有细节。
+
+## 能力递进
+
+| 迭代包 | 回答的问题 |
+|---|---|
+| 0.3.0 | v0.3 的边界和兼容性门禁是否建立？ |
+| 0.3.1 | WorldSpec 加载器应该接受、返回、拒绝什么是否明确？ |
+| 0.3.2 | 核心代码能否加载并校验通用 WorldSpec 数据？ |
+| 0.3.3 | 已加载的世界数据如何安全进入运行时上下文是否明确？ |
+| 0.3.4 | 运行时能否持有可选世界上下文且不破坏旧行为？ |
+| 0.3.5 | 外部验证样例运行器能否只消费公开契约？ |
+| 0.3.6 | 加载器和桥接层证据是否证明兼容，并可交接给 v0.4？ |
+| 0.3.7 | v0.3 发布候选是否可评审？ |
+| 0.3.8 | v0.3 是否可在评审批准后最终收口？ |
+
+## 迭代包索引
 
 ### `0.3.0-v0.3-planning-and-compatibility-baseline`
 
-类型：documentation-only
-状态：`ready for review`
-目的：建立 v0.3 planning docs 和 compatibility baseline，不实现 loader 或 bridge。
+类型：仅文档
+状态：`待评审`
+目的：建立 v0.3 规划文档和兼容性基线，不实现加载器或桥接层。
 
 ### `0.3.1-worldspec-loader-contract`
 
-类型：documentation-only
-状态：`planned`
-目的：在实现前定义 WorldSpec loader contract。
+类型：仅文档
+状态：`已规划`
+目的：在实现前定义 WorldSpec 加载器契约。
 
 ### `0.3.2-worldspec-loader-implementation`
 
-类型：mixed or code
-状态：`planned`
-目的：在 contract review 后实现 minimal generic WorldSpec loader。
+类型：文档与代码混合或代码
+状态：`已规划`
+目的：在契约评审后实现最小通用 WorldSpec 加载器。
 
 ### `0.3.3-runtime-context-bridge-contract`
 
-类型：documentation-only
-状态：`planned`
-目的：定义 validated WorldSpec-derived context 如何接近 runtime，但暂不改变 runtime behavior。
+类型：仅文档
+状态：`已规划`
+目的：定义已验证的 WorldSpec 派生上下文如何接近运行时，但暂不改变运行时行为。
 
 ### `0.3.4-runtime-context-bridge-implementation`
 
-类型：mixed or code
-状态：`planned`
-目的：在保持现有 runtime 和 API behavior 的前提下实现 minimal optional runtime context bridge。
+类型：文档与代码混合或代码
+状态：`已规划`
+目的：在保持现有运行时和 API 行为的前提下，实现最小可选运行时上下文桥接层。
 
 ### `0.3.5-external-fixture-contract-readiness`
 
-类型：documentation-only or mixed
-状态：`planned`
-目的：定义 external fixture runners 如何通过 public WorldEngine contracts 消费 core，不在 core 内创建 external repositories。
+类型：仅文档或文档与代码混合
+状态：`已规划`
+目的：定义外部验证样例运行器如何通过公开 WorldEngine 契约消费核心代码，不在核心代码内创建外部仓库。
 
 ### `0.3.6-runtime-bridge-evidence-and-compatibility-audit`
 
-类型：documentation-only or mixed
-状态：`planned`
-目的：审计 loader 和 bridge evidence、compatibility，以及 v0.4 handoff readiness。
+类型：仅文档或文档与代码混合
+状态：`已规划`
+目的：审计加载器和桥接层证据、兼容性，以及 v0.4 交接准备度。
 
 ### `0.3.7-v0.3-release-candidate-bundle`
 
-类型：documentation-only
-状态：`planned`
-目的：准备 release-candidate bundle 供 human / ChatGPT review，不声明 release status。
+类型：仅文档
+状态：`已规划`
+目的：准备发布候选包供人工 / ChatGPT 评审，不声明发布状态。
 
 ### `0.3.8-v0.3-final-closeout`
 
-类型：documentation-only
-状态：`planned / gated`
-目的：仅在 release-candidate review approval 后执行 final closeout。
+类型：仅文档
+状态：`已规划 / 有门禁`
+目的：仅在发布候选评审批准后执行最终收口。

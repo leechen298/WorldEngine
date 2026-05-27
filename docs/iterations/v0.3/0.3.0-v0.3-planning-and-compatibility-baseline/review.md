@@ -77,6 +77,100 @@ v0.3 release placeholders, and roadmap status wording. It does not implement
 loader, bridge, agent loop, memory, generation, projection, external
 repositories, product UI, game backend, or concrete demo-world details.
 
+## Documentation Refinement Addendum
+
+After review feedback, the v0.3 documentation was refined without changing
+runtime, schema, API, frontend, backend tests, fixtures, or legacy code.
+
+Refined files:
+
+- `docs/iterations/v0.3/README.md`
+- `docs/iterations/v0.3/README.zh.md`
+- `docs/iterations/v0.3/v0.3-plan.md`
+- `docs/iterations/v0.3/v0.3-plan.zh.md`
+- `docs/releases/v0.3.zh.md`
+
+Refinement summary:
+
+- Added clearer explanation of why v0.3 exists as infrastructure work rather
+  than product validation.
+- Added capability progression from 0.3.0 through 0.3.8 so each package maps
+  to the question it answers.
+- Added a progress evaluation model clarifying that v0.3 proves loader,
+  bridge, public-contract, and compatibility readiness, not generated-world
+  quality or Agent life.
+- Rewrote Chinese v0.3 planning text to use Chinese prose for explanations and
+  keep English only for stable identifiers such as `WorldSpec`, `RuntimeEngine`,
+  paths, API names, package slugs, and command names.
+
+Additional commands run for the refinement:
+
+```bash
+git diff --check
+test -f docs/iterations/v0.3/README.md && test -f docs/iterations/v0.3/README.zh.md && test -f docs/iterations/v0.3/v0.3-plan.md && test -f docs/iterations/v0.3/v0.3-plan.zh.md && test -f docs/iterations/v0.3/00-chatgpt-plan.md && test -f docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md
+tmp_patterns="$(mktemp)"; printf '%s\n' 'v0\.3[[:space:]]complete' 'release[[:space:]]complete' 'Status:[[:space:]]released' 'Agent-in-World loop[[:space:]]implemented' 'world generation[[:space:]]implemented' 'external validation repository[[:space:]]created' > "$tmp_patterns"; rg -n -f "$tmp_patterns" docs/iterations/v0.3 docs/releases/v0.3.md docs/releases/v0.3.zh.md; rc=$?; rm -f "$tmp_patterns"; test "$rc" -eq 1
+git status --porcelain=v1 -uall | rg -v '^( M docs/iterations/v0\.3/README\.md| M docs/iterations/v0\.3/README\.zh\.md| M docs/iterations/v0\.3/v0\.3-plan\.md| M docs/iterations/v0\.3/v0\.3-plan\.zh\.md| M docs/releases/v0\.3\.zh\.md)$' ; rc=$?; test "$rc" -eq 1
+git status --short --branch
+rg -n '为什么要做 v0\.3|能力递进|进度判断方式|兼容性基线要求|状态：`已规划 / 进行中`|状态：`已规划 / 未发布`' docs/iterations/v0.3/README.zh.md docs/iterations/v0.3/v0.3-plan.zh.md docs/releases/v0.3.zh.md
+rg -n ' changes|docs file|targeted|forbidden|acceptance gate|评审ed|un评审ed|迭代包s|占位s|closeout complete|cleanup|internals|specs|delivered|claims|drift|commands|results|assessment|minimal optional|documentation|announcement|repository creation|concrete demo|frontend changes|backend test changes|fixture changes|current-session|response shapes|error model|validation semantics|example policy|expectations|untouched|focused|blast radius|runner|redacted|consumption paths|private oracle|metadata| core| active| boundary| package| status| release| final| runtime| loader| bridge| compatibility' docs/iterations/v0.3/README.zh.md docs/iterations/v0.3/v0.3-plan.zh.md docs/releases/v0.3.zh.md
+```
+
+Additional refinement results:
+
+- `git diff --check` exited `0`.
+- Required v0.3 file existence checks exited `0`.
+- Forbidden completion / release wording guard exited `0`; no forbidden
+  completion or released status wording was found.
+- Changed-file scope guard exited `0`; changes remain limited to v0.3
+  documentation and the v0.3 Chinese release placeholder.
+- Detail-section grep exited `0`; the added explanation sections are present.
+- Chinese mixed-language scan found only intentional command/path identifiers:
+  `git status --short --branch` and
+  `docs/contracts/external-fixture-runner-contract.md`.
+
+## Package Detail Addendum
+
+After additional review feedback, the v0.3 package plan was expanded to reduce
+implementation drift in later packages.
+
+Refined files:
+
+- `docs/iterations/v0.3/v0.3-plan.md`
+- `docs/iterations/v0.3/v0.3-plan.zh.md`
+
+Detail summary:
+
+- Added an anti-drift planning standard requiring each future package to
+  describe where work belongs, how data moves, which existing behavior is a
+  compatibility surface, which tests prove scope, and which adjacent features
+  must wait.
+- Added an implementation / design approach section for every planned package
+  from 0.3.0 through 0.3.8.
+- Clarified that the loader is a data-boundary component, the bridge is a
+  minimal optional runtime context path, the external fixture work is a public
+  consumer contract, and evidence / release packages must not patch features.
+- Kept 0.3.0 documentation-only; no runtime, schema, API, frontend, backend
+  test, fixture, or legacy files were changed.
+
+Additional commands run for the package-detail refinement:
+
+```bash
+rg -n 'Implementation / design approach:|Anti-Drift Planning Standard' docs/iterations/v0.3/v0.3-plan.md
+rg -n '实现 / 设计路径：|防跑偏规划标准' docs/iterations/v0.3/v0.3-plan.zh.md
+rg -n 'v0\.3[[:space:]]complete|release[[:space:]]complete|Status:[[:space:]]released|review[[:space:]]complete' docs/iterations/v0.3 docs/releases/v0.3.md docs/releases/v0.3.zh.md
+git diff --check
+```
+
+Additional package-detail results:
+
+- English detail-section grep exited `0`; the anti-drift section and nine
+  implementation / design approach sections are present.
+- Chinese detail-section grep exited `0`; the anti-drift section and nine
+  implementation / design approach sections are present.
+- Forbidden completion / release wording grep exited `1`, which is expected
+  for no matches.
+- `git diff --check` exited `0`.
+
 ## Unresolved Findings
 
 - P1: none identified.
