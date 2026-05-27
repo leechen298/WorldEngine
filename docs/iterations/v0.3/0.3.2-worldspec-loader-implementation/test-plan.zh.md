@@ -55,12 +55,13 @@ git status --short --branch
 git diff --check
 pytest backend/app/tests/test_worldspec_loader.py
 pytest backend/app/tests/test_worldspec_schema_smoke.py
-rg -n 'RuntimeEngine|runtime_engine|FastAPI|APIRouter|archive|params|event' backend/app/core/worldspec_loader.py
-rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' backend/app/core/worldspec_loader.py backend/app/tests/test_worldspec_loader.py docs/iterations/v0.3/0.3.2-worldspec-loader-implementation
+! rg -n 'RuntimeEngine|runtime_engine|FastAPI|APIRouter|archive|params|event' backend/app/core/worldspec_loader.py
+! rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' backend/app/core/worldspec_loader.py backend/app/tests/test_worldspec_loader.py
 ```
 
-runtime / API 耦合扫描预期没有匹配；如果术语只出现在否定测试或注释中，必须在
-实现收尾前评审该匹配。
+runtime / API 耦合扫描和具体锚点扫描都是无匹配检查。如果实现只需要在否定测试
+或说明性注释中使用某个术语，应去掉 `!` 运行对应的 `rg -n ...` 命令，逐项评审
+匹配，并在实现收尾前把理由记录到 `review.md` / `review.zh.md`。
 
 ## 验收标准
 

@@ -9,6 +9,7 @@ Status: ready for review
 | `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/**` | Added full 0.3.2 documentation package with English and Chinese mirrors. |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | Marked 0.3.2 ready for review in milestone indexes. |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronized 0.3.2 status with documentation-stage review readiness. |
+| `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md` | Revised implementation-stage forbidden-term sweeps into explicit no-match checks after documentation review. |
 
 ## Commands Run
 
@@ -49,6 +50,18 @@ rg -n 'unsupported_input|parse_error|schema_validation_error|io_error|RuntimeEng
 ! git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
 ```
 
+Documentation revision commands run after docs review:
+
+```bash
+sed -n '1,260p' .agent-runs/20260527-213353-v0.3-0.3.2-worldspec-loader-implementation/docs-review.md
+sed -n '1,240p' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md
+sed -n '1,240p' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md
+git diff --check
+rg -n "^! rg -n 'RuntimeEngine\|runtime_engine\|FastAPI\|APIRouter\|archive\|params\|event'" docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md
+rg -n "^! rg -n 'concrete demo\|character\|location\|story rule\|external validation-world data\|private oracle'" docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md
+git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
+```
+
 ## Test Results
 
 - `git status --short --branch` exited `0`; working tree includes the new
@@ -63,6 +76,14 @@ rg -n 'unsupported_input|parse_error|schema_validation_error|io_error|RuntimeEng
 - Implementation-scope status check exited `0`; no backend, frontend, schema,
   fixture, migration, test implementation, or legacy runtime paths are
   modified by documentation-stage work.
+- Documentation review P1 revision updated implementation-stage forbidden-term
+  sweeps to use `! rg -n ...` no-match checks in both English and Chinese
+  test plans.
+- Documentation revision `git diff --check` exited `0`; no whitespace errors
+  were reported.
+- Documentation revision implementation-scope status check exited `1` with no
+  matches; no backend, frontend, schema, fixture, migration, test
+  implementation, or legacy runtime paths were modified.
 
 Backend, frontend, API, E2E, Agent smoke, and runtime tests were not run during
 documentation stage because this package has not modified runtime, schema,
@@ -83,7 +104,8 @@ frontend, fixture, migration, or test implementation files.
 
 ## Unresolved Findings
 
-- P1: none identified during documentation stage.
+- P1: documentation review finding on un-negated implementation-stage
+  forbidden-term sweeps is resolved in `test-plan.md` and `test-plan.zh.md`.
 - P2: none identified during documentation stage.
 - P3: implementation review still must verify focused loader tests, schema
   smoke tests, and runtime/API non-coupling after code is written.

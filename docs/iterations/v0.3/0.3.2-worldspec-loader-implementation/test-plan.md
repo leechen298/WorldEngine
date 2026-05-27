@@ -56,13 +56,14 @@ git status --short --branch
 git diff --check
 pytest backend/app/tests/test_worldspec_loader.py
 pytest backend/app/tests/test_worldspec_schema_smoke.py
-rg -n 'RuntimeEngine|runtime_engine|FastAPI|APIRouter|archive|params|event' backend/app/core/worldspec_loader.py
-rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' backend/app/core/worldspec_loader.py backend/app/tests/test_worldspec_loader.py docs/iterations/v0.3/0.3.2-worldspec-loader-implementation
+! rg -n 'RuntimeEngine|runtime_engine|FastAPI|APIRouter|archive|params|event' backend/app/core/worldspec_loader.py
+! rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' backend/app/core/worldspec_loader.py backend/app/tests/test_worldspec_loader.py
 ```
 
-The runtime/API coupling grep is expected to have no matches except if a term
-appears in a negative test or comment; any match must be reviewed before
-implementation closes.
+The runtime/API coupling and concrete-anchor sweeps are no-match checks. If an
+implementation needs a term only in a negative test or explanatory comment,
+run the matching `rg -n ...` command without `!`, review each match, and record
+the rationale in `review.md` before implementation closes.
 
 ## Acceptance Criteria
 
