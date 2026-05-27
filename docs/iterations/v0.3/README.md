@@ -91,13 +91,13 @@ implementing loader or bridge behavior.
 ### `0.3.1-worldspec-loader-contract`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Define the WorldSpec loader contract before implementation.
 
 ### `0.3.2-worldspec-loader-implementation`
 
 Type: mixed or code
-Status: planned
+Status: ready for review
 Purpose: Implement the minimal generic WorldSpec loader after the contract is
 reviewed.
 

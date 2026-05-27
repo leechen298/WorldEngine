@@ -1,6 +1,6 @@
 # 0.3.1 WorldSpec 加载器契约
 
-状态：`待评审`
+状态：`review complete`
 
 类型：仅文档
 
