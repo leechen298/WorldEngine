@@ -12,6 +12,9 @@
 | `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/test-plan.zh.md` | 根据文档评审，把实现阶段禁止术语扫描修订为明确的无匹配检查。 |
 | `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/technical-design.zh.md` | 根据文档评审定义确定性 JSON Pointer 风格加载器错误路径约定。 |
 | `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/contract.zh.md` | 新增加载器错误路径约定验收要求。 |
+| `backend/app/core/worldspec_loader.py` | 新增最小数据型 WorldSpec 加载器、结果结构、解析处理、schema 校验和 JSON Pointer 风格错误路径归一化。 |
+| `backend/app/tests/test_worldspec_loader.py` | 新增领域中立的聚焦加载器测试，覆盖 mapping、JSON 字符串、JSON bytes、不支持输入、畸形 JSON、schema version 错误、root cell 错误、来源元数据和错误路径。 |
+| `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/review.md`, `docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/review.zh.md` | 新增实现阶段收尾证据。 |
 
 ## 已运行命令
 
@@ -75,6 +78,25 @@ git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|sc
 git status --short
 ```
 
+文档评审批准后的实现阶段命令：
+
+```bash
+git status --short --branch
+git diff --check
+pytest backend/app/tests/test_worldspec_loader.py
+pytest backend/app/tests/test_worldspec_schema_smoke.py
+backend/.venv/bin/python --version
+backend/.venv/bin/pytest backend/app/tests/test_worldspec_loader.py
+backend/.venv/bin/pytest backend/app/tests/test_worldspec_schema_smoke.py
+.venv/bin/pytest app/tests/test_worldspec_loader.py
+.venv/bin/pytest app/tests/test_worldspec_schema_smoke.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
+.venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.py
+! rg -n 'RuntimeEngine|runtime_engine|FastAPI|APIRouter|archive|params|event' backend/app/core/worldspec_loader.py
+! rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' backend/app/core/worldspec_loader.py backend/app/tests/test_worldspec_loader.py
+git status --short --branch
+```
+
 ## 测试结果
 
 - `git status --short --branch` 退出码为 `0`；工作区包含新增 0.3.2 package
@@ -101,16 +123,51 @@ git status --short
 文档阶段未运行后端、前端、API、E2E、Agent smoke 或运行时测试，因为本包尚未
 修改运行时、schema、API、前端、fixture、迁移或测试实现文件。
 
+实现阶段结果：
+
+- `git status --short --branch` 退出码为 `0`；分支为
+  `v0.3...origin/v0.3 [ahead 6]`，在更新评审证据前仅包含新增 loader/test 文件。
+- `git diff --check` 退出码为 `0`；未报告空白错误。
+- `pytest backend/app/tests/test_worldspec_loader.py` 退出码为 `127`，因为 shell
+  `PATH` 中没有安装 `pytest`。
+- `pytest backend/app/tests/test_worldspec_schema_smoke.py` 退出码为 `127`，原因同上。
+- `backend/.venv/bin/python --version` 退出码为 `0`；Python 版本为 `3.9.6`。
+- `backend/.venv/bin/pytest backend/app/tests/test_worldspec_loader.py` 退出码为
+  `2`；从仓库根目录调用时 collection 失败，错误为 `ModuleNotFoundError: No module named 'app'`。
+- `backend/.venv/bin/pytest backend/app/tests/test_worldspec_schema_smoke.py` 退出码为
+  `2`；从仓库根目录调用时出现相同 `app` 导入问题。
+- 在 `backend/` 下运行 `.venv/bin/pytest app/tests/test_worldspec_loader.py` 退出码为
+  `2`；collection 失败，仍为相同 `app` 导入问题。
+- 在 `backend/` 下运行 `.venv/bin/pytest app/tests/test_worldspec_schema_smoke.py` 退出码为
+  `2`；collection 失败，仍为相同 `app` 导入问题。
+- 在 `backend/` 下运行 `.venv/bin/python -m pytest app/tests/test_worldspec_loader.py`
+  退出码为 `0`；`7 passed`。
+- 在 `backend/` 下运行 `.venv/bin/python -m pytest app/tests/test_worldspec_schema_smoke.py`
+  退出码为 `0`；`4 passed`。
+- `! rg -n 'RuntimeEngine|runtime_engine|FastAPI|APIRouter|archive|params|event' backend/app/core/worldspec_loader.py`
+  退出码为 `0`；loader 中未发现 runtime/API/archive/params/event 耦合术语。
+- `! rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' backend/app/core/worldspec_loader.py backend/app/tests/test_worldspec_loader.py`
+  退出码为 `0`；未发现禁止的具体锚点术语。
+
 ## 兼容性评审
 
 文档阶段不改变运行时行为、schema 行为、API 响应形状、事件行为、归档行为、
 参数行为、前端行为、后端测试行为、fixture 行为、迁移行为或旧目录
 `backend/worldengine/` 行为。
 
+实现阶段仅新增纯 loader 工具和聚焦测试。loader 只导入 `WorldSpec` 和 Pydantic
+校验，不导入或修改 runtime、API、事件、归档、参数、持久化、前端、fixture、
+迁移或旧实现表面。现有 schema smoke 测试已通过 backend venv 的
+`python -m pytest` 验证。
+
 ## 范围评审
 
 文档阶段保持在 0.3.2 package 文档和 v0.3 状态同步范围内。它不实现加载器代码，
 不修改运行时、schema、API、前端、fixture、迁移或测试实现文件。
+
+实现阶段保持在批准文件内：`backend/app/core/worldspec_loader.py`、
+`backend/app/tests/test_worldspec_loader.py`，以及允许的评审证据更新。未实现
+file-backed JSON 输入，因此 `io_error` 行为仍不属于本包实现范围。
 
 ## 未解决发现
 
@@ -118,10 +175,12 @@ git status --short
   `test-plan.zh.md` 中解决。
 - P1：文档评审发现的加载器错误 `path` 风格未指定问题，已在
   `technical-design.md`、`contract.md` 和 `test-plan.md` 中解决，并同步中文镜像。
-- P2：文档阶段未发现。
-- P3：实现评审仍需在写代码后验证聚焦加载器测试、schema smoke 测试，以及
-  runtime / API 非耦合。
+- P2：文档阶段和实现阶段均未发现。
+- P3：仓库根目录下的直接 `pytest ...` 命令无法在当前 shell 运行，因为
+  `PATH` 中缺少 `pytest`；直接 venv `pytest` 调用也因导入路径行为 collection
+  失败。等价的 backend venv `python -m pytest` 命令已通过聚焦 loader 测试和
+  schema smoke 测试。
 
 ## 最终判断
 
-待评审。
+实现完成；待实现评审。
