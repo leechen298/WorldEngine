@@ -139,5 +139,5 @@ declaring release status.
 ### `0.3.8-v0.3-final-closeout`
 
 Type: documentation-only
-Status: planned / gated
+Status: ready for review
 Purpose: Perform final closeout only after release-candidate review approval.
