@@ -13,10 +13,10 @@
 |---|---|---|---|---|---|---|
 | 0.3.0 规划基线 | 仅文档 | 评审完成 | `0.3.0.../review.md` | `git diff --check`；文件、状态、措辞检查 | 版本边界、v0.3 包序列、兼容性基线 | 未记录 P1/P2/P3 |
 | 0.3.1 加载器契约 | 仅文档 | 评审完成 | `0.3.1.../review.md` | `git diff --check`；契约、状态、范围检查 | 加载器输入、输出、错误、校验、运行时隔离 | 无未解决 P1/P2/P3 |
-| 0.3.2 加载器实现 | 文档与代码混合或代码 | 评审完成 | `0.3.2.../review.md` | 后端 venv `python -m pytest` 加载器和 schema smoke 检查通过；仓库根目录 `pytest` 形式因环境/导入路径失败 | 纯 WorldSpec 加载器、schema 校验、无运行时/API 耦合 | P3：根目录直接 pytest 形式在当前环境不可靠 |
+| 0.3.2 加载器实现 | 文档与代码混合或代码 | 评审完成 | `0.3.2.../review.md` | 后端 venv `python -m pytest` 加载器和 schema smoke 检查通过；仓库根目录 `pytest` 形式因环境/导入路径失败 | 纯 WorldSpec 加载器、schema 校验、无运行时/API 耦合 | P3：根目录直接 pytest 形式在当前环境不可靠。target_package: `0.3.7-v0.3-release-candidate-bundle`。defer_reason: 发布候选验证规划可选择规范的后端 venv 命令形式。 |
 | 0.3.3 桥接契约 | 仅文档 | 评审完成 | `0.3.3.../review.md` | `git diff --check`；契约、状态、兼容性检查 | 运行时上下文语义、兼容性证据要求、RuntimeEngine 边界 | 未记录 P1/P2/P3 |
 | 0.3.4 桥接实现 | 文档与代码混合或代码 | 评审完成 | `0.3.4.../review.md` | 后端 venv `python -m pytest` 桥接、运行步进、事件、参数、归档、加载器、schema smoke 检查通过 | 可选惰性运行时上下文，运行时/API/事件/参数/归档兼容 | 实现阶段未记录 P1/P2/P3 |
-| 0.3.5 外部样例契约准备 | 仅文档 | 评审完成 | `0.3.5.../review.md` | `git diff --check`；契约、脱敏、状态、范围检查 | 公开外部样例运行器边界和脱敏报告要求 | P3：后续可能需要公开 CLI/API 文档和更严格报告 schema |
+| 0.3.5 外部样例契约准备 | 仅文档 | 评审完成 | `0.3.5.../review.md` | `git diff --check`；契约、脱敏、状态、范围检查 | 公开外部样例运行器边界和脱敏报告要求 | P2 `v0.3-P2-001` 延期到 0.3.6 且已解决；P3：后续可能需要公开 CLI/API 文档和更严格报告 schema。target_package: `v0.7-external-validation-readiness`。defer_reason: 外部运行器/报告加固属于后续验证准备。 |
 
 ## 兼容性表面索引
 
@@ -47,11 +47,14 @@
 
 ## 开放风险
 
-- P3：前端可见返回形状证据仍是间接证据，除非后续发布候选包运行更广的后端或前端 smoke 覆盖。
-- P3：外部样例报告在自动化稳定消费前，可能需要机器可读 schema。
-- P3：外部运行器在 v0.7 验证准备前，可能需要补充公开 CLI/API 文档。
+- P3：前端可见返回形状证据仍是间接证据，除非后续发布候选包运行更广的后端或前端 smoke 覆盖。target_package:
+  `0.3.7-v0.3-release-candidate-bundle`。defer_reason: 更广的 smoke 覆盖属于可选发布候选证据，不是完成本仅文档审计的要求。
+- P3：外部样例报告在自动化稳定消费前，可能需要机器可读 schema。target_package:
+  `v0.7-external-validation-readiness`。defer_reason: 报告自动化加固属于后续外部验证准备。
+- P3：外部运行器在 v0.7 验证准备前，可能需要补充公开 CLI/API 文档。target_package:
+  `v0.7-external-validation-readiness`。defer_reason: 面向运行器的文档扩展属于后续验证准备；0.3.6 只审计既有公开边界。
 
 ## 交接准备度
 
-v0.3 证据支持进入发布候选准备；既有包 review 中没有已知 P1 或 P2 阻塞项。v0.4
-只能在 v0.3 发布候选和最终收口门禁完成后，把加载器和惰性运行时上下文桥接作为基础使用。
+v0.3 证据支持进入发布候选准备；`v0.3-P2-001` 解决后已无剩余开放 P1 或 P2
+阻塞项。v0.4 只能在 v0.3 发布候选和最终收口门禁完成后，把加载器和惰性运行时上下文桥接作为基础使用。

@@ -8,6 +8,7 @@ Status: ready for review
 |---|---|
 | `docs/iterations/v0.3/evidence-index.md`, `docs/iterations/v0.3/evidence-index.zh.md` | Added v0.3 evidence matrix, compatibility surface index, assumptions, risks, and handoff readiness. |
 | `docs/iterations/v0.3/compatibility-audit.md`, `docs/iterations/v0.3/compatibility-audit.zh.md` | Added v0.3 compatibility audit, findings, assumptions, and release-candidate verification requirements. |
+| `docs/iterations/v0.3/findings.md` | Marked deferred P2 `v0.3-P2-001` resolved after synchronizing stale v0.3 plan statuses. |
 | `docs/iterations/v0.3/0.3.6-runtime-bridge-evidence-and-compatibility-audit/**` | Added complete 0.3.6 documentation package with English and Chinese mirrors. |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | Marked 0.3.6 ready for review in milestone indexes. |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronized 0.3.6 status with documentation-stage review readiness. |
@@ -52,6 +53,9 @@ git diff --stat
 - Status synchronization grep exited `0`; 0.3.6 is marked
   `ready for review` / `待评审` in the package README, milestone index, and
   v0.3 plan.
+- Deferred P2 `v0.3-P2-001` has been resolved by synchronizing 0.3.2, 0.3.3,
+  and 0.3.4 statuses in the English and Chinese v0.3 plan documents to
+  review complete / 评审完成.
 - Compatibility surface and findings-term grep exited `0`; audit docs include
   runtime, API, event, archive, params, frontend, schema, fixture, legacy,
   loader, bridge, finding severity, and handoff terms.
@@ -92,14 +96,25 @@ capability.
 ## Unresolved Findings
 
 - P1: none identified.
-- P2: none identified.
+- P2: `v0.3-P2-001` resolved. target_package:
+  `0.3.6-runtime-bridge-evidence-and-compatibility-audit`. defer_reason: no
+  longer deferred; stale 0.3.2, 0.3.3, and 0.3.4 plan statuses were
+  synchronized before release-candidate preparation.
 - P3: Direct root-level `pytest` commands are unreliable in this repository
   environment based on 0.3.2 evidence; future package test plans should use
-  backend venv `python -m pytest` from `backend/`.
+  backend venv `python -m pytest` from `backend/`. target_package:
+  `0.3.7-v0.3-release-candidate-bundle`. defer_reason: release-candidate
+  verification planning can choose the canonical command form without changing
+  0.3.6 documentation-only audit scope.
 - P3: Frontend-facing compatibility evidence is indirect unless a later
   release-candidate package runs broader UI or E2E smoke coverage.
+  target_package: `0.3.7-v0.3-release-candidate-bundle`. defer_reason:
+  broader UI/E2E smoke is optional release-candidate evidence, not a blocker
+  for this audit.
 - P3: External fixture reports may need a stricter machine-readable schema and
-  additional public CLI/API documentation in a later package.
+  additional public CLI/API documentation in a later package. target_package:
+  `v0.7-external-validation-readiness`. defer_reason: stricter external
+  runner/report automation belongs to later validation readiness.
 
 ## Final Assessment
 

@@ -8,6 +8,7 @@
 |---|---|
 | `docs/iterations/v0.3/evidence-index.md`, `docs/iterations/v0.3/evidence-index.zh.md` | 新增 v0.3 证据矩阵、兼容性表面索引、假设、风险和交接准备度。 |
 | `docs/iterations/v0.3/compatibility-audit.md`, `docs/iterations/v0.3/compatibility-audit.zh.md` | 新增 v0.3 兼容性审计、发现、假设和发布候选验证要求。 |
+| `docs/iterations/v0.3/findings.md` | 同步过期 v0.3 plan 状态后，将延期 P2 `v0.3-P2-001` 标记为已解决。 |
 | `docs/iterations/v0.3/0.3.6-runtime-bridge-evidence-and-compatibility-audit/**` | 新增完整 0.3.6 包文档和中英文镜像。 |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | 在 milestone index 中将 0.3.6 标记为 ready for review。 |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 同步 0.3.6 文档阶段待评审状态。 |
@@ -50,6 +51,8 @@ git diff --stat
 - 必需的英文和中文审计文件、包文件存在性检查退出 `0`。
 - 状态同步 grep 退出 `0`；0.3.6 已在包 README、milestone index 和 v0.3 plan 中标记为
   `ready for review` / `待评审`。
+- 延期 P2 `v0.3-P2-001` 已通过把英文和中文 v0.3 plan 中 0.3.2、0.3.3、0.3.4
+  状态同步为 review complete / 评审完成而解决。
 - 兼容性表面和发现术语 grep 退出 `0`；审计文档包含 runtime、API、event、archive、
   params、frontend、schema、fixture、legacy、loader、bridge、发现严重级别和 handoff 术语。
 - 具体锚点哨兵 no-match 检查退出 `0`；未发现具体样例或外部验证世界哨兵内容。
@@ -78,10 +81,15 @@ git diff --stat
 ## 未解决发现
 
 - P1：未识别。
-- P2：未识别。
-- P3：根据 0.3.2 证据，仓库根目录直接 `pytest` 命令在当前环境不可靠；后续包的测试计划应从 `backend/` 使用后端 venv `python -m pytest`。
-- P3：前端可见兼容性证据是间接的，除非后续发布候选包运行更广的 UI 或 E2E smoke 覆盖。
-- P3：外部样例报告后续可能需要更严格的机器可读 schema 和更多公开 CLI/API 文档。
+- P2：`v0.3-P2-001` 已解决。target_package:
+  `0.3.6-runtime-bridge-evidence-and-compatibility-audit`。defer_reason:
+  不再延期；过期的 0.3.2、0.3.3 和 0.3.4 plan 状态已在发布候选准备前同步。
+- P3：根据 0.3.2 证据，仓库根目录直接 `pytest` 命令在当前环境不可靠；后续包的测试计划应从 `backend/` 使用后端 venv `python -m pytest`。target_package:
+  `0.3.7-v0.3-release-candidate-bundle`。defer_reason: 发布候选验证规划可选择规范命令形式，不改变 0.3.6 仅文档审计范围。
+- P3：前端可见兼容性证据是间接的，除非后续发布候选包运行更广的 UI 或 E2E smoke 覆盖。target_package:
+  `0.3.7-v0.3-release-candidate-bundle`。defer_reason: 更广 UI/E2E smoke 属于可选发布候选证据，不阻塞本审计。
+- P3：外部样例报告后续可能需要更严格的机器可读 schema 和更多公开 CLI/API 文档。target_package:
+  `v0.7-external-validation-readiness`。defer_reason: 更严格的外部运行器/报告自动化属于后续验证准备。
 
 ## 最终判断
 

@@ -14,10 +14,10 @@ package evidence, what is documentation-only, and what remains a handoff risk.
 |---|---|---|---|---|---|---|
 | 0.3.0 planning baseline | documentation-only | review complete | `0.3.0.../review.md` | `git diff --check`; file/status/wording checks | Version boundary, v0.3 package sequence, compatibility baseline | No P1/P2/P3 recorded |
 | 0.3.1 loader contract | documentation-only | review complete | `0.3.1.../review.md` | `git diff --check`; contract/status/scope checks | Loader input, output, error, validation, runtime separation | No unresolved P1/P2/P3 |
-| 0.3.2 loader implementation | mixed or code | review complete | `0.3.2.../review.md` | Backend venv `python -m pytest` loader and schema smoke checks passed; root `pytest` forms failed due environment/import path | Pure WorldSpec loader, schema validation, no runtime/API coupling | P3: direct root pytest forms are not reliable in this environment |
+| 0.3.2 loader implementation | mixed or code | review complete | `0.3.2.../review.md` | Backend venv `python -m pytest` loader and schema smoke checks passed; root `pytest` forms failed due environment/import path | Pure WorldSpec loader, schema validation, no runtime/API coupling | P3: direct root pytest forms are not reliable in this environment. target_package: `0.3.7-v0.3-release-candidate-bundle`. defer_reason: release-candidate verification planning can choose the canonical backend venv command form. |
 | 0.3.3 bridge contract | documentation-only | review complete | `0.3.3.../review.md` | `git diff --check`; contract/status/compatibility checks | Runtime context semantics, compatibility evidence requirements, RuntimeEngine boundary | No P1/P2/P3 recorded |
 | 0.3.4 bridge implementation | mixed or code | review complete | `0.3.4.../review.md` | Backend venv `python -m pytest` bridge, runtime step, event, params, archive, loader, and schema smoke checks passed | Optional inert runtime context, runtime/API/event/params/archive compatibility | No implementation P1/P2/P3 recorded |
-| 0.3.5 external fixture readiness | documentation-only | review complete | `0.3.5.../review.md` | `git diff --check`; contract/redaction/status/scope checks | Public external fixture runner boundary and redacted report expectations | P3: public CLI/API docs and stricter report schema may be needed later |
+| 0.3.5 external fixture readiness | documentation-only | review complete | `0.3.5.../review.md` | `git diff --check`; contract/redaction/status/scope checks | Public external fixture runner boundary and redacted report expectations | P2 `v0.3-P2-001` deferred to 0.3.6 and resolved; P3 public CLI/API docs and stricter report schema may be needed later. target_package: `v0.7-external-validation-readiness`. defer_reason: external runner/report hardening belongs to later validation readiness. |
 
 ## Compatibility Surface Index
 
@@ -52,14 +52,22 @@ package evidence, what is documentation-only, and what remains a handoff risk.
 
 - P3: Frontend-facing response shape evidence is indirect unless a later
   release-candidate package runs broader backend or frontend smoke coverage.
+  target_package: `0.3.7-v0.3-release-candidate-bundle`. defer_reason:
+  broader smoke coverage is optional release-candidate evidence, not required
+  to complete this documentation-only audit.
 - P3: External fixture reports may need a machine-readable schema before
-  automation can consume them consistently.
+  automation can consume them consistently. target_package:
+  `v0.7-external-validation-readiness`. defer_reason: report automation
+  hardening belongs to later external validation readiness.
 - P3: Public CLI/API documentation may need expansion for external runners
-  before v0.7 validation readiness.
+  before v0.7 validation readiness. target_package:
+  `v0.7-external-validation-readiness`. defer_reason: runner-facing
+  documentation expansion is a future validation-readiness concern, while
+  0.3.6 only audits the existing public boundary.
 
 ## Handoff Readiness
 
-v0.3 evidence supports release-candidate preparation with no known P1 or P2
-blockers in the package reviews. v0.4 may use the loader and inert runtime
-context bridge as foundations only after the v0.3 release-candidate and
-closeout gates complete.
+v0.3 evidence supports release-candidate preparation with no remaining open P1
+or P2 blockers after resolving `v0.3-P2-001`. v0.4 may use the loader and
+inert runtime context bridge as foundations only after the v0.3
+release-candidate and closeout gates complete.
