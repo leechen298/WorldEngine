@@ -1,6 +1,6 @@
 # 0.3.4 Runtime Context Bridge Implementation
 
-Status: ready for review
+Status: review complete
 
 Type: mixed or code
 
@@ -46,12 +46,12 @@ or code package.
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
 - [ ] Implementation complete
 - [ ] Implementation evidence complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Handoff
 

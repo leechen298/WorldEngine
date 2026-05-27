@@ -102,7 +102,7 @@ v0.1 运行时脚手架。
 ### `0.3.4-runtime-context-bridge-implementation`
 
 类型：文档与代码混合或代码
-状态：`待评审`
+状态：`review complete`
 目的：在保持现有运行时和 API 行为的前提下，实现最小可选运行时上下文桥接层。
 
 ### `0.3.5-external-fixture-contract-readiness`
