@@ -1,6 +1,6 @@
 # 0.3.2 WorldSpec Loader Implementation
 
-Status: ready for review
+Status: review complete
 
 Type: mixed or code
 
@@ -52,12 +52,12 @@ Documentation stage:
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
 - [ ] Implementation complete
 - [x] Documentation evidence complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Handoff
 

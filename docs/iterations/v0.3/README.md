@@ -97,7 +97,7 @@ Purpose: Define the WorldSpec loader contract before implementation.
 ### `0.3.2-worldspec-loader-implementation`
 
 Type: mixed or code
-Status: ready for review
+Status: review complete
 Purpose: Implement the minimal generic WorldSpec loader after the contract is
 reviewed.
 

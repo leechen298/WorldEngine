@@ -1,6 +1,6 @@
 # 0.3.2 WorldSpec 加载器实现
 
-状态：`待评审`
+状态：`review complete`
 
 类型：文档与代码混合或代码
 

@@ -90,7 +90,7 @@ v0.1 运行时脚手架。
 ### `0.3.2-worldspec-loader-implementation`
 
 类型：文档与代码混合或代码
-状态：`待评审`
+状态：`review complete`
 目的：在契约评审后实现最小通用 WorldSpec 加载器。
 
 ### `0.3.3-runtime-context-bridge-contract`
