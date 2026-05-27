@@ -9,6 +9,7 @@
 | `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/**` | 添加完整 0.3.4 包文档及英文/中文镜像。 |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | 在里程碑索引中将 0.3.4 标记为待评审。 |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 将 0.3.4 状态同步为文档阶段待评审。 |
+| `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md`, `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md` | 文档评审修订：将已知不可用的根目录 pytest 命令替换为后端 venv `python -m pytest` 命令。 |
 
 ## 已运行命令
 
@@ -49,6 +50,21 @@ rg -n 'RuntimeContextBridge|RuntimeContextInput|RuntimeContext|RuntimeContextSum
 git status --short --branch
 ```
 
+文档评审修订：
+
+```bash
+git status --short --branch
+sed -n '1,240p' docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md
+sed -n '1,240p' docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md
+sed -n '120,190p' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/review.md
+rg -n "pytest backend/app/tests|backend/.*python -m pytest|\\.venv/bin/python -m pytest app/tests" docs/iterations/v0.3
+git diff --check
+rg -n "\\.venv/bin/python -m pytest app/tests/test_runtime_context_bridge\\.py|Run backend pytest commands from `backend/`" docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md
+rg -n "\\.venv/bin/python -m pytest app/tests/test_runtime_context_bridge\\.py|后端 pytest 命令必须在 `backend/`" docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md
+! rg -n "pytest backend/app/tests" docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md
+! git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
+```
+
 ## 测试结果
 
 - `git diff --check` 退出码为 `0`；未报告空白错误。
@@ -62,6 +78,10 @@ git status --short --branch
   schema、fixture、migration、测试实现或遗留运行时路径。
 - 最终 `git status --short --branch` 退出码为 `0`；变更路径仅限 v0.3 文档和新的
   0.3.4 包文档。
+- 文档评审修订 `git diff --check` 退出码为 `0`；英文和中文测试计划中的后端
+  venv `python -m pytest` 实现阶段命令 grep 退出码为 `0`；0.3.4 测试计划中
+  不再出现已知不可用的 `pytest backend/app/tests` 命令；实现范围状态检查退出码为
+  `0` 且无匹配，确认未修改实现路径。
 
 文档阶段不计划运行后端、前端、API、E2E、Agent smoke 和运行时行为测试，因为未修改
 实现文件。
@@ -76,9 +96,15 @@ git status --short --branch
 
 本包保持在 0.3.4 文档范围内。它只创建包文档并更新状态，不实现桥接行为。
 
+## 已解决文档评审发现
+
+- P1：文档评审发现实现阶段 pytest 命令使用了根目录调用形式，而 0.3.2 证据已显示
+  该形式会在本仓库环境中失败。本次文档修订已通过要求从 `backend/` 运行后端
+  venv `python -m pytest` 命令修复。
+
 ## 未解决发现
 
-- P1：起草期间未发现。
+- P1：文档评审修订后无。
 - P2：起草期间未发现。
 - P3：开始实现前仍需要文档评审。
 

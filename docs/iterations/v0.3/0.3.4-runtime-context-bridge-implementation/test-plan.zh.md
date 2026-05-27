@@ -62,16 +62,23 @@ rg -n 'RuntimeContextBridge|RuntimeContextInput|RuntimeContext|RuntimeContextSum
 
 实现阶段检查：
 
+后端 pytest 命令必须在 `backend/` 目录下通过 `.venv/bin/python -m pytest`
+运行。既有 0.3.2 实现证据显示，仓库根目录下的 pytest 路径调用和直接
+`.venv/bin/pytest` 调用在本仓库环境中依赖环境配置，而从 `backend/` 运行
+`python -m pytest` 已通过。
+
 ```bash
 git status --short --branch
 git diff --check
-pytest backend/app/tests/test_runtime_context_bridge.py
-pytest backend/app/tests/test_runtime_step.py
-pytest backend/app/tests/test_event_api_compat.py
-pytest backend/app/tests/test_event_schema_compat.py
-pytest backend/app/tests/test_world_params.py backend/app/tests/test_params_agent.py
-pytest backend/app/tests/test_archive_snapshot_summary.py
-pytest backend/app/tests/test_worldspec_loader.py backend/app/tests/test_worldspec_schema_smoke.py
+cd backend
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_step.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py
+.venv/bin/python -m pytest app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_world_params.py app/tests/test_params_agent.py
+.venv/bin/python -m pytest app/tests/test_archive_snapshot_summary.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py app/tests/test_worldspec_schema_smoke.py
+cd ..
 ! rg -n 'APIRouter|FastAPI|archive|params_apply|migration|frontend|backend/worldengine' backend/app/core/runtime_context.py
 ! rg -n '[d]emo-world-name|[m]ap-001|[c]haracter-001|[l]ocation-001|[s]tory-rule|[v]alidation-world-data|[p]rivate-oracle' backend/app/core/runtime_context.py backend/app/tests/test_runtime_context_bridge.py
 ```

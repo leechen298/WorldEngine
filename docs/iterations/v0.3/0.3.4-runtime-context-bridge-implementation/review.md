@@ -9,6 +9,7 @@ Status: ready for review
 | `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/**` | Added full 0.3.4 package docs with English and Chinese mirrors. |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | Mark 0.3.4 ready for review in milestone indexes. |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronize 0.3.4 status with documentation-stage review readiness. |
+| `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md`, `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md` | Documentation-review revision: replace known-bad root-level pytest commands with backend venv `python -m pytest` commands. |
 
 ## Commands Run
 
@@ -49,6 +50,21 @@ rg -n 'RuntimeContextBridge|RuntimeContextInput|RuntimeContext|RuntimeContextSum
 git status --short --branch
 ```
 
+Documentation-review revision:
+
+```bash
+git status --short --branch
+sed -n '1,240p' docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md
+sed -n '1,240p' docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md
+sed -n '120,190p' docs/iterations/v0.3/0.3.2-worldspec-loader-implementation/review.md
+rg -n "pytest backend/app/tests|backend/.*python -m pytest|\\.venv/bin/python -m pytest app/tests" docs/iterations/v0.3
+git diff --check
+rg -n "\\.venv/bin/python -m pytest app/tests/test_runtime_context_bridge\\.py|Run backend pytest commands from `backend/`" docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md
+rg -n "\\.venv/bin/python -m pytest app/tests/test_runtime_context_bridge\\.py|后端 pytest 命令必须在 `backend/`" docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md
+! rg -n "pytest backend/app/tests" docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.md docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/test-plan.zh.md
+! git status --porcelain=v1 -uall | rg '^( M| A|AM|MM|\\?\\?) (backend|frontend|schemas|fixtures|migrations|tests)/|^( M| A|AM|MM|\\?\\?) backend/app/|^( M| A|AM|MM|\\?\\?) backend/worldengine/'
+```
+
 ## Test Results
 
 - `git diff --check` exited `0`; no whitespace errors were reported.
@@ -65,6 +81,12 @@ git status --short --branch
   modified by this documentation-stage package.
 - Final `git status --short --branch` exited `0`; changed paths are limited
   to v0.3 docs and the new 0.3.4 package docs.
+- Documentation-review revision `git diff --check` exited `0`; implementation
+  pytest command grep exited `0` for backend venv `python -m pytest` commands
+  in English and Chinese test plans; known-bad `pytest backend/app/tests`
+  commands no longer appear in 0.3.4 test plans; implementation-scope status
+  check exited `0` with no matches, confirming no implementation paths were
+  modified.
 
 Backend, frontend, API, E2E, Agent smoke, and runtime behavior tests are not
 planned during documentation stage because implementation files are not
@@ -82,9 +104,16 @@ behavior remain unchanged by this documentation-stage package.
 This package stays inside 0.3.4 documentation scope. It creates package docs
 and status updates only; it does not implement bridge behavior.
 
+## Resolved Documentation Review Findings
+
+- P1: documentation review found implementation-stage pytest commands used a
+  root-level invocation pattern already shown by 0.3.2 evidence to fail in
+  this repository environment. Fixed in this documentation revision by
+  requiring backend venv `python -m pytest` commands from `backend/`.
+
 ## Unresolved Findings
 
-- P1: none identified during drafting.
+- P1: none after documentation-review revision.
 - P2: none identified during drafting.
 - P3: documentation review still required before implementation can start.
 

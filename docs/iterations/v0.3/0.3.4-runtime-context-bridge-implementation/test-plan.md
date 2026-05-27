@@ -63,16 +63,23 @@ rg -n 'RuntimeContextBridge|RuntimeContextInput|RuntimeContext|RuntimeContextSum
 
 Implementation-stage checks:
 
+Run backend pytest commands from `backend/` with `.venv/bin/python -m pytest`.
+Prior 0.3.2 implementation evidence showed root-level pytest path invocations
+and direct `.venv/bin/pytest` invocations are environment-dependent in this
+repository, while `python -m pytest` from `backend/` passed.
+
 ```bash
 git status --short --branch
 git diff --check
-pytest backend/app/tests/test_runtime_context_bridge.py
-pytest backend/app/tests/test_runtime_step.py
-pytest backend/app/tests/test_event_api_compat.py
-pytest backend/app/tests/test_event_schema_compat.py
-pytest backend/app/tests/test_world_params.py backend/app/tests/test_params_agent.py
-pytest backend/app/tests/test_archive_snapshot_summary.py
-pytest backend/app/tests/test_worldspec_loader.py backend/app/tests/test_worldspec_schema_smoke.py
+cd backend
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_step.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py
+.venv/bin/python -m pytest app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_world_params.py app/tests/test_params_agent.py
+.venv/bin/python -m pytest app/tests/test_archive_snapshot_summary.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py app/tests/test_worldspec_schema_smoke.py
+cd ..
 ! rg -n 'APIRouter|FastAPI|archive|params_apply|migration|frontend|backend/worldengine' backend/app/core/runtime_context.py
 ! rg -n '[d]emo-world-name|[m]ap-001|[c]haracter-001|[l]ocation-001|[s]tory-rule|[v]alidation-world-data|[p]rivate-oracle' backend/app/core/runtime_context.py backend/app/tests/test_runtime_context_bridge.py
 ```
