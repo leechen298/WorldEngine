@@ -120,3 +120,79 @@ and status updates only; it does not implement bridge behavior.
 ## Final Assessment
 
 ready for review
+
+## Implementation Closeout Evidence
+
+Status: implementation complete
+
+### Implementation Changed Files
+
+| File | Change |
+|---|---|
+| `backend/app/core/runtime_context.py` | Added pure runtime context bridge dataclasses, structured result/error model, context derivation, and bounded summary helper. |
+| `backend/app/core/runtime_engine.py` | Added optional inert `runtime_context` constructor/from-env pass-through storage and read-only accessor; runtime state and step behavior remain unchanged. |
+| `backend/app/tests/test_runtime_context_bridge.py` | Added focused bridge, error, summary, runtime default, inert storage, and no-raw-WorldSpec-event tests. |
+| `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/review.md`, `review.zh.md` | Added implementation closeout evidence. |
+
+### Implementation Commands Run
+
+```bash
+git status --short --branch
+git diff --check
+cd backend
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_step.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py
+.venv/bin/python -m pytest app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_world_params.py app/tests/test_params_agent.py
+.venv/bin/python -m pytest app/tests/test_archive_snapshot_summary.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py app/tests/test_worldspec_schema_smoke.py
+cd ..
+rg -n 'APIRouter|FastAPI|archive|params_apply|migration|frontend|backend/worldengine' backend/app/core/runtime_context.py; test $? -eq 1
+rg -n '[d]emo-world-name|[m]ap-001|[c]haracter-001|[l]ocation-001|[s]tory-rule|[v]alidation-world-data|[p]rivate-oracle' backend/app/core/runtime_context.py backend/app/tests/test_runtime_context_bridge.py; test $? -eq 1
+git status --short --branch
+```
+
+### Implementation Test Results
+
+- `git diff --check` exited `0`; no whitespace errors were reported.
+- `.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py` exited `0`; 11 passed.
+- `.venv/bin/python -m pytest app/tests/test_runtime_step.py` exited `0`; 16 passed.
+- `.venv/bin/python -m pytest app/tests/test_event_api_compat.py` exited `0`; 2 passed.
+- `.venv/bin/python -m pytest app/tests/test_event_schema_compat.py` exited `0`; 10 passed.
+- `.venv/bin/python -m pytest app/tests/test_world_params.py app/tests/test_params_agent.py` exited `0`; 9 passed.
+- `.venv/bin/python -m pytest app/tests/test_archive_snapshot_summary.py` exited `0`; 14 passed.
+- `.venv/bin/python -m pytest app/tests/test_worldspec_loader.py app/tests/test_worldspec_schema_smoke.py` exited `0`; 11 passed.
+- Runtime-context forbidden-surface grep exited `0` through no-match assertion.
+- Concrete-anchor grep exited `0` through no-match assertion.
+
+### Implementation Compatibility Review
+
+The bridge is pure and derives bounded context only from `LoadedWorldSpec`.
+`RuntimeEngine` accepts optional context but does not serialize it in
+`RuntimeState`, does not use it in `step()`, and does not include raw
+`WorldSpec` data in emitted event payloads. Existing runtime, event API,
+params, archive, loader, schema-smoke, and optional `Event.refs`
+compatibility tests passed in the current implementation session.
+
+No schemas, migrations, API routes, frontend files, fixtures, persistence
+models, params implementation, archive implementation, event bus behavior, or
+legacy `backend/worldengine/` files were modified.
+
+### Implementation Scope Review
+
+Implementation stayed inside the reviewed 0.3.4 package scope: one new bridge
+module, one focused inert runtime holder change, one focused test file, and
+allowed closeout evidence updates. It did not implement generation, Agent
+loops, memory, projection, story behavior, concrete demo-world content,
+external validation-world content, API exposure, or frontend behavior.
+
+### Implementation Unresolved Findings
+
+- P1: none.
+- P2: none.
+- P3: none.
+
+### Implementation Final Assessment
+
+Implementation complete and ready for runner checkpoint / downstream review.

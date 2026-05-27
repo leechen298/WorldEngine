@@ -111,3 +111,77 @@ rg -n "\\.venv/bin/python -m pytest app/tests/test_runtime_context_bridge\\.py|�
 ## 最终评估
 
 待评审
+
+## 实现收尾证据
+
+状态：实现完成
+
+### 实现变更文件
+
+| 文件 | 变更 |
+|---|---|
+| `backend/app/core/runtime_context.py` | 添加纯运行时上下文桥接 dataclass、结构化结果/错误模型、上下文派生和有界摘要 helper。 |
+| `backend/app/core/runtime_engine.py` | 添加可选惰性 `runtime_context` 构造/from-env 透传存储和只读 accessor；运行时状态与 step 行为保持不变。 |
+| `backend/app/tests/test_runtime_context_bridge.py` | 添加聚焦桥接、错误、摘要、运行时默认行为、惰性存储和无原始 WorldSpec 事件测试。 |
+| `docs/iterations/v0.3/0.3.4-runtime-context-bridge-implementation/review.md`, `review.zh.md` | 添加实现收尾证据。 |
+
+### 已运行实现命令
+
+```bash
+git status --short --branch
+git diff --check
+cd backend
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_step.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py
+.venv/bin/python -m pytest app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_world_params.py app/tests/test_params_agent.py
+.venv/bin/python -m pytest app/tests/test_archive_snapshot_summary.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py app/tests/test_worldspec_schema_smoke.py
+cd ..
+rg -n 'APIRouter|FastAPI|archive|params_apply|migration|frontend|backend/worldengine' backend/app/core/runtime_context.py; test $? -eq 1
+rg -n '[d]emo-world-name|[m]ap-001|[c]haracter-001|[l]ocation-001|[s]tory-rule|[v]alidation-world-data|[p]rivate-oracle' backend/app/core/runtime_context.py backend/app/tests/test_runtime_context_bridge.py; test $? -eq 1
+git status --short --branch
+```
+
+### 实现测试结果
+
+- `git diff --check` 退出码为 `0`；未报告空白错误。
+- `.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py` 退出码为 `0`；11 passed。
+- `.venv/bin/python -m pytest app/tests/test_runtime_step.py` 退出码为 `0`；16 passed。
+- `.venv/bin/python -m pytest app/tests/test_event_api_compat.py` 退出码为 `0`；2 passed。
+- `.venv/bin/python -m pytest app/tests/test_event_schema_compat.py` 退出码为 `0`；10 passed。
+- `.venv/bin/python -m pytest app/tests/test_world_params.py app/tests/test_params_agent.py` 退出码为 `0`；9 passed。
+- `.venv/bin/python -m pytest app/tests/test_archive_snapshot_summary.py` 退出码为 `0`；14 passed。
+- `.venv/bin/python -m pytest app/tests/test_worldspec_loader.py app/tests/test_worldspec_schema_smoke.py` 退出码为 `0`；11 passed。
+- 运行时上下文禁止表面 grep 通过无匹配断言，整体退出码为 `0`。
+- 具体锚点 grep 通过无匹配断言，整体退出码为 `0`。
+
+### 实现兼容评审
+
+桥接实现是纯函数边界，只从 `LoadedWorldSpec` 派生有界上下文。
+`RuntimeEngine` 可接受可选上下文，但不会把它序列化进 `RuntimeState`，
+不会在 `step()` 中使用它，也不会在事件 payload 中包含原始 `WorldSpec`
+数据。当前实现会话中，运行时、事件 API、参数、归档、loader、schema smoke
+和可选 `Event.refs` 兼容测试均已通过。
+
+未修改 schemas、migrations、API routes、frontend 文件、fixtures、persistence
+models、params 实现、archive 实现、event bus 行为或遗留 `backend/worldengine/`
+文件。
+
+### 实现范围评审
+
+实现保持在已评审的 0.3.4 包范围内：一个新的桥接模块、一个聚焦惰性运行时
+holder 变更、一个聚焦测试文件，以及允许的收尾证据更新。未实现场景生成、
+Agent loop、记忆、投影、故事行为、具体 demo-world 内容、外部验证世界内容、
+API 暴露或前端行为。
+
+### 实现未解决发现
+
+- P1：无。
+- P2：无。
+- P3：无。
+
+### 实现最终评估
+
+实现完成，可进入 runner checkpoint / 后续评审。

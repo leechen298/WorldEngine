@@ -33,6 +33,7 @@ class RuntimeEngine:
         event_log: Optional[InMemoryEventLog] = None,
         world_root_module: Optional[WorldModule] = None,
         params_provider: Optional[Callable[[], dict[str, Any]]] = None,
+        runtime_context: Optional[Any] = None,
     ) -> None:
         self._state = RuntimeState(
             step_seconds=step_seconds,
@@ -41,6 +42,7 @@ class RuntimeEngine:
         self._event_log = event_log
         self._world_root_module = world_root_module
         self._params_provider = params_provider
+        self._runtime_context = runtime_context
         self._on_step_callbacks: List[Callable[["RuntimeState", dict], None]] = []
 
     def add_on_step_callback(
@@ -54,6 +56,7 @@ class RuntimeEngine:
         event_log: Optional[InMemoryEventLog] = None,
         world_root_module: Optional[WorldModule] = None,
         params_provider: Optional[Callable[[], dict[str, Any]]] = None,
+        runtime_context: Optional[Any] = None,
     ) -> "RuntimeEngine":
         raw_step_seconds = os.getenv("WORLD_STEP_SECONDS", "600")
         try:
@@ -69,10 +72,14 @@ class RuntimeEngine:
             event_log=event_log,
             world_root_module=world_root_module,
             params_provider=params_provider,
+            runtime_context=runtime_context,
         )
 
     def get_state(self) -> RuntimeState:
         return replace(self._state)
+
+    def get_runtime_context(self) -> Optional[Any]:
+        return self._runtime_context
 
     def step(self) -> RuntimeState:
         self._state.tick_id += 1
