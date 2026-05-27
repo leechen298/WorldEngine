@@ -10,6 +10,7 @@
 | `docs/iterations/v0.3/0.3.1-worldspec-loader-contract/**` | 新增完整 0.3.1 迭代包文档和中文镜像。 |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | 在里程碑索引中把 0.3.1 标记为待评审。 |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 同步 0.3.1 状态为待评审。 |
+| `docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md` | 回滚检查点 `40db35453f915623ff2938e660abf71ec332b017` 中包含的越界 0.3.0 状态编辑。 |
 
 ## 已运行命令
 
@@ -29,6 +30,8 @@ rg -n 'Status: ready for review|Status: `ready for review`|状态：`待评审`|
 rg -n 'concrete demo|character|location|story rule|external validation-world data|private oracle' docs/contracts/worldspec-loader-contract.md docs/iterations/v0.3/0.3.1-worldspec-loader-contract docs/iterations/v0.3/README.md docs/iterations/v0.3/README.zh.md docs/iterations/v0.3/v0.3-plan.md docs/iterations/v0.3/v0.3-plan.zh.md
 git status --porcelain=v1 -uall | rg -v '^( M docs/iterations/v0\.3/0\.3\.0-v0\.3-planning-and-compatibility-baseline/README\.md| M docs/iterations/v0\.3/README\.md| M docs/iterations/v0\.3/README\.zh\.md| M docs/iterations/v0\.3/v0\.3-plan\.md| M docs/iterations/v0\.3/v0\.3-plan\.zh\.md|\?\? docs/contracts/worldspec-loader-contract\.md|\?\? docs/iterations/v0\.3/0\.3\.1-worldspec-loader-contract/)'
 git status --short --branch
+git diff --name-only origin/v0.3 -- docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md
+! git diff --name-only origin/v0.3 | rg -v '^(docs/contracts/worldspec-loader-contract\.md|docs/iterations/v0\.3/README\.md|docs/iterations/v0\.3/README\.zh\.md|docs/iterations/v0\.3/v0\.3-plan\.md|docs/iterations/v0\.3/v0\.3-plan\.zh\.md|docs/iterations/v0\.3/0\.3\.1-worldspec-loader-contract/)'
 ```
 
 ## 测试结果
@@ -43,9 +46,18 @@ git status --short --branch
   文档中为 `待评审`。
 - 具体锚点扫描退出码为 `0`，结果只包含边界、禁止变更和验证文字；没有新增
   具体 fixture 内容。
-- 变更文件范围检查退出码为 `0`；没有报告实现路径。预先存在的已修改
-  `0.3.0` README 仍在本包范围之外。
+- 变更文件范围检查退出码为 `0`；没有报告实现路径。
 - 最后的 `git status --short --branch` 退出码为 `0`。
+- 文档修订已纠正
+  `.agent-runs/20260527-205813-v0.3-0.3.1-worldspec-loader-contract/docs-review.md`
+  中的 P1 范围证据问题：检查点
+  `40db35453f915623ff2938e660abf71ec332b017` 中越界的 `0.3.0` README
+  变更已回滚，并且
+  `git diff --name-only origin/v0.3 -- docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md`
+  在修正后没有输出路径。
+- 基于 `git diff --name-only origin/v0.3` 的累计分支范围检查在取反
+  `rg` 下退出码为 `0`；分支 diff 中没有保留 0.3.1 加载器契约、0.3.1
+  迭代包文档或 v0.3 状态同步文档之外的路径。
 
 本包是仅文档包，且不修改运行时、schema、API、前端、fixture、迁移或测试实现
 文件，因此不计划运行后端、前端、API、E2E、Agent smoke 或运行时测试。
@@ -59,12 +71,9 @@ git status --short --branch
 ## 范围评审
 
 本包保持在 0.3.1 文档范围内。它只定义加载器契约和迭代包文档，不实现加载器
-或桥接行为。
-
-已知预先存在的工作区变更：
-
-- `docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md`
-  在本包开始前已经被修改，本次 0.3.1 工作未编辑该文件。
+或桥接行为。较早提交的检查点包含了越界的 `0.3.0` README 状态编辑；本次文档
+修订已把该路径从分支累计 diff 中移除，并将 0.3.1 证据限定为加载器契约、0.3.1
+迭代包文档，以及 v0.3 里程碑 / 计划状态同步。
 
 ## 未解决发现
 

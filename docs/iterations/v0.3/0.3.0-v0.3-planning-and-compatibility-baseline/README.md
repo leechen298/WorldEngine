@@ -1,6 +1,6 @@
 # 0.3.0 v0.3 Planning And Compatibility Baseline
 
-Status: review complete
+Status: ready for review
 
 Type: documentation-only
 
@@ -34,5 +34,4 @@ fixtures.
 
 ## Final Assessment
 
-
-review complete; documentation review passed with no blocking issues. Review evidence: `/Users/leechen/projects/WorldEnginProjects/WorldEngine/.agent-runs/20260527-202850-v0.3-0.3.0-v0.3-planning-and-compatibility-baseline/docs-review.md`.
+ready for human / ChatGPT review
