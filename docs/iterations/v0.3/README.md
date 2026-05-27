@@ -84,14 +84,14 @@ The version should make later Agent and generation work possible by proving:
 ### `0.3.0-v0.3-planning-and-compatibility-baseline`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Establish v0.3 planning docs and the compatibility baseline without
 implementing loader or bridge behavior.
 
 ### `0.3.1-worldspec-loader-contract`
 
 Type: documentation-only
-Status: planned
+Status: ready for review
 Purpose: Define the WorldSpec loader contract before implementation.
 
 ### `0.3.2-worldspec-loader-implementation`
