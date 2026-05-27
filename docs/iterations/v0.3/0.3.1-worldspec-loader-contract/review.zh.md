@@ -1,6 +1,6 @@
 # 评审
 
-状态：`待评审`
+状态：`评审完成`
 
 ## 变更文件
 
@@ -11,6 +11,17 @@
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | 在里程碑索引中把 0.3.1 标记为待评审。 |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 同步 0.3.1 状态为待评审。 |
 | `docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md` | 回滚检查点 `40db35453f915623ff2938e660abf71ec332b017` 中包含的越界 0.3.0 状态编辑。 |
+
+评审后状态修正：
+
+- `docs/contracts/worldspec-loader-contract.md` 已标记为 `review complete`。
+- `docs/iterations/v0.3/README.zh.md` 对已完成迭代包使用中文评审完成
+  状态。
+- `docs/iterations/v0.3/v0.3-plan.md` 和
+  `docs/iterations/v0.3/v0.3-plan.zh.md` 将 0.3.1 标记为
+  `review complete` / `评审完成`。
+- `docs/iterations/v0.3/0.3.1-worldspec-loader-contract/README.zh.md`
+  使用中文评审完成状态，并让评审清单与英文镜像同步。
 
 ## 已运行命令
 
@@ -58,6 +69,10 @@ git diff --name-only origin/v0.3 -- docs/iterations/v0.3/0.3.0-v0.3-planning-and
 - 基于 `git diff --name-only origin/v0.3` 的累计分支范围检查在取反
   `rg` 下退出码为 `0`；分支 diff 中没有保留 0.3.1 加载器契约、0.3.1
   迭代包文档或 v0.3 状态同步文档之外的路径。
+- 后续文档评审
+  `.agent-runs/20260527-210415-v0.3-0.3.1-worldspec-loader-contract/docs-review.md`
+  对检查点 `f0f7b54` 报告无阻塞问题，并确认该仅文档包可交接给下一
+  mixed/code 包实现。
 
 本包是仅文档包，且不修改运行时、schema、API、前端、fixture、迁移或测试实现
 文件，因此不计划运行后端、前端、API、E2E、Agent smoke 或运行时测试。
@@ -83,4 +98,4 @@ git diff --name-only origin/v0.3 -- docs/iterations/v0.3/0.3.0-v0.3-planning-and
 
 ## 最终判断
 
-待评审。
+评审完成。

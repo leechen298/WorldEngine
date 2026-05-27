@@ -78,13 +78,13 @@ v0.1 运行时脚手架。
 ### `0.3.0-v0.3-planning-and-compatibility-baseline`
 
 类型：仅文档
-状态：`review complete`
+状态：`评审完成`
 目的：建立 v0.3 规划文档和兼容性基线，不实现加载器或桥接层。
 
 ### `0.3.1-worldspec-loader-contract`
 
 类型：仅文档
-状态：`review complete`
+状态：`评审完成`
 目的：在实现前定义 WorldSpec 加载器契约。
 
 ### `0.3.2-worldspec-loader-implementation`

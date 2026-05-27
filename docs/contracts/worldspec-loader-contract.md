@@ -1,6 +1,6 @@
 # WorldSpec Loader Contract
 
-Status: ready for review
+Status: review complete
 
 ## Purpose
 

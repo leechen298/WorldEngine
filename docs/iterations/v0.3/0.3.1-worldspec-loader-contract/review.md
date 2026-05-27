@@ -1,6 +1,6 @@
 # Review
 
-Status: ready for review
+Status: review complete
 
 ## Changed Files
 
@@ -11,6 +11,18 @@ Status: ready for review
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | Marked 0.3.1 ready for review in milestone indexes. |
 | `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronized 0.3.1 status with the ready-for-review package state. |
 | `docs/iterations/v0.3/0.3.0-v0.3-planning-and-compatibility-baseline/README.md` | Reverted the out-of-scope 0.3.0 status edit that was included in checkpoint `40db35453f915623ff2938e660abf71ec332b017`. |
+
+Post-review status correction:
+
+- `docs/contracts/worldspec-loader-contract.md` is marked `review complete`.
+- `docs/iterations/v0.3/README.zh.md` uses Chinese review-complete status
+  wording for completed package entries.
+- `docs/iterations/v0.3/v0.3-plan.md` and
+  `docs/iterations/v0.3/v0.3-plan.zh.md` mark 0.3.1 `review complete` /
+  `评审完成`.
+- `docs/iterations/v0.3/0.3.1-worldspec-loader-contract/README.zh.md`
+  uses Chinese review-complete status wording and has the review checklist
+  synchronized with the English mirror.
 
 ## Commands Run
 
@@ -58,6 +70,11 @@ git diff --name-only origin/v0.3 -- docs/iterations/v0.3/0.3.0-v0.3-planning-and
 - The cumulative branch scope guard with `git diff --name-only origin/v0.3`
   exited `0` under negated `rg`; no paths outside the 0.3.1 loader contract,
   0.3.1 package docs, or v0.3 status-sync docs remain in the branch diff.
+- Follow-up documentation review
+  `.agent-runs/20260527-210415-v0.3-0.3.1-worldspec-loader-contract/docs-review.md`
+  reported no blocking issues for checkpoint `f0f7b54` and marked the
+  documentation-only package ready for implementation by the next mixed/code
+  package.
 
 Backend, frontend, API, E2E, Agent smoke, and runtime tests are not planned
 because this package is documentation-only and does not modify runtime,
@@ -87,4 +104,4 @@ contract, 0.3.1 package docs, and v0.3 milestone / plan status sync.
 
 ## Final Assessment
 
-ready for review
+review complete
