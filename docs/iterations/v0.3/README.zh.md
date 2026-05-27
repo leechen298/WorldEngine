@@ -1,6 +1,6 @@
 # v0.3 WorldSpec Loader and Runtime Bridge
 
-状态：`已规划 / 进行中`
+状态：`final / closeout complete`
 
 ## 目标
 
@@ -126,5 +126,5 @@ v0.1 运行时脚手架。
 ### `0.3.8-v0.3-final-closeout`
 
 类型：仅文档
-状态：`ready for review`
-目的：仅在发布候选评审批准后执行最终收口。
+状态：`review complete`
+目的：在发布候选评审批准后完成最终收口。

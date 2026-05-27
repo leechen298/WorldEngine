@@ -1,6 +1,6 @@
 # v0.3 WorldSpec Loader and Runtime Bridge
 
-Status: planned / in progress
+Status: final / closeout complete
 
 ## Goal
 
@@ -139,5 +139,5 @@ declaring release status.
 ### `0.3.8-v0.3-final-closeout`
 
 Type: documentation-only
-Status: ready for review
-Purpose: Perform final closeout only after release-candidate review approval.
+Status: review complete
+Purpose: Completed final closeout after release-candidate review approval.

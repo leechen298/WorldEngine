@@ -1,6 +1,6 @@
 # 0.3.8 v0.3 Final Closeout
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -45,9 +45,9 @@ release without approval.
 - [x] Technical design drafted
 - [x] Test plan drafted
 - [x] Documentation-stage evidence complete
-- [ ] Human / ChatGPT review complete
-- [ ] Final closeout implemented
-- [ ] Review complete
+- [x] Human / ChatGPT review complete
+- [x] Final closeout implemented
+- [x] Review complete
 
 ## Planned Deliverables After Review
 
