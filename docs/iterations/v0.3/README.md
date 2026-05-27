@@ -111,7 +111,7 @@ without changing runtime behavior yet.
 ### `0.3.4-runtime-context-bridge-implementation`
 
 Type: mixed or code
-Status: planned
+Status: ready for review
 Purpose: Implement the minimal optional runtime context bridge while preserving
 existing runtime and API behavior.
 
