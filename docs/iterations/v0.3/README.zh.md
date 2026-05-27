@@ -96,7 +96,7 @@ v0.1 运行时脚手架。
 ### `0.3.3-runtime-context-bridge-contract`
 
 类型：仅文档
-状态：`已规划`
+状态：`待评审`
 目的：定义已验证的 WorldSpec 派生上下文如何接近运行时，但暂不改变运行时行为。
 
 ### `0.3.4-runtime-context-bridge-implementation`
