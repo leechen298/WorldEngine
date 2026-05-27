@@ -1,6 +1,6 @@
 # 0.3.6 Runtime Bridge Evidence And Compatibility Audit
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
