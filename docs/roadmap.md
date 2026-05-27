@@ -14,7 +14,7 @@ event log, params, archive, and basic API envelope.
 
 ## v0.2 - Recursive World Foundation
 
-Status: planned / in progress
+Status: final / closeout complete
 
 Goal: establish the documentation governance, north star, recursive world
 schema/spec language, additive event contract, generic schema smoke
@@ -71,6 +71,8 @@ Goal: perform final closeout only after the release-candidate bundle passes
 human / ChatGPT review.
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
+
+Status: planned / in progress
 
 Goal: load validated generic WorldSpec data into runtime context without
 losing v0.1 runtime compatibility.

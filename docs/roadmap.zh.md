@@ -15,7 +15,7 @@ params、archive 和 basic API envelope。
 
 ## v0.2 - Recursive World Foundation
 
-状态：`planned / in progress`
+状态：`final / closeout complete`
 
 目标：建立 documentation governance、north star、recursive world schema/spec
 language、additive event contract、generic schema smoke validation、external
@@ -69,6 +69,8 @@ boundaries。
 目标：仅在 release-candidate bundle 通过 human / ChatGPT review 后执行 final closeout。
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
+
+状态：`planned / in progress`
 
 目标：在不破坏 v0.1 runtime compatibility 的前提下，把 validated generic WorldSpec
 data 加载进 runtime context。
