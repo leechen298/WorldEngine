@@ -37,7 +37,7 @@ does not declare v0.3 final release.
 | `docs/iterations/v0.3/0.3.7-v0.3-release-candidate-bundle/final-review-bundle.zh.md` | Added synchronized Chinese final-review handoff. |
 | `docs/iterations/v0.3/0.3.7-v0.3-release-candidate-bundle/**` | Added package docs and review evidence. |
 | `docs/iterations/v0.3/README.md`, `README.zh.md` | Marked 0.3.7 ready for review. |
-| `docs/iterations/v0.3/v0.3-plan.md`, `v0.3-plan.zh.md` | Synchronized 0.3.7 status. |
+| `docs/iterations/v0.3/v0.3-plan.md`, `v0.3-plan.zh.md` | Synchronized 0.3.5 and 0.3.6 with milestone-index `review complete` status, and preserved 0.3.7 status. |
 
 ## Contract Mapping
 
@@ -99,7 +99,8 @@ status synchronization only.
 
 ## Unresolved P1/P2/P3
 
-- P1: none identified.
+- P1: none open. The post-review status-consistency finding for 0.3.5 and
+  0.3.6 was resolved in this documentation revision.
 - P2: none identified.
 - P3: 0.3.6 checklist wording issue remains open and non-blocking.
 - P3: root-level pytest command unreliability remains a future verification

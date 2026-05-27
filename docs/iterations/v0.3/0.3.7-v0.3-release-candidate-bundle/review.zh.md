@@ -9,7 +9,7 @@
 | `docs/iterations/v0.3/v0.3-release-candidate-bundle.md`, `docs/iterations/v0.3/v0.3-release-candidate-bundle.zh.md` | 新增 v0.3 发布候选证据包和同步中文镜像。 |
 | `docs/iterations/v0.3/0.3.7-v0.3-release-candidate-bundle/**` | 新增完整 0.3.7 文档包、最终评审包和中文镜像。 |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | 在里程碑索引中标记 0.3.7 待评审。 |
-| `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 同步 0.3.7 的文档阶段待评审状态。 |
+| `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | 将 0.3.5 和 0.3.6 同步为里程碑索引中的 `review complete` 状态，并保留 0.3.7 的文档阶段待评审状态。 |
 
 ## 已运行命令
 
@@ -49,6 +49,16 @@ git status --short --branch
 git diff --stat
 ```
 
+评审后 P1 状态一致性修订命令：
+
+```bash
+git diff --check
+rg -n '0\.3\.5 External Fixture|0\.3\.6 Runtime Bridge|Status: review complete|状态：评审完成' docs/iterations/v0.3/v0.3-plan.md docs/iterations/v0.3/v0.3-plan.zh.md docs/iterations/v0.3/README.md docs/iterations/v0.3/README.zh.md
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0\.3/'
+git status --short --branch
+git diff --stat
+```
+
 ## 测试结果
 
 - `git diff --check` 退出码为 `0`；未报告空白字符错误。
@@ -70,8 +80,21 @@ git diff --stat
 - `git status --short --branch` 退出码为 `0`，只显示 v0.3 迭代文档变更。
 - `git diff --stat` 退出码为 `0`；已跟踪状态更新仅限 v0.3 索引和计划文档，
   新增未跟踪 0.3.7 文档在 `git status` 中可见。
+- 评审后 `git diff --check` 退出码为 `0`。
+- 评审后 0.3.5/0.3.6 状态 grep 退出码为 `0`；`v0.3-plan.md`、
+  `v0.3-plan.zh.md`、`README.md` 和 `README.zh.md` 现在一致记录
+  0.3.5 和 0.3.6 为 `review complete` / `评审完成`。
+- 评审后变更文件范围护栏退出码为 `1` 且无输出；这是预期结果，表示所有变更文件仍
+  在批准的 `docs/iterations/v0.3/` 文档路径下。
 - 未运行后端、前端、API 冒烟、E2E、Agent 冒烟、运行时行为、构建、迁移、
   fixture 或 schema 测试，因为本包仅文档且未修改实现文件。
+
+## 文档修订记录
+
+- P1 `status-consistency`：已解决。`v0.3-plan.md` 和
+  `v0.3-plan.zh.md` 已更新，使 0.3.5 和 0.3.6 与里程碑索引中的
+  `review complete` / `评审完成` 状态一致。
+- 本次修订未扩大或关闭 P2/P3 问题。
 
 ## 兼容性评审
 
@@ -92,7 +115,7 @@ git diff --stat
 
 ## 未解决问题
 
-- P1：未发现。
+- P1：无开放项。0.3.5 和 0.3.6 的评审后状态一致性问题已在本次文档修订中解决。
 - P2：未发现。
 - P3：`v0.3-P3-001` 保持开放。它记录 0.3.6 清单措辞不一致，不阻塞 0.3.7
   发布候选评审。

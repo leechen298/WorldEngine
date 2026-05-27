@@ -9,7 +9,7 @@ Status: ready for review
 | `docs/iterations/v0.3/v0.3-release-candidate-bundle.md`, `docs/iterations/v0.3/v0.3-release-candidate-bundle.zh.md` | Added v0.3 release-candidate evidence bundle and synchronized Chinese mirror. |
 | `docs/iterations/v0.3/0.3.7-v0.3-release-candidate-bundle/**` | Added complete 0.3.7 documentation package, final-review bundle, and Chinese mirrors. |
 | `docs/iterations/v0.3/README.md`, `docs/iterations/v0.3/README.zh.md` | Marked 0.3.7 ready for review in milestone indexes. |
-| `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronized 0.3.7 status with documentation-stage review readiness. |
+| `docs/iterations/v0.3/v0.3-plan.md`, `docs/iterations/v0.3/v0.3-plan.zh.md` | Synchronized 0.3.5 and 0.3.6 with milestone-index `review complete` status, and preserved 0.3.7 documentation-stage review readiness. |
 
 ## Commands Run
 
@@ -49,6 +49,16 @@ git status --short --branch
 git diff --stat
 ```
 
+Post-review P1 status-consistency revision commands:
+
+```bash
+git diff --check
+rg -n '0\.3\.5 External Fixture|0\.3\.6 Runtime Bridge|Status: review complete|状态：评审完成' docs/iterations/v0.3/v0.3-plan.md docs/iterations/v0.3/v0.3-plan.zh.md docs/iterations/v0.3/README.md docs/iterations/v0.3/README.zh.md
+git status --porcelain=v1 -uall | rg -v '^( M|\?\?) docs/iterations/v0\.3/'
+git status --short --branch
+git diff --stat
+```
+
 ## Test Results
 
 - `git diff --check` exited `0`; no whitespace errors were reported.
@@ -75,9 +85,23 @@ git diff --stat
   documentation changes.
 - `git diff --stat` exited `0`; tracked status updates are limited to v0.3
   index and plan docs, with new untracked 0.3.7 docs visible in `git status`.
+- Post-review `git diff --check` exited `0`.
+- Post-review 0.3.5/0.3.6 status grep exited `0`; `v0.3-plan.md`,
+  `v0.3-plan.zh.md`, `README.md`, and `README.zh.md` now agree that 0.3.5
+  and 0.3.6 are `review complete` / `评审完成`.
+- Post-review changed-file scope guard exited `1` with no output, which is
+  expected because all changed files remain under approved
+  `docs/iterations/v0.3/` documentation paths.
 - Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build,
   migration, fixture, and schema tests were not run because this package is
   documentation-only and changed no implementation files.
+
+## Documentation Revision Notes
+
+- P1 `status-consistency`: resolved by updating `v0.3-plan.md` and
+  `v0.3-plan.zh.md` so 0.3.5 and 0.3.6 match the milestone index status
+  `review complete` / `评审完成`.
+- P2/P3 findings were not broadened or closed by this revision.
 
 ## Compatibility Review
 
@@ -101,7 +125,8 @@ runtime capability.
 
 ## Unresolved Findings
 
-- P1: none identified.
+- P1: none open. The post-review status-consistency finding for 0.3.5 and
+  0.3.6 was resolved in this documentation revision.
 - P2: none identified.
 - P3: `v0.3-P3-001` remains open. It records a 0.3.6 checklist wording
   inconsistency and does not block 0.3.7 release-candidate review.

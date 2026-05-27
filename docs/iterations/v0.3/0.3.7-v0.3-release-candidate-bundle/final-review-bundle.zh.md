@@ -35,7 +35,7 @@ API、前端、fixture、迁移、测试或旧实现文件，也不声明 v0.3 �
 | `docs/iterations/v0.3/0.3.7-v0.3-release-candidate-bundle/final-review-bundle.zh.md` | 新增同步中文最终评审交接。 |
 | `docs/iterations/v0.3/0.3.7-v0.3-release-candidate-bundle/**` | 新增包文档和评审证据。 |
 | `docs/iterations/v0.3/README.md`, `README.zh.md` | 标记 0.3.7 待评审。 |
-| `docs/iterations/v0.3/v0.3-plan.md`, `v0.3-plan.zh.md` | 同步 0.3.7 状态。 |
+| `docs/iterations/v0.3/v0.3-plan.md`, `v0.3-plan.zh.md` | 将 0.3.5 和 0.3.6 同步为里程碑索引中的 `review complete` 状态，并保留 0.3.7 状态。 |
 
 ## 契约映射
 
@@ -90,7 +90,7 @@ git status --short --branch
 
 ## 未解决 P1/P2/P3
 
-- P1：未发现。
+- P1：无开放项。0.3.5 和 0.3.6 的评审后状态一致性问题已在本次文档修订中解决。
 - P2：未发现。
 - P3：0.3.6 清单措辞问题保持开放，且不阻塞。
 - P3：根目录 pytest 命令不可靠仍是未来验证计划注意事项。
