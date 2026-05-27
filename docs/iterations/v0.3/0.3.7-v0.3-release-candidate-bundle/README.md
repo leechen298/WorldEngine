@@ -1,6 +1,6 @@
 # 0.3.7 v0.3 Release Candidate Bundle
 
-Status: ready for review
+Status: review complete
 
 Type: documentation-only
 
@@ -42,7 +42,7 @@ schema, API, frontend, fixture, migration, or test implementation package.
 - [x] Documentation-stage evidence complete
 - [x] Release-candidate bundle complete
 - [ ] Human / ChatGPT review complete
-- [ ] Review complete
+- [x] Review complete
 
 ## Deliverables
 

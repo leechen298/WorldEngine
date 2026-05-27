@@ -132,7 +132,7 @@ readiness.
 ### `0.3.7-v0.3-release-candidate-bundle`
 
 Type: documentation-only
-Status: ready for review
+Status: review complete
 Purpose: Prepare a release-candidate bundle for human / ChatGPT review without
 declaring release status.
 
