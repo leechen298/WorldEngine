@@ -124,8 +124,8 @@ contracts without creating external repositories inside core.
 
 ### `0.3.6-runtime-bridge-evidence-and-compatibility-audit`
 
-Type: documentation-only or mixed
-Status: planned
+Type: documentation-only
+Status: ready for review
 Purpose: Audit loader and bridge evidence, compatibility, and v0.4 handoff
 readiness.
 

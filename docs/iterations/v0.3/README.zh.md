@@ -113,8 +113,8 @@ v0.1 运行时脚手架。
 
 ### `0.3.6-runtime-bridge-evidence-and-compatibility-audit`
 
-类型：仅文档或文档与代码混合
-状态：`已规划`
+类型：仅文档
+状态：`待评审`
 目的：审计加载器和桥接层证据、兼容性，以及 v0.4 交接准备度。
 
 ### `0.3.7-v0.3-release-candidate-bundle`
