@@ -1,13 +1,14 @@
 # WorldEngine
 
-Status: v0.1 scaffold complete, v0.2 planned.
+Status: v0.3 final / closeout complete.
 
 Chinese mirror: `README.zh.md`.
 
 WorldEngine is a recursive world generation and runtime engine. The current
-v0.1 branch is an experimental monorepo scaffold that proves the first runtime,
-event, params, archive, agent-assist, and dashboard surfaces. It is not yet a
-recursive world engine implementation.
+`v0.3` branch is the WorldSpec Loader and Runtime Bridge milestone: it adds a
+minimal generic `WorldSpec` loader and an optional inert runtime context bridge
+while preserving the v0.1 runtime scaffold. It is not yet a recursive world
+engine implementation.
 
 Read first:
 
@@ -15,7 +16,8 @@ Read first:
 - `docs/product-model.md`
 - `docs/current-implementation.md`
 - `docs/api-reference-v0.1.md`
-- `docs/releases/v0.1.md`
+- `docs/releases/v0.3.md`
+- `docs/iterations/v0.3/README.md`
 - `docs/iterations/README.md`
 
 ## Repository Structure
@@ -26,9 +28,9 @@ Read first:
 - `backend/app/` - active backend path.
 - `backend/worldengine/` - legacy pre-v0.1 path; do not add new features there.
 
-## Current v0.1 Capability
+## Current v0.3 Capability
 
-v0.1 can:
+v0.3 preserves the v0.1 runtime scaffold and can:
 
 - start backend and frontend development services from the repository root.
 - expose health, runtime, world event, world params, archive, and agent params
@@ -43,11 +45,15 @@ v0.1 can:
 - use an LLM-style params agent service interface to propose and apply patches.
 - render a dashboard for runtime controls, timeline, world params, and agent
   params interactions.
+- load and validate generic `WorldSpec` data through the minimal loader.
+- derive optional inert runtime context from loaded `WorldSpec` data.
+- keep runtime step outputs and event payloads free of raw `WorldSpec` or root
+  tree data.
 
-v0.1 cannot:
+v0.3 still cannot:
 
-- represent recursive `WorldCell` structures.
-- load a structured `WorldSpec`.
+- run recursive `WorldCell` structures as active runtime state.
+- run loaded `WorldSpec` data as active recursive world state.
 - generate worlds from templates or prompts.
 - run agents through a perception/action/memory loop.
 - model agent pseudo-self continuity.
@@ -90,11 +96,17 @@ Default frontend API target is `http://localhost:8000` (configure via `VITE_API_
 
 ## Verification
 
-Recorded v0.1 closeout evidence is mapped in
-`docs/testing/v0.1-test-map.md`.
+Recorded v0.3 closeout evidence is mapped in
+`docs/iterations/v0.3/evidence-index.md` and summarized in
+`docs/releases/v0.3.md`.
+
+The v0.1 runtime closeout evidence remains the compatibility baseline and is
+mapped in `docs/testing/v0.1-test-map.md`.
 
 Key recorded evidence includes:
 
+- v0.3 loader and runtime bridge package evidence, compatibility audit, and
+  final closeout review.
 - `make check-backend` and `make check-frontend`.
 - backend pytest: `63 passed`.
 - frontend unit tests: `24 passed`; focused frontend coverage later recorded
@@ -112,6 +124,8 @@ These are recorded closeout results, not tests rerun by this README update.
 
 Implementation docs:
 
+- `docs/iterations/v0.3/README.md`
+- `docs/releases/v0.3.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/frontend-implementation.md`

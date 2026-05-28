@@ -67,17 +67,16 @@ The version should make later Agent and generation work possible by proving:
 
 ## Capability Progression
 
-| Package | Capability question answered |
-|---|---|
-| 0.3.0 | Do we have the v0.3 boundary and compatibility gate? |
-| 0.3.1 | Do we know what a WorldSpec loader must accept, return, and reject? |
-| 0.3.2 | Can the core load and validate generic WorldSpec data? |
-| 0.3.3 | Do we know how loaded world data may reach runtime context safely? |
-| 0.3.4 | Can runtime hold optional world context without breaking old behavior? |
-| 0.3.5 | Can external fixture runners consume only public contracts? |
-| 0.3.6 | Do loader and bridge evidence prove compatibility and v0.4 handoff readiness? |
-| 0.3.7 | Is the v0.3 release candidate reviewable? |
-| 0.3.8 | Can v0.3 be closed out after review approval? |
+- `0.3.0`: Establish the v0.3 boundary and compatibility gate.
+- `0.3.1`: Define what a WorldSpec loader must accept, return, and reject.
+- `0.3.2`: Load and validate generic WorldSpec data in core code.
+- `0.3.3`: Define how loaded world data may safely reach runtime context.
+- `0.3.4`: Let runtime hold optional world context without breaking old
+  behavior.
+- `0.3.5`: Let external fixture runners consume only public contracts.
+- `0.3.6`: Prove loader and bridge compatibility and v0.4 handoff readiness.
+- `0.3.7`: Make the v0.3 release candidate reviewable.
+- `0.3.8`: Close out v0.3 after review approval.
 
 ## Package Index
 
