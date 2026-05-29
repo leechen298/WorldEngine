@@ -24,7 +24,7 @@ validation documents。
 
 0. Master validation planning。
 1. E2E / integration / API smoke validation plan。
-2. E2E / integration / API smoke execution template。
+2. E2E / integration / API smoke execution report。
 3. Codex autonomous validation plan。
 4. Codex autonomous validation execution and review template。
 5. Final validation bundle template。
@@ -34,7 +34,7 @@ validation documents。
 | Package | Type | Status | Purpose |
 |---|---|---|---|
 | `01-e2e-validation-plan` | validation-planning | review complete | 定义 v0.2 post-closeout E2E、integration 和 API smoke validation 范围。 |
-| `02-e2e-validation-execution` | validation-execution | not executed | 执行 v0.2 post-closeout E2E、integration 和 API smoke validation。 |
+| `02-e2e-validation-execution` | validation-execution | blocked | 执行 v0.2 post-closeout E2E、integration 和 API smoke validation。 |
 | `03-codex-autonomous-validation-plan` | validation-planning | planned / ready for review | 定义独立 Codex autonomous validation 范围。 |
 | `04-codex-autonomous-validation-execution` | validation-execution | not executed | 执行独立 Codex autonomous validation。 |
 | `05-final-validation-bundle` | validation-bundle | not executed | 汇总最终 v0.2 post-closeout validation result。 |
@@ -52,8 +52,10 @@ validation documents 可以使用以下状态：
 - `failed`
 - `not executed`
 
-本 package 中的 execution report 不记录成功结果。execution report 初始状态为
-`not executed`，后续 validation run 必须用 current-session evidence 填写结果。
+execution report 初始状态为 `not executed`，validation run 必须用
+current-session evidence 填写结果。`02-e2e-validation-execution` 当前为
+`blocked`，因为 2026-05-28 execution context 中 browser E2E 无法绑定 configured
+backend port。
 
 ## 范围
 

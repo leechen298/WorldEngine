@@ -1,7 +1,7 @@
 # E2E / Integration / API Smoke Validation Execution
 
-Status: not executed
-Type: validation execution template
+Status: blocked
+Type: validation execution
 
 ## Goal
 
@@ -10,8 +10,7 @@ smoke validation.
 
 ## Scope
 
-This package is a template until a later validation run fills it with actual
-evidence.
+This package records the 2026-05-28 validation execution evidence.
 
 It must record:
 
@@ -38,4 +37,8 @@ It must record:
 
 ## Final Assessment State
 
-`not executed`
+`blocked`
+
+Backend deterministic checks and API smoke passed in the current session.
+Configured browser E2E could not execute because the Playwright backend
+web server failed to bind `127.0.0.1:8000` with `operation not permitted`.
