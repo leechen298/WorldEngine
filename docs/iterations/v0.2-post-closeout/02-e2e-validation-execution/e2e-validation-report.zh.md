@@ -63,6 +63,10 @@
 | `git status --short --branch` | 记录第四次 validation-fix worktree state | 0 | passed | 输出：`## v0.3-lcoal`，并显示 `docs/iterations/v0.2-post-closeout/findings.md` 已修改。 |
 | `make test-e2e` | 第四次 validation-fix rerun blocking browser E2E command | 2 | blocked | 同一 blocker 复现：Playwright web server 启动后无法绑定 `127.0.0.1:8000`，错误为 `operation not permitted`；没有 browser tests 被执行。 |
 | `git diff --check` | 第四次 validation-fix documentation whitespace check | 0 | passed | 更新 validation docs 后无输出。 |
+| `git rev-parse HEAD` | 记录第五次 validation-fix rerun commit | 0 | passed | 输出：`4a0c82ff74c30e86ef9b41b00f23fd7574b1fcde`；这是本次 validation-fix 前的最新 validation-review checkpoint。 |
+| `git status --short --branch` | 记录第五次 validation-fix worktree state | 0 | passed | 输出：`## v0.3-lcoal`，并显示 `docs/iterations/v0.2-post-closeout/findings.md` 已修改。 |
+| `make test-e2e` | 第五次 validation-fix rerun blocking browser E2E command | 2 | blocked | 同一 blocker 复现：Playwright web server 启动后无法绑定 `127.0.0.1:8000`，错误为 `operation not permitted`；没有 browser tests 被执行。 |
+| `git diff --check` | 第五次 validation-fix documentation whitespace check | 0 | passed | 更新 validation docs 后无输出。 |
 
 ## 未运行检查
 
@@ -110,9 +114,9 @@
   `f1c99fc94f46b04e9286450bf0af7ebfb17253d3` 和
   `9be4dc8d2d2696dadf625bd254386b0ad1b292d9`，以及 commit
   `5da27c7f051ec21ad01486df78dd35656447cfb6` 的第三次 rerun 和 commit
-  `6e9c7897e054e898d0854516c754202c9e2f91a8` 的第四次 rerun，均复现同一
-  blocker。Implementation 或 test-infrastructure changes 仍不属于本 package
-  scope。
+  `6e9c7897e054e898d0854516c754202c9e2f91a8` 的第四次 rerun，以及 commit
+  `4a0c82ff74c30e86ef9b41b00f23fd7574b1fcde` 的第五次 rerun，均复现同一
+  blocker。Implementation 或 test-infrastructure changes 仍不属于本 package scope。
 - P3：无。
 
 ## Final Assessment
