@@ -56,6 +56,10 @@ Allowed final assessment values:
 | `git rev-parse HEAD` | Record second validation-fix rerun commit | 0 | passed | Output: `9be4dc8d2d2696dadf625bd254386b0ad1b292d9`; latest review checkpoint before this validation-fix pass. |
 | `make test-e2e` | Second validation-fix rerun of the blocking browser E2E command | 2 | blocked | Same blocker reproduced: Playwright web server started, then failed to bind `127.0.0.1:8000` with `operation not permitted`; no browser tests executed. |
 | `git diff --check` | Second validation-fix documentation whitespace check | 0 | passed | No output after validation doc edits. |
+| `git rev-parse HEAD` | Record third validation-fix rerun commit | 0 | passed | Output: `5da27c7f051ec21ad01486df78dd35656447cfb6`; only validation findings documentation was modified before this pass. |
+| `git status --short --branch` | Record third validation-fix worktree state | 0 | passed | Output: `## v0.3-lcoal` plus modified `docs/iterations/v0.2-post-closeout/findings.md`. |
+| `make test-e2e` | Third validation-fix rerun of the blocking browser E2E command | 2 | blocked | Same blocker reproduced: Playwright web server started, then failed to bind `127.0.0.1:8000` with `operation not permitted`; no browser tests executed. |
+| `git diff --check` | Third validation-fix documentation whitespace check | 0 | passed | No output after validation doc edits. |
 
 ## Checks Not Run
 
@@ -108,8 +112,9 @@ Allowed final assessment values:
 - P2: Browser E2E is blocked because `make test-e2e` cannot bind the backend
   web server to `127.0.0.1:8000` in this execution context. Validation-fix
   reruns on commits `f1c99fc94f46b04e9286450bf0af7ebfb17253d3` and
-  `9be4dc8d2d2696dadf625bd254386b0ad1b292d9` reproduced the same blocker, and
-  implementation or test-infrastructure changes remain out of scope for this
+  `9be4dc8d2d2696dadf625bd254386b0ad1b292d9`, plus a third rerun on commit
+  `5da27c7f051ec21ad01486df78dd35656447cfb6`, reproduced the same blocker.
+  Implementation or test-infrastructure changes remain out of scope for this
   package.
 - P3: none.
 
