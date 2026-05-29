@@ -123,10 +123,44 @@ behavior.
 The documents distinguish historical v0.3 package evidence from future fresh
 validation evidence.
 
+## Post-Review Follow-Up
+
+External review identified one P2: the default backend pytest commands used a
+parent-level venv path even though this repository defines the backend venv as
+`backend/.venv` in `Makefile`.
+
+Changed files for this follow-up:
+
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.md`
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.zh.md`
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/review.md`
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/review.zh.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.zh.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/review.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/review.zh.md`
+- `docs/iterations/v0.3-post-closeout/review.md`
+- `docs/iterations/v0.3-post-closeout/review.zh.md`
+
+Commands run for the follow-up:
+
+```bash
+rg -n <backend-venv-command-patterns> Makefile docs/iterations/v0.3-post-closeout
+sed -n '1,220p' Makefile
+rg -n <backend-venv-command-patterns> docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.zh.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.zh.md
+git diff -- docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.zh.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.zh.md
+git diff --check
+```
+
+Follow-up result: default backend pytest commands now use
+`.venv/bin/python` after `cd backend`, matching `Makefile` and `dev-backend`.
+Backend tests were not run because this was a documentation-only command-path
+correction.
+
 ## Unresolved P1/P2/P3
 
 - P1: none identified in this documentation creation pass.
-- P2: none identified in this documentation creation pass.
+- P2: none identified after the backend venv command-path follow-up.
 - P3: none identified in this documentation creation pass.
 
 ## Final Assessment

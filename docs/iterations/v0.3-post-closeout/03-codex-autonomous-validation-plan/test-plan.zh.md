@@ -18,28 +18,28 @@ git diff --check
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
 ```
 
 聚焦 bridge 验证：
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
 ```
 
 Event compatibility 验证：
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
 ```
 
 可选的更宽后端验证：
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests
+.venv/bin/python -m pytest app/tests
 ```
 
 ## Reviewer 预期检查

@@ -23,7 +23,7 @@ git rev-parse HEAD
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests
+.venv/bin/python -m pytest app/tests
 ```
 
 如果仓库实际 backend venv 路径不同，必须记录实际命令和变化原因。
@@ -32,21 +32,21 @@ cd backend
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
 ```
 
 聚焦 runtime context bridge 测试：
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
 ```
 
 Event API compatibility 测试：
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
 ```
 
 API smoke 检查：

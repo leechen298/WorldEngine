@@ -19,28 +19,28 @@ Focused loader validation:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
 ```
 
 Focused bridge validation:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
 ```
 
 Event compatibility validation:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
 ```
 
 Optional broader backend validation:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests
+.venv/bin/python -m pytest app/tests
 ```
 
 ## Expected Reviewer Checks

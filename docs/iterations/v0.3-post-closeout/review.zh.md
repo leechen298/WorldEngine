@@ -116,10 +116,42 @@ runtime context bridge behavior 或 RuntimeEngine behavior。
 
 这些文档区分历史 v0.3 包证据和未来 fresh validation evidence。
 
+## Review 后跟进
+
+外部 review 发现一个 P2：默认 backend pytest 命令使用了父级 venv 路径，但本仓库
+`Makefile` 中定义的 backend venv 是 `backend/.venv`。
+
+本次跟进修改文件：
+
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.md`
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.zh.md`
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/review.md`
+- `docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/review.zh.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.zh.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/review.md`
+- `docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/review.zh.md`
+- `docs/iterations/v0.3-post-closeout/review.md`
+- `docs/iterations/v0.3-post-closeout/review.zh.md`
+
+本次跟进运行命令：
+
+```bash
+rg -n <backend-venv-command-patterns> Makefile docs/iterations/v0.3-post-closeout
+sed -n '1,220p' Makefile
+rg -n <backend-venv-command-patterns> docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.zh.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.zh.md
+git diff -- docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/01-e2e-validation-plan/test-plan.zh.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.md docs/iterations/v0.3-post-closeout/03-codex-autonomous-validation-plan/test-plan.zh.md
+git diff --check
+```
+
+跟进结果：默认 backend pytest 命令现在是在 `cd backend` 后使用 `.venv/bin/python`，
+与 `Makefile` 和 `dev-backend` 保持一致。由于本次只是 documentation-only 命令路径修正，
+没有运行 backend tests。
+
 ## 未解决 P1/P2/P3
 
 - P1：本轮文档创建未发现。
-- P2：本轮文档创建未发现。
+- P2：backend venv 命令路径跟进后未发现。
 - P3：本轮文档创建未发现。
 
 ## 最终评估

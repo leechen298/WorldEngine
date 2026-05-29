@@ -25,6 +25,8 @@
 
 本子包没有运行 package-local validation 命令。父级文档检查记录在 `../review.md`。
 
+Review 反馈后的跟进检查记录在 `../review.md`。
+
 ## 测试结果
 
 未运行。本包是验证计划，不执行 backend、frontend、E2E、API smoke、runtime、schema、
@@ -42,7 +44,8 @@ schema、frontend、fixture、migration 或 test behavior。
 ## 未解决 P1/P2/P3
 
 - P1：未发现。
-- P2：未发现。
+- P2：未发现。Review 跟进已把 `test-plan.md` 中默认 backend venv 命令从错误的父级
+  venv 路径修正为本仓库的 `backend/.venv` 约定。
 - P3：未发现。
 
 ## 最终评估

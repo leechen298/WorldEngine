@@ -26,6 +26,8 @@ See the parent `../review.md` for the full required-reading record.
 No package-local validation commands were run. Parent documentation checks are
 recorded in `../review.md`.
 
+Post-review follow-up checks are recorded in `../review.md`.
+
 ## Test Results
 
 Not run. This package is a validation plan and does not execute backend,
@@ -46,7 +48,9 @@ not write results and does not modify implementation files.
 ## Unresolved P1/P2/P3
 
 - P1: none identified.
-- P2: none identified.
+- P2: none identified. A review follow-up corrected the default backend venv
+  command path in `test-plan.md` from the wrong parent-level venv path to the
+  repository's `backend/.venv` convention.
 - P3: none identified.
 
 ## Final Assessment

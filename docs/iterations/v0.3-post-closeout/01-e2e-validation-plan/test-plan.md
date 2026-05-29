@@ -24,7 +24,7 @@ Backend deterministic checks:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests
+.venv/bin/python -m pytest app/tests
 ```
 
 If the repository's active backend venv path differs, record the actual command
@@ -34,21 +34,21 @@ Focused WorldSpec loader tests:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
+.venv/bin/python -m pytest app/tests/test_worldspec_loader.py
 ```
 
 Focused runtime context bridge tests:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+.venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
 ```
 
 Event API compatibility tests:
 
 ```bash
 cd backend
-../.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
+.venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
 ```
 
 API smoke checks:
