@@ -54,6 +54,10 @@ git rev-parse HEAD
 git status --short --branch
 make test-e2e
 git diff --check
+git rev-parse HEAD
+git status --short --branch
+make test-e2e
+git diff --check
 ```
 
 ## 测试结果
@@ -133,6 +137,16 @@ git diff --check
   `operation not permitted`。
 - 第六次 validation-fix `git diff --check` 在更新 validation docs 后退出码为
   `0`。
+- 第七次 validation-fix rerun `git rev-parse HEAD` 退出码为 `0`，并报告
+  `04ebbe50458e1845dba7104ed983fa89821ea417`。
+- 第七次 validation-fix rerun `git status --short --branch` 退出码为 `0`，报告
+  branch `v0.3-lcoal`，并显示 rerun 前只有
+  `docs/iterations/v0.2-post-closeout/findings.md` 已修改。
+- 第七次 validation-fix rerun `make test-e2e` 在 browser tests 执行前退出码为
+  `2`。Playwright web server 启动后无法绑定 `127.0.0.1:8000`，错误为
+  `operation not permitted`。
+- 第七次 validation-fix `git diff --check` 在更新 validation docs 后退出码为
+  `0`。
 - 更新 validation docs 前，`git diff --name-only` 退出码为 `0` 且无输出。
 - Concrete demo wording sweep 退出码为 `0`，只发现 boundary、future-scope 和
   historical references；没有 implementation change。
@@ -161,7 +175,8 @@ package reviews 以及 status/index documents，并同步 English 和 Chinese mi
   `5da27c7f051ec21ad01486df78dd35656447cfb6`，以及第四次 rerun 的
   `6e9c7897e054e898d0854516c754202c9e2f91a8` 和第五次 rerun 的
   `4a0c82ff74c30e86ef9b41b00f23fd7574b1fcde`，以及第六次 rerun 的
-  `36234a82a82eeab196404888c33dc178c38850c8` 复现同一 blocker；
+  `36234a82a82eeab196404888c33dc178c38850c8`，以及第七次 rerun 的
+  `04ebbe50458e1845dba7104ed983fa89821ea417` 复现同一 blocker；
   implementation 与 E2E-infrastructure changes 不属于本 package scope。
 - P3：无。
 
