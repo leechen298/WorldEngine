@@ -42,6 +42,10 @@ git rev-parse HEAD
 git status --short --branch
 make test-e2e
 git diff --check
+git rev-parse HEAD
+git status --short --branch
+make test-e2e
+git diff --check
 ```
 
 ## Test Results
@@ -93,6 +97,16 @@ git diff --check
   `127.0.0.1:8000` with `operation not permitted`.
 - Third validation-fix `git diff --check` exited `0` after validation doc
   edits.
+- Fourth validation-fix rerun `git rev-parse HEAD` exited `0` and reported
+  `6e9c7897e054e898d0854516c754202c9e2f91a8`.
+- Fourth validation-fix rerun `git status --short --branch` exited `0` and
+  reported branch `v0.3-lcoal` with only
+  `docs/iterations/v0.2-post-closeout/findings.md` modified before the rerun.
+- Fourth validation-fix rerun `make test-e2e` exited `2` before browser tests
+  executed. Playwright's web server started, then failed to bind
+  `127.0.0.1:8000` with `operation not permitted`.
+- Fourth validation-fix `git diff --check` exited `0` after validation doc
+  edits.
 - `git diff --name-only` exited `0` with no output before validation doc
   updates.
 - Concrete demo wording sweep exited `0` with boundary, future-scope, and
@@ -120,7 +134,8 @@ Chinese mirrors.
   backend server to `127.0.0.1:8000` in this execution context. Validation-fix
   reruns on commits `f1c99fc94f46b04e9286450bf0af7ebfb17253d3`,
   `9be4dc8d2d2696dadf625bd254386b0ad1b292d9`, and
-  `5da27c7f051ec21ad01486df78dd35656447cfb6` reproduced the same blocker;
+  `5da27c7f051ec21ad01486df78dd35656447cfb6`, plus the fourth rerun on
+  `6e9c7897e054e898d0854516c754202c9e2f91a8`, reproduced the same blocker;
   implementation and E2E-infrastructure changes are outside this package
   scope.
 - P3: none.
