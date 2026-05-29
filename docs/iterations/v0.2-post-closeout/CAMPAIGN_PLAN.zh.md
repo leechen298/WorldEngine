@@ -1,6 +1,6 @@
 # Campaign Plan
 
-状态：`campaign ready / unverified restart`
+状态：`campaign complete / passed`
 类型：Codex `/goal` campaign plan
 
 ## 目的
@@ -17,12 +17,13 @@ checkpoint 证据，以及明确停止条件。`GOAL_RUNNER.md` 是 goal runner�
 
 ## 当前重启位置
 
-本 campaign 已回退为 `unverified_restart`。
+本 campaign 正从 `unverified_restart` 的 reset 状态继续推进。
 
-历史 validation evidence 仍保留在 package reports 中，包括 2026-05-29 的
-`02-e2e-validation-execution` pass。该证据仅作为 archived evidence 供审计和对比。
-除非新的 `/goal` run 重新执行该 gate，或在对应 `review.md` 中带理由明确重新接受，
-否则它不能算作当前 campaign 的完成证据。
+历史 validation evidence 仍保留在 package reports 中。当前 `/goal` run 已重新执行
+`02-e2e-validation-execution`，并已接受
+`03-codex-autonomous-validation-plan`。`04-codex-autonomous-validation-execution`
+中的 independent Codex autonomous validation 已通过；campaign 现在路由到
+`05-final-validation-bundle` 并已关闭。
 
 ## Campaign Objective
 
@@ -45,11 +46,11 @@ checkpoint 证据，以及明确停止条件。`GOAL_RUNNER.md` 是 goal runner�
 
 | Order | Child package | Current status | Required exit before next child |
 |---|---|---|---|
-| 1 | `01-e2e-validation-plan` | `RESTART_READY` | `PACKAGE_COMPLETE`, `BLOCKED`, or `NEEDS_USER_INPUT` |
-| 2 | `02-e2e-validation-execution` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `PACKAGE_COMPLETE`, `PASSED_WITH_P3`, `BLOCKED`, `FAILED`, or `NEEDS_USER_INPUT` |
-| 3 | `03-codex-autonomous-validation-plan` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `PACKAGE_COMPLETE`, `BLOCKED`, or `NEEDS_USER_INPUT` |
-| 4 | `04-codex-autonomous-validation-execution` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `PACKAGE_COMPLETE`, `PASSED_WITH_P3`, `BLOCKED`, `FAILED`, or `NEEDS_USER_INPUT` |
-| 5 | `05-final-validation-bundle` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | final campaign status recorded |
+| 1 | `01-e2e-validation-plan` | `PACKAGE_COMPLETE` | current-campaign planning review 已重新接受 |
+| 2 | `02-e2e-validation-execution` | `PACKAGE_COMPLETE` | 当前 campaign 的 backend、API smoke、Playwright availability 和 host-capable E2E evidence 已通过 |
+| 3 | `03-codex-autonomous-validation-plan` | `PACKAGE_COMPLETE` | autonomous validation plan 已接受；本 package 未执行 autonomous validation |
+| 4 | `04-codex-autonomous-validation-execution` | `PACKAGE_COMPLETE` | independent Codex autonomous validation 已通过 |
+| 5 | `05-final-validation-bundle` | `PACKAGE_COMPLETE` | final campaign status 已记录为 `passed` |
 
 默认 campaign progression 只有在 active child 达到 `PACKAGE_COMPLETE`，或达到 next
 child contract 明确接受的状态后，才继续前进。遇到 `BLOCKED`、`FAILED`、
@@ -82,10 +83,15 @@ Workflow selection：
 | Autonomous validation | 运行 independent Codex review 和 required commands；记录 findings 和 recommendation；除非 contract 授权，否则不 repair implementation；close out。 |
 | Final validation bundle | 汇总 current evidence 和 findings disposition；只有解决 evidence conflict 或缺失 proof 时才 rerun；决定 final campaign result。 |
 
-Subagents 是可选的 review 或 worker tools，不是强制仪式。只有 independent review、
-parallel file inspection 或 evaluator feedback 能提升可靠性时才使用。不得用 subagents
-绕过 contract gates、在无 evidence 情况下写 final status，或把 scope 扩到 active
-child package 之外。
+对于 implementation-bearing 或 full child-package cycle 的 `/goal` development-mode
+child work，subagents 是 mandatory checkpoints。必须使用 `docs/iterations/AGENTS.md`
+中的 documentation / contract、implementation-scope、code-review、
+validation-evidence 和 closeout consistency checkpoints。
+
+Subagents 仍然不是形式主义仪式：不得用 subagents 绕过 contract gates、在无 evidence
+情况下写 final status，或把 scope 扩到 active child package 之外。只有 trivial
+docs-only edits 不影响任何 gate、contract、status、claim、automation route 或 mirror
+obligation 时，才可以跳过 subagents。
 
 campaign 可以多次循环 review、repair 和 verification。证据需要时可以调整所选 gates 的
 顺序，但不得用措辞跳过 required gate。
@@ -107,10 +113,9 @@ campaign 可以多次循环 review、repair 和 verification。证据需要时�
 
 ## Current Campaign Exit Criteria
 
-只有 `05-final-validation-bundle` 记录以下状态之一时，本 campaign 才算完成：
+本 campaign 已完成，`05-final-validation-bundle` 记录：
 
 - `passed`
-- `passed with P3`
 
 final bundle 必须汇总：
 

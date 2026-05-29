@@ -1,6 +1,6 @@
 # Validation Master Plan
 
-状态：`campaign ready / unverified restart`
+状态：`campaign complete / passed`
 类型：post-closeout goal campaign control plan
 
 ## 目的
@@ -19,13 +19,14 @@ validation 必须由 evidence 支撑，不能只从 release status 推断。
 
 截至 2026-05-29：
 
-- campaign 已回退为 `unverified_restart`。
-- `01-e2e-validation-plan` 是当前 active child package。
-- `02-e2e-validation-execution` 保留 2026-05-29 archived pass evidence，但它不是
-  当前 campaign completion evidence。
-- `03-codex-autonomous-validation-plan`、`04-codex-autonomous-validation-execution`
-  和 `05-final-validation-bundle` 在当前 campaign 中尚未执行。
-- `findings.md` 中 `v0.2-post-closeout-P2-001` 仍然 open。
+- campaign 正从 `unverified_restart` reset 状态继续推进。
+- `01-e2e-validation-plan` 在当前 campaign 中已完成。
+- `02-e2e-validation-execution` 已用当前 campaign 的 backend deterministic、API
+  smoke、Playwright availability 和 host-capable browser E2E evidence 完成。
+- `03-codex-autonomous-validation-plan` 在当前 campaign 中已完成。
+- `04-codex-autonomous-validation-execution` 在当前 campaign 中已完成。
+- `05-final-validation-bundle` 在当前 campaign 中已完成，final assessment 为 `passed`。
+- `findings.md` 中 `v0.2-post-closeout-P2-001` 已解决。
 
 ## 必读文件
 
@@ -75,7 +76,7 @@ full campaign mode。
 默认下一条路由是：
 
 ```text
-01-e2e-validation-plan campaign-restart
+campaign-complete
 ```
 
 用户点名某个 child package，或明确说不要运行 full campaign mode 时，仍可使用
@@ -147,7 +148,7 @@ API smoke 加 backend integration tests 作为 fallback validation line。
 
 ## v0.4 继续规则
 
-只有 final validation bundle 记录以下状态之一时，v0.4 才可继续：
+v0.4 可以继续，因为 final validation bundle 记录：
 
 - `passed`
 - `passed with P3`

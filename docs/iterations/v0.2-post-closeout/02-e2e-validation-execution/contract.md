@@ -1,6 +1,6 @@
 # Contract
 
-Status: archived evidence only / not executed in current campaign
+Status: package complete / passed current campaign
 
 ## Public Concepts
 

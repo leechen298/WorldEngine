@@ -1,15 +1,16 @@
 # Intent
 
-状态：`not executed`
+状态：package complete / passed current campaign
 
 ## 问题 / 目的
 
-autonomous validation plan 需要 execution template，把 independent review 与该 review
-质量验证分开。
+autonomous validation plan 需要一个 execution package，把 independent review 与该
+review 的质量验证分开。
 
 ## 为什么现在做
 
-后续 Codex reviewer 在 execution 开始前需要固定 report shape。
+当前 campaign 已接受 `03-codex-autonomous-validation-plan`；final validation bundle
+closeout 前需要 independent review result。
 
 ## 与 Roadmap 的关系
 
@@ -18,7 +19,7 @@ Agent-in-World behavior。
 
 ## 非目标
 
-- 本 documentation pass 不执行 autonomous validation。
+- 不在本 package 之外执行 autonomous validation。
 - 不修改 code。
 - 不把未运行 tests 标记为成功。
 

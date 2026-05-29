@@ -1,6 +1,6 @@
 # Test Plan
 
-Status: planned / ready for review
+Status: package complete / plan accepted current campaign
 
 ## Autonomous Reviewer Checks
 

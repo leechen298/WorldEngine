@@ -9,8 +9,8 @@
 
 current_mode: full_campaign_restart
 parent_package: v0.2-post-closeout
-parent_status: CAMPAIGN_READY
-campaign_verification_status: unverified_restart
+parent_status: CAMPAIGN_COMPLETE
+campaign_verification_status: passed
 v0.2_release_status: final / closeout complete
 reopens_v0.2_implementation: no
 implementation_changes_allowed: child_contract_controlled
@@ -20,27 +20,57 @@ one_sentence_goal: 完成 v0.2-post-closeout
 
 | Package | Current route status | Next action |
 |---|---|---|
-| `01-e2e-validation-plan` | `RESTART_READY` | 作为 child campaign 第一个 checkpoint 重新执行 planning review |
-| `02-e2e-validation-execution` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `01` 达到 `PACKAGE_COMPLETE` 后重新执行 |
-| `03-codex-autonomous-validation-plan` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `02` 达到 `PACKAGE_COMPLETE` 或记录 accepted blocker 后再 review-closeout |
-| `04-codex-autonomous-validation-execution` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | 仅在 `03` 达到 `PACKAGE_COMPLETE` 后执行 |
-| `05-final-validation-bundle` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | 仅在 `04` 达到 `PACKAGE_COMPLETE`、`BLOCKED` 或 `FAILED` 后填写 |
+| `01-e2e-validation-plan` | `PACKAGE_COMPLETE` | 当前 campaign 已重新接受 planning review |
+| `02-e2e-validation-execution` | `PACKAGE_COMPLETE` | 当前 campaign 的 backend、API smoke、Playwright availability 和 host-capable E2E evidence 已通过 |
+| `03-codex-autonomous-validation-plan` | `PACKAGE_COMPLETE` | autonomous validation plan 已接受；本 package 未执行 autonomous validation |
+| `04-codex-autonomous-validation-execution` | `PACKAGE_COMPLETE` | independent Codex autonomous validation 已通过 |
+| `05-final-validation-bundle` | `PACKAGE_COMPLETE` | final validation bundle 已通过；v0.4 可通过单独 review 的 package 继续 |
 
 ## 当前活动包
 
-active_package: 01-e2e-validation-plan
-next_action: restart-child-campaign-from-01
+active_package: none
+next_action: campaign-complete
 goal_mode: full_campaign
-handoff_target: 02-e2e-validation-execution
+handoff_target: campaign-final-status
+final_assessment: passed
 
 ## 证据策略
 
 evidence_package: 02-e2e-validation-execution
+current_status: passed
 archived_status: passed
 evidence_date: 2026-05-29
 evidence_branch: v0.3-lcoal
-evidence_commit: dbffa069a5e74b6b1e6b60719152922595c60df6
-current_campaign_counts_this_as_passed: no
+evidence_commit: be5a48e48d950b88501ba0e68a80d35ab6f011b6
+current_campaign_counts_this_as_passed: yes
+
+current_results:
+
+- backend deterministic: passed, 115 passed
+- API smoke: passed
+- Playwright availability: passed
+- configured browser E2E: passed, 6 passed
+- sandbox E2E attempt: 因 localhost bind permission 被阻断，随后已在
+  host-capable context 中重新执行
+
+planning_package: 03-codex-autonomous-validation-plan
+planning_status: accepted
+autonomous_validation_executed_in_03: no
+
+autonomous_validation_package: 04-codex-autonomous-validation-execution
+autonomous_validation_status: passed
+autonomous_validation_commit: be5a48e48d950b88501ba0e68a80d35ab6f011b6
+autonomous_validation_results:
+
+- focused WorldCell / WorldSpec: passed, 19 passed
+- focused event schema / API compatibility: passed, 12 passed
+- backend app deterministic: passed, 112 passed
+- active implementation demo / application-specific sweep: passed, no matches
+- implementation diff scope: passed, no output
+
+final_bundle_package: 05-final-validation-bundle
+final_bundle_status: passed
+v0.4_proceed_decision: may proceed to a separate reviewed v0.4 planning or iteration package
 
 archived_results:
 
@@ -62,8 +92,8 @@ historical_blockers:
 
 ## 已知未关闭 findings
 
-- `v0.2-post-closeout-P2-001`：中文镜像过于 English-heavy。
-  clean final closeout 前必须解决、带理由降级，或在 final bundle 中明确承接。
+- 当前 campaign 没有未关闭 finding。`v0.2-post-closeout-P2-001` 已通过重写
+  `01-e2e-validation-plan/README.zh.md` 的中文表达解决，同时保留必要技术标识。
 
 ## 冲突规则
 

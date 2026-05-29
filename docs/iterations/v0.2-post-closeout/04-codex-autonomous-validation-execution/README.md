@@ -1,17 +1,18 @@
 # Codex Autonomous Validation Execution
 
-Status: not executed
+Status: package complete / passed current campaign
 Type: autonomous validation execution template
 
 ## Goal
 
-Provide the execution and review template for an independent Codex validation
-run.
+Record the independent Codex validation run and verify that its review is
+evidence-bearing.
 
 ## Scope
 
-This package records the independent review and then checks whether that
-review is evidence-bearing.
+This package records the independent review and checks whether that review read
+required files, ran required commands or recorded blockers, checked release
+claims, checked concrete demo-world regression, and classified findings.
 
 ## Deliverables
 
@@ -28,4 +29,4 @@ review is evidence-bearing.
 
 ## Final Assessment State
 
-`not executed`
+`passed`

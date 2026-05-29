@@ -1,6 +1,6 @@
 # Final Validation Bundle
 
-Status: not executed
+Status: package complete / passed current campaign
 Type: final validation bundle template
 
 ## Goal
@@ -10,8 +10,9 @@ E2E / integration / API smoke and Codex autonomous validation have run.
 
 ## Scope
 
-This package is a template. It must not record a successful result until both
-validation lines have current-session evidence or recorded blockers.
+This package records the current campaign final validation result. Both
+validation lines have current campaign evidence: `02` passed backend / API /
+E2E validation, and `04` passed independent Codex autonomous validation.
 
 ## Deliverables
 
@@ -24,4 +25,4 @@ validation lines have current-session evidence or recorded blockers.
 
 ## Final Assessment State
 
-`not executed`
+`passed`

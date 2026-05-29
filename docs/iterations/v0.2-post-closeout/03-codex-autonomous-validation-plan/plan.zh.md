@@ -1,6 +1,6 @@
 # Plan
 
-状态：`planned / ready for review`
+状态：package complete / plan accepted current campaign
 
 ## 执行步骤
 
@@ -13,6 +13,7 @@
 7. 定义 unsupported-claim handling。
 8. 定义 final recommendation values。
 9. hand off 到 execution package。
+10. 记录本 package 没有执行 autonomous validation。
 
 ## 阶段边界
 
@@ -29,6 +30,6 @@
 - 省略 P1/P2/P3 classification。
 - 省略 concrete demo-world regression checks。
 
-## Review 更新步骤
+## 审查记录更新步骤
 
 用 documentation-only scope 和 final assessment 更新 `review.md`。

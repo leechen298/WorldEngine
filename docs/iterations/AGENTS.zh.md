@@ -101,6 +101,208 @@ package sequencing
 automation consumption contracts
 ```
 
+## Codex Plan-Mode Document Generation Standard
+
+当用户要求 `/plan`、要求先为 iteration documentation 制定计划，或提出会创建/修订多个
+`docs/iterations/` 文件的宽范围请求时，使用本标准。
+
+Plan-mode documentation work 必须先产出可 review 的 generation plan，再进行大规模起草。
+小型 docs-only change 的 plan 可以只出现在聊天回复中。新 version plan、新 iteration
+package、validation chain、goal campaign 或多文件重写，必须在 closeout 前把 plan 记录到
+对应的 `plan.md`、`CAMPAIGN_PLAN.md`、parent `vX.Y-plan.md` 或 package `review.md`
+中。
+
+generation plan 必须包含：
+
+```text
+Objective
+Authoritative inputs read
+Documentation type
+Files to create or update
+Files explicitly out of scope
+Required package status values
+Allowed changes
+Forbidden changes
+Review gates
+Verification commands
+Open questions or assumptions
+Stop conditions
+Handoff after plan approval
+```
+
+硬规则：
+
+- plan-mode documentation drafting 期间，不得修改 runtime、schema、API、frontend、
+  backend tests、fixtures、migrations 或 external repositories。
+- package documents 通过 review 且 review evidence 记录 approval 前，不得写
+  implementation-ready claims。
+- 不得只靠 memory 生成完整 package。必须先读取相关 roadmap、version plan、parent
+  package、current package docs，以及 governing `AGENTS.md` files。
+- 如果 plan 暴露 missing scope、contradictory status、missing required inputs 或
+  unclear implementation authorization，停止为 `NEEDS_USER_INPUT`，或在 `review.md`
+  中记录 blocker。
+- 如果用户只要求 `/plan`，除非用户明确授权 drafting 或 execution，否则产出 plan 后停止。
+- 如果用户用 `/goal` 要求完成 package，goal 可以在同一个 goal 内执行选中的 plan-mode
+  gates，但 plan 和 gates 仍必须在 package docs 或 review evidence 中可见。
+- plan 必须绑定 active package。除非 parent plan 明确拥有该 scope，不要包含 adjacent
+  future versions 或 convenient follow-on work。
+
+## Concept Learning / Research Synthesis Gate
+
+当 iteration work 依赖陌生概念、密集 source material、research paper、course、external
+framework，或 active package 尚未解释清楚的 internal design area 时，使用本 gate。
+
+输出必须是 durable、reviewable artifact，而不只是临时聊天记录。如果 learning result
+需要支撑后续 implementation 或 review，应写入 active package 的 `plan.md`、
+`technical-design.md`、`review.md`，或 package-local `notes/*.md` 文件。
+
+learning report 必须包含：
+
+```text
+Learning objective
+Sources read
+Source reliability / authority
+Glossary and prerequisite concepts
+Concept walkthrough
+Evidence table mapping claims to sources
+Diagrams when they clarify the concept
+Claims from the source material
+Agent interpretation / synthesis
+Caveats and weak evidence
+Open questions
+Follow-up reading or experiments
+Impact on the active package
+```
+
+硬规则：
+
+- 区分 source material 的 claims 和 agent 自己的 inference。
+- 尽可能引用 source section、heading、page、figure、table、file 或 symbol。
+- 如果无法取得精确 page 或 figure references，必须说明，并使用最精确可得的 section、
+  heading、file 或 symbol reference。
+- 当 evidence weak 或 disputed 时，不得把 paper、course、external article、generated
+  summary 或 subagent output 当作 ground truth。
+- concept map、method flow 和 evidence map 默认优先使用 Markdown-native Mermaid
+  diagrams。只有 Markdown-native diagram 不足且 active package 允许该 asset 时，才使用
+  generated 或 binary visual assets。
+- 不得只基于 learning report 实现代码。Implementation 仍必须经过正常 iteration
+  package contract、design、test plan 和 review gates。
+
+密集材料的 subagent 拆分：
+
+- 一个 subagent 可以梳理 problem statement、contribution、method、evidence、
+  limitations 和 claimed results。
+- 一个 subagent 可以从 approved sources 收集 prerequisite context。
+- 一个 subagent 可以检查 figures、tables、notation、algorithms、code paths 或需要谨慎验证的
+  claims。
+- 一个 subagent 可以作为 skeptical reviewer，识别 unsupported claims、missing
+  baselines、unclear assumptions 或 follow-up questions。
+
+main agent 必须等待被请求的 subagents，调和 contradictions，并写出最终 learning report。
+不要把割裂的 subagent notes 直接粘成 final artifact。
+
+## Goal Development Campaign Subagent Gate
+
+WorldEngine `/goal` development campaigns 必须使用 independent subagent 或 evaluator
+checkpoints。适用范围包括 goal campaign、full child-package cycle、code package、mixed
+package、migration、refactor、deployment retry loop，或会改变 runtime behavior、
+schemas、APIs、frontend behavior、backend tests、fixtures、migrations 或 release
+claims 的 implementation-bearing validation repair。
+
+本 gate 把 Codex follow-goals 行为适配到本仓库的 iteration model：
+
+- North Star 和 scope boundaries 优先。
+- active iteration package 是唯一 implementation scope。
+- Documentation、contract、design、test-plan 和 review gates 仍控制 implementation
+  authorization。
+- runtime claims 必须有 current-session command evidence。
+- closeout 仍必须有 changed-file consistency 和 `review.md` evidence。
+- main agent 负责 synthesis、verification、final status 和 conflict resolution。
+
+implementation-bearing child packages 的必跑 checkpoints：
+
+1. 记录 `implementation_authorized: yes` 前，运行 documentation / contract evaluator。
+2. 文件修改后、broad verification 前，运行 implementation-scope evaluator。
+3. focused tests 后、E2E、API smoke、autonomous validation 或 final status 前，运行
+   code-review subagent 或 evaluator。
+4. 把 tests、E2E、API smoke、autonomous validation、deployment 或 release claims 标记为
+   passed 前，运行 validation-evidence evaluator。
+5. package `review.md` 写入最终 route status 前，运行 closeout consistency review。
+
+documentation-only goal campaign children 的必跑 checkpoints：
+
+- 当 child 修改 process rules、goal routing、evidence rules、package sequencing、
+  validation templates、release status、automation-consumption contracts，或 English /
+  Chinese mirror obligations 时，必须运行 read-only documentation evaluator。
+- 只有 trivial text-only edits 不影响任何 gate、contract、status、claim 或 automation
+  route 时，才可以跳过 subagents。
+
+失败处理：
+
+- 如果 required `/goal` development checkpoint 中 subagent tooling 不可用，记录为
+  `BLOCKED` 或 `NEEDS_USER_INPUT`；不得静默降级成 optional。
+- 如果 required subagent 或 evaluator 返回 P0 / P1 findings，必须修复或在 closeout
+  前停止。
+- 如果 P2 findings 仍存在，必须 fix、带理由 downgrade、仅在 package contract 允许时
+  carry，或在 clean pass 前停止。
+- 如果 subagent output 与 source files、command evidence 或 git state 冲突，main
+  agent 必须用 authoritative evidence 解决冲突后才能写 final status。
+
+## Subagent / Evaluator Use Standard
+
+只有当用户明确要求 subagents / parallel agent work，或 active package 的
+`GOAL_RUNNER.md`、contract 或 plan 明确授权时，iteration work 才允许使用 subagents。
+Subagents 是 review、evaluation、exploration 和可清晰拆分的 worker tasks 的可选工具。
+它不是强制仪式，也不放宽 package gates。
+
+对于 `/goal` development campaigns，上面的 Goal Development Campaign Subagent Gate
+就是 explicit authorization，并且其中列出的 checkpoints 是 mandatory。
+
+当 subagents 能实质提升可靠性时使用，例如：
+
+- 学习或总结陌生、密集的 source material。
+- 对范围较大或风险较高的 documentation changes 做 independent review。
+- 对 implementation-bearing packages 做 code review。
+- 做 compatibility、scope、security、release-claim 或 evidence-honesty checks。
+- 做 English / Chinese mirror quality checks。
+- 做 autonomous validation 或 black-box validation review。
+- 并行检查彼此独立的 files 或 subsystems。
+
+默认模式：
+
+- Subagents 默认是 read-only evaluators。
+- 优先把 subagents 用于 read-heavy exploration、tests、triage、log analysis、
+  learning reports 和 summarization。
+- 谨慎使用 parallel write-heavy workflows，因为并发编辑会制造 conflicts 和 coordination
+  overhead。
+- 只有 active package contract 明确允许 worker implementation，且 main agent 已记录
+  delegation 为什么属于 scope 内时，subagent 才可以编辑文件。
+- 除非 active contract 明确授权对应 file class，否则 subagents 不得修改 runtime、
+  schema、API、frontend、backend tests、fixtures、migrations、external repositories
+  或 out-of-scope documents。
+
+Main-agent responsibilities：
+
+- dispatch 前定义每个 subagent 的 scope、inputs 和 expected output。
+- 说明 main agent 是否必须等待所有 subagents 再继续。
+- 保持 subagent tasks 在 active package 和 current goal 内。
+- 汇总结果，不要把割裂的 subagent output 直接粘成 final status。
+- 将 subagent findings 分类为 P0 / P1 / P2 / P3。
+- 对每个 P0 / P1 / P2 finding，必须 fix、带理由 downgrade、在允许时 carry，或记录为
+  blocker。
+- 用 current-session evidence 验证任何 claimed fix 或 pass。
+- 在 `review.md` 中记录 material subagent reviews，包括 reviewed scope、findings、
+  commands run or not run，以及 unresolved risks。
+
+Hard stops：
+
+- 如果 subagent 报告无法在 active contract 内修复的 P0 / P1，停止为 `BLOCKED`、
+  `FAILED` 或 `NEEDS_USER_INPUT`。
+- 如果 subagent output 与 source files、command evidence 或 actual git state 冲突，
+  closeout 前以当前 source/evidence 为准解决冲突。
+- 不得使用 subagents 绕过 review gates、implementation authorization、Closeout
+  Consistency Gate 或 evidence requirements。
+
 ## Required Content For Each Package File
 
 每个 package 文件都必须具体到可以 review。只有占位标题不够。

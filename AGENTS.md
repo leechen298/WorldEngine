@@ -40,6 +40,21 @@ When creating or modifying files under `docs/iterations/`, also read
 plans, planned packages, iteration packages, validation plans, evidence, and
 review documentation.
 
+For broad documentation generation requests, especially `/plan`-style prompts
+or requests to create multiple iteration files, follow the Codex Plan-Mode
+Document Generation Standard in `docs/iterations/AGENTS.md` before drafting the
+documents.
+
+Codex may use subagents only when the user explicitly asks for subagents /
+parallel agent work or when the active package `GOAL_RUNNER.md`, contract, or
+plan explicitly authorizes them. Subagent work must stay inside the active
+package scope, obey the same git safety and evidence rules, and remain
+subordinate to the main agent, which owns synthesis, verification, and final
+status. For `/goal` development campaigns, subagent / evaluator checkpoints are
+required by the iteration rules before implementation-bearing child packages
+can close out. Detailed subagent and learning-report rules for iteration work
+live in `docs/iterations/AGENTS.md`.
+
 When the user says `完成 <iteration-package>` or `complete
 <iteration-package>`, first locate the matching package under
 `docs/iterations/**/<iteration-package>/`. If that package contains

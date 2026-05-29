@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Plan
 
-Status: restart ready
+Status: package complete / planning re-accepted
 Type: validation planning
 
 ## Goal
@@ -59,5 +59,6 @@ configured or blocked. Do not convert that into a successful result.
 
 ## Final Assessment State
 
-Restart ready. No current-campaign validation execution has happened in this
-package.
+Package complete for the current campaign. This package remains planning-only;
+no validation execution happened here. `02-e2e-validation-execution` now owns
+the next current-campaign checkpoint.

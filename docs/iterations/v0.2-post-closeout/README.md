@@ -1,6 +1,6 @@
 # v0.2 Post-Closeout Goal Campaign
 
-Status: campaign ready / unverified restart
+Status: campaign complete / passed
 Type: goal campaign package
 
 ## Goal
@@ -55,13 +55,13 @@ That evidence remains archived for audit, but this package has been reset to
 start from the beginning of the child sequence instead of inheriting earlier
 completion claims.
 
-The active restart sequence is:
+The active restart sequence is now:
 
-1. rerun / re-accept `01-e2e-validation-plan`;
-2. rerun `02-e2e-validation-execution`;
-3. review-closeout `03-codex-autonomous-validation-plan`;
-4. execute `04-codex-autonomous-validation-execution`;
-5. fill `05-final-validation-bundle`.
+1. `01-e2e-validation-plan` is re-accepted as `PACKAGE_COMPLETE`;
+2. `02-e2e-validation-execution` has passed with current-campaign evidence;
+3. `03-codex-autonomous-validation-plan` has been accepted for handoff;
+4. `04-codex-autonomous-validation-execution` has passed;
+5. `05-final-validation-bundle` has passed and closed the campaign.
 
 Use `CURRENT_STATE.md` as the current route source, `GOAL_RUNNER.md` as the
 execution state machine, and `CAMPAIGN_PLAN.md` as the campaign-level child
@@ -86,11 +86,11 @@ validation rules defined in `docs/iterations/AGENTS.md` as files under
 
 | Package | Type | Status | Purpose |
 |---|---|---|---|
-| `01-e2e-validation-plan` | validation-planning | restart ready | Define / re-accept v0.2 post-closeout E2E, integration, and API smoke validation scope. |
-| `02-e2e-validation-execution` | validation-execution | not executed in current campaign | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
-| `03-codex-autonomous-validation-plan` | validation-planning | not executed in current campaign | Define independent Codex autonomous validation scope. |
-| `04-codex-autonomous-validation-execution` | validation-execution | not executed in current campaign | Execute independent Codex autonomous validation. |
-| `05-final-validation-bundle` | validation-bundle | not executed in current campaign | Summarize final v0.2 post-closeout validation result. |
+| `01-e2e-validation-plan` | validation-planning | package complete / planning re-accepted | Define / re-accept v0.2 post-closeout E2E, integration, and API smoke validation scope. |
+| `02-e2e-validation-execution` | validation-execution | package complete / passed current campaign | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
+| `03-codex-autonomous-validation-plan` | validation-planning | package complete / plan accepted | Define independent Codex autonomous validation scope. |
+| `04-codex-autonomous-validation-execution` | validation-execution | package complete / passed current campaign | Execute independent Codex autonomous validation. |
+| `05-final-validation-bundle` | validation-bundle | package complete / passed current campaign | Summarize final v0.2 post-closeout validation result. |
 
 ## Result States
 
@@ -161,5 +161,8 @@ Forbidden:
 
 ## Final Assessment State
 
-The campaign is ready to be run by Codex App `/goal`, but it is not currently
-validated. `CURRENT_STATE.md` is reset to start from `01-e2e-validation-plan`.
+The Codex App `/goal` campaign is complete. Final assessment: `passed`.
+
+v0.4 may proceed only through a separate reviewed v0.4 planning or iteration
+package. This package does not reopen v0.2 implementation and does not change
+v0.2 release status.

@@ -1,14 +1,14 @@
 # Final Validation Bundle
 
-Status: not executed
+Status: passed
 
 ## Metadata
 
-- Reviewed branch:
-- Reviewed commit:
-- Bundle date:
-- Bundle reviewer:
-- Final assessment: `not executed`
+- Reviewed branch: `v0.3-lcoal`
+- Reviewed commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+- Bundle date: 2026-05-29
+- Bundle reviewer: Codex current `/goal` campaign
+- Final assessment: `passed`
 
 Allowed final assessment values:
 
@@ -21,65 +21,112 @@ Allowed final assessment values:
 ## E2E / Integration Result
 
 - Source: `../02-e2e-validation-execution/e2e-validation-report.md`
-- Result: `not executed`
-- Evidence summary:
-- Blockers:
+- Result: `passed`
+- Evidence summary: host-capable `make test-e2e` exited `0` with `6 passed`;
+  Playwright availability passed; the sandbox bind blocker was recorded and
+  resolved by the host-capable rerun.
+- Blockers: none unresolved.
 
 ## API Smoke Result
 
-- Result: `not executed`
-- Evidence summary:
-- Blockers:
+- Result: `passed`
+- Evidence summary: current campaign API smoke returned `200 code=0` for
+  health, runtime state, runtime step, world events, event steps, params get /
+  apply, snapshots, and summaries.
+- Blockers: none.
 
 ## Backend Deterministic Result
 
-- Result: `not executed`
-- Evidence summary:
-- Blockers:
+- Result: `passed`
+- Evidence summary: `cd backend && .venv/bin/python -m pytest tests app/tests -q`
+  exited `0` with `115 passed`; independent Codex review also ran
+  `cd backend && .venv/bin/python -m pytest app/tests -q`, which exited `0`
+  with `112 passed`.
+- Blockers: none.
 
 ## Codex Autonomous Validation Result
 
 - Source: `../04-codex-autonomous-validation-execution/codex-autonomous-review.md`
-- Result: `not executed`
-- Evidence summary:
-- Blockers:
+- Result: `passed`
+- Evidence summary: independent reviewer read required files, ran required
+  commands, passed focused WorldCell / WorldSpec tests (`19 passed`), focused
+  event compatibility tests (`12 passed`), backend app tests (`112 passed`),
+  release-claim checks, boundary sweeps, active implementation sweep, and
+  implementation diff scope check.
+- Blockers: none.
 
 ## Release Claim Check
 
-- Result: `not executed`
+- Result: `passed`
 - Claims checked:
-- Unsupported claims:
+  - v0.2 remains `final / closeout complete`.
+  - v0.2 known limitations and future-scope items remain documented.
+  - v0.2 does not claim product UI, WorldSpec runtime loading, WorldCell
+    execution, demo-specific runtime behavior, or external repository
+    ownership.
+  - v0.2 evidence claims are backed by current command evidence.
+- Unsupported claims: none.
 
 ## Compatibility Review
 
-- Result: `not executed`
-- API compatibility:
-- Schema compatibility:
-- Runtime compatibility:
-- Event compatibility:
-- Legacy path compatibility:
+- Result: `passed`
+- API compatibility: current API smoke passed in `02`; event API compatibility
+  tests passed in `04`.
+- Schema compatibility: focused WorldCell / WorldSpec and event schema tests
+  passed in `04`; additive schema expectations remain supported.
+- Runtime compatibility: backend deterministic suites passed in `02` and `04`.
+- Event compatibility: empty refs remain omitted for legacy API shape and
+  non-empty refs are included; focused compatibility tests passed.
+- Legacy path compatibility: `backend/worldengine` has no current diff and
+  remains legacy.
 
 ## Concrete Demo-World Regression Check
 
-- Result: `not executed`
-- Files checked:
-- Findings:
+- Result: `passed`
+- Files checked: `docs/releases/v0.2.md`, `docs/iterations/v0.2/**`,
+  `docs/scope-boundaries.md`, `docs/external-fixture-boundary.md`,
+  `backend/app`, `frontend`.
+- Findings: broad docs sweeps found only boundary, future-scope, historical, or
+  audit wording. Active implementation sweeps over `backend/app` and
+  `frontend` had no matches. No runtime, fixture, frontend, backend
+  implementation, or backend test file changed during validation.
 
 ## Unresolved P1/P2/P3
 
-- P1: none recorded.
-- P2: none recorded.
-- P3: none recorded.
+- P1: none.
+- P2: none.
+- P3: none.
 
-## Blockers
+`findings.md` contains only resolved rows. `v0.2-post-closeout-P2-001` was
+resolved by rewriting `01-e2e-validation-plan/README.zh.md` into natural
+Chinese. Old `02` E2E bind findings are resolved by the current campaign
+host-capable rerun on commit `be5a48e48d950b88501ba0e68a80d35ab6f011b6` while
+preserving earlier rerun evidence as historical.
 
-- None recorded in the template initial state.
+## Worktree / Staging Hygiene
+
+- Current changed files are documentation and governing rule files.
+- No current diff exists under `backend/app`, `frontend`, `backend/tests`,
+  `backend/app/tests`, or `backend/worldengine`.
+- `AGENTS.md`, `AGENTS.zh.md`, `docs/iterations/AGENTS.md`, and
+  `docs/iterations/AGENTS.zh.md` are user / governance-rule changes that the
+  campaign read and followed.
+- The untracked `docs/iterations/v0.2-post-closeout.zip` pre-existed this
+  campaign work and is not required for validation closeout.
 
 ## Whether v0.4 May Proceed
 
-- Decision: not decided.
-- Reason: validation not executed.
+- Decision: v0.4 may proceed to a separate reviewed v0.4 planning or iteration
+  package.
+- Reason: v0.2 remains final / closeout complete, both validation lines passed
+  with current campaign evidence, and no unresolved P1/P2/P3 validation
+  finding remains.
 
 ## Final Assessment
 
-`not executed`
+`passed`
+
+The current `v0.2-post-closeout` goal campaign is complete. It provides current
+backend / API / E2E evidence, independent Codex autonomous validation evidence,
+resolved findings, compatibility and scope review, and a clear v0.4 proceed
+decision without changing runtime implementation or v0.2 release status.

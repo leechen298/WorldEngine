@@ -1,6 +1,6 @@
 # Validation Master Plan
 
-Status: campaign ready / unverified restart
+Status: campaign complete / passed
 Type: post-closeout goal campaign control plan
 
 ## Purpose
@@ -20,13 +20,17 @@ exit criteria live in `CAMPAIGN_PLAN.md`.
 
 As of 2026-05-29:
 
-- The campaign has been reset to `unverified_restart`.
-- `01-e2e-validation-plan` is the active child package.
-- `02-e2e-validation-execution` has archived 2026-05-29 pass evidence, but it
-  is not current campaign completion evidence.
-- `03-codex-autonomous-validation-plan`, `04-codex-autonomous-validation-execution`,
-  and `05-final-validation-bundle` are not executed in the current campaign.
-- `v0.2-post-closeout-P2-001` remains open in `findings.md`.
+- The campaign is running from the `unverified_restart` reset.
+- `01-e2e-validation-plan` is complete for the current campaign.
+- `02-e2e-validation-execution` is complete for the current campaign with
+  backend deterministic, API smoke, Playwright availability, and host-capable
+  browser E2E evidence.
+- `03-codex-autonomous-validation-plan` is complete for the current campaign.
+- `04-codex-autonomous-validation-execution` is complete for the current
+  campaign.
+- `05-final-validation-bundle` is complete for the current campaign with final
+  assessment `passed`.
+- `v0.2-post-closeout-P2-001` is resolved in `findings.md`.
 
 ## Required Reading
 
@@ -78,7 +82,7 @@ Codex should run full campaign mode according to `GOAL_RUNNER.md`,
 The default next route is:
 
 ```text
-01-e2e-validation-plan campaign-restart
+campaign-complete
 ```
 
 Single child mode is still allowed when the user names one child package or
@@ -154,8 +158,7 @@ validation line.
 
 ## v0.4 Proceed Rule
 
-v0.4 may proceed only if the final validation bundle records one of these
-states:
+v0.4 may proceed because the final validation bundle records:
 
 - `passed`
 - `passed with P3`

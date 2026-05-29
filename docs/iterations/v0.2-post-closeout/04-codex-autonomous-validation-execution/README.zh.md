@@ -1,15 +1,17 @@
 # Codex Autonomous Validation Execution
 
-状态：`not executed`
+状态：package complete / passed current campaign
 类型：autonomous validation execution template
 
 ## 目标
 
-为 independent Codex validation run 提供 execution 和 review template。
+记录 independent Codex validation run，并验证这份 review 是否有 evidence 支撑。
 
 ## 范围
 
-本 package 记录 independent review，然后检查该 review 是否具备 evidence。
+本 package 记录 independent review，并检查该 review 是否读取 required files、运行 required
+commands 或记录 blockers、检查 release claims、检查 concrete demo-world regression，并分类
+findings。
 
 ## 交付物
 
@@ -26,4 +28,4 @@
 
 ## 最终评估状态
 
-`not executed`
+`passed`

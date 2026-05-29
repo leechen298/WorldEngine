@@ -1,24 +1,23 @@
 # E2E / Integration / API Smoke Validation Report
 
-状态：`passed`（campaign reset 后仅作为 archived evidence）
+状态：`passed`（current campaign evidence）
 
 重开说明：下方 2026-05-28 evidence 作为 historical evidence 保留。该次运行到达
 `blocked`，因为旧 validation execution context 无法绑定 configured localhost
 backend port。2026-05-29 在 `agent-iter` validation stages 已支持 host-capable
 localhost binding 后，本 package 被重开。
 
-当前 campaign 说明：`unverified_restart` 之后，本 report 是 historical evidence。
-除非新的 `/goal` run 重新执行本 package，或在 `review.md` 中带理由明确重新接受该
-evidence，否则它不算当前 campaign completion。
+当前 campaign 说明：当前 `/goal` run 已在 2026-05-29 重新执行本 package。
+本 report 现在计入 `02-e2e-validation-execution` 的当前 campaign evidence。
 
 ## 元数据
 
 - Reviewed branch：`v0.3-lcoal`
-- Reviewed commit：`dbffa069a5e74b6b1e6b60719152922595c60df6`
+- Reviewed commit：`be5a48e48d950b88501ba0e68a80d35ab6f011b6`
 - Execution date：2026-05-29
 - Executor：Codex F
 - Previous final assessment：`blocked`
-- Current final assessment：`archived evidence only`
+- Current final assessment：`passed`
 
 允许的 final assessment values：
 
@@ -30,9 +29,14 @@ evidence，否则它不算当前 campaign completion。
 
 ## 当前执行摘要
 
-2026-05-29 host-capable rerun 已解除此前 browser E2E localhost bind blocker。
-Backend deterministic checks、API smoke、Playwright availability 和 configured
-browser E2E 都有 current-session command evidence，且均通过。
+当前 2026-05-29 rerun 记录了本 goal 产生的 docs-only working-tree changes，且
+backend / frontend implementation 和 test paths 没有 diff。Backend deterministic
+checks、API smoke、Playwright availability 和 configured browser E2E 都有
+current-session command evidence，且均通过。
+
+默认沙箱里的第一次 `make test-e2e` 尝试复现了 localhost bind blocker：
+`127.0.0.1:8000` 上报 `operation not permitted`。随后 host-capable rerun 成功绑定
+backend，并通过全部 configured browser E2E tests。
 
 ## 已读取文件
 
@@ -52,6 +56,24 @@ browser E2E 都有 current-session command evidence，且均通过。
 
 | Command | Purpose | Exit code | Result | Notes |
 |---|---|---:|---|---|
+| `git status --short --branch` | 记录当前 campaign branch 和 worktree state | 0 | passed | branch 为 `v0.3-lcoal`；modified files 是 docs/rule files 和当前 `v0.2-post-closeout` docs；untracked `docs/iterations/v0.2-post-closeout.zip` 仍是无关文件。 |
+| `git rev-parse HEAD` | 记录当前 campaign commit | 0 | passed | 输出：`be5a48e48d950b88501ba0e68a80d35ab6f011b6`。 |
+| `git diff --check` | 当前 validation report 编辑前的 documentation 与 whitespace check | 0 | passed | 无输出。 |
+| `test -f docs/releases/v0.2.md && test -f docs/iterations/v0.2/evidence-index.md && test -f docs/iterations/v0.2/compatibility-review.md && test -f docs/iterations/v0.2/boundary-audit.md` | 必需 v0.2 evidence docs 存在性检查 | 0 | passed | 无输出。 |
+| `find backend/app/api/routes -maxdepth 1 -type f -name '*.py' -print \| sort` | Inspect configured backend API route files | 0 | passed | 找到 `__init__`、health、runtime、world、world_params、archive、world_agent route files。 |
+| `make check-backend` | Backend dependency availability | 0 | passed | 无输出。 |
+| `make check-frontend` | Frontend dependency availability | 0 | passed | 无输出。 |
+| `rg -n "final / closeout complete\|0\.2\.12 verification is documentation-only\|does not rerun" docs/releases/v0.2.md` | Release status 和 limitation wording check | 0 | passed | 找到 `Status: final / closeout complete` 以及 documentation-only verification limitation lines。 |
+| `test -f frontend/playwright.config.ts && test -f frontend/package.json` | E2E config file existence check | 0 | passed | 无输出。 |
+| `cd backend && .venv/bin/python -m pytest tests app/tests -q` | Backend deterministic checks | 0 | passed | `115 passed in 0.89s`。 |
+| `cd backend && .venv/bin/python - <<'PY' ...` | 使用 registered safe params payload 的 API smoke | 0 | passed | `GET /health`、`GET /runtime/state`、`POST /runtime/step`、`GET /world/events`、`GET /world/event-steps`、`GET /world/params`、`POST /world/params/apply`、`GET /world/snapshots` 和 `GET /world/summaries` 均返回 `200 code=0`。 |
+| `cd frontend && pnpm exec playwright --version && pnpm exec playwright install --dry-run chromium` | E2E framework 和 browser availability check | 0 | passed | Playwright `1.60.0`；Chromium、headless shell 和 FFmpeg install targets 均可解析。 |
+| `make test-e2e` | 默认沙箱内 configured browser E2E suite | 2 | blocked then rerun host-capable | Backend web server 绑定 `127.0.0.1:8000` 失败，错误为 `operation not permitted`；本次 sandbox attempt 没有执行 browser tests。 |
+| `make test-e2e` | Host-capable configured browser E2E suite | 0 | passed | Backend 成功绑定 `127.0.0.1:8000`；configured browser E2E 结果为 `6 passed (7.2s)`。 |
+| `git diff --name-only` | 记录当前 changed-file set | 0 | passed | 输出仅包含 docs/rule files 和 `v0.2-post-closeout` docs。 |
+| `rg -n -i 'demo[- ]world\|concrete demo\|application-specific backend\|seed data\|story rules\|characters\|locations\|resources' docs/releases/v0.2.md docs/iterations/v0.2 docs/scope-boundaries.md docs/external-fixture-boundary.md backend/app frontend --glob '!frontend/node_modules/**' --glob '!test-results/**'` | Boundary wording / concrete demo regression sweep | 0 | passed | Matches 均为 boundary、future-scope 和 historical references。 |
+| `rg -n -i 'demo[- ]world\|concrete demo\|application-specific backend\|seed data\|story rules\|characters\|locations\|resources' backend/app frontend --glob '!frontend/node_modules/**' --glob '!test-results/**'` | Active implementation concrete demo regression sweep | 1 | passed | 无匹配。 |
+| `git diff --name-only -- backend/app frontend backend/tests backend/app/tests` | 确认当前 validation 没有修改 implementation 或 tests | 0 | passed | 无输出。 |
 | `git status --short --branch && git rev-parse HEAD` | 记录 host-capable rerun 的 reviewed branch 和 commit | 0 | passed | 输出：`## v0.3-lcoal`；commit `dbffa069a5e74b6b1e6b60719152922595c60df6`。 |
 | `git diff --check` | validation docs 编辑前的 documentation 与 whitespace check | 0 | passed | 无输出。 |
 | `test -f docs/releases/v0.2.md && test -f docs/iterations/v0.2/evidence-index.md && test -f docs/iterations/v0.2/compatibility-review.md && test -f docs/iterations/v0.2/boundary-audit.md` | 必需 v0.2 evidence docs 存在性检查 | 0 | passed | 无输出。 |
@@ -107,7 +129,8 @@ browser E2E 都有 current-session command evidence，且均通过。
 
 ## 未运行检查
 
-当前 2026-05-29 host-capable rerun：无。
+当前 2026-05-29 campaign rerun：无。Sandbox E2E attempt 被阻断，但 required
+host-capable rerun 已完成并通过。
 
 历史 2026-05-28 blocked run：
 
@@ -122,7 +145,7 @@ browser E2E 都有 current-session command evidence，且均通过。
 | v0.2 closeout status remains final / complete | `docs/releases/v0.2.md` 写明 `Status: final / closeout complete`。 | passed | 无 |
 | v0.2 does not claim product UI | `docs/releases/v0.2.md` 写明 v0.2 不提供 product client，并把 product UI 列为 future scope。 | passed | 无 |
 | v0.2 does not claim WorldSpec runtime loading | `docs/releases/v0.2.md` 写明 v0.2 不把 WorldSpec 加载到 runtime，并把 loader/runtime bridge 列为 future scope。 | passed | 无 |
-| v0.2 preserves existing runtime behavior | Backend tests 已通过；API smoke 覆盖 runtime state、step、events、event steps、params、snapshots 和 summaries；browser E2E 6 个 tests 已通过。 | passed | 无 |
+| v0.2 preserves existing runtime behavior | Backend tests 已通过；API smoke 覆盖 runtime state、step、events、event steps、params、snapshots 和 summaries；host-capable browser E2E 6 个 tests 已通过。 | passed | 无 |
 
 ## Compatibility Findings
 
@@ -144,14 +167,17 @@ browser E2E 都有 current-session command evidence，且均通过。
   `backend/app`、`frontend`
 - Result：passed；未观察到 runtime implementation regression。
 - Finding：wording sweep 只发现 boundary、future-scope 和 historical references。
-  更新 report 前 `git diff --name-only` 无输出，因此 validation 期间没有修改
-  runtime、fixture、frontend 或 backend implementation files。
+  对 `backend/app` 与 `frontend` 的 active implementation sweep 无匹配；`git diff
+  --name-only -- backend/app frontend backend/tests backend/app/tests` 无输出。因此
+  validation 期间没有修改 runtime、fixture、frontend、backend implementation 或
+  test files。
 
 ## 未解决 P1/P2/P3
 
 - P1：无。
-- P2：无。历史 browser E2E bind blocker 已由 2026-05-29 host-capable rerun
-  解除；`make test-e2e` 退出码为 `0`，结果为 `6 passed`。
+- P2：无。Sandbox browser E2E bind blocker 已由 2026-05-29 host-capable rerun
+  为 required evidence 解除；`make test-e2e` 退出码为 `0`，结果为
+  `6 passed (7.2s)`。
 - P3：无。
 
 ## 最终评估
@@ -159,6 +185,6 @@ browser E2E 都有 current-session command evidence，且均通过。
 `passed`
 
 Backend deterministic checks、API smoke、Playwright availability 和 configured
-browser E2E 均已用 current-session evidence 证明通过。历史 browser E2E bind
-blocker 仍作为 prior evidence 保留在上文，但对本次 host-capable validation run
-不再是 unresolved blocker。
+browser E2E 均已用 current-session evidence 证明通过。Sandbox browser E2E bind
+blocker 仍作为 environment evidence 保留在上文，但对本次 host-capable validation
+run 不再是 unresolved blocker。

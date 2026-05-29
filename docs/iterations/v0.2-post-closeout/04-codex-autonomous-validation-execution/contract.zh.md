@@ -1,6 +1,6 @@
 # Contract
 
-状态：`not executed`
+状态：package complete / passed current campaign
 
 ## Public concepts
 
@@ -11,12 +11,15 @@
 
 ## 允许修改
 
-后续 execution pass 期间更新：
+执行期间更新：
 
 - `codex-autonomous-review.md`
 - `codex-autonomous-review.zh.md`
 - `review.md`
 - `review.zh.md`
+
+同时更新 `GOAL_RUNNER.md` 要求的 package status 和父级路由文档，把 campaign 从 `04`
+交接到 `05`。
 
 只有 final bundle step 才更新更宽的 validation summaries。
 

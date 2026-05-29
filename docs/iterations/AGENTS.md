@@ -105,6 +105,233 @@ package sequencing
 automation consumption contracts
 ```
 
+## Codex Plan-Mode Document Generation Standard
+
+Use this standard when the user asks for `/plan`, asks for a plan before
+iteration documentation, or gives a broad request that would create or revise
+multiple `docs/iterations/` files.
+
+Plan-mode documentation work must produce a reviewable generation plan before
+large-scale drafting. The plan may live in the chat response for a small
+docs-only change. For a new version plan, new iteration package, validation
+chain, goal campaign, or multi-file rewrite, the plan must be recorded in the
+relevant `plan.md`, `CAMPAIGN_PLAN.md`, parent `vX.Y-plan.md`, or package
+`review.md` before closeout.
+
+The generation plan must include:
+
+```text
+Objective
+Authoritative inputs read
+Documentation type
+Files to create or update
+Files explicitly out of scope
+Required package status values
+Allowed changes
+Forbidden changes
+Review gates
+Verification commands
+Open questions or assumptions
+Stop conditions
+Handoff after plan approval
+```
+
+Hard rules:
+
+- Do not modify runtime, schema, API, frontend, backend tests, fixtures,
+  migrations, or external repositories during plan-mode documentation drafting.
+- Do not create implementation-ready claims until the package documents have
+  been reviewed and the review evidence records approval.
+- Do not generate a full package from memory alone. Read the relevant roadmap,
+  version plan, parent package, current package docs, and governing `AGENTS.md`
+  files first.
+- If the plan reveals missing scope, contradictory status, missing required
+  inputs, or unclear implementation authorization, stop the plan as
+  `NEEDS_USER_INPUT` or record the blocker in `review.md`.
+- If the user asks for `/plan` only, stop after the plan unless they explicitly
+  authorize drafting or execution.
+- If the user asks `/goal` to complete a package, the goal may execute the
+  selected plan-mode gates inside the same goal, but the plan and gates must
+  still be visible in package docs or review evidence.
+- Keep the plan tied to the active package. Do not include adjacent future
+  versions or convenient follow-on work unless the parent plan explicitly owns
+  that scope.
+
+## Concept Learning / Research Synthesis Gate
+
+Use this gate when iteration work depends on an unfamiliar concept, dense
+source material, research paper, course, external framework, or internal design
+area that the active package does not already explain.
+
+The output must be a durable, reviewable artifact, not only transient chat
+notes. Use the active package `plan.md`, `technical-design.md`, `review.md`, or
+a package-local `notes/*.md` file when the learning result needs to support
+later implementation or review.
+
+Required learning report content:
+
+```text
+Learning objective
+Sources read
+Source reliability / authority
+Glossary and prerequisite concepts
+Concept walkthrough
+Evidence table mapping claims to sources
+Diagrams when they clarify the concept
+Claims from the source material
+Agent interpretation / synthesis
+Caveats and weak evidence
+Open questions
+Follow-up reading or experiments
+Impact on the active package
+```
+
+Hard rules:
+
+- Separate what the source claims from what the agent infers.
+- Cite source sections, headings, pages, figures, tables, files, or symbols
+  whenever possible.
+- If exact page or figure references are unavailable, say so and use the most
+  precise available section, heading, file, or symbol reference.
+- Do not treat a paper, course, external article, generated summary, or
+  subagent output as ground truth when evidence is weak or disputed.
+- Prefer Markdown-native Mermaid diagrams for concept maps, method flows, and
+  evidence maps. Use generated or binary visual assets only when a
+  Markdown-native diagram is insufficient and the active package allows the
+  asset.
+- Do not implement code based only on the learning report. Implementation still
+  requires the normal iteration package contract, design, test plan, and review
+  gates.
+
+Subagent split for dense material:
+
+- one subagent may map the problem statement, contribution, method, evidence,
+  limitations, and claimed results.
+- one subagent may gather prerequisite context from approved sources.
+- one subagent may inspect figures, tables, notation, algorithms, code paths,
+  or claims needing careful verification.
+- one subagent may act as a skeptical reviewer and identify unsupported claims,
+  missing baselines, unclear assumptions, or follow-up questions.
+
+The main agent must wait for the requested subagents, reconcile
+contradictions, and write the final learning report. Do not paste disconnected
+subagent notes as the final artifact.
+
+## Goal Development Campaign Subagent Gate
+
+WorldEngine `/goal` development campaigns must use independent subagent or
+evaluator checkpoints. This applies when a goal campaign, full child-package
+cycle, code package, mixed package, migration, refactor, deployment retry loop,
+or implementation-bearing validation repair can change runtime behavior,
+schemas, APIs, frontend behavior, backend tests, fixtures, migrations, or
+release claims.
+
+This gate adapts Codex follow-goals behavior to this repository's iteration
+model:
+
+- North Star and scope boundaries remain first.
+- The active iteration package is the only implementation scope.
+- Documentation, contract, design, test-plan, and review gates still control
+  implementation authorization.
+- Runtime claims require current-session command evidence.
+- Closeout still requires changed-file consistency and `review.md` evidence.
+- The main agent owns synthesis, verification, final status, and conflict
+  resolution.
+
+Mandatory checkpoints for implementation-bearing child packages:
+
+1. Documentation / contract evaluator before recording
+   `implementation_authorized: yes`.
+2. Implementation-scope evaluator after files are changed and before broad
+   verification.
+3. Code-review subagent or evaluator after focused tests and before E2E,
+   API smoke, autonomous validation, or final status.
+4. Validation-evidence evaluator before marking tests, E2E, API smoke,
+   autonomous validation, deployment, or release claims as passed.
+5. Closeout consistency review before package `review.md` records a final
+   route status.
+
+Mandatory checkpoints for documentation-only goal campaign children:
+
+- A read-only documentation evaluator is required when the child changes
+  process rules, goal routing, evidence rules, package sequencing, validation
+  templates, release status, automation-consumption contracts, or English /
+  Chinese mirror obligations.
+- Trivial text-only edits may skip subagents only when they do not affect any
+  gate, contract, status, claim, or automation route.
+
+Failure handling:
+
+- If subagent tooling is unavailable in a required `/goal` development
+  checkpoint, record the missing checkpoint as `BLOCKED` or `NEEDS_USER_INPUT`;
+  do not silently downgrade it to optional.
+- If a required subagent or evaluator returns P0 / P1 findings, fix them or
+  stop before closeout.
+- If P2 findings remain, either fix them, downgrade with rationale, carry them
+  only where the package contract allows, or stop before a clean pass.
+- If subagent output conflicts with source files, command evidence, or git
+  state, the main agent must resolve the conflict with authoritative evidence
+  before final status.
+
+## Subagent / Evaluator Use Standard
+
+Subagents are allowed for iteration work only when the user explicitly requests
+subagents / parallel agent work or when the active package `GOAL_RUNNER.md`,
+contract, or plan explicitly authorizes them. They are optional tools for
+review, evaluation, exploration, and clearly separable worker tasks. They are
+not mandatory ceremony and do not relax package gates.
+
+For `/goal` development campaigns, the Goal Development Campaign Subagent Gate
+above is an explicit authorization and makes the listed checkpoints mandatory.
+
+Use subagents when they materially improve reliability, for example:
+
+- learning or summarizing unfamiliar dense source material.
+- independent review of broad or risky documentation changes.
+- code review for implementation-bearing packages.
+- compatibility, scope, security, release-claim, or evidence-honesty checks.
+- English / Chinese mirror quality checks.
+- autonomous validation or black-box validation review.
+- parallel inspection of independent files or subsystems.
+
+Default mode:
+
+- Subagents are read-only evaluators by default.
+- Prefer subagents for read-heavy exploration, tests, triage, log analysis,
+  learning reports, and summarization.
+- Be cautious with parallel write-heavy workflows because concurrent edits can
+  create conflicts and coordination overhead.
+- A subagent may edit files only when the active package contract explicitly
+  allows worker implementation and the main agent has recorded why delegation is
+  in scope.
+- Subagents must not modify runtime, schema, API, frontend, backend tests,
+  fixtures, migrations, external repositories, or out-of-scope documents unless
+  the active contract explicitly authorizes that file class.
+
+Main-agent responsibilities:
+
+- define each subagent's scope, inputs, and expected output before dispatch.
+- state whether the main agent should wait for all subagents before continuing.
+- keep subagent tasks inside the active package and current goal.
+- synthesize results instead of pasting disconnected subagent output into
+  final status.
+- classify subagent findings as P0 / P1 / P2 / P3.
+- fix, downgrade with rationale, carry where allowed, or record blockers for
+  every P0 / P1 / P2 finding.
+- verify any claimed fix or pass with current-session evidence.
+- record material subagent reviews in `review.md`, including what was reviewed,
+  findings, commands run or not run, and unresolved risks.
+
+Hard stops:
+
+- If a subagent reports a P0 / P1 that cannot be fixed inside the active
+  contract, stop as `BLOCKED`, `FAILED`, or `NEEDS_USER_INPUT`.
+- If subagent output conflicts with source files, command evidence, or actual
+  git state, trust current source/evidence and resolve the conflict before
+  closeout.
+- Do not use subagents to bypass review gates, implementation authorization,
+  Closeout Consistency Gate, or evidence requirements.
+
 ## Required Content For Each Package File
 
 Each package file must be specific enough for review. Placeholder headings are

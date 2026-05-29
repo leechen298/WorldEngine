@@ -38,6 +38,18 @@ External fixture、validation 和 projection applications 是 WorldEngine 的 co
 `docs/iterations/AGENTS.zh.md`。该文件定义 version plan、planned package、
 iteration package、validation plan、evidence 和 review documentation 的详细程度要求。
 
+对范围较大的 documentation generation 请求，尤其是 `/plan` 风格 prompt 或需要创建多个
+iteration files 的请求，起草文档前先遵循 `docs/iterations/AGENTS.zh.md` 中的 Codex
+Plan-Mode Document Generation Standard。
+
+只有当用户明确要求 subagents / parallel agent work，或 active package 的
+`GOAL_RUNNER.md`、contract 或 plan 明确授权时，Codex 才可以使用 subagents。
+Subagent work 必须保持在 active package scope 内，遵守同样的 git safety 和 evidence
+rules，并服从 main agent；main agent 负责 synthesis、verification 和 final status。
+对于 `/goal` development campaigns，iteration rules 要求 implementation-bearing child
+packages close out 前必须经过 subagent / evaluator checkpoints。Iteration work 的详细
+subagent 和 learning-report 规则见 `docs/iterations/AGENTS.zh.md`。
+
 当用户说 `完成 <iteration-package>` 或 `complete <iteration-package>` 时，先在
 `docs/iterations/**/<iteration-package>/` 下定位匹配 package。如果该 package 包含
 `README.md`、`GOAL_RUNNER.md`、`CURRENT_STATE.md` 或 `CAMPAIGN_PLAN.md`，必须先读取

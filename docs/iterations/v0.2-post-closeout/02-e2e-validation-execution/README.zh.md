@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Execution
 
-状态：`archived evidence only / not executed in current campaign`
+状态：`package complete / passed current campaign`
 类型：validation execution
 
 ## 目标
@@ -18,9 +18,10 @@ package。
 port。2026-05-29 在 `agent-iter` validation stages 已支持 host-capable localhost
 binding 后，本 package 被重开。
 
-2026-05-29 的 host-capable pass 仍保留为 archived evidence。`unverified_restart`
-之后，它不再算作当前 campaign 的完成状态；除非新 campaign 重新执行本 package，或在
-`review.md` 中带理由明确重新接受该 evidence。
+当前 campaign 已在 2026-05-29 重新执行本 package。Backend deterministic checks、
+API smoke、Playwright availability 和 configured browser E2E 都有 current-session
+evidence。第一次沙箱内 `make test-e2e` 因 localhost bind 权限被阻断；随后
+host-capable rerun 退出 `0`，结果为 `6 passed`。
 
 它必须记录：
 
@@ -47,16 +48,17 @@ binding 后，本 package 被重开。
 
 ## 当前 Package 状态
 
-`not executed in current campaign`
+`package complete / passed current campaign`
 
 ## 当前 Execution 评估
 
-`archived evidence only`
+`passed`
 
-2026-05-29 host-capable rerun 记录的 branch 为 `v0.3-lcoal`，commit 为
-`dbffa069a5e74b6b1e6b60719152922595c60df6`；documentation checks、backend
-deterministic checks、API smoke、Playwright availability checks 和 configured
-browser E2E 均通过，其中 browser E2E 结果为 `6 passed`。
+当前 rerun 记录 branch `v0.3-lcoal`、commit
+`be5a48e48d950b88501ba0e68a80d35ab6f011b6`，工作区只有当前 goal 产生的
+docs-only changes。Backend deterministic checks 结果为 `115 passed`；API smoke
+对 required endpoints 返回 `200 code=0`；Playwright availability 检查到
+`1.60.0`；host-capable `make test-e2e` 结果为 `6 passed (7.2s)`。
 
 ## 上一次 Execution 评估
 

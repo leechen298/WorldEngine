@@ -1,6 +1,6 @@
 # v0.2 Post-Closeout Goal Campaign
 
-状态：`campaign ready / unverified restart`
+状态：`campaign complete / passed`
 类型：goal campaign package
 
 ## 目标
@@ -50,13 +50,13 @@ conflict、evidence insufficiency，或任何超出 active child package contrac
 `campaign ready / unverified restart`，这样 `/goal 完成 v0.2-post-closeout` 会从
 child sequence 开头重新推进，而不是继承早前的完成结论。
 
-当前重启顺序是：
+当前重启顺序现在是：
 
-1. 重新执行或重新接受 `01-e2e-validation-plan`；
-2. 重新执行 `02-e2e-validation-execution`；
-3. review-closeout `03-codex-autonomous-validation-plan`；
-4. 执行 `04-codex-autonomous-validation-execution`；
-5. 填写 `05-final-validation-bundle`。
+1. `01-e2e-validation-plan` 已重新接受为 `PACKAGE_COMPLETE`；
+2. `02-e2e-validation-execution` 已用当前 campaign evidence 通过；
+3. `03-codex-autonomous-validation-plan` 已接受并交接；
+4. `04-codex-autonomous-validation-execution` 已通过；
+5. `05-final-validation-bundle` 已通过，并完成 campaign closeout。
 
 `CURRENT_STATE.md` 是当前路由来源，`GOAL_RUNNER.md` 是执行状态机，
 `CAMPAIGN_PLAN.md` 是 campaign 层面的 child sequence 和 closeout contract。
@@ -80,11 +80,11 @@ child sequence 开头重新推进，而不是继承早前的完成结论。
 
 | Package | Type | Status | Purpose |
 |---|---|---|---|
-| `01-e2e-validation-plan` | validation-planning | restart ready | 定义或重新接受 v0.2 post-closeout E2E、integration 和 API smoke validation 范围。 |
-| `02-e2e-validation-execution` | validation-execution | not executed in current campaign | 执行 v0.2 post-closeout E2E、integration 和 API smoke validation。 |
-| `03-codex-autonomous-validation-plan` | validation-planning | not executed in current campaign | 定义独立 Codex autonomous validation 范围。 |
-| `04-codex-autonomous-validation-execution` | validation-execution | not executed in current campaign | 执行独立 Codex autonomous validation。 |
-| `05-final-validation-bundle` | validation-bundle | not executed in current campaign | 汇总最终 v0.2 post-closeout validation result。 |
+| `01-e2e-validation-plan` | validation-planning | package complete / planning re-accepted | 定义或重新接受 v0.2 post-closeout E2E、integration 和 API smoke validation 范围。 |
+| `02-e2e-validation-execution` | validation-execution | package complete / passed current campaign | 执行 v0.2 post-closeout E2E、integration 和 API smoke validation。 |
+| `03-codex-autonomous-validation-plan` | validation-planning | package complete / plan accepted | 定义独立 Codex autonomous validation 范围。 |
+| `04-codex-autonomous-validation-execution` | validation-execution | package complete / passed current campaign | 执行独立 Codex autonomous validation。 |
+| `05-final-validation-bundle` | validation-bundle | package complete / passed current campaign | 汇总最终 v0.2 post-closeout validation result。 |
 
 ## 结果状态
 
@@ -152,5 +152,7 @@ restart 后只能作为 `archived evidence only`；除非当前 campaign 明确�
 
 ## 最终评估状态
 
-本 campaign 已可由 Codex App `/goal` 启动，但当前还没有完成验证。
-`CURRENT_STATE.md` 已回退为从 `01-e2e-validation-plan` 开始。
+Codex App `/goal` campaign 已完成。最终评估：`passed`。
+
+v0.4 只能通过单独 review 的 v0.4 planning 或 iteration package 继续。本 package 不重新打开
+v0.2 implementation，也不改变 v0.2 release status。

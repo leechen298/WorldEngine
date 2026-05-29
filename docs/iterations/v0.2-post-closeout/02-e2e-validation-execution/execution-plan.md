@@ -1,6 +1,6 @@
 # Execution Plan
 
-Status: archived evidence only / not executed in current campaign
+Status: package complete / passed current campaign
 
 ## Steps
 
@@ -68,10 +68,7 @@ Stop and record a blocker if:
 The execution output is `e2e-validation-report.md` plus an updated
 `review.md`.
 
-The 2026-05-28 execution reached this output state, but browser E2E was
-blocked because the configured backend web server could not bind
-`127.0.0.1:8000` in the old execution context. The package was reopened on
-2026-05-29 after `agent-iter` validation stages were updated to use
-host-capable localhost binding. The rerun kept the prior evidence visible and
-appended new current-session evidence. The 2026-05-29 host-capable rerun
-passed the configured backend, API smoke, and browser E2E validation commands.
+The current campaign reran this output state on 2026-05-29. The rerun kept
+prior evidence visible, recorded the sandbox localhost bind blocker, and then
+used a host-capable `make test-e2e` rerun. Backend deterministic checks, API
+smoke, Playwright availability, and configured browser E2E all passed.

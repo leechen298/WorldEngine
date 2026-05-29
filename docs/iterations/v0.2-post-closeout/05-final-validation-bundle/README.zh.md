@@ -1,6 +1,6 @@
 # Final Validation Bundle
 
-状态：`not executed`
+状态：package complete / passed current campaign
 类型：final validation bundle template
 
 ## 目标
@@ -10,8 +10,9 @@ v0.2 post-closeout validation 提供最终 summary package。
 
 ## 范围
 
-本 package 是 template。只有两条 validation lines 都有 current-session evidence 或
-recorded blockers 后，才可记录 successful result。
+本 package 记录当前 campaign 的 final validation result。两条 validation lines 都已有当前
+campaign evidence：`02` 已通过 backend / API / E2E validation，`04` 已通过 independent
+Codex autonomous validation。
 
 ## 交付物
 
@@ -24,4 +25,4 @@ recorded blockers 后，才可记录 successful result。
 
 ## 最终评估状态
 
-`not executed`
+`passed`

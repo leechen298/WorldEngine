@@ -1,6 +1,6 @@
 # Contract
 
-Status: planned / ready for review
+Status: package complete / plan accepted current campaign
 
 ## Public Concepts
 

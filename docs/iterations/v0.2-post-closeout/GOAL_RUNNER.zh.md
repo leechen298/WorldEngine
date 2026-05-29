@@ -99,15 +99,24 @@ Gate selection：
 
 Subagent 和 evaluator 使用：
 
-- 当 independent review 能提升可信度时使用 read-only subagents 或 evaluator passes：
-  broad code changes、security / compatibility risk、mirror quality、release
-  claims 或 autonomous validation。
+- 本 campaign 明确授权 `/goal` development mode 使用 subagent / evaluator
+  checkpoints。
+- 对 implementation-bearing 或 full child-package cycle work，必须运行
+  `docs/iterations/AGENTS.md` 中定义的 mandatory checkpoints：documentation /
+  contract evaluator、implementation-scope evaluator、code review、
+  validation-evidence evaluator 和 closeout consistency review。
+- 对 broad code changes、security / compatibility risk、mirror quality、release
+  claims、autonomous validation，以及 dense concept-learning 或 research-synthesis
+  work，使用 read-only subagents 或 evaluator passes。
 - 只有 independent subtasks 能清晰拆分时，才使用 orchestrator-worker style。始终由
-  一个 controlling goal 负责 synthesis 和 final status。
+  一个 controlling goal 负责 synthesis、verification、conflict resolution 和 final
+  status。
 - 除非 package contract 要求 review record，不为 trivial docs-only changes 启动
   subagents。
 - subagent findings 必须分类为 P0 / P1 / P2 / P3，并且必须 fix、带理由 downgrade、
   在允许时 carry，或记录为 blockers。
+- 如果 required subagent / evaluator checkpoint 无法运行，停止为 `BLOCKED` 或
+  `NEEDS_USER_INPUT`；不得静默降级为 optional。
 
 Verification escalation：
 
@@ -172,12 +181,18 @@ validation documents。
 当前默认路由：
 
 ```text
-01-e2e-validation-plan campaign-restart
+campaign-complete
 ```
 
 campaign 已回退为 `unverified_restart`。历史结果继续作为 archived evidence 保留，但
 除非当前 goal 重新运行或明确重新接受对应 gate，否则不得算作当前 campaign completion
-evidence。
+evidence。当前 goal 已重新接受 `01-e2e-validation-plan`，并已用当前 campaign 的
+backend、API smoke、Playwright availability 和 host-capable E2E evidence 重新执行
+`02-e2e-validation-execution`。当前 goal 也已接受
+`03-codex-autonomous-validation-plan`，且没有在 `03` 执行 autonomous validation。
+`04-codex-autonomous-validation-execution` 中的 independent Codex autonomous
+validation 已通过。`05-final-validation-bundle` 已记录 final assessment `passed`；
+campaign 已完成。
 
 重启顺序：
 

@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Report
 
-Status: passed (archived evidence only after campaign reset)
+Status: passed (current campaign evidence)
 
 Reopen note: the 2026-05-28 evidence below is preserved as historical evidence.
 That run reached `blocked` because the old validation execution context could
@@ -8,19 +8,18 @@ not bind the configured localhost backend port. The package was reopened on
 2026-05-29 after `agent-iter` validation stages were updated to run with
 host-capable localhost binding.
 
-Current campaign note: after the `unverified_restart` reset, this report is
-historical evidence. It does not count as current campaign completion unless a
-new `/goal` run reruns this package or explicitly re-accepts this evidence with
-rationale in `review.md`.
+Current campaign note: the current `/goal` run reran this package on
+2026-05-29. This report now counts as current campaign evidence for
+`02-e2e-validation-execution`.
 
 ## Metadata
 
 - Reviewed branch: `v0.3-lcoal`
-- Reviewed commit: `dbffa069a5e74b6b1e6b60719152922595c60df6`
+- Reviewed commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
 - Execution date: 2026-05-29
 - Executor: Codex F
 - Previous final assessment: `blocked`
-- Current final assessment: `archived evidence only`
+- Current final assessment: `passed`
 
 Allowed final assessment values:
 
@@ -32,9 +31,15 @@ Allowed final assessment values:
 
 ## Current Execution Summary
 
-The 2026-05-29 host-capable rerun resolved the prior browser E2E localhost bind
-blocker. Backend deterministic checks, API smoke, Playwright availability, and
+The current 2026-05-29 rerun recorded docs-only working-tree changes from this
+goal and no implementation diffs under backend or frontend implementation/test
+paths. Backend deterministic checks, API smoke, Playwright availability, and
 configured browser E2E all passed with current-session command evidence.
+
+The first `make test-e2e` attempt in the default sandbox reproduced the
+localhost bind blocker (`operation not permitted` on `127.0.0.1:8000`). The
+required host-capable rerun then bound the backend and passed all configured
+browser E2E tests.
 
 ## Files Read
 
@@ -55,6 +60,24 @@ configured browser E2E all passed with current-session command evidence.
 
 | Command | Purpose | Exit code | Result | Notes |
 |---|---|---:|---|---|
+| `git status --short --branch` | Record current campaign branch and worktree state | 0 | passed | Output: branch `v0.3-lcoal`; modified files are docs/rule files plus current `v0.2-post-closeout` docs; untracked `docs/iterations/v0.2-post-closeout.zip` remains unrelated. |
+| `git rev-parse HEAD` | Record current campaign commit | 0 | passed | Output: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`. |
+| `git diff --check` | Documentation and whitespace check before current validation report edits | 0 | passed | No output. |
+| `test -f docs/releases/v0.2.md && test -f docs/iterations/v0.2/evidence-index.md && test -f docs/iterations/v0.2/compatibility-review.md && test -f docs/iterations/v0.2/boundary-audit.md` | Required v0.2 evidence-doc presence check | 0 | passed | No output. |
+| `find backend/app/api/routes -maxdepth 1 -type f -name '*.py' -print \| sort` | Inspect configured backend API route files | 0 | passed | Route files found: `__init__`, health, runtime, world, world_params, archive, world_agent. |
+| `make check-backend` | Backend dependency availability | 0 | passed | No output. |
+| `make check-frontend` | Frontend dependency availability | 0 | passed | No output. |
+| `rg -n "final / closeout complete\|0\.2\.12 verification is documentation-only\|does not rerun" docs/releases/v0.2.md` | Release status and limitation wording check | 0 | passed | Found `Status: final / closeout complete` and documentation-only verification limitation lines. |
+| `test -f frontend/playwright.config.ts && test -f frontend/package.json` | E2E config file existence check | 0 | passed | No output. |
+| `cd backend && .venv/bin/python -m pytest tests app/tests -q` | Backend deterministic checks | 0 | passed | `115 passed in 0.89s`. |
+| `cd backend && .venv/bin/python - <<'PY' ...` | API smoke with registered safe params payload | 0 | passed | `GET /health`, `GET /runtime/state`, `POST /runtime/step`, `GET /world/events`, `GET /world/event-steps`, `GET /world/params`, `POST /world/params/apply`, `GET /world/snapshots`, and `GET /world/summaries` returned `200 code=0`. |
+| `cd frontend && pnpm exec playwright --version && pnpm exec playwright install --dry-run chromium` | E2E framework and browser availability check | 0 | passed | Playwright `1.60.0`; Chromium, headless shell, and FFmpeg install targets resolved. |
+| `make test-e2e` | Configured browser E2E suite in default sandbox | 2 | blocked then rerun host-capable | Backend web server failed to bind `127.0.0.1:8000`: `operation not permitted`; no browser tests executed in the sandbox attempt. |
+| `make test-e2e` | Host-capable configured browser E2E suite | 0 | passed | Backend bound `127.0.0.1:8000`; configured browser E2E passed with `6 passed (7.2s)`. |
+| `git diff --name-only` | Record current changed-file set | 0 | passed | Output contained docs/rule files and `v0.2-post-closeout` docs only. |
+| `rg -n -i 'demo[- ]world\|concrete demo\|application-specific backend\|seed data\|story rules\|characters\|locations\|resources' docs/releases/v0.2.md docs/iterations/v0.2 docs/scope-boundaries.md docs/external-fixture-boundary.md backend/app frontend --glob '!frontend/node_modules/**' --glob '!test-results/**'` | Boundary wording / concrete demo regression sweep | 0 | passed | Matches were boundary, future-scope, and historical references only. |
+| `rg -n -i 'demo[- ]world\|concrete demo\|application-specific backend\|seed data\|story rules\|characters\|locations\|resources' backend/app frontend --glob '!frontend/node_modules/**' --glob '!test-results/**'` | Active implementation concrete demo regression sweep | 1 | passed | No matches. |
+| `git diff --name-only -- backend/app frontend backend/tests backend/app/tests` | Confirm current validation did not modify implementation or tests | 0 | passed | No output. |
 | `git status --short --branch && git rev-parse HEAD` | Record reviewed branch and commit for host-capable rerun | 0 | passed | Output: `## v0.3-lcoal`; commit `dbffa069a5e74b6b1e6b60719152922595c60df6`. |
 | `git diff --check` | Documentation and whitespace check before validation edits | 0 | passed | No output. |
 | `test -f docs/releases/v0.2.md && test -f docs/iterations/v0.2/evidence-index.md && test -f docs/iterations/v0.2/compatibility-review.md && test -f docs/iterations/v0.2/boundary-audit.md` | Required v0.2 evidence-doc presence check | 0 | passed | No output. |
@@ -110,7 +133,8 @@ configured browser E2E all passed with current-session command evidence.
 
 ## Checks Not Run
 
-Current 2026-05-29 host-capable rerun: none.
+Current 2026-05-29 campaign rerun: none. The sandboxed E2E attempt was blocked,
+but the required host-capable rerun completed successfully.
 
 Historical 2026-05-28 blocked run:
 
@@ -125,7 +149,7 @@ Historical 2026-05-28 blocked run:
 | v0.2 closeout status remains final / complete | `docs/releases/v0.2.md` says `Status: final / closeout complete`. | passed | none |
 | v0.2 does not claim product UI | `docs/releases/v0.2.md` says v0.2 does not provide a product client and lists product UI as future scope. | passed | none |
 | v0.2 does not claim WorldSpec runtime loading | `docs/releases/v0.2.md` says v0.2 does not load WorldSpec into runtime and lists loader/runtime bridge as future scope. | passed | none |
-| v0.2 preserves existing runtime behavior | Backend tests passed; API smoke passed for runtime state, step, events, event steps, params, snapshots, and summaries; browser E2E passed with 6 tests. | passed | none |
+| v0.2 preserves existing runtime behavior | Backend tests passed; API smoke passed for runtime state, step, events, event steps, params, snapshots, and summaries; host-capable browser E2E passed with 6 tests. | passed | none |
 
 ## Compatibility Findings
 
@@ -153,15 +177,17 @@ Historical 2026-05-28 blocked run:
   `backend/app`, `frontend`
 - Result: passed; no runtime implementation regression observed.
 - Finding: the wording sweep found boundary, future-scope, and historical
-  references only. `git diff --name-only` was empty before report edits, so no
-  runtime, fixture, frontend, or backend implementation file changed during
-  validation.
+  references only. The active implementation sweep over `backend/app` and
+  `frontend` had no matches, and `git diff --name-only -- backend/app frontend
+  backend/tests backend/app/tests` had no output, so no runtime, fixture,
+  frontend, backend implementation, or test file changed during validation.
 
 ## Unresolved P1/P2/P3
 
 - P1: none.
-- P2: none. The historical browser E2E bind blocker was resolved by the
-  2026-05-29 host-capable rerun; `make test-e2e` exited `0` with `6 passed`.
+- P2: none. The sandbox browser E2E bind blocker was resolved for required
+  evidence by the 2026-05-29 host-capable rerun; `make test-e2e` exited `0`
+  with `6 passed (7.2s)`.
 - P3: none.
 
 ## Final Assessment
@@ -169,6 +195,6 @@ Historical 2026-05-28 blocked run:
 `passed`
 
 Backend deterministic checks, API smoke, Playwright availability, and
-configured browser E2E passed with current-session evidence. The historical
-browser E2E bind blocker remains visible above as prior evidence, but it is no
-longer unresolved for this host-capable validation run.
+configured browser E2E passed with current-session evidence. The sandbox
+browser E2E bind blocker remains visible above as environment evidence, but it
+is not unresolved for this host-capable validation run.

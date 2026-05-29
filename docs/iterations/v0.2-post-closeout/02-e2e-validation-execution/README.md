@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Execution
 
-Status: archived evidence only / not executed in current campaign
+Status: package complete / passed current campaign
 Type: validation execution
 
 ## Goal
@@ -19,10 +19,11 @@ localhost backend port. The package was reopened on 2026-05-29 after
 `agent-iter` validation stages were updated to run with host-capable localhost
 binding.
 
-The 2026-05-29 host-capable pass remains archived evidence. It does not count
-as current campaign completion after the `unverified_restart` reset unless the
-new campaign reruns this package or explicitly re-accepts the evidence with
-rationale in `review.md`.
+The current campaign reran this package on 2026-05-29. Backend deterministic
+checks, API smoke, Playwright availability, and configured browser E2E passed
+with current-session evidence. A first sandboxed `make test-e2e` attempt was
+blocked by localhost bind permissions; the required host-capable rerun exited
+`0` with `6 passed`.
 
 It must record:
 
@@ -49,16 +50,18 @@ It must record:
 
 ## Current Package State
 
-`not executed in current campaign`
+`package complete / passed current campaign`
 
 ## Current Execution Assessment
 
-`archived evidence only`
+`passed`
 
-The 2026-05-29 host-capable rerun recorded branch `v0.3-lcoal`, commit
-`dbffa069a5e74b6b1e6b60719152922595c60df6`, passing documentation checks,
-backend deterministic checks, API smoke, Playwright availability checks, and
-configured browser E2E (`6 passed`).
+The current rerun recorded branch `v0.3-lcoal`, commit
+`be5a48e48d950b88501ba0e68a80d35ab6f011b6`, with docs-only working-tree
+changes from the current goal. Backend deterministic checks passed with
+`115 passed`; API smoke returned `200 code=0` for required endpoints;
+Playwright availability checked `1.60.0`; host-capable `make test-e2e` passed
+with `6 passed (7.2s)`.
 
 ## Previous Execution Assessment
 

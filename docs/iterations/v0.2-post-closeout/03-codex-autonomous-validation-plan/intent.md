@@ -1,6 +1,6 @@
 # Intent
 
-Status: planned / ready for review
+Status: package complete / plan accepted current campaign
 
 ## Problem / Purpose
 
@@ -9,9 +9,9 @@ that only restates implementation summaries does not provide enough evidence.
 
 ## Why Now
 
-The autonomous validation instructions must exist before a separate Codex run
-starts, so the reviewer knows what to read, what to run, what not to modify,
-and how to report unsupported claims.
+The current campaign has passed `02-e2e-validation-execution`; it now needs an
+accepted autonomous validation plan before `04` can execute the independent
+review.
 
 ## Relationship To Roadmap
 

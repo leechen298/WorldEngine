@@ -1,6 +1,6 @@
 # Contract
 
-Status: not executed
+Status: package complete / passed current campaign
 
 ## Public Concepts
 
@@ -13,10 +13,15 @@ Status: not executed
 
 ## Allowed Changes
 
-During a later execution pass, update:
+During execution, update:
 
 - `codex-autonomous-review.md`
+- `codex-autonomous-review.zh.md`
 - `review.md`
+- `review.zh.md`
+
+Also update package status and parent routing docs required by `GOAL_RUNNER.md`
+to hand off from `04` to `05`.
 
 Only update broader validation summaries after the final bundle step.
 

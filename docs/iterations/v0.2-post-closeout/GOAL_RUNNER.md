@@ -103,16 +103,24 @@ Gate selection:
 
 Subagent and evaluator use:
 
-- Use read-only subagents or evaluator passes when independent review improves
-  confidence: broad code changes, security / compatibility risk, mirror
-  quality, release claims, or autonomous validation.
+- This campaign explicitly authorizes subagent / evaluator checkpoints for
+  `/goal` development mode.
+- For implementation-bearing or full child-package cycle work, run the
+  mandatory checkpoints defined in `docs/iterations/AGENTS.md`:
+  documentation / contract evaluator, implementation-scope evaluator, code
+  review, validation-evidence evaluator, and closeout consistency review.
+- Use read-only subagents or evaluator passes for broad code changes, security
+  / compatibility risk, mirror quality, release claims, autonomous validation,
+  and dense concept-learning or research-synthesis work.
 - Use orchestrator-worker style only when independent subtasks can be separated
-  cleanly. Keep one controlling goal responsible for synthesis and final
-  status.
+  cleanly. Keep one controlling goal responsible for synthesis, verification,
+  conflict resolution, and final status.
 - Do not spawn subagents for trivial docs-only changes unless the package
   contract requires a review record.
 - Subagent findings must be classified as P0 / P1 / P2 / P3 and either fixed,
   downgraded with rationale, carried where allowed, or recorded as blockers.
+- If a required subagent / evaluator checkpoint cannot run, stop as `BLOCKED`
+  or `NEEDS_USER_INPUT`; do not silently downgrade the checkpoint to optional.
 
 Verification escalation:
 
@@ -180,12 +188,19 @@ Do not convert `blocked`, `failed`, `not executed`, or archived evidence into
 Current default route:
 
 ```text
-01-e2e-validation-plan campaign-restart
+campaign-complete
 ```
 
 The campaign was reset to `unverified_restart`. Historical results remain
 archived, but they do not count as current campaign completion evidence unless
-the current goal reruns or explicitly re-accepts the relevant gate.
+the current goal reruns or explicitly re-accepts the relevant gate. The current
+goal has re-accepted `01-e2e-validation-plan` and rerun
+`02-e2e-validation-execution` with current-campaign backend, API smoke,
+Playwright availability, and host-capable E2E evidence. It has also accepted
+`03-codex-autonomous-validation-plan` without executing autonomous validation
+there. Independent Codex autonomous validation has passed in
+`04-codex-autonomous-validation-execution`. `05-final-validation-bundle` has
+recorded final assessment `passed`; the campaign is complete.
 
 Restart sequence:
 

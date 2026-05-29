@@ -1,6 +1,6 @@
 # Execution Plan
 
-状态：`archived evidence only / not executed in current campaign`
+状态：`package complete / passed current campaign`
 
 ## 步骤
 
@@ -67,9 +67,7 @@
 
 execution 输出是 `e2e-validation-report.md` 和更新后的 `review.md`。
 
-2026-05-28 execution 已到达该输出状态；但 browser E2E 当时 blocked，因为 configured
-backend web server 在旧 execution context 中无法绑定 `127.0.0.1:8000`。2026-05-29
-在 `agent-iter` validation stages 已改为使用 host-capable localhost binding 后，本
-package 被重开。rerun 已保留 prior evidence 可见，并追加新的 current-session
-evidence。2026-05-29 host-capable rerun 已通过 configured backend、API smoke 和
-browser E2E validation commands。
+当前 campaign 已在 2026-05-29 重新执行本 output state。rerun 保留 prior evidence，
+记录沙箱 localhost bind blocker，并随后使用 host-capable `make test-e2e` rerun。
+Backend deterministic checks、API smoke、Playwright availability 和 configured
+browser E2E 均已通过。

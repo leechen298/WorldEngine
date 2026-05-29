@@ -1,6 +1,6 @@
 # Codex Autonomous Validation Plan
 
-Status: not executed in current campaign
+Status: package complete / plan accepted current campaign
 Type: autonomous validation planning
 
 ## Goal
@@ -10,9 +10,10 @@ without relying on implementer summaries.
 
 ## Current Campaign Note
 
-This planning package is not the active child after the campaign reset. It must
-wait for current-campaign `02-e2e-validation-execution` evidence or an accepted
-blocker before review-closeout.
+This planning package became the active child after current-campaign
+`02-e2e-validation-execution` evidence passed. The current `/goal` run has
+reviewed and accepted this plan for handoff to
+`04-codex-autonomous-validation-execution`.
 
 ## Naming Rule
 
@@ -40,5 +41,6 @@ blocker. The reviewer must not modify code.
 
 ## Final Assessment State
 
-Not executed in the current campaign. No autonomous validation has been
-executed.
+Plan accepted in the current campaign. No autonomous validation has been
+executed in this package; `04-codex-autonomous-validation-execution` owns that
+execution.

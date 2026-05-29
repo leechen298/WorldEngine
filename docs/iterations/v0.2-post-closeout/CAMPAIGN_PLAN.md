@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: campaign ready / unverified restart
+Status: campaign complete / passed
 Type: Codex `/goal` campaign plan
 
 ## Purpose
@@ -18,13 +18,13 @@ conditions. The goal runner is `GOAL_RUNNER.md`; the current route source is
 
 ## Current Restart Position
 
-This campaign is reset to `unverified_restart`.
+This campaign is running from the `unverified_restart` reset.
 
-Historical validation evidence remains in package reports, including the
-2026-05-29 `02-e2e-validation-execution` pass. That evidence is archived for
-audit and comparison. It does not count as current campaign completion unless a
-new `/goal` run reruns the gate or explicitly re-accepts it with rationale in
-the relevant `review.md`.
+Historical validation evidence remains in package reports. The current `/goal`
+run has rerun `02-e2e-validation-execution` and accepted
+`03-codex-autonomous-validation-plan`. Independent Codex autonomous validation
+has passed in `04-codex-autonomous-validation-execution`; the campaign now
+closed with `05-final-validation-bundle`.
 
 ## Campaign Objective
 
@@ -47,11 +47,11 @@ The campaign must:
 
 | Order | Child package | Current status | Required exit before next child |
 |---|---|---|---|
-| 1 | `01-e2e-validation-plan` | `RESTART_READY` | `PACKAGE_COMPLETE`, `BLOCKED`, or `NEEDS_USER_INPUT` |
-| 2 | `02-e2e-validation-execution` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `PACKAGE_COMPLETE`, `PASSED_WITH_P3`, `BLOCKED`, `FAILED`, or `NEEDS_USER_INPUT` |
-| 3 | `03-codex-autonomous-validation-plan` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `PACKAGE_COMPLETE`, `BLOCKED`, or `NEEDS_USER_INPUT` |
-| 4 | `04-codex-autonomous-validation-execution` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | `PACKAGE_COMPLETE`, `PASSED_WITH_P3`, `BLOCKED`, `FAILED`, or `NEEDS_USER_INPUT` |
-| 5 | `05-final-validation-bundle` | `NOT_EXECUTED_CURRENT_CAMPAIGN` | final campaign status recorded |
+| 1 | `01-e2e-validation-plan` | `PACKAGE_COMPLETE` | current-campaign planning review re-accepted |
+| 2 | `02-e2e-validation-execution` | `PACKAGE_COMPLETE` | current-campaign backend, API smoke, Playwright availability, and host-capable E2E evidence passed |
+| 3 | `03-codex-autonomous-validation-plan` | `PACKAGE_COMPLETE` | autonomous validation plan accepted; no autonomous validation executed here |
+| 4 | `04-codex-autonomous-validation-execution` | `PACKAGE_COMPLETE` | independent Codex autonomous validation passed |
+| 5 | `05-final-validation-bundle` | `PACKAGE_COMPLETE` | final campaign status recorded as `passed` |
 
 Default campaign progression advances only when the active child reaches
 `PACKAGE_COMPLETE` or an explicitly accepted status that the next child
@@ -85,10 +85,16 @@ Workflow selection:
 | Autonomous validation | Run independent Codex review and required commands, record findings and recommendation, do not repair implementation unless the contract authorizes it, close out. |
 | Final validation bundle | Synthesize current evidence and findings disposition, rerun only to resolve evidence conflicts or missing proof, decide final campaign result. |
 
-Subagents are optional review or worker tools, not mandatory ceremony. Use them
-when independent review, parallel file inspection, or evaluator feedback
-improves reliability. Do not use them to bypass contract gates, write final
-status without evidence, or expand scope beyond the active child package.
+Subagents are mandatory checkpoints for `/goal` development-mode child work
+that is implementation-bearing or full child-package cycle. Use the mandatory
+documentation / contract, implementation-scope, code-review,
+validation-evidence, and closeout consistency checkpoints from
+`docs/iterations/AGENTS.md`.
+
+Subagents remain non-ceremonial: do not use them to bypass contract gates,
+write final status without evidence, or expand scope beyond the active child
+package. Trivial docs-only edits may skip subagents only when they do not affect
+any gate, contract, status, claim, automation route, or mirror obligation.
 
 The campaign may loop through review, repair, and verification more than once.
 It may reorder selected gates when evidence requires it, but it must not skip a
@@ -111,10 +117,9 @@ If any condition is false, the child must remain documentation-only or stop as
 
 ## Current Campaign Exit Criteria
 
-The campaign is complete only when `05-final-validation-bundle` records one of:
+The campaign is complete. `05-final-validation-bundle` records:
 
 - `passed`
-- `passed with P3`
 
 The final bundle must summarize:
 

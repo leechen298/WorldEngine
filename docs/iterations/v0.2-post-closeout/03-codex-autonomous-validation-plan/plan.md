@@ -1,6 +1,6 @@
 # Plan
 
-Status: planned / ready for review
+Status: package complete / plan accepted current campaign
 
 ## Ordered Steps
 
@@ -13,6 +13,7 @@ Status: planned / ready for review
 7. Define unsupported-claim handling.
 8. Define final recommendation values.
 9. Hand off to the execution package.
+10. Record that this package did not execute autonomous validation.
 
 ## Phase Boundaries
 
