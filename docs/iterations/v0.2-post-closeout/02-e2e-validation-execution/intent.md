@@ -1,12 +1,15 @@
 # Intent
 
-Status: not executed
+Status: blocked
 
 ## Problem / Purpose
 
 The planning package defines what to validate. This execution package defines
 how a later validator records the actual run without mixing results into the
 planning files.
+
+The package has since been executed and is blocked by the browser E2E server
+bind failure recorded in `e2e-validation-report.md`.
 
 ## Why Now
 

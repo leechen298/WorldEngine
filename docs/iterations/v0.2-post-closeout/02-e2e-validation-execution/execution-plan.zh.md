@@ -1,6 +1,6 @@
 # Execution Plan
 
-状态：`not executed`
+状态：`blocked`
 
 ## 步骤
 
@@ -66,3 +66,6 @@
 ## 输出
 
 execution 输出是 `e2e-validation-report.md` 和更新后的 `review.md`。
+
+2026-05-28 execution 已到达该输出状态；但 browser E2E 仍 blocked，因为 configured
+backend web server 在 execution context 中无法绑定 `127.0.0.1:8000`。

@@ -8,8 +8,12 @@ Status: blocked
 |---|---|
 | `docs/iterations/v0.2-post-closeout/README.md`, `.zh.md` | Updates package index status for `02-e2e-validation-execution` to `blocked`. |
 | `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/README.md`, `.zh.md` | Updates package status and final assessment to `blocked`. |
+| `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/intent.md`, `.zh.md` | Aligns package status with executed blocker state. |
+| `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/contract.md`, `.zh.md` | Aligns package status and clarifies validation-fix evidence scope. |
+| `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/execution-plan.md`, `.zh.md` | Aligns package status and records the reached blocked output state. |
 | `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/e2e-validation-report.md`, `.zh.md` | Records current-session validation evidence, results, blocker, and findings. |
 | `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/review.md`, `.zh.md` | Records execution review evidence. |
+| `docs/iterations/v0.2-post-closeout/findings.md` | Records validation-fix rerun confirmation for the open browser E2E P2 blocker. |
 
 ## Commands Run
 
@@ -27,6 +31,10 @@ cd frontend && pnpm exec playwright --version && pnpm exec playwright install --
 make test-e2e
 git diff --name-only
 rg -n -i 'demo[- ]world|concrete demo|application-specific backend|seed data|story rules|characters|locations|resources' docs/releases/v0.2.md docs/iterations/v0.2 docs/scope-boundaries.md docs/external-fixture-boundary.md backend/app frontend --glob '!frontend/node_modules/**' --glob '!test-results/**'
+git rev-parse HEAD
+make test-e2e
+git diff --name-only 47b2dac6a08fdf7c249844b1f5447af17ab37d86..HEAD
+git diff --check
 ```
 
 ## Test Results
@@ -53,6 +61,14 @@ rg -n -i 'demo[- ]world|concrete demo|application-specific backend|seed data|sto
   and the Chromium dry-run target was present.
 - `make test-e2e` exited `2` before browser tests executed because the backend
   web server could not bind `127.0.0.1:8000`: `operation not permitted`.
+- Validation-fix rerun `git rev-parse HEAD` exited `0` and reported
+  `f1c99fc94f46b04e9286450bf0af7ebfb17253d3`.
+- Validation-fix rerun `make test-e2e` exited `2` before browser tests
+  executed with the same `127.0.0.1:8000` bind error.
+- `git diff --name-only 47b2dac6a08fdf7c249844b1f5447af17ab37d86..HEAD`
+  exited `0` and listed only validation documentation files, so the original
+  backend/API validation evidence was not invalidated by runtime changes.
+- Validation-fix `git diff --check` exited `0` after validation doc edits.
 - `git diff --name-only` exited `0` with no output before validation doc
   updates.
 - Concrete demo wording sweep exited `0` with boundary, future-scope, and
@@ -77,7 +93,9 @@ Chinese mirrors.
 
 - P1: none.
 - P2: Browser E2E blocked because `make test-e2e` cannot bind the configured
-  backend server to `127.0.0.1:8000` in this execution context.
+  backend server to `127.0.0.1:8000` in this execution context. A
+  validation-fix rerun reproduced the same blocker; implementation and
+  E2E-infrastructure changes are outside this package scope.
 - P3: none.
 
 ## Final Assessment

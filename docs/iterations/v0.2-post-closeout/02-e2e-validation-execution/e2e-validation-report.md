@@ -50,6 +50,9 @@ Allowed final assessment values:
 | `cd frontend && pnpm exec playwright --version && pnpm exec playwright install --dry-run chromium` | E2E framework and browser availability check | 0 | passed | Playwright `1.60.0`; Chromium install target was present in the dry-run output. |
 | `make test-e2e` | Configured browser E2E suite | 2 | blocked | Playwright backend web server failed to bind `127.0.0.1:8000`: `operation not permitted`. No browser tests executed. |
 | `git diff --name-only` | Confirm no implementation files changed before report updates | 0 | passed | No output before validation doc edits. |
+| `git rev-parse HEAD` | Record validation-fix rerun commit | 0 | passed | Output: `f1c99fc94f46b04e9286450bf0af7ebfb17253d3`; changes since the original reviewed commit are validation docs only. |
+| `make test-e2e` | Validation-fix rerun of the blocking browser E2E command | 2 | blocked | Same blocker reproduced: backend web server could not bind `127.0.0.1:8000` with `operation not permitted`; no browser tests executed. |
+| `git diff --check` | Validation-fix documentation whitespace check | 0 | passed | No output after validation doc edits. |
 
 ## Checks Not Run
 
@@ -100,7 +103,10 @@ Allowed final assessment values:
 
 - P1: none.
 - P2: Browser E2E is blocked because `make test-e2e` cannot bind the backend
-  web server to `127.0.0.1:8000` in this execution context.
+  web server to `127.0.0.1:8000` in this execution context. Validation-fix
+  rerun on commit `f1c99fc94f46b04e9286450bf0af7ebfb17253d3` reproduced the
+  same blocker, and implementation or test-infrastructure changes remain out
+  of scope for this package.
 - P3: none.
 
 ## Final Assessment
@@ -109,7 +115,7 @@ Allowed final assessment values:
 
 Backend deterministic checks and API smoke passed with current-session
 evidence. Configured browser E2E did not run because server startup was
-blocked before Playwright executed any tests. This package cannot record a
-clean validation pass until browser E2E is rerun in an environment that can
-bind the configured backend port, or the blocker is explicitly accepted by a
-later validation bundle.
+blocked before Playwright executed any tests. A validation-fix rerun confirmed
+the same blocker, so this package cannot record a clean validation pass until
+browser E2E is rerun in an environment that can bind the configured backend
+port, or the blocker is explicitly accepted by a later validation bundle.

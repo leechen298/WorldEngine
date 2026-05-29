@@ -1,6 +1,6 @@
 # Contract
 
-Status: not executed
+Status: blocked
 
 ## Public Concepts
 
@@ -15,6 +15,10 @@ Status: not executed
 
 During a later execution pass, update only this package's report and review
 unless a separate approved plan allows broader documentation updates.
+
+During validation-fix passes, update only this package's validation evidence,
+status fields, and milestone finding rows needed to record the blocker or
+rerun result.
 
 ## Forbidden Changes
 

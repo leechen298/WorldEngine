@@ -49,6 +49,9 @@
 | `cd frontend && pnpm exec playwright --version && pnpm exec playwright install --dry-run chromium` | E2E framework 和 browser availability 检查 | 0 | passed | Playwright `1.60.0`；dry-run 输出包含 Chromium install target。 |
 | `make test-e2e` | 已配置的 browser E2E suite | 2 | blocked | Playwright backend web server 绑定 `127.0.0.1:8000` 失败：`operation not permitted`。没有 browser tests 被执行。 |
 | `git diff --name-only` | 在更新 report 前确认未修改 implementation files | 0 | passed | 更新 validation docs 前无输出。 |
+| `git rev-parse HEAD` | 记录 validation-fix rerun commit | 0 | passed | 输出：`f1c99fc94f46b04e9286450bf0af7ebfb17253d3`；相对 original reviewed commit 的变化只有 validation docs。 |
+| `make test-e2e` | validation-fix rerun blocking browser E2E command | 2 | blocked | 同一 blocker 复现：backend web server 无法绑定 `127.0.0.1:8000`，错误为 `operation not permitted`；没有 browser tests 被执行。 |
+| `git diff --check` | validation-fix documentation whitespace check | 0 | passed | 更新 validation docs 后无输出。 |
 
 ## 未运行检查
 
@@ -92,7 +95,9 @@
 
 - P1：无。
 - P2：Browser E2E blocked，因为 `make test-e2e` 在本 execution context 中无法将
-  backend web server 绑定到 `127.0.0.1:8000`。
+  backend web server 绑定到 `127.0.0.1:8000`。validation-fix rerun 在 commit
+  `f1c99fc94f46b04e9286450bf0af7ebfb17253d3` 复现同一 blocker；implementation
+  或 test-infrastructure changes 仍不属于本 package scope。
 - P3：无。
 
 ## Final Assessment
@@ -101,5 +106,6 @@
 
 Backend deterministic checks 和 API smoke 已用 current-session evidence 证明通过。
 Configured browser E2E 没有运行，因为 Playwright 执行任何 tests 前 server startup
-已被阻塞。除非后续 validation bundle 明确接受该 blocker，或在可绑定 configured
-backend port 的环境中重新运行 browser E2E，否则本 package 不能记录 clean validation pass。
+已被阻塞。validation-fix rerun 已确认同一 blocker。除非后续 validation bundle 明确
+接受该 blocker，或在可绑定 configured backend port 的环境中重新运行 browser E2E，
+否则本 package 不能记录 clean validation pass。

@@ -8,8 +8,12 @@
 |---|---|
 | `docs/iterations/v0.2-post-closeout/README.md`, `.zh.md` | 将 `02-e2e-validation-execution` 的 package index status 更新为 `blocked`。 |
 | `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/README.md`, `.zh.md` | 将 package status 和 final assessment 更新为 `blocked`。 |
+| `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/intent.md`, `.zh.md` | 将 package status 对齐到已执行后的 blocker state。 |
+| `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/contract.md`, `.zh.md` | 对齐 package status，并澄清 validation-fix evidence scope。 |
+| `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/execution-plan.md`, `.zh.md` | 对齐 package status，并记录已到达的 blocked output state。 |
 | `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/e2e-validation-report.md`, `.zh.md` | 记录 current-session validation evidence、results、blocker 和 findings。 |
 | `docs/iterations/v0.2-post-closeout/02-e2e-validation-execution/review.md`, `.zh.md` | 记录 execution review evidence。 |
+| `docs/iterations/v0.2-post-closeout/findings.md` | 为 open browser E2E P2 blocker 记录 validation-fix rerun confirmation。 |
 
 ## 已运行命令
 
@@ -27,6 +31,10 @@ cd frontend && pnpm exec playwright --version && pnpm exec playwright install --
 make test-e2e
 git diff --name-only
 rg -n -i 'demo[- ]world|concrete demo|application-specific backend|seed data|story rules|characters|locations|resources' docs/releases/v0.2.md docs/iterations/v0.2 docs/scope-boundaries.md docs/external-fixture-boundary.md backend/app frontend --glob '!frontend/node_modules/**' --glob '!test-results/**'
+git rev-parse HEAD
+make test-e2e
+git diff --name-only 47b2dac6a08fdf7c249844b1f5447af17ab37d86..HEAD
+git diff --check
 ```
 
 ## 测试结果
@@ -51,6 +59,14 @@ rg -n -i 'demo[- ]world|concrete demo|application-specific backend|seed data|sto
   dry-run 输出包含 Chromium target。
 - `make test-e2e` 在 browser tests 执行前退出码为 `2`，因为 backend web
   server 无法绑定 `127.0.0.1:8000`：`operation not permitted`。
+- Validation-fix rerun `git rev-parse HEAD` 退出码为 `0`，输出
+  `f1c99fc94f46b04e9286450bf0af7ebfb17253d3`。
+- Validation-fix rerun `make test-e2e` 在 browser tests 执行前退出码为 `2`，
+  并复现同一 `127.0.0.1:8000` bind error。
+- `git diff --name-only 47b2dac6a08fdf7c249844b1f5447af17ab37d86..HEAD`
+  退出码为 `0`，只列出 validation documentation files，因此 original backend/API
+  validation evidence 没有被 runtime changes invalidated。
+- Validation-fix `git diff --check` 在更新 validation docs 后退出码为 `0`。
 - 更新 validation docs 前，`git diff --name-only` 退出码为 `0` 且无输出。
 - Concrete demo wording sweep 退出码为 `0`，只发现 boundary、future-scope 和
   historical references；没有 implementation change。
@@ -73,7 +89,8 @@ package reviews 以及 status/index documents，并同步 English 和 Chinese mi
 
 - P1：无。
 - P2：Browser E2E blocked，因为 `make test-e2e` 在本 execution context 中无法将
-  configured backend server 绑定到 `127.0.0.1:8000`。
+  configured backend server 绑定到 `127.0.0.1:8000`。validation-fix rerun 复现
+  同一 blocker；implementation 与 E2E-infrastructure changes 不属于本 package scope。
 - P3：无。
 
 ## 最终评估

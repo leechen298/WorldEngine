@@ -1,11 +1,14 @@
 # Intent
 
-状态：`not executed`
+状态：`blocked`
 
 ## 问题 / 目的
 
 planning package 定义要验证什么。本 execution package 定义后续 validator 如何记录实际运行，
 避免把 results 混入 planning files。
+
+本 package 后续已经执行；browser E2E server 绑定失败，blocker 记录在
+`e2e-validation-report.md`。
 
 ## 为什么现在做
 

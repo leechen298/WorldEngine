@@ -1,6 +1,6 @@
 # Contract
 
-状态：`not executed`
+状态：`blocked`
 
 ## Public concepts
 
@@ -15,6 +15,9 @@
 
 后续 execution pass 期间，除非 separate approved plan 允许更广的 documentation updates，
 只能更新本 package 的 report 和 review。
+
+validation-fix pass 期间，只能更新本 package 的 validation evidence、status fields，
+以及记录 blocker 或 rerun result 所需的 milestone finding rows。
 
 ## 禁止修改
 
