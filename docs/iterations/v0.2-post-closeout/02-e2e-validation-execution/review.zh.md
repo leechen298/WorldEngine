@@ -35,6 +35,9 @@ git rev-parse HEAD
 make test-e2e
 git diff --name-only 47b2dac6a08fdf7c249844b1f5447af17ab37d86..HEAD
 git diff --check
+git rev-parse HEAD
+make test-e2e
+git diff --check
 ```
 
 ## 测试结果
@@ -67,6 +70,13 @@ git diff --check
   退出码为 `0`，只列出 validation documentation files，因此 original backend/API
   validation evidence 没有被 runtime changes invalidated。
 - Validation-fix `git diff --check` 在更新 validation docs 后退出码为 `0`。
+- 第二次 validation-fix rerun `git rev-parse HEAD` 退出码为 `0`，并报告
+  `9be4dc8d2d2696dadf625bd254386b0ad1b292d9`。
+- 第二次 validation-fix rerun `make test-e2e` 在 browser tests 执行前退出码为
+  `2`。Playwright web server 启动后无法绑定 `127.0.0.1:8000`，错误为
+  `operation not permitted`。
+- 第二次 validation-fix `git diff --check` 在更新 validation docs 后退出码为
+  `0`。
 - 更新 validation docs 前，`git diff --name-only` 退出码为 `0` 且无输出。
 - Concrete demo wording sweep 退出码为 `0`，只发现 boundary、future-scope 和
   historical references；没有 implementation change。
@@ -89,7 +99,7 @@ package reviews 以及 status/index documents，并同步 English 和 Chinese mi
 
 - P1：无。
 - P2：Browser E2E blocked，因为 `make test-e2e` 在本 execution context 中无法将
-  configured backend server 绑定到 `127.0.0.1:8000`。validation-fix rerun 复现
+  configured backend server 绑定到 `127.0.0.1:8000`。validation-fix reruns 复现
   同一 blocker；implementation 与 E2E-infrastructure changes 不属于本 package scope。
 - P3：无。
 

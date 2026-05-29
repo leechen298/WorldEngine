@@ -52,6 +52,9 @@
 | `git rev-parse HEAD` | 记录 validation-fix rerun commit | 0 | passed | 输出：`f1c99fc94f46b04e9286450bf0af7ebfb17253d3`；相对 original reviewed commit 的变化只有 validation docs。 |
 | `make test-e2e` | validation-fix rerun blocking browser E2E command | 2 | blocked | 同一 blocker 复现：backend web server 无法绑定 `127.0.0.1:8000`，错误为 `operation not permitted`；没有 browser tests 被执行。 |
 | `git diff --check` | validation-fix documentation whitespace check | 0 | passed | 更新 validation docs 后无输出。 |
+| `git rev-parse HEAD` | 记录第二次 validation-fix rerun commit | 0 | passed | 输出：`9be4dc8d2d2696dadf625bd254386b0ad1b292d9`；这是本次 validation-fix 前的最新 review checkpoint。 |
+| `make test-e2e` | 第二次 validation-fix rerun blocking browser E2E command | 2 | blocked | 同一 blocker 复现：Playwright web server 启动后无法绑定 `127.0.0.1:8000`，错误为 `operation not permitted`；没有 browser tests 被执行。 |
+| `git diff --check` | 第二次 validation-fix documentation whitespace check | 0 | passed | 更新 validation docs 后无输出。 |
 
 ## 未运行检查
 
@@ -95,8 +98,9 @@
 
 - P1：无。
 - P2：Browser E2E blocked，因为 `make test-e2e` 在本 execution context 中无法将
-  backend web server 绑定到 `127.0.0.1:8000`。validation-fix rerun 在 commit
-  `f1c99fc94f46b04e9286450bf0af7ebfb17253d3` 复现同一 blocker；implementation
+  backend web server 绑定到 `127.0.0.1:8000`。validation-fix reruns 在 commits
+  `f1c99fc94f46b04e9286450bf0af7ebfb17253d3` 和
+  `9be4dc8d2d2696dadf625bd254386b0ad1b292d9` 复现同一 blocker；implementation
   或 test-infrastructure changes 仍不属于本 package scope。
 - P3：无。
 
@@ -106,6 +110,6 @@
 
 Backend deterministic checks 和 API smoke 已用 current-session evidence 证明通过。
 Configured browser E2E 没有运行，因为 Playwright 执行任何 tests 前 server startup
-已被阻塞。validation-fix rerun 已确认同一 blocker。除非后续 validation bundle 明确
+已被阻塞。validation-fix reruns 已确认同一 blocker。除非后续 validation bundle 明确
 接受该 blocker，或在可绑定 configured backend port 的环境中重新运行 browser E2E，
 否则本 package 不能记录 clean validation pass。
