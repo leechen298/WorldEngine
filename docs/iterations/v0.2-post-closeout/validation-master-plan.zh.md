@@ -1,30 +1,30 @@
 # Validation Master Plan
 
-状态：`planned / ready for review`
-类型：post-closeout validation control plan
+状态：`campaign ready / unverified restart`
+类型：post-closeout goal campaign control plan
 
 ## 目的
 
 本文控制 v0.2 post-closeout validation。它存在的原因是：v0.2 closeout 已完成，但剩余
 validation 必须由 evidence 支撑，不能只从 release status 推断。
 
-这条 validation chain 不重新打开 v0.2，只建立并路由 validation runs 的 evidence
-channels。
+本 campaign 不改变 v0.2 release status。它建立并路由 validation runs 和 Codex
+`/goal` child-package cycles 所需的 evidence channels。
 
 ## 当前路由快照
 
 当前简短路由来源是 `CURRENT_STATE.md`；Codex App `/goal` 路由说明位于
-`GOAL_RUNNER.md`。
+`GOAL_RUNNER.md`；child sequence 和 campaign exit criteria 位于
+`CAMPAIGN_PLAN.md`。
 
 截至 2026-05-29：
 
-- `01-e2e-validation-plan` 已完成。
-- `02-e2e-validation-execution` 已 `passed`，证据包括 backend deterministic、API
-  smoke、Playwright availability 和 configured browser E2E。
-- `03-codex-autonomous-validation-plan` 是当前 active next package，只需要
-  review-closeout。
-- `04-codex-autonomous-validation-execution` 尚未执行。
-- `05-final-validation-bundle` 尚未执行。
+- campaign 已回退为 `unverified_restart`。
+- `01-e2e-validation-plan` 是当前 active child package。
+- `02-e2e-validation-execution` 保留 2026-05-29 archived pass evidence，但它不是
+  当前 campaign completion evidence。
+- `03-codex-autonomous-validation-plan`、`04-codex-autonomous-validation-execution`
+  和 `05-final-validation-bundle` 在当前 campaign 中尚未执行。
 - `findings.md` 中 `v0.2-post-closeout-P2-001` 仍然 open。
 
 ## 必读文件
@@ -50,8 +50,8 @@ validation planning 和后续 execution 必须读取：
 
 ## 流程
 
-0. Master validation planning：定义 status taxonomy、stop conditions、
-   severity rules 和 handoff order。
+0. Master campaign planning：定义 status taxonomy、stop conditions、severity
+   rules 和 handoff order。
 1. E2E / integration / API smoke plan：定义应检查内容，不执行检查。
 2. E2E / integration / API smoke execution：记录 branch、commit、commands、
    results、blockers 和 P1/P2/P3 findings。
@@ -63,14 +63,23 @@ validation planning 和后续 execution 必须读取：
 
 ## Codex App Goal 路由规则
 
-默认 `/goal` work 一次只处理一个 validation package。除非用户明确要求 full campaign
-mode，否则不要从一个 package 自动继续到下一个 package。
+当用户说：
+
+```text
+完成 v0.2-post-closeout
+```
+
+Codex 应根据 `GOAL_RUNNER.md`、`CURRENT_STATE.md` 和 `CAMPAIGN_PLAN.md` 运行
+full campaign mode。
 
 默认下一条路由是：
 
 ```text
-03-codex-autonomous-validation-plan review-closeout-plan
+01-e2e-validation-plan campaign-restart
 ```
+
+用户点名某个 child package，或明确说不要运行 full campaign mode 时，仍可使用
+single child mode。
 
 `03` 不得执行 autonomous validation。`04` 负责 autonomous validation execution，
 `05` 负责 final bundle synthesis。
@@ -86,6 +95,9 @@ mode，否则不要从一个 package 自动继续到下一个 package。
 - `blocked`：validation 无法完成，且 blocker 已记录。
 - `failed`：validation 已完成，并发现 P1/P2 failure 或 claim conflict。
 - `not executed`：没有执行 validation。
+- `not executed in current campaign`：package 可能有历史 evidence，但 reset 后的当前
+  campaign 尚未执行或重新接受它。
+- `archived evidence only`：历史 evidence 仅供审计，不是当前 completion evidence。
 
 ## 严重级别规则
 

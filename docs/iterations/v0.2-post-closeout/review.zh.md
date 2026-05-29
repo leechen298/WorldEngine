@@ -1,20 +1,125 @@
 # Review
 
-状态：`ready for review`
+状态：`campaign ready / unverified restart`
 
 ## FINAL_STATUS
 
-route_status: REVIEW_READY
-evidence_status: partial；`02-e2e-validation-execution` 已 passed，`04` 和 `05` 尚未执行
-next_action: review-closeout `03-codex-autonomous-validation-plan`
-active_package: `03-codex-autonomous-validation-plan`
-do_not_modify_implementation: true
-blocking_findings: `03` review-closeout 当前无已记录 blocker
+route_status: CAMPAIGN_READY
+evidence_status: unverified restart；此前 `02` pass 只作为 archived evidence
+next_action: `/goal 完成 v0.2-post-closeout` 从 `01-e2e-validation-plan` 开始 full campaign
+active_package: `01-e2e-validation-plan`
+implementation_authorized: child_contract_controlled
+blocking_findings: campaign restart routing 当前无 blocker
 open_findings: `v0.2-post-closeout-P2-001`
 last_verified_at: 2026-05-29
-evidence_commit: `dbffa069a5e74b6b1e6b60719152922595c60df6`
-commands_run: 当前 Goal Runner update 只运行 documentation routing checks；历史 validation commands 见各 package reviews
-commands_not_run: autonomous validation；final bundle synthesis；backend tests；API smoke；E2E
+evidence_commit: archived only；current campaign evidence 尚未产生
+commands_run: 当前 Goal Campaign updates 只运行 documentation routing 和 adaptive workflow checks；archived validation commands 见各 package reviews
+commands_not_run: campaign execution；autonomous validation；final bundle synthesis；backend tests；API smoke；E2E
+
+## Adaptive Child Workflow 更新
+
+日期：2026-05-29
+
+变更文件：
+
+- `docs/iterations/AGENTS.md`, `docs/iterations/AGENTS.zh.md`：明确
+  `GOAL_RUNNER.md` 负责 adaptive gate selection 和 risk-based gate order。
+- `README.md`, `README.zh.md`：更新一句话 goal 的解释，使每个 child 按 child
+  type、contract 和 risk 选择 gates，而不是执行一套固定 phase list。
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`：把 rigid child package cycle 替换为
+  adaptive package cycle、package-shape gate selection、可选 subagent / evaluator
+  guidance，以及 verification escalation rules。
+- `CAMPAIGN_PLAN.md`, `CAMPAIGN_PLAN.zh.md`：把 fixed child cycle 替换为按
+  planning、validation、implementation、autonomous validation 或 final-bundle child
+  type 选择 workflow。
+- `review.md`, `review.zh.md`：记录本次 adaptive workflow update 和 closeout
+  evidence。
+
+本次 adaptive workflow update 运行的命令：
+
+```bash
+git status --short --branch
+git diff --name-only
+git diff --check
+rg -n "Adaptive Child|adaptive gate|risk-based|gate-selection|evaluator-review|verification-escalation|Workflow selection|Subagent|subagent|evaluator|P0 / P1|full child-package cycle" docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md docs/iterations/v0.2-post-closeout/README.md docs/iterations/v0.2-post-closeout/README.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md
+rg -n "Child Package Cycle|Child Cycle|fixed phase list|rigid phase list|strongest cycle" docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md
+rg -n "[[:blank:]]$" AGENTS.md AGENTS.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md docs/iterations/v0.2-post-closeout
+for f in $(find docs/iterations/v0.2-post-closeout -type f -name '*.md' ! -name '*.zh.md' -print); do zh="${f%.md}.zh.md"; test -f "$zh" || echo "$f"; done
+```
+
+结果：
+
+- `git diff --check` 退出 `0`。
+- adaptive workflow keyword search 找到预期的 goal-runner、campaign plan、README
+  和 iteration-AGENTS entries。
+- legacy-cycle wording search 只找到刻意保留的替换后标题，以及说明不要机械执行
+  fixed / rigid phase list 的 guard wording。
+- trailing-whitespace search 退出 `1` 且无输出。
+- English / Chinese mirror loop 退出 `0`，只输出既有的
+  `docs/iterations/v0.2-post-closeout/findings.md`；该文件按既有 package 约定没有
+  mirror。
+- `git status --short --branch` 仍显示既有未跟踪文件
+  `docs/iterations/v0.2-post-closeout.zip`。它也显示新的 `CAMPAIGN_PLAN.md` 和
+  `CAMPAIGN_PLAN.zh.md`；这两个文件是 in-scope campaign routing docs，已列在本
+  review 中。
+- backend tests、API smoke、E2E、autonomous validation 和 final bundle synthesis
+  未运行，因为本次只修改 routing documents。
+
+## Goal Campaign 重启更新
+
+日期：2026-05-29
+
+变更文件：
+
+- `AGENTS.md`, `AGENTS.zh.md`：新增 `完成 <iteration-package>` goals 的 package
+  discovery guidance。
+- `docs/iterations/AGENTS.md`, `docs/iterations/AGENTS.zh.md`：新增 Codex Goal
+  Campaign standard 和文件职责模型。
+- `README.md`, `README.zh.md`：新增 `Goal Entry`，把 package 回退为
+  `campaign ready / unverified restart`，并把一句话目标指向 `GOAL_RUNNER.md`、
+  `CURRENT_STATE.md` 和 `CAMPAIGN_PLAN.md`。
+- `CURRENT_STATE.md`, `CURRENT_STATE.zh.md`：把 active child route 回退到
+  `01-e2e-validation-plan`，并把此前 pass evidence 标记为 archived only。
+- `CAMPAIGN_PLAN.md`, `CAMPAIGN_PLAN.zh.md`：新增 full campaign child sequence、
+  child cycle、implementation authorization rule、exit criteria 和 hard stops。
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`：从 one-package validation routing 改成
+  full campaign state machine，包含 child cycles、review loops、implementation
+  authorization、repair loops 和 closeout gates。
+- `validation-master-plan.md`, `validation-master-plan.zh.md`：把 current route
+  snapshot 和 default route 对齐到 campaign restart。
+- 各 child package 的 `review.md` / `review.zh.md`：把早前状态标记为
+  restart-ready、archived-only 或 not executed in the current campaign。
+- child package README / status files，尤其是
+  `02-e2e-validation-execution/{intent,contract,execution-plan,e2e-validation-report}.md`
+  及其镜像：把 2026-05-29 pass evidence 标记为 archived，而不是当前 campaign
+  completion evidence。
+
+本次 campaign routing update 运行的命令：
+
+```bash
+git status --short
+git diff --name-only
+git diff --check
+test -f docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md
+test -f docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md
+rg -n "Goal Entry|完成 v0\\.2-post-closeout|CAMPAIGN_PLAN|full campaign|campaign ready|unverified_restart|RESTART_READY|NOT_EXECUTED_CURRENT_CAMPAIGN|ARCHIVED_EVIDENCE_ONLY|implementation_authorized|Closeout Consistency Gate" docs/iterations/v0.2-post-closeout AGENTS.md AGENTS.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md
+for f in $(find docs/iterations/v0.2-post-closeout -type f -name '*.md' ! -name '*.zh.md' -print); do zh="${f%.md}.zh.md"; test -f "$zh" || echo "$f"; done
+rg -n '[[:blank:]]$' AGENTS.md AGENTS.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md docs/iterations/v0.2-post-closeout
+```
+
+结果：
+
+- `git diff --check` 退出 `0`。
+- `CAMPAIGN_PLAN.md` 和 `CAMPAIGN_PLAN.zh.md` existence checks 退出 `0`。
+- campaign keyword search 找到预期的 goal entry、state-machine、restart、
+  archived-evidence、implementation authorization 和 closeout gate terms。
+- English / Chinese mirror loop 退出 `0`，只输出既有的
+  `docs/iterations/v0.2-post-closeout/findings.md`；该文件按既有 package 约定没有
+  mirror。
+- trailing-whitespace search 退出 `1` 且无输出。
+- `git status --short` 仍显示既有未跟踪文件
+  `docs/iterations/v0.2-post-closeout.zip`；本次 campaign update 未修改该文件，它也不在
+  tracked diff 中。
 
 ## Goal Runner 路由更新
 

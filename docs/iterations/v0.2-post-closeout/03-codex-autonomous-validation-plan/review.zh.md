@@ -1,12 +1,12 @@
 # Review
 
-状态：`ready for review`
+状态：`not executed in current campaign`
 
 ## FINAL_STATUS
 
-route_status: REVIEW_READY
+route_status: NOT_EXECUTED_CURRENT_CAMPAIGN
 evidence_status: not executed
-next_action: review-closeout-codex-autonomous-validation-plan
+next_action: 等待当前 campaign 的 `02` 结果，然后 review-closeout-codex-autonomous-validation-plan
 active_package: `03-codex-autonomous-validation-plan`
 do_not_modify_implementation: true
 blocking_findings: planning review 当前无已记录 blocker
@@ -15,6 +15,7 @@ last_verified_at: 2026-05-29
 evidence_commit: not applicable；planning review only
 commands_run: documentation planning checks 见下方记录
 commands_not_run: autonomous validation；backend tests；API smoke；E2E；final bundle synthesis
+current_campaign_counts_this_as_complete: no
 
 ## 变更文件
 

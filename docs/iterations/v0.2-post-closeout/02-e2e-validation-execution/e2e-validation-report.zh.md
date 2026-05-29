@@ -1,11 +1,15 @@
 # E2E / Integration / API Smoke Validation Report
 
-状态：`passed`
+状态：`passed`（campaign reset 后仅作为 archived evidence）
 
 重开说明：下方 2026-05-28 evidence 作为 historical evidence 保留。该次运行到达
 `blocked`，因为旧 validation execution context 无法绑定 configured localhost
 backend port。2026-05-29 在 `agent-iter` validation stages 已支持 host-capable
 localhost binding 后，本 package 被重开。
+
+当前 campaign 说明：`unverified_restart` 之后，本 report 是 historical evidence。
+除非新的 `/goal` run 重新执行本 package，或在 `review.md` 中带理由明确重新接受该
+evidence，否则它不算当前 campaign completion。
 
 ## 元数据
 
@@ -14,7 +18,7 @@ localhost binding 后，本 package 被重开。
 - Execution date：2026-05-29
 - Executor：Codex F
 - Previous final assessment：`blocked`
-- Current final assessment：`passed`
+- Current final assessment：`archived evidence only`
 
 允许的 final assessment values：
 

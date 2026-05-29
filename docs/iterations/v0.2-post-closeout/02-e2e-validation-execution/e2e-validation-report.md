@@ -1,12 +1,17 @@
 # E2E / Integration / API Smoke Validation Report
 
-Status: passed
+Status: passed (archived evidence only after campaign reset)
 
 Reopen note: the 2026-05-28 evidence below is preserved as historical evidence.
 That run reached `blocked` because the old validation execution context could
 not bind the configured localhost backend port. The package was reopened on
 2026-05-29 after `agent-iter` validation stages were updated to run with
 host-capable localhost binding.
+
+Current campaign note: after the `unverified_restart` reset, this report is
+historical evidence. It does not count as current campaign completion unless a
+new `/goal` run reruns this package or explicitly re-accepts this evidence with
+rationale in `review.md`.
 
 ## Metadata
 
@@ -15,7 +20,7 @@ host-capable localhost binding.
 - Execution date: 2026-05-29
 - Executor: Codex F
 - Previous final assessment: `blocked`
-- Current final assessment: `passed`
+- Current final assessment: `archived evidence only`
 
 Allowed final assessment values:
 

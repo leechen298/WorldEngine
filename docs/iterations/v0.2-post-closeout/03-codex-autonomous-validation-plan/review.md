@@ -1,12 +1,12 @@
 # Review
 
-Status: ready for review
+Status: not executed in current campaign
 
 ## FINAL_STATUS
 
-route_status: REVIEW_READY
+route_status: NOT_EXECUTED_CURRENT_CAMPAIGN
 evidence_status: not executed
-next_action: review-closeout-codex-autonomous-validation-plan
+next_action: wait for current campaign `02` result, then review-closeout-codex-autonomous-validation-plan
 active_package: `03-codex-autonomous-validation-plan`
 do_not_modify_implementation: true
 blocking_findings: none recorded in planning review
@@ -15,6 +15,7 @@ last_verified_at: 2026-05-29
 evidence_commit: not applicable; planning review only
 commands_run: documentation planning checks recorded below
 commands_not_run: autonomous validation; backend tests; API smoke; E2E; final bundle synthesis
+current_campaign_counts_this_as_complete: no
 
 ## Changed Files
 

@@ -289,6 +289,41 @@ or orchestration.
 `docs/iterations/` must provide deterministic package specs, not automation
 implementation.
 
+## Codex Goal Campaign Standard
+
+Runnable parent or umbrella packages may support Codex App `/goal` campaign
+execution. They must not rely on memory or chat context as the only entrypoint.
+
+A goal campaign package must provide:
+
+```text
+README.md with Goal Entry
+GOAL_RUNNER.md
+CURRENT_STATE.md
+CAMPAIGN_PLAN.md or equivalent parent plan section
+child package README / contract / plan / review files
+```
+
+`README.md` owns the natural-language goal alias, such as
+`完成 <package-name>`.
+
+`GOAL_RUNNER.md` owns the execution state machine, adaptive gate selection,
+risk-based gate order, review loops, implementation authorization rule,
+verification loop, closeout consistency gate, and stop conditions.
+
+`CURRENT_STATE.md` owns the current active child, current campaign status,
+archived evidence policy, and next action.
+
+`CAMPAIGN_PLAN.md` or the parent plan owns child sequence, campaign exit
+criteria, and cross-child handoff rules.
+
+`review.md` owns evidence and final status. It must not be the only place where
+the goal entry is defined.
+
+If a package is reset to rerun a campaign, historical evidence must remain
+visible but be marked as archived or non-current unless explicitly re-accepted
+by the current goal.
+
 ## English / Chinese Mirror Rule
 
 ### Default bilingual output rule

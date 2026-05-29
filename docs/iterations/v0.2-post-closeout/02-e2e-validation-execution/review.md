@@ -1,12 +1,12 @@
 # Review
 
-Status: passed
+Status: archived evidence only
 
 ## FINAL_STATUS
 
-route_status: PACKAGE_COMPLETE
-evidence_status: passed
-next_action: none unless implementation files changed after evidence commit
+route_status: NOT_EXECUTED_CURRENT_CAMPAIGN
+evidence_status: archived passed evidence; not current campaign evidence
+next_action: rerun validation execution after `01` reaches `PACKAGE_COMPLETE`
 active_package: none
 do_not_modify_implementation: true
 blocking_findings: none
@@ -15,6 +15,7 @@ last_verified_at: 2026-05-29
 evidence_commit: `dbffa069a5e74b6b1e6b60719152922595c60df6`
 commands_run: backend deterministic checks `115 passed`; API smoke passed; Playwright availability passed; `make test-e2e` passed with `6 passed`
 commands_not_run: none for the 2026-05-29 host-capable rerun
+current_campaign_counts_this_as_complete: no
 
 ## Changed Files
 

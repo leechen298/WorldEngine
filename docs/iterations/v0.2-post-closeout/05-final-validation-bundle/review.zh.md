@@ -6,7 +6,7 @@
 
 route_status: NOT_EXECUTED
 evidence_status: not executed
-next_action: 等待 `04-codex-autonomous-validation-execution` result
+next_action: 等待当前 campaign 的 `04-codex-autonomous-validation-execution` result
 active_package: `05-final-validation-bundle`
 do_not_modify_implementation: true
 blocking_findings: `04` 完成前不能完成 final bundle
@@ -16,6 +16,7 @@ evidence_commit: not applicable；final bundle not run
 commands_run: final bundle synthesis 无
 commands_not_run: final bundle synthesis；autonomous validation
 v0.4_proceed_decision: not decided
+current_campaign_counts_this_as_complete: no
 
 ## 变更文件
 

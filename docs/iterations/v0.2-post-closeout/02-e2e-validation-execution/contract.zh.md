@@ -1,6 +1,6 @@
 # Contract
 
-状态：`passed`
+状态：`archived evidence only / not executed in current campaign`
 
 ## Public concepts
 

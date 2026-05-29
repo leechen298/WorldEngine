@@ -1,6 +1,6 @@
 # Execution Plan
 
-状态：`passed`
+状态：`archived evidence only / not executed in current campaign`
 
 ## 步骤
 

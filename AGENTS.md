@@ -40,6 +40,13 @@ When creating or modifying files under `docs/iterations/`, also read
 plans, planned packages, iteration packages, validation plans, evidence, and
 review documentation.
 
+When the user says `完成 <iteration-package>` or `complete
+<iteration-package>`, first locate the matching package under
+`docs/iterations/**/<iteration-package>/`. If that package contains
+`README.md`, `GOAL_RUNNER.md`, `CURRENT_STATE.md`, or `CAMPAIGN_PLAN.md`, read
+those files before planning or executing. Do not infer package workflow from
+memory or adjacent packages.
+
 Code or mixed iterations require an iteration package before implementation:
 
 - `README.md`

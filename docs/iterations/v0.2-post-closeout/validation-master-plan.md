@@ -1,7 +1,7 @@
 # Validation Master Plan
 
-Status: planned / ready for review
-Type: post-closeout validation control plan
+Status: campaign ready / unverified restart
+Type: post-closeout goal campaign control plan
 
 ## Purpose
 
@@ -9,23 +9,23 @@ This document controls v0.2 post-closeout validation. It exists because v0.2
 closeout is complete and remaining validation must be evidence-bearing rather
 than assumed from release status.
 
-This validation chain does not reopen v0.2. It creates and routes evidence
-channels for validation runs.
+This campaign does not change v0.2 release status. It creates and routes
+evidence channels for validation runs and Codex `/goal` child-package cycles.
 
 ## Current Routing Snapshot
 
 The current short routing source is `CURRENT_STATE.md`; Codex App `/goal`
-routing instructions live in `GOAL_RUNNER.md`.
+routing instructions live in `GOAL_RUNNER.md`; the child sequence and campaign
+exit criteria live in `CAMPAIGN_PLAN.md`.
 
 As of 2026-05-29:
 
-- `01-e2e-validation-plan` is complete.
-- `02-e2e-validation-execution` is `passed` with backend deterministic, API
-  smoke, Playwright availability, and configured browser E2E evidence.
-- `03-codex-autonomous-validation-plan` is the active next package and needs
-  review-closeout only.
-- `04-codex-autonomous-validation-execution` is not executed.
-- `05-final-validation-bundle` is not executed.
+- The campaign has been reset to `unverified_restart`.
+- `01-e2e-validation-plan` is the active child package.
+- `02-e2e-validation-execution` has archived 2026-05-29 pass evidence, but it
+  is not current campaign completion evidence.
+- `03-codex-autonomous-validation-plan`, `04-codex-autonomous-validation-execution`,
+  and `05-final-validation-bundle` are not executed in the current campaign.
 - `v0.2-post-closeout-P2-001` remains open in `findings.md`.
 
 ## Required Reading
@@ -52,8 +52,8 @@ review instead of assuming its content.
 
 ## Process
 
-0. Master validation planning: define status taxonomy, stop conditions,
-   severity rules, and handoff order.
+0. Master campaign planning: define status taxonomy, stop conditions, severity
+   rules, and handoff order.
 1. E2E / integration / API smoke plan: define what should be checked without
    executing checks.
 2. E2E / integration / API smoke execution: record branch, commit, commands,
@@ -66,14 +66,23 @@ review instead of assuming its content.
 
 ## Codex App Goal Routing Rule
 
-Default `/goal` work is one validation package at a time. Do not continue from
-one package to the next unless the user explicitly asks for full campaign mode.
+When the user says:
+
+```text
+完成 v0.2-post-closeout
+```
+
+Codex should run full campaign mode according to `GOAL_RUNNER.md`,
+`CURRENT_STATE.md`, and `CAMPAIGN_PLAN.md`.
 
 The default next route is:
 
 ```text
-03-codex-autonomous-validation-plan review-closeout-plan
+01-e2e-validation-plan campaign-restart
 ```
+
+Single child mode is still allowed when the user names one child package or
+explicitly says not to run full campaign mode.
 
 `03` must not execute autonomous validation. `04` owns autonomous validation
 execution, and `05` owns final bundle synthesis.
@@ -90,6 +99,10 @@ execution, and `05` owns final bundle synthesis.
 - `blocked`: validation could not complete and the blocker is recorded.
 - `failed`: validation completed and found a P1/P2 failure or claim conflict.
 - `not executed`: no validation execution happened.
+- `not executed in current campaign`: the package may contain historical
+  evidence, but the current reset campaign has not executed or re-accepted it.
+- `archived evidence only`: historical evidence kept for audit, not current
+  completion evidence.
 
 ## Severity Rules
 

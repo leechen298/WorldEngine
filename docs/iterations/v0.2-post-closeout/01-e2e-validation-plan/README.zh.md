@@ -1,12 +1,18 @@
 # E2E / Integration / API Smoke Validation Plan
 
-状态：`review complete`
+状态：`restart ready`
 类型：validation planning
 
 ## 目标
 
 定义 v0.2 post-closeout E2E / integration / API smoke validation scope，但不执行任何
 validation commands。
+
+## 当前 Campaign 说明
+
+本 package 之前已达到 review complete。对当前 `v0.2-post-closeout` goal campaign
+而言，该 review 属于 archived evidence；campaign 进入
+`02-e2e-validation-execution` 前，必须重新执行或带理由明确重新接受它。
 
 ## 范围
 
@@ -51,4 +57,4 @@ blocked。不得把这种情况转成 successful result。
 
 ## 最终评估状态
 
-Ready for review。本 package 尚未执行 validation。
+Restart ready。本 package 在当前 campaign 中尚未执行 validation。

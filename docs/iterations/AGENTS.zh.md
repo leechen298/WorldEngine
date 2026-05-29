@@ -281,6 +281,38 @@ scheduling、Codex role assignment、retry loops 或 orchestration。
 `docs/iterations/` 必须提供 deterministic package specs，而不是 automation
 implementation。
 
+## Codex Goal Campaign Standard
+
+可运行的 parent 或 umbrella package 可以支持 Codex App `/goal` campaign execution。
+这类 package 不能把 memory 或 chat context 当成唯一入口。
+
+goal campaign package 必须提供：
+
+```text
+README.md with Goal Entry
+GOAL_RUNNER.md
+CURRENT_STATE.md
+CAMPAIGN_PLAN.md or equivalent parent plan section
+child package README / contract / plan / review files
+```
+
+`README.md` 负责自然语言 goal alias，例如 `完成 <package-name>`。
+
+`GOAL_RUNNER.md` 负责 execution state machine、adaptive gate selection、
+risk-based gate 顺序、review loops、implementation authorization rule、
+verification loop、closeout consistency gate 和 stop conditions。
+
+`CURRENT_STATE.md` 负责当前 active child、current campaign status、archived
+evidence policy 和 next action。
+
+`CAMPAIGN_PLAN.md` 或 parent plan 负责 child sequence、campaign exit criteria
+和跨 child handoff rules。
+
+`review.md` 负责 evidence 和 final status。它不能成为 goal entry 的唯一来源。
+
+如果 package 被 reset 后重新运行 campaign，历史 evidence 必须保留可见，但除非被当前
+goal 明确重新接受，否则必须标记为 archived 或 non-current。
+
 ## 英文 / 中文镜像规则
 
 ### 默认双语输出规则

@@ -1,13 +1,13 @@
 # Review
 
-状态：`ready for review`
+状态：`restart ready`
 
 ## FINAL_STATUS
 
-route_status: PACKAGE_COMPLETE
-evidence_status: review complete
-next_action: none
-active_package: none
+route_status: RESTART_READY
+evidence_status: archived review complete；not current campaign evidence
+next_action: 作为当前 campaign 第一个 child 重新执行或重新接受 planning review
+active_package: `01-e2e-validation-plan`
 do_not_modify_implementation: true
 blocking_findings: none
 open_findings: `v0.2-post-closeout-P2-001` 在本 package 外承接
@@ -15,6 +15,7 @@ last_verified_at: 2026-05-29
 evidence_commit: not applicable；planning review only
 commands_run: documentation planning checks 见下方记录
 commands_not_run: backend tests；API smoke；E2E；autonomous validation；final bundle synthesis
+current_campaign_counts_this_as_complete: no
 
 ## 变更文件
 

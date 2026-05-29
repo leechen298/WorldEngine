@@ -1,6 +1,6 @@
 # Execution Plan
 
-Status: passed
+Status: archived evidence only / not executed in current campaign
 
 ## Steps
 

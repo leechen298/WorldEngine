@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Execution
 
-状态：`passed`
+状态：`archived evidence only / not executed in current campaign`
 类型：validation execution
 
 ## 目标
@@ -17,6 +17,10 @@ package。
 `agent-iter` validation execution context 无法绑定 configured localhost backend
 port。2026-05-29 在 `agent-iter` validation stages 已支持 host-capable localhost
 binding 后，本 package 被重开。
+
+2026-05-29 的 host-capable pass 仍保留为 archived evidence。`unverified_restart`
+之后，它不再算作当前 campaign 的完成状态；除非新 campaign 重新执行本 package，或在
+`review.md` 中带理由明确重新接受该 evidence。
 
 它必须记录：
 
@@ -43,11 +47,11 @@ binding 后，本 package 被重开。
 
 ## 当前 Package 状态
 
-`passed`
+`not executed in current campaign`
 
 ## 当前 Execution 评估
 
-`passed`
+`archived evidence only`
 
 2026-05-29 host-capable rerun 记录的 branch 为 `v0.3-lcoal`，commit 为
 `dbffa069a5e74b6b1e6b60719152922595c60df6`；documentation checks、backend

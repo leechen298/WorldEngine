@@ -38,6 +38,11 @@ External fixture、validation 和 projection applications 是 WorldEngine 的 co
 `docs/iterations/AGENTS.zh.md`。该文件定义 version plan、planned package、
 iteration package、validation plan、evidence 和 review documentation 的详细程度要求。
 
+当用户说 `完成 <iteration-package>` 或 `complete <iteration-package>` 时，先在
+`docs/iterations/**/<iteration-package>/` 下定位匹配 package。如果该 package 包含
+`README.md`、`GOAL_RUNNER.md`、`CURRENT_STATE.md` 或 `CAMPAIGN_PLAN.md`，必须先读取
+这些文件再 planning 或 execution。不要根据 memory 或相邻 package 推断 workflow。
+
 代码或混合型 iteration 在实现前必须先有 iteration package：
 
 - `README.md`

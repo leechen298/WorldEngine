@@ -6,7 +6,7 @@
 
 route_status: NOT_EXECUTED
 evidence_status: not executed
-next_action: `03` 达到 `PACKAGE_COMPLETE` 后执行 independent Codex autonomous validation
+next_action: 当前 campaign 的 `03` 达到 `PACKAGE_COMPLETE` 后执行 independent Codex autonomous validation
 active_package: `04-codex-autonomous-validation-execution`
 do_not_modify_implementation: true
 blocking_findings: autonomous review 尚未运行
@@ -15,6 +15,7 @@ last_verified_at: 2026-05-29
 evidence_commit: not applicable；execution not run
 commands_run: autonomous execution 无
 commands_not_run: all autonomous validation commands
+current_campaign_counts_this_as_complete: no
 
 ## 变更文件
 

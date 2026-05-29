@@ -1,13 +1,13 @@
 # Review
 
-Status: ready for review
+Status: restart ready
 
 ## FINAL_STATUS
 
-route_status: PACKAGE_COMPLETE
-evidence_status: review complete
-next_action: none
-active_package: none
+route_status: RESTART_READY
+evidence_status: archived review complete; not current campaign evidence
+next_action: rerun or re-accept planning review as the first current campaign child
+active_package: `01-e2e-validation-plan`
 do_not_modify_implementation: true
 blocking_findings: none
 open_findings: `v0.2-post-closeout-P2-001` carried outside this package
@@ -15,6 +15,7 @@ last_verified_at: 2026-05-29
 evidence_commit: not applicable; planning review only
 commands_run: documentation planning checks recorded below
 commands_not_run: backend tests; API smoke; E2E; autonomous validation; final bundle synthesis
+current_campaign_counts_this_as_complete: no
 
 ## Changed Files
 

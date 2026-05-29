@@ -1,12 +1,18 @@
 # Codex Autonomous Validation Plan
 
-状态：`planned / ready for review`
+状态：`not executed in current campaign`
 类型：autonomous validation planning
 
 ## 目标
 
 定义 independent Codex reviewer 如何验证 v0.2 post-closeout claims，且不依赖
 implementer summaries。
+
+## 当前 Campaign 说明
+
+campaign reset 后，本 planning package 不是当前 active child。它必须等待当前
+campaign 的 `02-e2e-validation-execution` evidence，或等待 accepted blocker 后，
+才能进入 review-closeout。
 
 ## 命名规则
 
@@ -33,4 +39,4 @@ reviewer 必须运行可用 validation commands，或记录 blocker。reviewer �
 
 ## 最终评估状态
 
-Ready for review。autonomous validation 尚未执行。
+当前 campaign 尚未执行。autonomous validation 也尚未执行。

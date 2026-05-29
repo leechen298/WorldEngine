@@ -1,20 +1,128 @@
 # Review
 
-Status: ready for review
+Status: campaign ready / unverified restart
 
 ## FINAL_STATUS
 
-route_status: REVIEW_READY
-evidence_status: partial; `02-e2e-validation-execution` passed, `04` and `05` not executed
-next_action: review-closeout `03-codex-autonomous-validation-plan`
-active_package: `03-codex-autonomous-validation-plan`
-do_not_modify_implementation: true
-blocking_findings: none for `03` review-closeout recorded
+route_status: CAMPAIGN_READY
+evidence_status: unverified restart; prior `02` pass is archived evidence only
+next_action: `/goal 完成 v0.2-post-closeout` starts full campaign at `01-e2e-validation-plan`
+active_package: `01-e2e-validation-plan`
+implementation_authorized: child_contract_controlled
+blocking_findings: none for campaign restart routing
 open_findings: `v0.2-post-closeout-P2-001`
 last_verified_at: 2026-05-29
-evidence_commit: `dbffa069a5e74b6b1e6b60719152922595c60df6`
-commands_run: documentation routing checks only in the current Goal Runner update; see package reviews for historical validation commands
-commands_not_run: autonomous validation; final bundle synthesis; backend tests; API smoke; E2E
+evidence_commit: archived only; current campaign evidence not yet produced
+commands_run: documentation routing and adaptive workflow checks only in the current Goal Campaign updates; see package reviews for archived validation commands
+commands_not_run: campaign execution; autonomous validation; final bundle synthesis; backend tests; API smoke; E2E
+
+## Adaptive Child Workflow Update
+
+Date: 2026-05-29
+
+Changed files:
+
+- `docs/iterations/AGENTS.md`, `docs/iterations/AGENTS.zh.md`: clarify that
+  `GOAL_RUNNER.md` owns adaptive gate selection and risk-based gate order.
+- `README.md`, `README.zh.md`: update the one-sentence goal interpretation so
+  each child selects gates by child type, contract, and risk instead of
+  following one fixed phase list.
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`: replace the rigid child package cycle
+  with an adaptive package cycle, package-shape gate selection, optional
+  subagent / evaluator guidance, and verification escalation rules.
+- `CAMPAIGN_PLAN.md`, `CAMPAIGN_PLAN.zh.md`: replace the fixed child cycle with
+  workflow selection by planning, validation, implementation, autonomous
+  validation, or final-bundle child type.
+- `review.md`, `review.zh.md`: record this adaptive workflow update and
+  closeout evidence.
+
+Commands run for this adaptive workflow update:
+
+```bash
+git status --short --branch
+git diff --name-only
+git diff --check
+rg -n "Adaptive Child|adaptive gate|risk-based|gate-selection|evaluator-review|verification-escalation|Workflow selection|Subagent|subagent|evaluator|P0 / P1|full child-package cycle" docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md docs/iterations/v0.2-post-closeout/README.md docs/iterations/v0.2-post-closeout/README.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md
+rg -n "Child Package Cycle|Child Cycle|fixed phase list|rigid phase list|strongest cycle" docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md
+rg -n "[[:blank:]]$" AGENTS.md AGENTS.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md docs/iterations/v0.2-post-closeout
+for f in $(find docs/iterations/v0.2-post-closeout -type f -name '*.md' ! -name '*.zh.md' -print); do zh="${f%.md}.zh.md"; test -f "$zh" || echo "$f"; done
+```
+
+Results:
+
+- `git diff --check` exited `0`.
+- Adaptive workflow keyword search found the expected goal-runner, campaign
+  plan, README, and iteration-AGENTS entries.
+- Legacy-cycle wording search found only the intentional replacement headings
+  and guard wording that says not to run a fixed / rigid phase list blindly.
+- Trailing-whitespace search exited `1` with no output.
+- English / Chinese mirror loop exited `0` and printed only the pre-existing
+  `docs/iterations/v0.2-post-closeout/findings.md`, which has no mirror by
+  existing package convention.
+- `git status --short --branch` still shows the pre-existing untracked
+  `docs/iterations/v0.2-post-closeout.zip`. It also shows the new
+  `CAMPAIGN_PLAN.md` and `CAMPAIGN_PLAN.zh.md`, which are in-scope campaign
+  routing docs and are listed in this review.
+- Backend tests, API smoke, E2E, autonomous validation, and final bundle
+  synthesis were not run because this update only changes routing documents.
+
+## Goal Campaign Restart Update
+
+Date: 2026-05-29
+
+Changed files:
+
+- `AGENTS.md`, `AGENTS.zh.md`: add package-discovery guidance for `完成
+  <iteration-package>` goals.
+- `docs/iterations/AGENTS.md`, `docs/iterations/AGENTS.zh.md`: add the Codex
+  Goal Campaign standard and file ownership model.
+- `README.md`, `README.zh.md`: add `Goal Entry`, reset the package to
+  `campaign ready / unverified restart`, and point one-sentence goals to
+  `GOAL_RUNNER.md`, `CURRENT_STATE.md`, and `CAMPAIGN_PLAN.md`.
+- `CURRENT_STATE.md`, `CURRENT_STATE.zh.md`: reset active child routing to
+  `01-e2e-validation-plan` and mark prior pass evidence as archived only.
+- `CAMPAIGN_PLAN.md`, `CAMPAIGN_PLAN.zh.md`: add the full campaign child
+  sequence, child cycle, implementation authorization rule, exit criteria, and
+  hard stops.
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`: convert from one-package validation
+  routing into a full campaign state machine with child cycles, review loops,
+  implementation authorization, repair loops, and closeout gates.
+- `validation-master-plan.md`, `validation-master-plan.zh.md`: align current
+  route snapshot and default route with the campaign restart.
+- child package `review.md` / `review.zh.md` files: mark earlier statuses as
+  restart-ready, archived-only, or not executed in the current campaign.
+- child package README / status files, especially
+  `02-e2e-validation-execution/{intent,contract,execution-plan,e2e-validation-report}.md`
+  and mirrors: mark 2026-05-29 pass evidence as archived rather than current
+  campaign completion evidence.
+
+Commands run for this campaign routing update:
+
+```bash
+git status --short
+git diff --name-only
+git diff --check
+test -f docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md
+test -f docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md
+rg -n "Goal Entry|完成 v0\\.2-post-closeout|CAMPAIGN_PLAN|full campaign|campaign ready|unverified_restart|RESTART_READY|NOT_EXECUTED_CURRENT_CAMPAIGN|ARCHIVED_EVIDENCE_ONLY|implementation_authorized|Closeout Consistency Gate" docs/iterations/v0.2-post-closeout AGENTS.md AGENTS.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md
+for f in $(find docs/iterations/v0.2-post-closeout -type f -name '*.md' ! -name '*.zh.md' -print); do zh="${f%.md}.zh.md"; test -f "$zh" || echo "$f"; done
+rg -n '[[:blank:]]$' AGENTS.md AGENTS.zh.md docs/iterations/AGENTS.md docs/iterations/AGENTS.zh.md docs/iterations/v0.2-post-closeout
+```
+
+Results:
+
+- `git diff --check` exited `0`.
+- `CAMPAIGN_PLAN.md` and `CAMPAIGN_PLAN.zh.md` existence checks exited `0`.
+- Campaign keyword search found the expected goal entry, state-machine,
+  restart, archived-evidence, implementation authorization, and closeout gate
+  terms.
+- English / Chinese mirror loop exited `0` and printed only the pre-existing
+  `docs/iterations/v0.2-post-closeout/findings.md`, which has no mirror by
+  existing package convention.
+- Trailing-whitespace search exited `1` with no output.
+- `git status --short` also shows the pre-existing untracked
+  `docs/iterations/v0.2-post-closeout.zip`; this file was not modified by this
+  campaign update and is not part of the tracked diff.
 
 ## Goal Runner Routing Update
 

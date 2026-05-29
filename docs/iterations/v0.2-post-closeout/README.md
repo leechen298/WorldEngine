@@ -1,35 +1,71 @@
-# v0.2 Post-Closeout Validation
+# v0.2 Post-Closeout Goal Campaign
 
-Status: ready for execution
-Type: post-closeout validation planning
+Status: campaign ready / unverified restart
+Type: goal campaign package
 
 ## Goal
 
-Maintain the document chain for independent v0.2 post-closeout validation and
-route the remaining validation packages safely.
+Make `v0.2-post-closeout` runnable from one durable Codex App `/goal`
+objective, with clear first-read files, child-package routing, verification
+loops, stop conditions, and closeout evidence.
 
-v0.2 feature and documentation closeout is complete. v0.2 independent
-E2E / integration validation has now passed. v0.2 Codex autonomous validation
-is not yet performed.
-
-This package does not reopen v0.2 implementation. It does not change v0.2
+v0.2 feature and documentation closeout remains complete. This campaign is a
+post-closeout validation and goal-running package. It does not change v0.2
 release status.
+
+## Goal Entry
+
+Natural-language goal:
+
+```text
+完成 v0.2-post-closeout
+```
+
+Interpretation:
+
+Run this package as a full campaign goal according to `GOAL_RUNNER.md`,
+`CURRENT_STATE.md`, and `CAMPAIGN_PLAN.md`.
+
+Start from the current active child package in `CURRENT_STATE.md`. For each
+child package, select the gates defined in `GOAL_RUNNER.md` according to child
+type, contract, and risk. Typical gates include documentation work, read-only
+review, implementation authorization when the child contract allows it,
+implementation if authorized, focused verification, evaluator or code review,
+repair loops, broader regression / E2E when required, Codex autonomous
+validation when required, closeout consistency, and `review.md` update.
+
+Stop on `BLOCKED`, `FAILED`, `FOLLOW_UP_REQUIRED`, `NEEDS_USER_INPUT`, source
+conflict, evidence insufficiency, or any attempt to modify files outside the
+active child package contract.
+
+This aligns the package with the Codex `/goal` model: one durable objective,
+verifiable stopping conditions, first-read files, proof commands / artifacts,
+checkpointed progress, and explicit pause conditions.
+
+Reference: <https://developers.openai.com/codex/use-cases/follow-goals#introduction>
 
 ## Current Routing Note
 
 This package was originally created as a documentation-only post-closeout
-validation chain. Since then, `02-e2e-validation-execution` has been executed
-and currently records `passed` with 2026-05-29 evidence.
+validation chain. A previous `02-e2e-validation-execution` run records
+`passed` with 2026-05-29 evidence.
 
-The remaining active work is:
+That evidence remains archived for audit, but this package has been reset to
+`campaign ready / unverified restart` so `/goal 完成 v0.2-post-closeout` can
+start from the beginning of the child sequence instead of inheriting earlier
+completion claims.
 
-1. review-closeout `03-codex-autonomous-validation-plan`;
-2. execute `04-codex-autonomous-validation-execution`;
-3. fill `05-final-validation-bundle`.
+The active restart sequence is:
 
-This validation chain does not reopen v0.2 implementation or change v0.2
-release status. Use `CURRENT_STATE.md` and `GOAL_RUNNER.md` as the short routing
-entrypoints for Codex App `/goal`.
+1. rerun / re-accept `01-e2e-validation-plan`;
+2. rerun `02-e2e-validation-execution`;
+3. review-closeout `03-codex-autonomous-validation-plan`;
+4. execute `04-codex-autonomous-validation-execution`;
+5. fill `05-final-validation-bundle`.
+
+Use `CURRENT_STATE.md` as the current route source, `GOAL_RUNNER.md` as the
+execution state machine, and `CAMPAIGN_PLAN.md` as the campaign-level child
+sequence and closeout contract.
 
 ## Governance
 
@@ -50,11 +86,11 @@ validation rules defined in `docs/iterations/AGENTS.md` as files under
 
 | Package | Type | Status | Purpose |
 |---|---|---|---|
-| `01-e2e-validation-plan` | validation-planning | review complete | Define v0.2 post-closeout E2E, integration, and API smoke validation scope. |
-| `02-e2e-validation-execution` | validation-execution | passed | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
-| `03-codex-autonomous-validation-plan` | validation-planning | planned / ready for review | Define independent Codex autonomous validation scope. |
-| `04-codex-autonomous-validation-execution` | validation-execution | not executed | Execute independent Codex autonomous validation. |
-| `05-final-validation-bundle` | validation-bundle | not executed | Summarize final v0.2 post-closeout validation result. |
+| `01-e2e-validation-plan` | validation-planning | restart ready | Define / re-accept v0.2 post-closeout E2E, integration, and API smoke validation scope. |
+| `02-e2e-validation-execution` | validation-execution | not executed in current campaign | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
+| `03-codex-autonomous-validation-plan` | validation-planning | not executed in current campaign | Define independent Codex autonomous validation scope. |
+| `04-codex-autonomous-validation-execution` | validation-execution | not executed in current campaign | Execute independent Codex autonomous validation. |
+| `05-final-validation-bundle` | validation-bundle | not executed in current campaign | Summarize final v0.2 post-closeout validation result. |
 
 ## Result States
 
@@ -68,14 +104,13 @@ Validation documents may use these states:
 - `blocked`
 - `failed`
 - `not executed`
+- `not executed in current campaign`
+- `archived evidence only`
 
 Execution reports start as `not executed` until a validation run fills them
-with current-session evidence. `02-e2e-validation-execution` previously reached
-`blocked` because browser E2E could not bind the configured backend port in the
-2026-05-28 execution context. The package was reopened on 2026-05-29 after
-`agent-iter` validation stages were updated to run with host-capable localhost
-binding. The 2026-05-29 host-capable rerun passed backend deterministic checks,
-API smoke, and configured browser E2E.
+with current-session evidence. Historical results may remain visible in package
+reports, but after this restart they are `archived evidence only` unless the
+current campaign explicitly reruns or re-accepts them.
 
 ## Scope
 
@@ -86,6 +121,7 @@ Allowed:
 - Define E2E / integration / API smoke execution expectations.
 - Define Codex autonomous validation expectations.
 - Define final validation bundle requirements.
+- Define full-campaign `/goal` routing and restart semantics.
 
 Forbidden:
 
@@ -95,7 +131,8 @@ Forbidden:
 - Do not run validation commands outside the package that explicitly owns that
   validation execution.
 - Do not modify runtime, schema, API, frontend, backend tests, fixtures, or
-  external repositories.
+  external repositories unless a child package contract explicitly authorizes
+  implementation and the `GOAL_RUNNER.md` implementation gate has passed.
 - Do not add concrete demo-world names, locations, characters, resources,
   story rules, seed data, UI selectors, or private oracle details.
 - Do not declare a completed v0.2 final validation result before `04` and `05`
@@ -108,6 +145,8 @@ Forbidden:
 - `CURRENT_STATE.zh.md`
 - `GOAL_RUNNER.md`
 - `GOAL_RUNNER.zh.md`
+- `CAMPAIGN_PLAN.md`
+- `CAMPAIGN_PLAN.zh.md`
 - `validation-master-plan.md`
 - `validation-master-plan.zh.md`
 - `validation-report-template.md`
@@ -122,5 +161,5 @@ Forbidden:
 
 ## Final Assessment State
 
-This documentation package is ready for human / ChatGPT review after the
-documentation checks in the package reviews pass.
+The campaign is ready to be run by Codex App `/goal`, but it is not currently
+validated. `CURRENT_STATE.md` is reset to start from `01-e2e-validation-plan`.

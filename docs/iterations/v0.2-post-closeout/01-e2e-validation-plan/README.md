@@ -1,12 +1,19 @@
 # E2E / Integration / API Smoke Validation Plan
 
-Status: review complete
+Status: restart ready
 Type: validation planning
 
 ## Goal
 
 Define the v0.2 post-closeout E2E / integration / API smoke validation scope
 without executing any validation commands.
+
+## Current Campaign Note
+
+This package previously reached review complete. For the current
+`v0.2-post-closeout` goal campaign, that review is archived and must be rerun
+or explicitly re-accepted before the campaign advances to
+`02-e2e-validation-execution`.
 
 ## Scope
 
@@ -52,4 +59,5 @@ configured or blocked. Do not convert that into a successful result.
 
 ## Final Assessment State
 
-Ready for review. No validation execution has happened in this package.
+Restart ready. No current-campaign validation execution has happened in this
+package.

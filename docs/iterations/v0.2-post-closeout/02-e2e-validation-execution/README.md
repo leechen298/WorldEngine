@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Execution
 
-Status: passed
+Status: archived evidence only / not executed in current campaign
 Type: validation execution
 
 ## Goal
@@ -18,6 +18,11 @@ The 2026-05-28 execution evidence remains below and in
 localhost backend port. The package was reopened on 2026-05-29 after
 `agent-iter` validation stages were updated to run with host-capable localhost
 binding.
+
+The 2026-05-29 host-capable pass remains archived evidence. It does not count
+as current campaign completion after the `unverified_restart` reset unless the
+new campaign reruns this package or explicitly re-accepts the evidence with
+rationale in `review.md`.
 
 It must record:
 
@@ -44,11 +49,11 @@ It must record:
 
 ## Current Package State
 
-`passed`
+`not executed in current campaign`
 
 ## Current Execution Assessment
 
-`passed`
+`archived evidence only`
 
 The 2026-05-29 host-capable rerun recorded branch `v0.3-lcoal`, commit
 `dbffa069a5e74b6b1e6b60719152922595c60df6`, passing documentation checks,

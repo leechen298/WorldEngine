@@ -1,12 +1,18 @@
 # Codex Autonomous Validation Plan
 
-Status: planned / ready for review
+Status: not executed in current campaign
 Type: autonomous validation planning
 
 ## Goal
 
 Define how an independent Codex reviewer validates v0.2 post-closeout claims
 without relying on implementer summaries.
+
+## Current Campaign Note
+
+This planning package is not the active child after the campaign reset. It must
+wait for current-campaign `02-e2e-validation-execution` evidence or an accepted
+blocker before review-closeout.
 
 ## Naming Rule
 
@@ -34,4 +40,5 @@ blocker. The reviewer must not modify code.
 
 ## Final Assessment State
 
-Ready for review. No autonomous validation has been executed.
+Not executed in the current campaign. No autonomous validation has been
+executed.
