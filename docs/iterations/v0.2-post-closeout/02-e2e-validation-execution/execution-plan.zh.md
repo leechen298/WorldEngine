@@ -1,6 +1,6 @@
 # Execution Plan
 
-状态：`blocked`
+状态：`ready for execution`
 
 ## 步骤
 
@@ -67,5 +67,8 @@
 
 execution 输出是 `e2e-validation-report.md` 和更新后的 `review.md`。
 
-2026-05-28 execution 已到达该输出状态；但 browser E2E 仍 blocked，因为 configured
-backend web server 在 execution context 中无法绑定 `127.0.0.1:8000`。
+2026-05-28 execution 已到达该输出状态；但 browser E2E 当时 blocked，因为 configured
+backend web server 在旧 execution context 中无法绑定 `127.0.0.1:8000`。2026-05-29
+在 `agent-iter` validation stages 已改为使用 host-capable localhost binding 后，本
+package 被重开。rerun 必须保留 prior evidence 可见，并追加新的 current-session
+evidence。

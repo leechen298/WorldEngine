@@ -1,14 +1,16 @@
 # Intent
 
-状态：`blocked`
+状态：`ready for execution`
 
 ## 问题 / 目的
 
 planning package 定义要验证什么。本 execution package 定义后续 validator 如何记录实际运行，
 避免把 results 混入 planning files。
 
-本 package 后续已经执行；browser E2E server 绑定失败，blocker 记录在
-`e2e-validation-report.md`。
+本 package 已在 2026-05-28 执行，并因旧 validation execution context 中 browser
+E2E server 绑定失败而到达 `blocked`；该证据仍记录在
+`e2e-validation-report.md` 中。2026-05-29 在 `agent-iter` validation stages 已支持
+host-capable localhost binding 后，本 package 被重开。
 
 ## 为什么现在做
 

@@ -1,6 +1,12 @@
 # E2E / Integration / API Smoke Validation Report
 
-Status: blocked
+Status: ready for execution
+
+Reopen note: the 2026-05-28 evidence below is preserved as historical evidence.
+That run reached `blocked` because the old validation execution context could
+not bind the configured localhost backend port. The package was reopened on
+2026-05-29 after `agent-iter` validation stages were updated to run with
+host-capable localhost binding.
 
 ## Metadata
 
@@ -8,7 +14,7 @@ Status: blocked
 - Reviewed commit: `47b2dac6a08fdf7c249844b1f5447af17ab37d86`
 - Execution date: 2026-05-28
 - Executor: Codex F
-- Final assessment: `blocked`
+- Previous final assessment: `blocked`
 
 Allowed final assessment values:
 

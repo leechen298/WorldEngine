@@ -1,6 +1,6 @@
 # Contract
 
-状态：`blocked`
+状态：`ready for execution`
 
 ## Public concepts
 
@@ -18,6 +18,10 @@
 
 validation-fix pass 期间，只能更新本 package 的 validation evidence、status fields，
 以及记录 blocker 或 rerun result 所需的 milestone finding rows。
+
+如果 prior blocker 是 validation infrastructure 或 execution environment 导致，而不是
+已确认的 v0.2 product failure，本 package 可以在 runner 或 execution-environment correction
+后重新执行。历史 evidence 必须保留可见，不得改写为 passed。
 
 ## 禁止修改
 

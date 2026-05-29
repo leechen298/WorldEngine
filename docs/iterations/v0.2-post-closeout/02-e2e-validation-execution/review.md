@@ -1,6 +1,12 @@
 # Review
 
-Status: blocked
+Status: ready for execution
+
+Reopen note: this review preserves the 2026-05-28 blocked validation evidence.
+The package was reopened on 2026-05-29 after `agent-iter` validation stages
+were updated to run with host-capable localhost binding. A new validation run
+must append current-session evidence rather than rewriting the historical
+blocked result as passed.
 
 ## Changed Files
 

@@ -1,6 +1,6 @@
 # v0.2 Post-Closeout Validation
 
-Status: blocked
+Status: ready for execution
 Type: post-closeout validation planning
 
 ## Goal
@@ -34,7 +34,7 @@ validation rules defined in `docs/iterations/AGENTS.md` as files under
 | Package | Type | Status | Purpose |
 |---|---|---|---|
 | `01-e2e-validation-plan` | validation-planning | review complete | Define v0.2 post-closeout E2E, integration, and API smoke validation scope. |
-| `02-e2e-validation-execution` | validation-execution | blocked | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
+| `02-e2e-validation-execution` | validation-execution | ready for execution | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
 | `03-codex-autonomous-validation-plan` | validation-planning | planned / ready for review | Define independent Codex autonomous validation scope. |
 | `04-codex-autonomous-validation-execution` | validation-execution | not executed | Execute independent Codex autonomous validation. |
 | `05-final-validation-bundle` | validation-bundle | not executed | Summarize final v0.2 post-closeout validation result. |
@@ -53,9 +53,11 @@ Validation documents may use these states:
 - `not executed`
 
 Execution reports start as `not executed` until a validation run fills them
-with current-session evidence. `02-e2e-validation-execution` is now `blocked`
-because browser E2E could not bind the configured backend port in the
-2026-05-28 execution context.
+with current-session evidence. `02-e2e-validation-execution` previously reached
+`blocked` because browser E2E could not bind the configured backend port in the
+2026-05-28 execution context. The package was reopened on 2026-05-29 after
+`agent-iter` validation stages were updated to run with host-capable localhost
+binding.
 
 ## Scope
 

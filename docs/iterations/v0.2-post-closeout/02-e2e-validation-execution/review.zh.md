@@ -1,6 +1,11 @@
 # Review
 
-状态：`blocked`
+状态：`ready for execution`
+
+重开说明：本 review 保留 2026-05-28 blocked validation evidence。2026-05-29 在
+`agent-iter` validation stages 已支持 host-capable localhost binding 后，本 package
+被重开。新的 validation run 必须追加 current-session evidence，不得把 historical
+blocked result 改写为 passed。
 
 ## 变更文件
 

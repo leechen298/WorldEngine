@@ -1,6 +1,6 @@
 # Contract
 
-Status: blocked
+Status: ready for execution
 
 ## Public Concepts
 
@@ -19,6 +19,11 @@ unless a separate approved plan allows broader documentation updates.
 During validation-fix passes, update only this package's validation evidence,
 status fields, and milestone finding rows needed to record the blocker or
 rerun result.
+
+This package may be rerun after a runner or execution-environment correction
+when the prior blocker was caused by validation infrastructure rather than a
+confirmed v0.2 product failure. Prior evidence must remain visible and must not
+be rewritten as passed.
 
 ## Forbidden Changes
 

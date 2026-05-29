@@ -1,6 +1,11 @@
 # E2E / Integration / API Smoke Validation Report
 
-状态：`blocked`
+状态：`ready for execution`
+
+重开说明：下方 2026-05-28 evidence 作为 historical evidence 保留。该次运行到达
+`blocked`，因为旧 validation execution context 无法绑定 configured localhost
+backend port。2026-05-29 在 `agent-iter` validation stages 已支持 host-capable
+localhost binding 后，本 package 被重开。
 
 ## 元数据
 
@@ -8,7 +13,7 @@
 - Reviewed commit：`47b2dac6a08fdf7c249844b1f5447af17ab37d86`
 - Execution date：2026-05-28
 - Executor：Codex F
-- Final assessment：`blocked`
+- Previous final assessment：`blocked`
 
 允许的 final assessment values：
 

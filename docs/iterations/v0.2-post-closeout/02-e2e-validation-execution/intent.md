@@ -1,6 +1,6 @@
 # Intent
 
-Status: blocked
+Status: ready for execution
 
 ## Problem / Purpose
 
@@ -8,8 +8,11 @@ The planning package defines what to validate. This execution package defines
 how a later validator records the actual run without mixing results into the
 planning files.
 
-The package has since been executed and is blocked by the browser E2E server
-bind failure recorded in `e2e-validation-report.md`.
+The package was executed on 2026-05-28 and reached `blocked` because the
+browser E2E server bind failed in the old validation execution context. That
+evidence remains recorded in `e2e-validation-report.md`. The package was
+reopened on 2026-05-29 after `agent-iter` validation stages were updated to run
+with host-capable localhost binding.
 
 ## Why Now
 

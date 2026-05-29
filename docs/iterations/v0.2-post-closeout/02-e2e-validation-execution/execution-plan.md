@@ -1,6 +1,6 @@
 # Execution Plan
 
-Status: blocked
+Status: ready for execution
 
 ## Steps
 
@@ -68,6 +68,9 @@ Stop and record a blocker if:
 The execution output is `e2e-validation-report.md` plus an updated
 `review.md`.
 
-The 2026-05-28 execution reached this output state, but browser E2E remains
-blocked because the configured backend web server cannot bind
-`127.0.0.1:8000` in the execution context.
+The 2026-05-28 execution reached this output state, but browser E2E was
+blocked because the configured backend web server could not bind
+`127.0.0.1:8000` in the old execution context. The package was reopened on
+2026-05-29 after `agent-iter` validation stages were updated to use
+host-capable localhost binding. The rerun must keep the prior evidence visible
+and append new current-session evidence.
