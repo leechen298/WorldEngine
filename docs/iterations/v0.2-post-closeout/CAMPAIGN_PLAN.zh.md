@@ -15,6 +15,15 @@
 checkpoint 证据，以及明确停止条件。`GOAL_RUNNER.md` 是 goal runner，
 `CURRENT_STATE.md` 是当前路由来源。
 
+## 边界
+
+本文是 Codex App `/goal` campaign guidance。它不定义、也不实现 WorldEngine runtime
+behavior，并且不是 automation-controller implementation。
+
+Scheduling、orchestration、retry infrastructure 和 Codex role assignment 不属于
+WorldEngine，由 Codex 环境或其他外部工具负责；这些外部工具可以消费本文中的 package
+specs、evidence rules 和 closeout records。
+
 ## 当前重启位置
 
 本 campaign 正从 `unverified_restart` 的 reset 状态继续推进。

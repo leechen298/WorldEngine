@@ -14,6 +14,11 @@ blocking_findings: none
 open_findings: none
 last_verified_at: 2026-05-29
 evidence_commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+evidence_branch: `v0.3-lcoal`
+final_documentation_closeout_commit: `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`
+execution_branch: `v0.3`
+remote_branch: `origin/v0.3`
+evidence_to_closeout_runtime_schema_api_frontend_tests_fixtures_delta: none
 commands_run: final bundle synthesis 和 closeout checks 见下方记录
 commands_not_run: `05` 没有新运行 backend/API/E2E/autonomous validation commands；`05` 汇总 `02` 和 `04` 的当前 evidence
 v0.4_proceed_decision: may proceed to a separate reviewed v0.4 planning or iteration package
@@ -52,6 +57,9 @@ current_campaign_counts_this_as_complete: yes
 ```bash
 git status --short --branch
 git rev-parse HEAD
+test -e docs/iterations/v0.2-post-closeout.zip
+git diff --name-only be5a48e48d950b88501ba0e68a80d35ab6f011b6..HEAD -- backend/app frontend backend/tests backend/app/tests backend/worldengine tools/testing/fixtures tests fixtures
+git diff --name-only be5a48e48d950b88501ba0e68a80d35ab6f011b6..HEAD -- ':!docs/**' ':!AGENTS.md' ':!AGENTS.zh.md'
 git diff --name-only
 git diff --check
 ```
@@ -63,11 +71,18 @@ git diff --check
 
 ## 测试结果
 
-- `git status --short --branch` 退出码为 `0`：branch 为 `v0.3-lcoal`；changed files
-  是 documentation / governance-rule files，以及未跟踪的
-  `docs/iterations/v0.2-post-closeout.zip`。
+- `git status --short --branch` 退出码为 `0`：branch 为 `v0.3`，tracking
+  `origin/v0.3`；当前 tracked diff 仅限
+  `docs/iterations/v0.2-post-closeout` documentation files。无关的未跟踪
+  `docs/iterations/v0.3-post-closeout/` directory 不属于本 package，已保持不动。
 - `git rev-parse HEAD` 退出码为 `0`：
-  `be5a48e48d950b88501ba0e68a80d35ab6f011b6`。
+  `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`。
+- `test -e docs/iterations/v0.2-post-closeout.zip` 退出码为 `1`，确认当前 workspace 中
+  不存在该 zip artifact。
+- 对 `backend/app`、`frontend`、`backend/tests`、`backend/app/tests`、
+  `backend/worldengine`、`tools/testing/fixtures`、`tests` 和 `fixtures` 的
+  evidence-to-closeout scoped diff 退出码为 `0`，无输出。
+- evidence-to-closeout non-doc / non-governance diff 退出码为 `0`，无输出。
 - `git diff --name-only` 退出码为 `0`，输出只包含 Markdown docs / governing-rule docs。
 - `git diff --check` 退出码为 `0`。
 - `05` 没有新运行 backend、frontend、E2E、API smoke、runtime、schema execution、
@@ -75,9 +90,10 @@ git diff --check
 
 ## 兼容性审查
 
-本 final bundle package 没有修改 runtime、schema、API、frontend、backend test、fixture、
-migration 或 legacy implementation file。Compatibility evidence 来自当前 `02` 和 `04`
-package evidence，并已汇总到 `final-validation-bundle.md`。
+Evidence commit 到 final documentation closeout commit 之间没有 runtime、schema、API、
+frontend、backend test、fixture、migration 或 legacy implementation file 变更。
+Compatibility evidence 来自当前 `02` 和 `04` package evidence，并已汇总到
+`final-validation-bundle.md`。
 
 ## 范围审查
 
@@ -87,11 +103,14 @@ review，以及 parent routing / final-status docs。English 和 Chinese mirrors
 Worktree hygiene：
 
 - `AGENTS.md`、`AGENTS.zh.md`、`docs/iterations/AGENTS.md` 和
-  `docs/iterations/AGENTS.zh.md` 中的 user / governance-rule changes 已读取并遵守。
-- 未跟踪的 `docs/iterations/v0.2-post-closeout.zip` 在本 campaign work 前已存在，不是
-  validation closeout 所需文件。
-- `backend/app`、`frontend`、`backend/tests`、`backend/app/tests` 或
-  `backend/worldengine` 下没有当前 diff。
+  `docs/iterations/AGENTS.zh.md` 已作为 governing rules 读取并遵守；它们不是本次
+  polish diff 的修改对象。
+- 当前 workspace 中不存在 `docs/iterations/v0.2-post-closeout.zip`，validation closeout
+  不需要该文件。
+- 无关的未跟踪 `docs/iterations/v0.3-post-closeout/` directory 不属于本 v0.2 package，
+  已保持不动。
+- `backend/app`、`frontend`、`backend/tests`、`backend/app/tests`、
+  `backend/worldengine`、`tools/testing/fixtures`、`tests` 或 `fixtures` 下没有当前 diff。
 
 ## 未解决 P1/P2/P3
 

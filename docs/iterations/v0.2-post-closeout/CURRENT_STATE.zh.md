@@ -42,6 +42,10 @@ archived_status: passed
 evidence_date: 2026-05-29
 evidence_branch: v0.3-lcoal
 evidence_commit: be5a48e48d950b88501ba0e68a80d35ab6f011b6
+final_documentation_closeout_branch: v0.3
+remote_branch: origin/v0.3
+final_documentation_closeout_commit: bbfb1fabd1ce08e07aa4b08044baeabd4142549f
+evidence_to_closeout_runtime_schema_api_frontend_tests_fixtures_delta: none
 current_campaign_counts_this_as_passed: yes
 
 current_results:

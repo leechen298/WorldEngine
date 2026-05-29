@@ -16,6 +16,16 @@ inputs, a repeatable validation loop, checkpointed evidence, and explicit stop
 conditions. The goal runner is `GOAL_RUNNER.md`; the current route source is
 `CURRENT_STATE.md`.
 
+## Boundary
+
+This plan is Codex App `/goal` campaign guidance. It does not define or
+implement WorldEngine runtime behavior, and it is not an automation-controller
+implementation.
+
+Scheduling, orchestration, retry infrastructure, and Codex role assignment are
+external to WorldEngine. They belong to the Codex environment or other tooling
+that consumes these package specs, evidence rules, and closeout records.
+
 ## Current Restart Position
 
 This campaign is running from the `unverified_restart` reset.

@@ -7,6 +7,17 @@ This file is the campaign state machine. It does not change v0.2 release
 status. Implementation is controlled by each child package contract, not by
 the parent campaign alone.
 
+## Boundary
+
+These instructions are Codex App `/goal` prompt and campaign guidance for
+agents. They are not WorldEngine runtime behavior, and this file does not
+implement an automation controller.
+
+Scheduling, orchestration, retry infrastructure, and Codex role assignment
+belong to the Codex environment or other external tools. This repository only
+records the deterministic package routing, evidence requirements, scope
+guardrails, and closeout state that such tools may consume.
+
 ## Authoritative Inputs
 
 Before running any campaign goal, read:

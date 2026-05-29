@@ -6,6 +6,15 @@
 本文是 campaign state machine。它不改变 v0.2 release status。是否允许
 implementation 由每个 child package contract 控制，不由父级 campaign 单独授权。
 
+## 边界
+
+这些说明是给 agents 使用的 Codex App `/goal` prompt 和 campaign guidance。它们不是
+WorldEngine runtime behavior，本文也不实现 automation controller。
+
+Scheduling、orchestration、retry infrastructure 和 Codex role assignment 属于 Codex
+环境或其他外部工具。此仓库只记录这些工具可消费的 deterministic package routing、
+evidence requirements、scope guardrails 和 closeout state。
+
 ## 权威输入
 
 运行任何 campaign goal 前，必须读取：

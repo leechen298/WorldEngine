@@ -14,6 +14,11 @@ blocking_findings: none
 open_findings: none
 last_verified_at: 2026-05-29
 evidence_commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+evidence_branch: `v0.3-lcoal`
+final_documentation_closeout_commit: `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`
+execution_branch: `v0.3`
+remote_branch: `origin/v0.3`
+evidence_to_closeout_runtime_schema_api_frontend_tests_fixtures_delta: none
 commands_run: see child package reviews and final bundle review
 commands_not_run: no extra validation commands at top level; child packages own
 their evidence
@@ -55,7 +60,10 @@ Top-level final checks:
 
 ```bash
 git diff --check
-git diff --name-only -- backend/app frontend backend/tests backend/app/tests backend/worldengine
+test -e docs/iterations/v0.2-post-closeout.zip
+git diff --name-only -- backend/app frontend backend/tests backend/app/tests backend/worldengine tools/testing/fixtures tests fixtures
+git diff --name-only be5a48e48d950b88501ba0e68a80d35ab6f011b6..HEAD -- backend/app frontend backend/tests backend/app/tests backend/worldengine tools/testing/fixtures tests fixtures
+git diff --name-only be5a48e48d950b88501ba0e68a80d35ab6f011b6..HEAD -- ':!docs/**' ':!AGENTS.md' ':!AGENTS.zh.md'
 rg -n '\| [^|]+ \| [^|]+ \| P[12] \| open \|' docs/iterations/v0.2-post-closeout/findings.md
 rg -n 'active_package: (01|02|03|04|05)|route_status: NOT_EXECUTED|current_campaign_counts_this_as_complete: no|campaign in progress|not fully validated' docs/iterations/v0.2-post-closeout/CURRENT_STATE.md docs/iterations/v0.2-post-closeout/CURRENT_STATE.zh.md docs/iterations/v0.2-post-closeout/README.md docs/iterations/v0.2-post-closeout/README.zh.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.md docs/iterations/v0.2-post-closeout/CAMPAIGN_PLAN.zh.md docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md docs/iterations/v0.2-post-closeout/validation-master-plan.md docs/iterations/v0.2-post-closeout/validation-master-plan.zh.md
 rg -n '[[:blank:]]$' docs/iterations/v0.2-post-closeout
@@ -74,21 +82,31 @@ Child-package evidence commands are recorded in:
 ## Test Results
 
 - `git diff --check` exited `0`.
+- `test -e docs/iterations/v0.2-post-closeout.zip` exited `1`, confirming
+  the zip artifact is absent from the current workspace.
 - Implementation diff scope check over `backend/app`, `frontend`,
-  `backend/tests`, `backend/app/tests`, and `backend/worldengine` exited `0`
-  with no output.
+  `backend/tests`, `backend/app/tests`, `backend/worldengine`,
+  `tools/testing/fixtures`, `tests`, and `fixtures` exited `0` with no output.
+- Evidence-to-closeout implementation / fixture diff over the same path set
+  exited `0` with no output.
+- Evidence-to-closeout non-doc / non-governance diff exited `0` with no
+  output.
 - Open P1/P2 findings search exited `1` with no output.
 - Stale active-route / not-executed-state search over parent routing docs
   exited `1` with no output.
 - Trailing-whitespace search exited `1` with no output.
-- `git status --short --branch` shows documentation / governance-rule changes
-  and the pre-existing untracked `docs/iterations/v0.2-post-closeout.zip`.
+- `git status --short --branch` shows branch `v0.3` tracking `origin/v0.3`.
+  Current tracked diff is limited to `docs/iterations/v0.2-post-closeout`
+  documentation files. The unrelated untracked
+  `docs/iterations/v0.3-post-closeout/` directory is outside this v0.2 package
+  and was left untouched.
 
 ## Compatibility Review
 
 No runtime, schema, API, frontend, backend test, fixture, migration, external
-repository, or legacy implementation file was changed by this campaign.
-Compatibility evidence is recorded in `02` and `04` and summarized in `05`.
+repository, or legacy implementation file changed between the evidence commit
+and final documentation closeout commit. Compatibility evidence is recorded in
+`02` and `04` and summarized in `05`.
 
 ## Scope Review
 
@@ -100,10 +118,12 @@ planning or iteration package.
 Worktree hygiene:
 
 - `AGENTS.md`, `AGENTS.zh.md`, `docs/iterations/AGENTS.md`, and
-  `docs/iterations/AGENTS.zh.md` contain user / governance-rule changes that
-  were read and followed.
-- The untracked `docs/iterations/v0.2-post-closeout.zip` pre-existed this
-  campaign work and is not required for validation closeout.
+  `docs/iterations/AGENTS.zh.md` were read and followed as governing rules;
+  they are not modified by this polish diff.
+- `docs/iterations/v0.2-post-closeout.zip` is absent from the current
+  workspace and is not required for validation closeout.
+- The unrelated untracked `docs/iterations/v0.3-post-closeout/` directory is
+  outside this v0.2 package and was left untouched.
 
 ## Unresolved P1/P2/P3
 

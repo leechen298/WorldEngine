@@ -44,6 +44,18 @@ checkpointed progress, and explicit pause conditions.
 
 Reference: <https://developers.openai.com/codex/use-cases/follow-goals#introduction>
 
+## Boundary
+
+This package defines Codex App `/goal` prompt and campaign guidance for agents
+working on the `v0.2-post-closeout` documentation package. It does not define
+or implement WorldEngine runtime behavior, and it is not an
+automation-controller implementation.
+
+Scheduling, orchestration, retry infrastructure, and Codex role assignment are
+owned by the Codex environment or other external tooling. WorldEngine only
+keeps the deterministic package specs, scope boundaries, evidence expectations,
+and closeout records that those tools may consume.
+
 ## Current Routing Note
 
 This package was originally created as a documentation-only post-closeout

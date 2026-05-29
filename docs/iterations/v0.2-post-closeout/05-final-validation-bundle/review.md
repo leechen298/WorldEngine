@@ -14,6 +14,11 @@ blocking_findings: none
 open_findings: none
 last_verified_at: 2026-05-29
 evidence_commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+evidence_branch: `v0.3-lcoal`
+final_documentation_closeout_commit: `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`
+execution_branch: `v0.3`
+remote_branch: `origin/v0.3`
+evidence_to_closeout_runtime_schema_api_frontend_tests_fixtures_delta: none
 commands_run: final bundle synthesis and closeout checks recorded below
 commands_not_run: no new backend/API/E2E/autonomous validation commands were run in `05`; `05` synthesized current evidence from `02` and `04`
 v0.4_proceed_decision: may proceed to a separate reviewed v0.4 planning or iteration package
@@ -52,6 +57,9 @@ current_campaign_counts_this_as_complete: yes
 ```bash
 git status --short --branch
 git rev-parse HEAD
+test -e docs/iterations/v0.2-post-closeout.zip
+git diff --name-only be5a48e48d950b88501ba0e68a80d35ab6f011b6..HEAD -- backend/app frontend backend/tests backend/app/tests backend/worldengine tools/testing/fixtures tests fixtures
+git diff --name-only be5a48e48d950b88501ba0e68a80d35ab6f011b6..HEAD -- ':!docs/**' ':!AGENTS.md' ':!AGENTS.zh.md'
 git diff --name-only
 git diff --check
 ```
@@ -63,11 +71,20 @@ Earlier current-campaign evidence commands are recorded in the owning packages:
 
 ## Test Results
 
-- `git status --short --branch` exited `0`: branch `v0.3-lcoal`; changed files
-  are documentation / governance-rule files plus untracked
-  `docs/iterations/v0.2-post-closeout.zip`.
+- `git status --short --branch` exited `0`: branch `v0.3`, tracking
+  `origin/v0.3`; current tracked diff is limited to
+  `docs/iterations/v0.2-post-closeout` documentation files. An unrelated
+  untracked `docs/iterations/v0.3-post-closeout/` directory is outside this
+  package and was left untouched.
 - `git rev-parse HEAD` exited `0`:
-  `be5a48e48d950b88501ba0e68a80d35ab6f011b6`.
+  `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`.
+- `test -e docs/iterations/v0.2-post-closeout.zip` exited `1`, confirming
+  the zip artifact is absent from the current workspace.
+- The path-scoped evidence-to-closeout diff over `backend/app`, `frontend`,
+  `backend/tests`, `backend/app/tests`, `backend/worldengine`,
+  `tools/testing/fixtures`, `tests`, and `fixtures` exited `0` with no output.
+- The evidence-to-closeout non-doc / non-governance diff exited `0` with no
+  output.
 - `git diff --name-only` exited `0` and listed only Markdown docs /
   governing-rule docs.
 - `git diff --check` exited `0`.
@@ -78,9 +95,9 @@ Earlier current-campaign evidence commands are recorded in the owning packages:
 ## Compatibility Review
 
 No runtime, schema, API, frontend, backend test, fixture, migration, or legacy
-implementation file was changed by this final bundle package. Compatibility
-evidence is inherited from current `02` and `04` package evidence and is
-summarized in `final-validation-bundle.md`.
+implementation file changed between the evidence commit and final documentation
+closeout commit. Compatibility evidence is inherited from current `02` and
+`04` package evidence and is summarized in `final-validation-bundle.md`.
 
 ## Scope Review
 
@@ -90,13 +107,16 @@ and Chinese mirrors were synchronized.
 
 Worktree hygiene:
 
-- User / governance-rule changes in `AGENTS.md`, `AGENTS.zh.md`,
-  `docs/iterations/AGENTS.md`, and `docs/iterations/AGENTS.zh.md` were read and
-  followed.
-- The untracked `docs/iterations/v0.2-post-closeout.zip` pre-existed this
-  campaign work and is not required for validation closeout.
+- `AGENTS.md`, `AGENTS.zh.md`, `docs/iterations/AGENTS.md`, and
+  `docs/iterations/AGENTS.zh.md` were read and followed as governing rules;
+  they are not modified by this polish diff.
+- `docs/iterations/v0.2-post-closeout.zip` is absent from the current
+  workspace and is not required for validation closeout.
+- The unrelated untracked `docs/iterations/v0.3-post-closeout/` directory is
+  outside this v0.2 package and was left untouched.
 - No current diff exists under `backend/app`, `frontend`, `backend/tests`,
-  `backend/app/tests`, or `backend/worldengine`.
+  `backend/app/tests`, `backend/worldengine`, `tools/testing/fixtures`,
+  `tests`, or `fixtures`.
 
 ## Unresolved P1/P2/P3
 

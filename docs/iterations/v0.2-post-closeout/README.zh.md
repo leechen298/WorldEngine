@@ -41,6 +41,16 @@ conflict、evidence insufficiency，或任何超出 active child package contrac
 
 参考：<https://developers.openai.com/codex/use-cases/follow-goals#introduction>
 
+## 边界
+
+本 package 定义的是 Codex App `/goal` prompt 和 campaign guidance，用于 agent 处理
+`v0.2-post-closeout` 文档包。它不定义、也不实现 WorldEngine runtime behavior，并且不是
+automation-controller implementation。
+
+Scheduling、orchestration、retry infrastructure 和 Codex role assignment 由 Codex
+环境或其他外部工具负责。WorldEngine 只保存这些工具可消费的 deterministic package
+specs、scope boundaries、evidence expectations 和 closeout records。
+
 ## 当前路由说明
 
 本 package 最初是 documentation-only post-closeout validation chain。此前

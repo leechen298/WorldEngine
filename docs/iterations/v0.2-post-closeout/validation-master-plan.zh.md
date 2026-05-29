@@ -11,6 +11,11 @@ validation 必须由 evidence 支撑，不能只从 release status 推断。
 本 campaign 不改变 v0.2 release status。它建立并路由 validation runs 和 Codex
 `/goal` child-package cycles 所需的 evidence channels。
 
+本文是 Codex App `/goal` campaign guidance。它不定义 WorldEngine runtime behavior，
+不实现 automation controller，也不会把 scheduling、orchestration、retry
+infrastructure 或 Codex role assignment 放进此仓库。这些职责仍属于 Codex 环境或消费这些
+deterministic specs 的外部工具。
+
 ## 当前路由快照
 
 当前简短路由来源是 `CURRENT_STATE.md`；Codex App `/goal` 路由说明位于

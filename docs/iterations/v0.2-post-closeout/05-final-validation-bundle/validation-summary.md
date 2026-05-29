@@ -7,6 +7,15 @@ Status: passed
 The current `/goal` campaign completed the v0.2 post-closeout validation chain.
 It does not reopen v0.2 implementation and does not change v0.2 release status.
 
+The validation evidence commit is
+`be5a48e48d950b88501ba0e68a80d35ab6f011b6` on `v0.3-lcoal`. The final
+documentation closeout commit is
+`bbfb1fabd1ce08e07aa4b08044baeabd4142549f` on `v0.3`, tracking
+`origin/v0.3`. Between those two commits, there are no runtime, schema, API,
+frontend, test, or fixture changes; the path-scoped diff over `backend/app`,
+`frontend`, `backend/tests`, `backend/app/tests`, `backend/worldengine`,
+`tools/testing/fixtures`, `tests`, and `fixtures` is empty.
+
 `02-e2e-validation-execution` passed with current campaign backend, API smoke,
 Playwright availability, and host-capable browser E2E evidence.
 
@@ -50,9 +59,8 @@ regression, and reported no unresolved P1/P2/P3 findings.
 - P2: none.
 - P3: none.
 
-All `findings.md` rows are resolved. The pre-existing untracked
-`docs/iterations/v0.2-post-closeout.zip` and governance-rule edits are tracked
-as worktree / staging hygiene notes, not validation findings.
+All `findings.md` rows are resolved. No `v0.2-post-closeout.zip` artifact is
+present or required for validation closeout.
 
 ## v0.4 Proceed Decision
 

@@ -4,8 +4,16 @@
 
 ## 元数据
 
-- Reviewed branch：`v0.3-lcoal`
-- Reviewed commit：`be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+- Evidence branch：`v0.3-lcoal`
+- Evidence commit：`be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+- Execution branch：`v0.3`
+- Remote branch：`origin/v0.3`
+- Final documentation closeout commit：
+  `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`
+- Evidence-to-closeout runtime / schema / API / frontend / tests / fixtures
+  delta：无。对 `backend/app`、`frontend`、`backend/tests`、
+  `backend/app/tests`、`backend/worldengine`、`tools/testing/fixtures`、
+  `tests` 和 `fixtures` 的 scoped diff 无输出。
 - Bundle date：2026-05-29
 - Bundle reviewer：Codex current `/goal` campaign
 - Final assessment：`passed`
@@ -102,13 +110,16 @@ findings 已由当前 campaign 在 commit
 
 ## Worktree / Staging Hygiene
 
-- 当前 changed files 是 documentation 和 governing rule files。
-- `backend/app`、`frontend`、`backend/tests`、`backend/app/tests` 或
-  `backend/worldengine` 下没有当前 diff。
+- 当前 metadata / boundary polish 的 tracked diff 仅限
+  `docs/iterations/v0.2-post-closeout` documentation files。
+- `backend/app`、`frontend`、`backend/tests`、`backend/app/tests`、
+  `backend/worldengine`、`tools/testing/fixtures`、`tests` 或 `fixtures` 下没有当前
+  diff。
 - `AGENTS.md`、`AGENTS.zh.md`、`docs/iterations/AGENTS.md` 和
-  `docs/iterations/AGENTS.zh.md` 是 user / governance-rule changes，本 campaign 已读取并遵守。
-- 未跟踪的 `docs/iterations/v0.2-post-closeout.zip` 在本 campaign work 前已存在，不是
-  validation closeout 所需文件。
+  `docs/iterations/AGENTS.zh.md` 已作为 governing rules 读取并遵守；它们不是本次
+  polish diff 的修改对象。
+- 当前 workspace 中不存在 `docs/iterations/v0.2-post-closeout.zip`，validation closeout
+  不需要该文件。
 
 ## v0.4 是否可以继续
 

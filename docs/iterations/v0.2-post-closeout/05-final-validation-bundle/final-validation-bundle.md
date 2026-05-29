@@ -4,8 +4,16 @@ Status: passed
 
 ## Metadata
 
-- Reviewed branch: `v0.3-lcoal`
-- Reviewed commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+- Evidence branch: `v0.3-lcoal`
+- Evidence commit: `be5a48e48d950b88501ba0e68a80d35ab6f011b6`
+- Execution branch: `v0.3`
+- Remote branch: `origin/v0.3`
+- Final documentation closeout commit:
+  `bbfb1fabd1ce08e07aa4b08044baeabd4142549f`
+- Evidence-to-closeout runtime / schema / API / frontend / tests / fixtures
+  delta: none. The scoped diff over `backend/app`, `frontend`,
+  `backend/tests`, `backend/app/tests`, `backend/worldengine`,
+  `tools/testing/fixtures`, `tests`, and `fixtures` produced no output.
 - Bundle date: 2026-05-29
 - Bundle reviewer: Codex current `/goal` campaign
 - Final assessment: `passed`
@@ -105,14 +113,16 @@ preserving earlier rerun evidence as historical.
 
 ## Worktree / Staging Hygiene
 
-- Current changed files are documentation and governing rule files.
+- Current tracked diff for this metadata / boundary polish is limited to
+  `docs/iterations/v0.2-post-closeout` documentation files.
 - No current diff exists under `backend/app`, `frontend`, `backend/tests`,
-  `backend/app/tests`, or `backend/worldengine`.
+  `backend/app/tests`, `backend/worldengine`, `tools/testing/fixtures`,
+  `tests`, or `fixtures`.
 - `AGENTS.md`, `AGENTS.zh.md`, `docs/iterations/AGENTS.md`, and
-  `docs/iterations/AGENTS.zh.md` are user / governance-rule changes that the
-  campaign read and followed.
-- The untracked `docs/iterations/v0.2-post-closeout.zip` pre-existed this
-  campaign work and is not required for validation closeout.
+  `docs/iterations/AGENTS.zh.md` were read and followed as governing rules;
+  they are not modified by this polish diff.
+- `docs/iterations/v0.2-post-closeout.zip` is absent from the current
+  workspace and is not required for validation closeout.
 
 ## Whether v0.4 May Proceed
 

@@ -12,6 +12,12 @@ than assumed from release status.
 This campaign does not change v0.2 release status. It creates and routes
 evidence channels for validation runs and Codex `/goal` child-package cycles.
 
+This plan is Codex App `/goal` campaign guidance. It does not define
+WorldEngine runtime behavior, does not implement an automation controller, and
+does not move scheduling, orchestration, retry infrastructure, or Codex role
+assignment into this repository. Those responsibilities remain in the Codex
+environment or external tools that consume these deterministic specs.
+
 ## Current Routing Snapshot
 
 The current short routing source is `CURRENT_STATE.md`; Codex App `/goal`

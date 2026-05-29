@@ -7,6 +7,15 @@
 当前 `/goal` campaign 已完成 v0.2 post-closeout validation chain。本次工作不重新打开
 v0.2 implementation，也不改变 v0.2 release status。
 
+Validation evidence commit 是
+`be5a48e48d950b88501ba0e68a80d35ab6f011b6`，所在 branch 为 `v0.3-lcoal`。
+Final documentation closeout commit 是
+`bbfb1fabd1ce08e07aa4b08044baeabd4142549f`，所在 branch 为 `v0.3`，tracking
+`origin/v0.3`。这两个 commit 之间没有 runtime、schema、API、frontend、test 或
+fixture 变更；对 `backend/app`、`frontend`、`backend/tests`、`backend/app/tests`、
+`backend/worldengine`、`tools/testing/fixtures`、`tests` 和 `fixtures` 的 scoped diff
+为空。
+
 `02-e2e-validation-execution` 已用当前 campaign 的 backend、API smoke、Playwright
 availability 和 host-capable browser E2E evidence 通过。
 
@@ -47,9 +56,8 @@ implementation demo-world regression，也未报告 unresolved P1/P2/P3 findings
 - P2：无。
 - P3：无。
 
-`findings.md` 中所有 rows 均已 resolved。预先存在的未跟踪
-`docs/iterations/v0.2-post-closeout.zip` 和 governance-rule edits 被记录为 worktree /
-staging hygiene notes，不作为 validation finding。
+`findings.md` 中所有 rows 均已 resolved。当前不存在
+`v0.2-post-closeout.zip` artifact，validation closeout 也不需要该文件。
 
 ## v0.4 Proceed Decision
 
