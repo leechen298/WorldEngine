@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Plan
 
-Status: planned / ready for review
+Status: review complete
 Type: validation planning
 
 ## Goal

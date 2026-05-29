@@ -33,7 +33,7 @@ validation rules defined in `docs/iterations/AGENTS.md` as files under
 
 | Package | Type | Status | Purpose |
 |---|---|---|---|
-| `01-e2e-validation-plan` | validation-planning | planned / ready for review | Define v0.2 post-closeout E2E, integration, and API smoke validation scope. |
+| `01-e2e-validation-plan` | validation-planning | review complete | Define v0.2 post-closeout E2E, integration, and API smoke validation scope. |
 | `02-e2e-validation-execution` | validation-execution | not executed | Execute v0.2 post-closeout E2E, integration, and API smoke validation. |
 | `03-codex-autonomous-validation-plan` | validation-planning | planned / ready for review | Define independent Codex autonomous validation scope. |
 | `04-codex-autonomous-validation-execution` | validation-execution | not executed | Execute independent Codex autonomous validation. |

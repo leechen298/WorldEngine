@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Plan
 
-状态：`planned / ready for review`
+状态：`review complete`
 类型：validation planning
 
 ## 目标
