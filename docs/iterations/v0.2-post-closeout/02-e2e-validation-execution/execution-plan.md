@@ -1,6 +1,6 @@
 # Execution Plan
 
-Status: ready for execution
+Status: passed
 
 ## Steps
 
@@ -72,5 +72,6 @@ The 2026-05-28 execution reached this output state, but browser E2E was
 blocked because the configured backend web server could not bind
 `127.0.0.1:8000` in the old execution context. The package was reopened on
 2026-05-29 after `agent-iter` validation stages were updated to use
-host-capable localhost binding. The rerun must keep the prior evidence visible
-and append new current-session evidence.
+host-capable localhost binding. The rerun kept the prior evidence visible and
+appended new current-session evidence. The 2026-05-29 host-capable rerun
+passed the configured backend, API smoke, and browser E2E validation commands.

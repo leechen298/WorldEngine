@@ -2,6 +2,20 @@
 
 Status: not executed
 
+## FINAL_STATUS
+
+route_status: NOT_EXECUTED
+evidence_status: not executed
+next_action: execute-independent-codex-autonomous-validation after `03` reaches `PACKAGE_COMPLETE`
+active_package: `04-codex-autonomous-validation-execution`
+do_not_modify_implementation: true
+blocking_findings: autonomous review not yet run
+open_findings: `v0.2-post-closeout-P2-001`
+last_verified_at: 2026-05-29
+evidence_commit: not applicable; execution not run
+commands_run: none for autonomous execution
+commands_not_run: all autonomous validation commands
+
 ## Changed Files
 
 | File | Change |

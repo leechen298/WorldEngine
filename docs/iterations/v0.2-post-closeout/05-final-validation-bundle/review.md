@@ -2,6 +2,21 @@
 
 Status: not executed
 
+## FINAL_STATUS
+
+route_status: NOT_EXECUTED
+evidence_status: not executed
+next_action: wait for `04-codex-autonomous-validation-execution` result
+active_package: `05-final-validation-bundle`
+do_not_modify_implementation: true
+blocking_findings: final bundle cannot be completed before `04`
+open_findings: `v0.2-post-closeout-P2-001`
+last_verified_at: 2026-05-29
+evidence_commit: not applicable; final bundle not run
+commands_run: none for final bundle synthesis
+commands_not_run: final bundle synthesis; autonomous validation
+v0.4_proceed_decision: not decided
+
 ## Changed Files
 
 | File | Change |

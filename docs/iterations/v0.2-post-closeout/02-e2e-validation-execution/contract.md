@@ -1,6 +1,6 @@
 # Contract
 
-Status: ready for execution
+Status: passed
 
 ## Public Concepts
 

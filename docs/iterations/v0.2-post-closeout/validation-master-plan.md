@@ -6,11 +6,27 @@ Type: post-closeout validation control plan
 ## Purpose
 
 This document controls v0.2 post-closeout validation. It exists because v0.2
-closeout is complete, but independent E2E / integration / API smoke evidence
-and Codex autonomous validation evidence are not yet performed.
+closeout is complete and remaining validation must be evidence-bearing rather
+than assumed from release status.
 
-This validation chain does not reopen v0.2. It creates evidence channels for a
-later validation run.
+This validation chain does not reopen v0.2. It creates and routes evidence
+channels for validation runs.
+
+## Current Routing Snapshot
+
+The current short routing source is `CURRENT_STATE.md`; Codex App `/goal`
+routing instructions live in `GOAL_RUNNER.md`.
+
+As of 2026-05-29:
+
+- `01-e2e-validation-plan` is complete.
+- `02-e2e-validation-execution` is `passed` with backend deterministic, API
+  smoke, Playwright availability, and configured browser E2E evidence.
+- `03-codex-autonomous-validation-plan` is the active next package and needs
+  review-closeout only.
+- `04-codex-autonomous-validation-execution` is not executed.
+- `05-final-validation-bundle` is not executed.
+- `v0.2-post-closeout-P2-001` remains open in `findings.md`.
 
 ## Required Reading
 
@@ -47,6 +63,20 @@ review instead of assuming its content.
    review and verify whether it is evidence-bearing.
 5. Final validation bundle: summarize both validation lines and decide whether
    unresolved findings block later v0.4 work.
+
+## Codex App Goal Routing Rule
+
+Default `/goal` work is one validation package at a time. Do not continue from
+one package to the next unless the user explicitly asks for full campaign mode.
+
+The default next route is:
+
+```text
+03-codex-autonomous-validation-plan review-closeout-plan
+```
+
+`03` must not execute autonomous validation. `04` owns autonomous validation
+execution, and `05` owns final bundle synthesis.
 
 ## Result States
 

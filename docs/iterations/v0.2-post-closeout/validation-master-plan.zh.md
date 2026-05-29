@@ -5,12 +5,27 @@
 
 ## 目的
 
-本文控制 v0.2 post-closeout validation。它存在的原因是：v0.2 closeout 已完成，
-但独立 E2E / integration / API smoke evidence 和 Codex autonomous validation
-evidence 尚未执行。
+本文控制 v0.2 post-closeout validation。它存在的原因是：v0.2 closeout 已完成，但剩余
+validation 必须由 evidence 支撑，不能只从 release status 推断。
 
-这条 validation chain 不重新打开 v0.2，只为后续 validation run 建立 evidence
+这条 validation chain 不重新打开 v0.2，只建立并路由 validation runs 的 evidence
 channels。
+
+## 当前路由快照
+
+当前简短路由来源是 `CURRENT_STATE.md`；Codex App `/goal` 路由说明位于
+`GOAL_RUNNER.md`。
+
+截至 2026-05-29：
+
+- `01-e2e-validation-plan` 已完成。
+- `02-e2e-validation-execution` 已 `passed`，证据包括 backend deterministic、API
+  smoke、Playwright availability 和 configured browser E2E。
+- `03-codex-autonomous-validation-plan` 是当前 active next package，只需要
+  review-closeout。
+- `04-codex-autonomous-validation-execution` 尚未执行。
+- `05-final-validation-bundle` 尚未执行。
+- `findings.md` 中 `v0.2-post-closeout-P2-001` 仍然 open。
 
 ## 必读文件
 
@@ -45,6 +60,20 @@ validation planning 和后续 execution 必须读取：
    并验证它是否具备 evidence。
 5. Final validation bundle：汇总两条 validation line，并判断 unresolved findings
    是否阻塞后续 v0.4 work。
+
+## Codex App Goal 路由规则
+
+默认 `/goal` work 一次只处理一个 validation package。除非用户明确要求 full campaign
+mode，否则不要从一个 package 自动继续到下一个 package。
+
+默认下一条路由是：
+
+```text
+03-codex-autonomous-validation-plan review-closeout-plan
+```
+
+`03` 不得执行 autonomous validation。`04` 负责 autonomous validation execution，
+`05` 负责 final bundle synthesis。
 
 ## 结果状态
 

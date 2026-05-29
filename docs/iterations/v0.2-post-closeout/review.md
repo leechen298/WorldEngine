@@ -2,6 +2,65 @@
 
 Status: ready for review
 
+## FINAL_STATUS
+
+route_status: REVIEW_READY
+evidence_status: partial; `02-e2e-validation-execution` passed, `04` and `05` not executed
+next_action: review-closeout `03-codex-autonomous-validation-plan`
+active_package: `03-codex-autonomous-validation-plan`
+do_not_modify_implementation: true
+blocking_findings: none for `03` review-closeout recorded
+open_findings: `v0.2-post-closeout-P2-001`
+last_verified_at: 2026-05-29
+evidence_commit: `dbffa069a5e74b6b1e6b60719152922595c60df6`
+commands_run: documentation routing checks only in the current Goal Runner update; see package reviews for historical validation commands
+commands_not_run: autonomous validation; final bundle synthesis; backend tests; API smoke; E2E
+
+## Goal Runner Routing Update
+
+Date: 2026-05-29
+
+Changed files:
+
+- `CURRENT_STATE.md`, `CURRENT_STATE.zh.md`: add the current one-package
+  routing snapshot for `/goal`.
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`: add `/goal` execution modes, route
+  statuses, hard stops, and per-package closeout rules.
+- `README.md`, `README.zh.md`: replace the stale documentation-only opening
+  with the current routing note and add the new routing deliverables.
+- `validation-master-plan.md`, `validation-master-plan.zh.md`: add the current
+  routing snapshot and default next route.
+- `review.md`, `review.zh.md`, and child package `review.md` / `review.zh.md`
+  files: add `FINAL_STATUS` blocks.
+
+Commands run for this routing update:
+
+```bash
+git diff --check
+rg -n "GOAL_RUNNER|CURRENT_STATE|FINAL_STATUS|PACKAGE_COMPLETE|NEEDS_USER_INPUT|NOT_EXECUTED|BLOCKED|FAILED" docs/iterations/v0.2-post-closeout
+rg -n "do not modify implementation|does not reopen v0.2|not executed|passed|blocked|failed|v0.4" docs/iterations/v0.2-post-closeout
+git diff --name-only
+test -f docs/iterations/v0.2-post-closeout/CURRENT_STATE.md
+test -f docs/iterations/v0.2-post-closeout/CURRENT_STATE.zh.md
+test -f docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md
+test -f docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md
+git status --short --branch
+```
+
+Results:
+
+- `git diff --check` exited `0`.
+- Required routing file existence checks exited `0`.
+- Routing keyword search found the expected current-state, runner, and
+  `FINAL_STATUS` entries.
+- Status / scope wording search found the expected validation status and guard
+  terms.
+- No runtime, schema, API, frontend, backend test, fixture, migration, or
+  external repository file was modified by this routing update.
+- Backend tests, API smoke, E2E, autonomous validation, and final bundle
+  synthesis were not run because this update only organizes validation routing
+  documents.
+
 ## Changed Files
 
 | File | Change |

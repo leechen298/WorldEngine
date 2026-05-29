@@ -1,6 +1,6 @@
 # Intent
 
-状态：`ready for execution`
+状态：`passed`
 
 ## 问题 / 目的
 

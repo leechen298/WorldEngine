@@ -2,6 +2,59 @@
 
 状态：`ready for review`
 
+## FINAL_STATUS
+
+route_status: REVIEW_READY
+evidence_status: partial；`02-e2e-validation-execution` 已 passed，`04` 和 `05` 尚未执行
+next_action: review-closeout `03-codex-autonomous-validation-plan`
+active_package: `03-codex-autonomous-validation-plan`
+do_not_modify_implementation: true
+blocking_findings: `03` review-closeout 当前无已记录 blocker
+open_findings: `v0.2-post-closeout-P2-001`
+last_verified_at: 2026-05-29
+evidence_commit: `dbffa069a5e74b6b1e6b60719152922595c60df6`
+commands_run: 当前 Goal Runner update 只运行 documentation routing checks；历史 validation commands 见各 package reviews
+commands_not_run: autonomous validation；final bundle synthesis；backend tests；API smoke；E2E
+
+## Goal Runner 路由更新
+
+日期：2026-05-29
+
+变更文件：
+
+- `CURRENT_STATE.md`, `CURRENT_STATE.zh.md`：新增 `/goal` 使用的一包一推进当前路由快照。
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`：新增 `/goal` execution modes、route
+  statuses、hard stops 和 per-package closeout rules。
+- `README.md`, `README.zh.md`：把 stale documentation-only 开头替换为当前路由说明，并加入新的 routing deliverables。
+- `validation-master-plan.md`, `validation-master-plan.zh.md`：新增当前路由快照和默认下一条 route。
+- `review.md`, `review.zh.md` 以及各 child package 的 `review.md` / `review.zh.md`：
+  新增 `FINAL_STATUS` 区块。
+
+本次 routing update 运行的命令：
+
+```bash
+git diff --check
+rg -n "GOAL_RUNNER|CURRENT_STATE|FINAL_STATUS|PACKAGE_COMPLETE|NEEDS_USER_INPUT|NOT_EXECUTED|BLOCKED|FAILED" docs/iterations/v0.2-post-closeout
+rg -n "do not modify implementation|does not reopen v0.2|not executed|passed|blocked|failed|v0.4" docs/iterations/v0.2-post-closeout
+git diff --name-only
+test -f docs/iterations/v0.2-post-closeout/CURRENT_STATE.md
+test -f docs/iterations/v0.2-post-closeout/CURRENT_STATE.zh.md
+test -f docs/iterations/v0.2-post-closeout/GOAL_RUNNER.md
+test -f docs/iterations/v0.2-post-closeout/GOAL_RUNNER.zh.md
+git status --short --branch
+```
+
+结果：
+
+- `git diff --check` 退出 `0`。
+- required routing file existence checks 退出 `0`。
+- routing keyword search 找到预期的 current-state、runner 和 `FINAL_STATUS` 条目。
+- status / scope wording search 找到预期的 validation status 和 guard terms。
+- 本次 routing update 没有修改 runtime、schema、API、frontend、backend test、fixture、
+  migration 或 external repository files。
+- backend tests、API smoke、E2E、autonomous validation 和 final bundle synthesis 未运行，
+  因为本次只整理 validation routing documents。
+
 ## 变更文件
 
 | 文件 | 变更 |

@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Execution
 
-Status: ready for execution
+Status: passed
 Type: validation execution
 
 ## Goal
@@ -44,7 +44,16 @@ It must record:
 
 ## Current Package State
 
-`ready for execution`
+`passed`
+
+## Current Execution Assessment
+
+`passed`
+
+The 2026-05-29 host-capable rerun recorded branch `v0.3-lcoal`, commit
+`dbffa069a5e74b6b1e6b60719152922595c60df6`, passing documentation checks,
+backend deterministic checks, API smoke, Playwright availability checks, and
+configured browser E2E (`6 passed`).
 
 ## Previous Execution Assessment
 

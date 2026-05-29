@@ -1,6 +1,6 @@
 # E2E / Integration / API Smoke Validation Execution
 
-状态：`ready for execution`
+状态：`passed`
 类型：validation execution
 
 ## 目标
@@ -43,7 +43,16 @@ binding 后，本 package 被重开。
 
 ## 当前 Package 状态
 
-`ready for execution`
+`passed`
+
+## 当前 Execution 评估
+
+`passed`
+
+2026-05-29 host-capable rerun 记录的 branch 为 `v0.3-lcoal`，commit 为
+`dbffa069a5e74b6b1e6b60719152922595c60df6`；documentation checks、backend
+deterministic checks、API smoke、Playwright availability checks 和 configured
+browser E2E 均通过，其中 browser E2E 结果为 `6 passed`。
 
 ## 上一次 Execution 评估
 

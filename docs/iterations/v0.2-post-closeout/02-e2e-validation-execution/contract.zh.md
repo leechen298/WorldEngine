@@ -1,6 +1,6 @@
 # Contract
 
-状态：`ready for execution`
+状态：`passed`
 
 ## Public concepts
 

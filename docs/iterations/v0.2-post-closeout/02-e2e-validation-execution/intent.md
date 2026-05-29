@@ -1,6 +1,6 @@
 # Intent
 
-Status: ready for execution
+Status: passed
 
 ## Problem / Purpose
 
