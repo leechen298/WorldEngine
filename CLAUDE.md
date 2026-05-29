@@ -35,6 +35,10 @@ Do not add new runtime features under `backend/worldengine/`.
 ## Iteration Documentation Gate
 
 Use `docs/iterations/README.md` as the per-iteration documentation standard.
+When creating or modifying files under `docs/iterations/`, also read
+`docs/iterations/AGENTS.md`. It defines the required detail level for version
+plans, planned packages, iteration packages, validation plans, evidence, and
+review documentation.
 
 Code or mixed iterations require an iteration package before implementation:
 

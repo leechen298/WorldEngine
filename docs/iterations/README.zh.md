@@ -7,6 +7,8 @@ Status: process standard
 本目录是 WorldEngine iteration work 的 process source of truth。它让未来 coding agents 能理解正在
 构建什么、为什么构建、允许走到哪里，以及用什么 evidence 关闭工作。
 
+创建或修改 iteration documents 前，先读取 `docs/iterations/AGENTS.zh.md`。
+
 ## Directory Shape
 
 ```text

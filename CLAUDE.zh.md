@@ -34,6 +34,9 @@ External fixture、validation 和 projection applications 是 WorldEngine 的 co
 ## Iteration Documentation Gate
 
 以 `docs/iterations/README.md` 作为每个 iteration 的文档标准。
+创建或修改 `docs/iterations/` 下文件时，还必须读取
+`docs/iterations/AGENTS.zh.md`。该文件定义 version plan、planned package、
+iteration package、validation plan、evidence 和 review documentation 的详细程度要求。
 
 代码或混合型 iteration 在实现前必须先有 iteration package：
 

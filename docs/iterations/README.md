@@ -6,6 +6,9 @@ This directory is the process source of truth for WorldEngine iteration work.
 It exists so future coding agents can understand what is being built, why, how
 far it is allowed to go, and what evidence closed the work.
 
+Before creating or modifying iteration documents, read
+`docs/iterations/AGENTS.md`.
+
 ## Directory Shape
 
 ```text
