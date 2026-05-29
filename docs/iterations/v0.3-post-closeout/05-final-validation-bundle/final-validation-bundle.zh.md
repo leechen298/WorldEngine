@@ -1,59 +1,53 @@
 # 最终验证汇总
 
-状态：`template / not executed`
+状态：`passed with P3`
 
-本文件是最终汇总模板，不是最终验证结果。
+本文档是当前 v0.3 post-closeout campaign 的最终验证结果。它不改变 v0.3 发布状态，
+也不授权 v0.4 implementation。
 
 ## 来源报告
 
-- E2E / integration report：
-- Codex autonomous review：
-- Evidence commit：
-- Final documentation commit：
-- Validation date：
-- Bundle author：
+- E2E / 集成报告：`../02-e2e-validation-execution/e2e-validation-report.md`
+- Codex 自主评审：
+  `../04-codex-autonomous-validation-execution/codex-autonomous-review.md`
+- 证据 commit：`da63cb8f28b484fba22596eb44fa5f09a218e45a`
+- 最终文档 commit：本轮未提交
+- 验证日期：2026-05-29
+- 汇总作者：Codex
 
-## 结果摘要
+## 结果总结
 
-- E2E / integration result：`not executed`
-- API smoke result：`not executed`
-- backend deterministic result：`not executed`
-- WorldSpec loader validation result：`not executed`
-- runtime context bridge validation result：`not executed`
-- Event.refs compatibility result：`not executed`
-- Codex autonomous validation result：`not executed`
-- release claim check：`not executed`
-- compatibility review：`not executed`
-- concrete demo-world regression check：`not executed`
+- E2E / 集成结果：`passed`。
+- API smoke 结果：通过 FastAPI TestClient runtime route 覆盖，结果为 `passed`。
+- 后端确定性检查结果：`passed`，`112 passed in 0.80s`。
+- WorldSpec loader 验证结果：`passed`，`7 passed in 0.04s`。
+- runtime context bridge 验证结果：`passed`，`11 passed in 0.05s`。
+- Event.refs compatibility 结果：`passed`，`12 passed in 0.18s`。
+- Codex autonomous validation 结果：`passed with P3`。
+- release claim 检查：在声明的 v0.3 loader/runtime-bridge 范围内有证据支持。
+- compatibility review：当前已检查的 backend、API、Event.refs、loader、bridge、
+  runtime 和浏览器 E2E surface 均通过。
+- concrete demo-world regression 检查：`passed`；仅验证 campaign 文档发生变化。
 
 ## Findings
 
-- unresolved P1：
-- unresolved P2：
+- unresolved P1：无。
+- unresolved P2：无。
 - unresolved P3：
-- blockers：
-- unsupported claims：
+  - `docs/iterations/v0.3/evidence-index.md` 和
+    `docs/iterations/v0.3/compatibility-audit.md` 的顶部仍是
+    `Status: ready for review`，但 v0.3 release closeout 已是 final。
+  - external fixture report schema 和 public runner invocation 仍是后续
+    `v0.7-external-validation-readiness` 的 hardening 风险。
+- blockers：无。
+- unsupported claims：未发现。
 
 ## 最终评估
 
-允许值：
+当前值：`passed with P3`。
 
-- `passed`
-- `passed with P3`
-- `blocked`
-- `failed`
-- `not executed`
+## v0.4 Proceed Decision
 
-当前值：`not executed`。
-
-## v0.4 是否可继续
-
-当前值：尚未判断。
-
-后续允许的结论：
-
-- v0.4 只能通过自己的已评审迭代包继续。
-- v0.4 被当前验证 findings 阻塞。
-- 因验证阻塞或不完整，v0.4 需要单独批准。
-
-在 `02` 和 `04` 具备当前证据或已记录 blockers 前，不要作出是否可继续的判断。
+v0.4 只能通过自己的已评审 iteration package 推进。本 campaign 为 v0.3 已检查
+surface 提供 fresh post-closeout validation evidence，但它不实现 v0.4，不批准 v0.4
+scope，也不绕过 v0.4 文档和 review gate。

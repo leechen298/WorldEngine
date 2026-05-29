@@ -1,6 +1,6 @@
 # Review
 
-状态：`planned / ready for review`
+状态：`review complete`
 
 ## 修改文件
 
@@ -27,6 +27,9 @@
 
 Review 反馈后的跟进检查记录在 `../review.md`。
 
+2026-05-29 的实现请求已批准本包作为推进到
+`02-e2e-validation-execution` 的人工 review gate。
+
 ## 测试结果
 
 未运行。本包是验证计划，不执行 backend、frontend、E2E、API smoke、runtime、schema、
@@ -50,4 +53,4 @@ schema、frontend、fixture、migration 或 test behavior。
 
 ## 最终评估
 
-`planned / ready for review`
+`review complete`

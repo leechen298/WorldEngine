@@ -1,6 +1,6 @@
 # Review
 
-状态：`planned / ready for review`
+状态：`review complete`
 
 ## 修改文件
 
@@ -27,6 +27,9 @@
 
 Review 反馈后的跟进检查记录在 `../review.md`。
 
+已批准的 campaign 执行把本计划推进到
+`04-codex-autonomous-validation-execution`。
+
 ## 测试结果
 
 未运行。本包只规划 autonomous validation。
@@ -50,4 +53,4 @@ API / schema / runtime compatibility、release claims 和 concrete demo-world re
 
 ## 最终评估
 
-`planned / ready for review`
+`review complete`

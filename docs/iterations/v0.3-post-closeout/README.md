@@ -1,22 +1,23 @@
 # v0.3 Post-Closeout Validation Campaign
 
-Status: campaign planned / ready for review
+Status: campaign executed / passed with P3
 Type: post-closeout validation goal campaign
 
 ## Goal
 
-Create the documentation system for independent v0.3 post-closeout validation.
-This campaign focuses on the WorldSpec loader, runtime context bridge,
-API/runtime compatibility, browser E2E readiness, and Codex autonomous
+Execute the documentation-controlled independent v0.3 post-closeout validation
+campaign. This campaign focuses on the WorldSpec loader, runtime context
+bridge, API/runtime compatibility, browser E2E readiness, and Codex autonomous
 validation after v0.3 final closeout.
 
 v0.3 feature / documentation closeout is complete.
-v0.3 independent E2E / integration validation is not yet performed in this
+v0.3 independent E2E / integration validation has current-session evidence in
+this campaign.
+v0.3 Codex autonomous validation has current-session review evidence in this
 campaign.
-v0.3 Codex autonomous validation is not yet performed in this campaign.
 This campaign does not reopen v0.3 implementation.
 This campaign does not change v0.3 release status.
-This pass only creates validation campaign documents.
+This pass updates validation campaign documents with execution evidence.
 
 ## Goal Entry
 
@@ -43,17 +44,15 @@ Allowed:
 
 - Define post-closeout validation workflow.
 - Define E2E / integration / API smoke planning.
-- Define future validation execution report templates.
-- Define Codex autonomous validation planning and review templates.
-- Define final validation bundle templates.
+- Fill validation execution reports with current-session evidence.
+- Fill Codex autonomous validation reviews with direct source/evidence review.
+- Fill final validation bundle documents from current evidence.
 - Preserve v0.3 final / closeout complete status while making missing fresh
-  validation explicit.
+  validation explicit when not run.
 
 Forbidden:
 
-- Do not run backend, frontend, runtime, API smoke, schema, fixture,
-  migration, build, E2E, Agent smoke, Codex autonomous, or regression checks in
-  this documentation creation pass.
+- Do not run or claim checks outside the approved validation campaign scope.
 - Do not modify runtime, schema, API, frontend, backend tests, fixtures, or
   external repositories.
 - Do not add concrete demo-world names, characters, locations, resources,
@@ -100,16 +99,16 @@ active package `review.md` and stop or downgrade according to
 
 | Package | Type | Initial status | Purpose |
 |---|---|---|---|
-| `01-e2e-validation-plan` | validation-planning | planned | Define E2E, integration, API smoke, loader, bridge, compatibility, and release-claim validation scope. |
-| `02-e2e-validation-execution` | validation-execution-template | not started | Provide the future execution steps and report template; no execution in this pass. |
-| `03-codex-autonomous-validation-plan` | validation-planning | not started | Define independent Codex reviewer inputs, constraints, and required checks. |
-| `04-codex-autonomous-validation-execution` | autonomous-review-template | not started | Provide the independent review template and an initial `not executed` report. |
-| `05-final-validation-bundle` | validation-bundle-template | not started | Provide the final synthesis template without a final result. |
+| `01-e2e-validation-plan` | validation-planning | review complete | Defined E2E, integration, API smoke, loader, bridge, compatibility, and release-claim validation scope. |
+| `02-e2e-validation-execution` | validation-execution | passed | Ran backend, focused loader/bridge/Event/runtime checks, API smoke coverage, and browser E2E. |
+| `03-codex-autonomous-validation-plan` | validation-planning | review complete | Defined independent Codex reviewer inputs, constraints, and required checks. |
+| `04-codex-autonomous-validation-execution` | autonomous-review | passed with P3 | Completed direct source/evidence review with non-blocking P3 handoffs. |
+| `05-final-validation-bundle` | validation-bundle | passed with P3 | Synthesized current campaign evidence, P3 handoffs, and v0.4 proceed status. |
 
 ## Final Assessment State
 
-Final assessment: not executed.
+Final assessment: passed with P3.
 
-The campaign is planned and ready for human / ChatGPT review. v0.4 may not use
-this campaign as fresh validation evidence until execution packages are filled
-with current-session evidence or recorded blockers.
+The campaign has current-session backend, API smoke, E2E, loader, bridge,
+Event.refs, and Codex autonomous review evidence. It carries non-blocking P3
+handoffs. v0.4 may proceed only through its own reviewed iteration package.

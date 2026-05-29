@@ -1,6 +1,6 @@
 # 03 Codex 自主验证计划
 
-状态：`not started / planned`
+状态：`review complete`
 类型：自主验证规划包
 
 ## 目标
@@ -8,7 +8,8 @@
 定义 v0.3 收口后的独立 Codex 自主验证计划。本包告诉后续 reviewer 应读什么、检查哪些
 claims、运行哪些命令或记录哪些 blocker，以及不能修改什么。
 
-本包不执行自主验证。
+本包不执行自主验证。已批准的 campaign 执行把本计划推进到
+`04-codex-autonomous-validation-execution`。
 
 ## 交付物
 

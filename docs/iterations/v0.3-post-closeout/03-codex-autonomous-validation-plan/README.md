@@ -1,6 +1,6 @@
 # 03 Codex Autonomous Validation Plan
 
-Status: not started / planned
+Status: review complete
 Type: autonomous-validation-planning package
 
 ## Goal
@@ -9,7 +9,8 @@ Define the independent Codex autonomous validation plan for v0.3
 post-closeout. This package tells a future reviewer what to read, what claims
 to check, what commands to run or block, and what not to modify.
 
-This package does not execute autonomous validation.
+This package does not execute autonomous validation. The approved campaign
+execution advanced its plan to `04-codex-autonomous-validation-execution`.
 
 ## Deliverables
 

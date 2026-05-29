@@ -1,15 +1,14 @@
 # 04 Codex Autonomous Validation Execution
 
-Status: not started / template
+Status: executed / passed with P3
 Type: autonomous-validation-execution package
 
 ## Goal
 
-Provide the future execution package for independent Codex autonomous
-validation of v0.3 post-closeout claims.
+Execute independent Codex autonomous validation of v0.3 post-closeout claims.
 
-This pass creates the template and initial report only. It does not execute the
-review.
+This pass records direct source/evidence review without editing implementation
+files.
 
 ## Deliverables
 
@@ -22,12 +21,7 @@ review.
 
 Each file has a `.zh.md` mirror.
 
-## Initial Report State
+## Report State
 
-`codex-autonomous-review.md` starts with:
-
-```text
-Status: not executed
-```
-
-Do not change that state until a future independent review is actually run.
+`codex-autonomous-review.md` records the executed review and has final
+recommendation `passed with P3`.

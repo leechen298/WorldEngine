@@ -1,6 +1,6 @@
 # Campaign 计划
 
-状态：`campaign planned / ready for review`
+状态：`campaign executed / passed with P3`
 类型：Codex `/goal` campaign plan
 
 ## 用途
@@ -12,6 +12,9 @@
 ```
 
 它是 campaign 指引，不是 WorldEngine 运行时行为，也不是自动化控制器实现。
+
+执行结果：2026-05-29 批准后的 campaign run 已完成到最终汇总，最终评估为
+`passed with P3`。
 
 ## 执行顺序
 

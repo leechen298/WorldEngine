@@ -1,19 +1,20 @@
 # v0.3 收口后验证 campaign
 
-状态：`campaign planned / ready for review`
+状态：`campaign executed / passed with P3`
 类型：`post-closeout validation goal campaign`
 
 ## 目标
 
-为 v0.3 收口后的独立验证创建文档体系。本 campaign 的重点是 WorldSpec 加载器、
-运行时上下文桥接、API / runtime 兼容性、浏览器 E2E 可用性，以及 Codex 自主验证。
+执行由文档控制的 v0.3 收口后独立验证 campaign。本 campaign 的重点是
+WorldSpec 加载器、运行时上下文桥接、API / runtime 兼容性、浏览器 E2E
+可用性，以及 Codex 自主验证。
 
 v0.3 的功能和文档收口已经完成。
-本 campaign 尚未执行 v0.3 独立 E2E / 集成验证。
-本 campaign 尚未执行 v0.3 Codex 自主验证。
+本 campaign 已记录 v0.3 独立 E2E / 集成验证的当前会话证据。
+本 campaign 已记录 v0.3 Codex 自主验证的当前会话评审证据。
 本 campaign 不重新打开 v0.3 实现。
 本 campaign 不改变 v0.3 发布状态。
-本轮只创建验证 campaign 文档。
+本轮只用执行证据更新验证 campaign 文档。
 
 ## 目标入口
 
@@ -38,15 +39,14 @@ v0.3 的功能和文档收口已经完成。
 
 - 定义收口后验证流程。
 - 定义 E2E / 集成 / API smoke 规划。
-- 定义后续验证执行报告模板。
-- 定义 Codex 自主验证规划和评审模板。
-- 定义最终验证汇总模板。
-- 保持 v0.3 `final / closeout complete` 状态，同时明确尚未补充 fresh validation。
+- 用当前会话证据填写验证执行报告。
+- 用直接源码/证据 review 填写 Codex 自主验证评审。
+- 用当前证据填写最终验证汇总。
+- 保持 v0.3 `final / closeout complete` 状态，同时明确未运行项。
 
 禁止：
 
-- 本轮文档创建期间，不运行 backend、frontend、runtime、API smoke、schema、
-  fixture、migration、build、E2E、Agent smoke、Codex autonomous 或 regression 检查。
+- 不运行或声称超出本验证 campaign 授权范围的检查。
 - 不修改 runtime、schema、API、frontend、backend tests、fixtures 或外部仓库。
 - 不加入具体 demo world 名称、角色、地点、资源、剧情规则、seed data、UI selector
   或 private oracle details。
@@ -91,15 +91,16 @@ v0.3 的功能和文档收口已经完成。
 
 | 子包 | 类型 | 初始状态 | 用途 |
 |---|---|---|---|
-| `01-e2e-validation-plan` | 验证规划 | `planned` | 定义 E2E、集成、API smoke、loader、bridge、兼容性和 release claim 验证范围。 |
-| `02-e2e-validation-execution` | 验证执行模板 | `not started` | 提供后续执行步骤和报告模板；本轮不执行。 |
-| `03-codex-autonomous-validation-plan` | 验证规划 | `not started` | 定义独立 Codex reviewer 的输入、约束和必检项。 |
-| `04-codex-autonomous-validation-execution` | 自主评审模板 | `not started` | 提供独立评审模板和初始 `not executed` 报告。 |
-| `05-final-validation-bundle` | 验证汇总模板 | `not started` | 提供最终综合模板，但不写最终结论。 |
+| `01-e2e-validation-plan` | 验证规划 | `review complete` | 已定义 E2E、集成、API smoke、loader、bridge、兼容性和 release claim 验证范围。 |
+| `02-e2e-validation-execution` | 验证执行 | `passed` | 已运行 backend、聚焦 loader/bridge/Event/runtime 检查、API smoke 覆盖和浏览器 E2E。 |
+| `03-codex-autonomous-validation-plan` | 验证规划 | `review complete` | 已定义独立 Codex reviewer 的输入、约束和必检项。 |
+| `04-codex-autonomous-validation-execution` | 自主评审 | `passed with P3` | 已完成直接源码/证据 review，并记录非阻塞 P3 handoff。 |
+| `05-final-validation-bundle` | 验证汇总 | `passed with P3` | 已汇总当前 campaign 证据、P3 handoff 和 v0.4 proceed 状态。 |
 
 ## 最终评估状态
 
-最终评估：`not executed`。
+最终评估：`passed with P3`。
 
-本 campaign 已规划，等待人工 / ChatGPT review。只有后续执行包填入当前会话证据或
-明确阻塞原因后，v0.4 才能把它当作 fresh validation evidence 参考。
+本 campaign 已记录当前会话 backend、API smoke、E2E、loader、bridge、
+Event.refs 和 Codex autonomous review 证据，并延续非阻塞 P3 handoff。v0.4
+只能通过自己的已评审迭代包继续。

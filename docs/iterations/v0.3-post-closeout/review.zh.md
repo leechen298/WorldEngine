@@ -1,6 +1,6 @@
 # Review
 
-状态：`ready for human / ChatGPT review`
+状态：`executed / passed with P3`
 
 ## 修改文件
 
@@ -148,12 +148,76 @@ git diff --check
 与 `Makefile` 和 `dev-backend` 保持一致。由于本次只是 documentation-only 命令路径修正，
 没有运行 backend tests。
 
+## Campaign 执行跟进
+
+2026-05-29 的实现请求批准 `01-e2e-validation-plan` 作为人工 review gate，并把
+validation campaign 执行到 `05`。
+
+本执行 pass 修改文件仅限 `docs/iterations/v0.3-post-closeout/**`。
+
+新增已读文件：
+
+- `frontend/playwright.config.ts`
+- `frontend/e2e/dashboard.spec.ts`
+- `backend/app/api/app_factory.py`
+- `backend/app/api/routes/health.py`
+- `backend/app/api/routes/runtime.py`
+- `backend/app/api/routes/world.py`
+
+新增运行命令：
+
+```bash
+git status --short --branch
+git rev-parse HEAD
+git diff --check
+make check-backend
+make check-frontend
+cd backend && .venv/bin/python -m pytest app/tests
+cd backend && .venv/bin/python -m pytest app/tests/test_worldspec_loader.py
+cd backend && .venv/bin/python -m pytest app/tests/test_runtime_context_bridge.py
+cd backend && .venv/bin/python -m pytest app/tests/test_event_api_compat.py app/tests/test_event_schema_compat.py
+cd backend && .venv/bin/python -m pytest app/tests/test_runtime_step.py
+make test-e2e
+make test-e2e
+```
+
+执行结果：
+
+- 分支 / commit：`v0.3`，
+  `da63cb8f28b484fba22596eb44fa5f09a218e45a`。
+- `git diff --check` exit `0`。
+- `make check-backend` 和 `make check-frontend` 都 exit `0`。
+- 后端确定性检查：`112 passed in 0.80s`。
+- 聚焦 WorldSpec loader 检查：`7 passed in 0.04s`。
+- 聚焦 runtime context bridge 检查：`11 passed in 0.05s`。
+- Event API / schema compatibility 检查：`12 passed in 0.18s`。
+- 通过 FastAPI TestClient runtime routes 的 API smoke：`16 passed in 0.28s`。
+- 第一次 sandbox 内 `make test-e2e` 因绑定 `127.0.0.1:8000` 被拒绝，报
+  `operation not permitted`；批准后重跑 exit `0`，结果为 `6 passed (6.4s)`。
+
+Subagent checkpoints：
+
+- Package 02 evidence review 在编辑过程中指出 execution review 字段陈旧；本轮已把
+  package review 和 report 更新为 `passed`，并补充命令证据与 route/app-factory
+  已读文件。
+- Campaign consistency review 在编辑过程中指出 `02`、`04`、`05` 和父级状态字段陈旧；
+  本轮已更新这些文件。
+- Autonomous source/evidence review 建议 `passed with P3`；最终评估已保留这些 P3，
+  而不是写成 clean `passed`。
+
+范围结果：未修改 runtime、schema、API、frontend、backend test、fixture、migration、
+外部仓库或 v0.3 发布状态文件。
+
 ## 未解决 P1/P2/P3
 
-- P1：本轮文档创建未发现。
-- P2：backend venv 命令路径跟进后未发现。
-- P3：本轮文档创建未发现。
+- P1：未发现。
+- P2：执行和 subagent review 跟进后未发现。
+- P3：`docs/iterations/v0.3/evidence-index.md` 和
+  `docs/iterations/v0.3/compatibility-audit.md` 的顶部仍是
+  `Status: ready for review`，但 v0.3 release closeout 已是 final。
+- P3：external fixture report schema 和 public runner invocation 仍是后续
+  `v0.7-external-validation-readiness` 的 hardening 风险。
 
 ## 最终评估
 
-`ready for human / ChatGPT review`
+`passed with P3`

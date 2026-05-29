@@ -1,13 +1,16 @@
 # Validation Master Plan
 
-Status: planned / ready for review
+Status: executed / passed with P3
 Type: post-closeout validation control plan
 
 ## Purpose
 
 This document controls v0.3 post-closeout validation. v0.3 closeout is already
-complete, but fresh independent validation has not been performed in this
-campaign.
+complete, and the approved 2026-05-29 campaign run has now added fresh
+independent validation evidence.
+
+Execution note: the approved 2026-05-29 campaign run added fresh independent
+validation evidence and closed the campaign as `passed with P3`.
 
 The campaign focuses on:
 

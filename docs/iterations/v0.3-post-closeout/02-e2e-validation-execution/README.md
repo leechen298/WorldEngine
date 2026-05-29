@@ -1,16 +1,16 @@
 # 02 E2E Validation Execution
 
-Status: not started / template
+Status: executed / passed
 Type: validation-execution package
 
 ## Goal
 
-Provide the future execution package for v0.3 post-closeout E2E,
-integration, API smoke, backend deterministic, WorldSpec loader, runtime
-context bridge, Event.refs, release-claim, and concrete demo-world regression
-validation.
+Execute the v0.3 post-closeout E2E, integration, API smoke, backend
+deterministic, WorldSpec loader, runtime context bridge, Event.refs,
+release-claim, and concrete demo-world regression validation package.
 
-This pass creates templates only. It does not execute validation.
+This pass records current-session validation evidence without editing
+implementation files.
 
 ## Deliverables
 
@@ -23,15 +23,13 @@ This pass creates templates only. It does not execute validation.
 
 Each file has a `.zh.md` mirror.
 
-## Initial Report State
+## Report State
 
-`e2e-validation-report.md` starts as `not executed`.
-
-Do not replace that state until this package is run in a future validation
-execution pass.
+`e2e-validation-report.md` is filled with current-session evidence and has
+final assessment `passed`.
 
 ## Boundary
 
-Future execution may run validation commands and update this package's report.
-It still may not modify runtime, schema, API, frontend, backend tests,
-fixtures, migrations, external repositories, or v0.3 release status.
+This execution ran validation commands and updated this package's report. It
+did not modify runtime, schema, API, frontend, backend tests, fixtures,
+migrations, external repositories, or v0.3 release status.

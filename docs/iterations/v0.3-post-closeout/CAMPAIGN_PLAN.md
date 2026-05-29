@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: campaign planned / ready for review
+Status: campaign executed / passed with P3
 Type: Codex `/goal` campaign plan
 
 ## Purpose
@@ -13,6 +13,9 @@ This plan defines the ordered campaign sequence for:
 
 It is campaign guidance, not WorldEngine runtime behavior and not an
 automation-controller implementation.
+
+Execution result: the approved 2026-05-29 campaign run completed the sequence
+through final bundle synthesis with final assessment `passed with P3`.
 
 ## Sequence
 

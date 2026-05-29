@@ -1,12 +1,13 @@
 # 主验证计划
 
-状态：`planned / ready for review`
+状态：`executed / passed with P3`
 类型：收口后验证控制计划
 
 ## 用途
 
-本文件控制 v0.3 收口后的验证工作。v0.3 已经完成最终收口，但本 campaign 还没有执行
-fresh independent validation。
+本文件控制 v0.3 收口后的验证工作。v0.3 已经完成最终收口。2026-05-29 批准后的
+campaign run 已补充 fresh independent validation evidence，并以
+`passed with P3` 收口。
 
 本 campaign 重点检查：
 

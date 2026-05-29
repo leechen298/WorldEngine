@@ -1,14 +1,14 @@
 # 05 Final Validation Bundle
 
-Status: not started / template
+Status: executed / passed with P3
 Type: final-validation-bundle package
 
 ## Goal
 
-Provide the final synthesis template for v0.3 post-closeout validation.
+Provide the final synthesis for v0.3 post-closeout validation.
 
-This package is a template in this pass. It is not a final result and does not
-decide whether v0.4 may proceed.
+This package summarizes current-session evidence, non-blocking P3 handoffs,
+and the v0.4 proceed status.
 
 ## Deliverables
 
@@ -21,6 +21,6 @@ Each file has a `.zh.md` mirror.
 
 ## Boundary
 
-The future final bundle may summarize current evidence and blockers from `02`
-and `04`. It must not invent pass claims, reopen v0.3 implementation, modify
-code, or change v0.3 release status.
+The final bundle summarizes current evidence and P3 handoffs from `02` and
+`04`. It does not invent pass claims, reopen v0.3 implementation, modify code,
+or change v0.3 release status.

@@ -1,41 +1,37 @@
-# 验证摘要
+# 验证总结
 
-状态：`template / not executed`
+状态：`passed with P3`
 
 ## 输入
 
-- E2E / integration report：`../02-e2e-validation-execution/e2e-validation-report.md`
-- Codex autonomous review：`../04-codex-autonomous-validation-execution/codex-autonomous-review.md`
+- E2E / 集成报告：`../02-e2e-validation-execution/e2e-validation-report.md`
+- Codex 自主评审：`../04-codex-autonomous-validation-execution/codex-autonomous-review.md`
 - 主计划：`../validation-master-plan.md`
 - 当前状态：`../CURRENT_STATE.md`
 
-## 当前摘要
+## 当前总结
 
-- E2E / integration result：`not executed`
-- API smoke result：`not executed`
-- backend deterministic result：`not executed`
-- WorldSpec loader validation result：`not executed`
-- runtime context bridge validation result：`not executed`
-- Event.refs compatibility result：`not executed`
-- Codex autonomous validation result：`not executed`
-- release claim check：`not executed`
-- compatibility review：`not executed`
-- concrete demo-world regression check：`not executed`
-- blockers：`not executed`
-- unresolved P1/P2/P3：`not executed`
+- E2E / 集成结果：`passed`。
+- API smoke 结果：通过 `backend/app/tests/test_runtime_step.py` 的 FastAPI
+  TestClient 覆盖，结果为 `passed`。
+- 后端确定性检查结果：`passed`，`112 passed in 0.80s`。
+- WorldSpec loader 验证结果：`passed`，`7 passed in 0.04s`。
+- runtime context bridge 验证结果：`passed`，`11 passed in 0.05s`。
+- Event.refs compatibility 结果：`passed`，`12 passed in 0.18s`。
+- Codex autonomous validation 结果：`passed with P3`。
+- release claim 检查：在 v0.3 loader/runtime-bridge 边界内有证据支持。
+- compatibility review：当前已检查的 backend、API、Event.refs、loader、bridge、
+  runtime 和浏览器 E2E surface 均通过。
+- concrete demo-world regression 检查：`passed`；本 campaign 只修改验证
+  campaign 文档。
+- blockers：无。
+- unresolved P1/P2/P3：无 P1/P2；有两个非阻塞 P3 handoff。
 
 ## 最终评估
 
-允许值：
+当前值：`passed with P3`。
 
-- `passed`
-- `passed with P3`
-- `blocked`
-- `failed`
-- `not executed`
+## v0.4 推进状态
 
-当前值：`not executed`。
-
-## v0.4 是否可继续
-
-本模板不作判断。后续 final bundle 必须明确 v0.4 是可以继续、被阻塞，还是需要单独批准。
+v0.4 只能通过自己的已评审 iteration package 推进。本 post-closeout validation
+campaign 不实现 v0.4，也不绕过 v0.4 的文档和 review gate。

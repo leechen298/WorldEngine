@@ -1,6 +1,6 @@
 # Review
 
-Status: planned / ready for review
+Status: review complete
 
 ## Changed Files
 
@@ -28,6 +28,9 @@ recorded in `../review.md`.
 
 Post-review follow-up checks are recorded in `../review.md`.
 
+The approved campaign execution advanced this plan to
+`04-codex-autonomous-validation-execution`.
+
 ## Test Results
 
 Not run. This package only plans autonomous validation.
@@ -53,4 +56,4 @@ tests, or change v0.3 release status.
 
 ## Final Assessment
 
-planned / ready for review
+review complete

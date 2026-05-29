@@ -1,6 +1,6 @@
 # 01 E2E 验证计划
 
-状态：`planned / ready for review`
+状态：`review complete`
 类型：验证规划包
 
 ## 目标
@@ -51,4 +51,7 @@ migration / build / Agent smoke / Codex autonomous 检查，编辑代码或测�
 
 ## 最终评估状态
 
-最终评估：`planned / ready for review`。
+最终评估：`review complete`。
+
+用户批准后的 `/goal` 执行把本计划视为人工 review gate，并已推进到
+`02-e2e-validation-execution`。

@@ -1,6 +1,6 @@
 # Validation Summary
 
-Status: template / not executed
+Status: passed with P3
 
 ## Inputs
 
@@ -11,32 +11,29 @@ Status: template / not executed
 
 ## Current Summary
 
-- E2E / integration result: not executed
-- API smoke result: not executed
-- backend deterministic result: not executed
-- WorldSpec loader validation result: not executed
-- runtime context bridge validation result: not executed
-- Event.refs compatibility result: not executed
-- Codex autonomous validation result: not executed
-- release claim check: not executed
-- compatibility review: not executed
-- concrete demo-world regression check: not executed
-- blockers: not executed
-- unresolved P1/P2/P3: not executed
+- E2E / integration result: passed.
+- API smoke result: passed through FastAPI TestClient coverage in
+  `backend/app/tests/test_runtime_step.py`.
+- backend deterministic result: passed, `112 passed in 0.80s`.
+- WorldSpec loader validation result: passed, `7 passed in 0.04s`.
+- runtime context bridge validation result: passed, `11 passed in 0.05s`.
+- Event.refs compatibility result: passed, `12 passed in 0.18s`.
+- Codex autonomous validation result: passed with P3.
+- release claim check: supported within the v0.3 loader/runtime-bridge
+  boundary.
+- compatibility review: current checked backend, API, Event.refs, loader,
+  bridge, runtime, and browser E2E surfaces passed.
+- concrete demo-world regression check: passed; this campaign changed only
+  validation campaign documentation.
+- blockers: none.
+- unresolved P1/P2/P3: no P1 or P2; two non-blocking P3 handoffs.
 
 ## Final Assessment
 
-Allowed values:
-
-- `passed`
-- `passed with P3`
-- `blocked`
-- `failed`
-- `not executed`
-
-Current value: `not executed`.
+Current value: `passed with P3`.
 
 ## v0.4 Proceed Status
 
-Not determined by this template. A future final bundle must explicitly state
-whether v0.4 may proceed, is blocked, or requires separate approval.
+v0.4 may proceed only through its own reviewed iteration package. This
+post-closeout validation campaign does not implement v0.4 and does not bypass
+the v0.4 documentation and review gate.

@@ -1,8 +1,8 @@
 # 执行计划
 
-状态：`template / not executed`
+状态：`executed`
 
-后续执行必须按以下步骤进行：
+执行已按以下步骤进行：
 
 1. 确认 branch / commit。
 2. 分别记录 evidence commit 和 final documentation commit。
@@ -18,6 +18,8 @@
 12. 如果不可用，记录 not configured / blocked。
 13. 填写 `e2e-validation-report.md`。
 14. 分类 P1/P2/P3。
+
+结果：已完成，最终评估为 `passed`；详见 `e2e-validation-report.md` 和 `review.md`。
 
 ## 文档检查
 
