@@ -291,14 +291,111 @@ implementation.
 
 ## English / Chinese Mirror Rule
 
-If an active English iteration doc has a `.zh.md` mirror, update both.
-Chinese mirrors may keep technical terms in English.
+### Default bilingual output rule
 
-Status, scope, conclusion, allowed changes, forbidden changes, evidence, and
-review findings must be equivalent across mirrors.
+For active iteration documentation, English and Chinese mirrors should be
+produced together when the document is part of:
 
-Do not create new mirrors unless the package contract or active task
-explicitly allows it.
+- version index.
+- version plan.
+- package README.
+- package contract.
+- package plan.
+- package review.
+- release candidate or closeout docs.
+- post-closeout validation docs.
+- validation report templates.
+- evidence, compatibility, or boundary audit docs.
+
+If the task creates a new English active iteration document and a Chinese
+mirror is expected by the directory convention, package contract, or active
+task, create the `.zh.md` mirror in the same pass.
+
+If a mirror is intentionally omitted, the package `review.md` must record why.
+
+### Existing mirror update rule
+
+If an active English iteration doc already has a `.zh.md` mirror, update both
+in the same pass.
+
+If only one side is updated, review must record at least a P2 finding unless
+the package contract explicitly allows English-only or Chinese-only changes.
+
+### Chinese document quality rule
+
+Chinese mirrors must be real Chinese documents, not English documents with
+Chinese punctuation.
+
+Chinese mirrors must use natural Chinese prose for explanations, goals, scope,
+conclusions, review findings, and status notes.
+
+It is acceptable to preserve technical identifiers in English only when they
+are:
+
+- code symbols.
+- file paths.
+- command names.
+- API routes.
+- package names.
+- status literals.
+- field names.
+- established project terms where translating would reduce precision.
+
+Do not leave ordinary explanatory sentences in English.
+
+Do not produce paragraphs that are mostly English with a few Chinese connector
+words.
+
+Do not mechanically copy English headings and prose when a natural Chinese
+equivalent is clear.
+
+### Structural equivalence rule
+
+Chinese mirrors must preserve the same meaning and review semantics as the
+English file.
+
+The following must be equivalent across English and Chinese:
+
+- Status.
+- Type.
+- Goal.
+- Scope.
+- Allowed changes.
+- Forbidden changes.
+- Compatibility requirements.
+- Expected deliverables.
+- Expected tests / verification.
+- P1/P2/P3 findings.
+- Final assessment.
+- Release / closeout status.
+- Validation status.
+- Blockers and not-run reasons.
+
+### Heading translation rule
+
+Headings may keep code-like nouns or package names in English, but generic
+headings should be translated into readable Chinese.
+
+Examples:
+
+- `Goal` may become `目标`.
+- `Scope` may become `范围`.
+- `Allowed changes` may become `允许修改`.
+- `Forbidden changes` may become `禁止修改`.
+- `Expected tests / verification` may become `预期测试 / 验证`.
+- `Final assessment` may become `最终评估`.
+
+Do not require literal one-to-one heading translation if a clearer Chinese
+heading is available.
+
+### Review enforcement
+
+If a Chinese mirror is missing, stale, semantically weaker, or mostly English
+where natural Chinese is expected:
+
+- record P2 for normal documentation.
+- record P1 if the mismatch affects release status, validation status,
+  forbidden changes, compatibility constraints, or closeout evidence.
 
 ## Release / Closeout Rules
 

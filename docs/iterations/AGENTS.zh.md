@@ -281,15 +281,102 @@ scheduling、Codex role assignment、retry loops 或 orchestration。
 `docs/iterations/` 必须提供 deterministic package specs，而不是 automation
 implementation。
 
-## English / Chinese Mirror Rule
+## 英文 / 中文镜像规则
 
-如果 active English iteration doc 有 `.zh.md` 镜像，必须同步更新。
-中文镜像可以保留 technical terms in English。
+### 默认双语输出规则
 
-Status、scope、conclusion、allowed changes、forbidden changes、evidence 和
-review findings 必须等价。
+active iteration docs 默认应中英文同步。以下类型的 active iteration documentation
+应在同一轮同时生成或同步英文与中文镜像：
 
-除非 package contract 或当前任务明确允许，不要创建新的 mirror。
+- version index。
+- version plan。
+- package README。
+- package contract。
+- package plan。
+- package review。
+- release candidate 或 closeout docs。
+- post-closeout validation docs。
+- validation report templates。
+- evidence、compatibility 或 boundary audit docs。
+
+新建英文 active iteration document 时，如果目录约定、package contract 或当前任务要求
+中文镜像，就必须同轮生成 `.zh.md`。
+
+如果有意不生成中文镜像，必须在 package 的 `review.md` 中记录原因。
+
+### 已有镜像同步规则
+
+如果 active English iteration doc 已经有 `.zh.md` 镜像，必须同轮更新英文和中文。
+
+如果只更新其中一侧，review 至少必须记录 P2，除非 package contract 明确允许只改英文
+或只改中文。
+
+### 中文文档质量规则
+
+中文镜像必须是自然中文文档，不是英文原文加中文标点，也不是英文原文加少量中文连接词。
+
+解释、目标、范围、结论、审查意见、状态说明、阻塞原因和验证说明必须使用自然中文表达。
+
+只有下列内容可以保留英文：
+
+- 代码符号。
+- 文件路径。
+- 命令名称。
+- API route。
+- package name。
+- status literal。
+- field name。
+- 翻译后会降低精度的项目固定术语。
+
+不要把普通说明句留成英文。
+
+不要写大段中英混写，也不要写成大部分是英文、只夹少量中文连接词的段落。
+
+当清晰的中文标题存在时，不要机械复制英文 heading 和正文。
+
+### 结构等价规则
+
+中文镜像必须保留与英文文件相同的含义和 review 语义。
+
+以下内容在英文和中文之间必须等价：
+
+- Status。
+- Type。
+- Goal。
+- Scope。
+- Allowed changes。
+- Forbidden changes。
+- Compatibility requirements。
+- Expected deliverables。
+- Expected tests / verification。
+- P1/P2/P3 findings。
+- Final assessment。
+- Release / closeout status。
+- Validation status。
+- Blockers 和 not-run reasons。
+
+### 标题翻译规则
+
+标题可以保留 code-like nouns 或 package names，但通用标题应该翻译成可读中文。
+
+示例：
+
+- `Goal` 可以写成 `目标`。
+- `Scope` 可以写成 `范围`。
+- `Allowed changes` 可以写成 `允许修改`。
+- `Forbidden changes` 可以写成 `禁止修改`。
+- `Expected tests / verification` 可以写成 `预期测试 / 验证`。
+- `Final assessment` 可以写成 `最终评估`。
+
+不要求逐字一一对应翻译；如果更自然的中文标题更清楚，应使用更清楚的中文标题。
+
+### Review enforcement
+
+如果中文镜像缺失、过旧、语义弱于英文，或在应使用自然中文的位置大段中英混写：
+
+- 普通 documentation 记录 P2。
+- 如果不一致影响 release status、validation status、forbidden changes、
+  compatibility constraints 或 closeout evidence，记录 P1。
 
 ## Release / Closeout Rules
 
