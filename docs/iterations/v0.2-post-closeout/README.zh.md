@@ -29,6 +29,16 @@ validation documents。
 4. Codex autonomous validation execution and review template。
 5. Final validation bundle template。
 
+## Package Index
+
+| Package | Type | Status | Purpose |
+|---|---|---|---|
+| `01-e2e-validation-plan` | validation-planning | planned / ready for review | 定义 v0.2 post-closeout E2E、integration 和 API smoke validation 范围。 |
+| `02-e2e-validation-execution` | validation-execution | not executed | 执行 v0.2 post-closeout E2E、integration 和 API smoke validation。 |
+| `03-codex-autonomous-validation-plan` | validation-planning | planned / ready for review | 定义独立 Codex autonomous validation 范围。 |
+| `04-codex-autonomous-validation-execution` | validation-execution | not executed | 执行独立 Codex autonomous validation。 |
+| `05-final-validation-bundle` | validation-bundle | not executed | 汇总最终 v0.2 post-closeout validation result。 |
+
 ## 结果状态
 
 validation documents 可以使用以下状态：
