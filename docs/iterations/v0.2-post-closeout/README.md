@@ -1,6 +1,6 @@
 # v0.2 Post-Closeout Validation
 
-Status: planned / ready for review
+Status: blocked
 Type: post-closeout validation planning
 
 ## Goal

@@ -1,6 +1,6 @@
 # v0.2 Post-Closeout Validation
 
-状态：`planned / ready for review`
+状态：`blocked`
 类型：post-closeout validation planning
 
 ## 目标
