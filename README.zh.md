@@ -1,12 +1,19 @@
 # WorldEngine
 
-状态：`v0.3 final / closeout complete`
+状态：`v0.4 planning ready for review`；当前已实现能力仍是
+`v0.3 final / closeout complete`
 
 英文版本：`README.md`。
 
-WorldEngine 是递归世界生成与运行时引擎。当前 `v0.3` 分支是 WorldSpec Loader
-and Runtime Bridge 里程碑：它新增最小通用 `WorldSpec` 加载器和可选的惰性运行时
-上下文桥接层，同时保持 v0.1 运行时脚手架兼容。它还不是完整的递归世界引擎实现。
+WorldEngine 是递归世界生成与运行时引擎。
+
+当前 `v0.4` 分支只包含 Agent-in-World Minimal Loop 的规划文档和 `/goal`
+开发活动文档。它尚未实现 v0.4 runtime、schema、API、frontend、test、
+fixture、migration 或 legacy 代码变更。
+
+当前已实现能力仍停留在 v0.3 WorldSpec Loader and Runtime Bridge 里程碑：它新增
+最小通用 `WorldSpec` 加载器和可选的惰性运行时上下文桥接层，同时保持 v0.1
+运行时脚手架兼容。它还不是完整的递归世界引擎实现。
 
 优先阅读：
 
@@ -15,6 +22,7 @@ and Runtime Bridge 里程碑：它新增最小通用 `WorldSpec` 加载器和可
 - `docs/current-implementation.md`
 - `docs/api-reference-v0.1.md`
 - `docs/releases/v0.3.md`
+- `docs/iterations/v0.4/README.zh.md`
 - `docs/iterations/v0.3/README.zh.md`
 - `docs/iterations/README.md`
 

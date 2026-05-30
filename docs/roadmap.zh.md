@@ -84,8 +84,10 @@ data 加载进 runtime context。
 
 ## v0.4 - Agent-in-World Minimal Loop
 
-目标：让 Agent perceive world events、produce action intents、receive action results，
-并通过一个 minimal validated loop 影响 world state。
+状态：`planned / ready for review`
+
+目标：让 Agent 感知世界事件、产生 action intent、接收 action result，并通过一个最小、
+经过校验的闭环影响 world state。
 
 ## v0.5 - Memory and Self-Continuity Substrate
 

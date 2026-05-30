@@ -1,14 +1,20 @@
 # WorldEngine
 
-Status: v0.3 final / closeout complete.
+Status: v0.4 planning ready for review; current implementation capability
+remains v0.3 final / closeout complete.
 
 Chinese mirror: `README.zh.md`.
 
-WorldEngine is a recursive world generation and runtime engine. The current
-`v0.3` branch is the WorldSpec Loader and Runtime Bridge milestone: it adds a
-minimal generic `WorldSpec` loader and an optional inert runtime context bridge
-while preserving the v0.1 runtime scaffold. It is not yet a recursive world
-engine implementation.
+WorldEngine is a recursive world generation and runtime engine.
+
+The `v0.4` branch currently contains planning and goal-campaign documentation
+for the Agent-in-World Minimal Loop. It has not implemented v0.4 runtime,
+schema, API, frontend, test, fixture, migration, or legacy code changes.
+
+Current implemented capability remains the v0.3 WorldSpec Loader and Runtime
+Bridge milestone: it adds a minimal generic `WorldSpec` loader and an optional
+inert runtime context bridge while preserving the v0.1 runtime scaffold. It is
+not yet a recursive world engine implementation.
 
 Read first:
 
@@ -17,6 +23,7 @@ Read first:
 - `docs/current-implementation.md`
 - `docs/api-reference-v0.1.md`
 - `docs/releases/v0.3.md`
+- `docs/iterations/v0.4/README.md`
 - `docs/iterations/v0.3/README.md`
 - `docs/iterations/README.md`
 

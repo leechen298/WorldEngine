@@ -54,16 +54,53 @@ Forbidden v0.4 scope:
 
 ## Package Index
 
-| Package | Type | Status | Purpose |
-|---|---|---|---|
-| `0.4.0-v0.4-planning-and-compatibility-baseline` | documentation-only | ready for review | Create the v0.4 documentation root, goal-campaign controls, version plan, compatibility baseline, and v0.3 handoff mapping without changing implementation files. |
-| `0.4.1-agent-in-world-loop-contract` | documentation-only | planned | Define the public v0.4 Agent-in-World loop concepts, event semantics, API boundary, error model, and implementation authorization criteria before code changes. |
-| `0.4.2-agent-perception-and-schemas` | mixed or code | planned | Add generic Agent-in-World schema models and a bounded perception builder that reads runtime state, recent events, world params, and optional runtime-context summary without mutating state. |
-| `0.4.3-action-intent-validation-and-result-adapter` | mixed or code | planned | Implement the minimal generic action intent validator and result adapter for noop and validated params.patch, reusing existing param validation and dry-run safeguards. |
-| `0.4.4-minimal-agent-loop-orchestration-and-api` | mixed or code | planned | Wire a request-driven minimal Agent-in-World loop that builds perception, obtains or accepts an intent, validates and applies the intent, emits inspectable result evidence, and returns a stable API response. |
-| `0.4.5-agent-loop-evidence-and-compatibility-audit` | documentation-only | planned | Audit v0.4 implementation evidence, changed files, compatibility surfaces, unresolved findings, and handoff readiness for release-candidate review. |
-| `0.4.6-v0.4-release-candidate-bundle` | documentation-only | planned | Prepare a v0.4 release-candidate bundle from reviewed implementation and audit evidence without declaring final release or adding implementation changes. |
-| `0.4.7-v0.4-final-closeout` | documentation-only | planned | Mark v0.4 final / closeout complete only after release-candidate review approval, evidence consistency checks, and unresolved finding classification. |
+### `0.4.0-v0.4-planning-and-compatibility-baseline`
+
+- Type: documentation-only
+- Status: ready for review
+- Purpose: create the v0.4 documentation root, goal-campaign controls, version plan, compatibility baseline, and v0.3 handoff mapping without changing implementation files.
+
+### `0.4.1-agent-in-world-loop-contract`
+
+- Type: documentation-only
+- Status: planned
+- Purpose: define the public v0.4 Agent-in-World loop concepts, event semantics, API boundary, error model, and implementation authorization criteria before code changes.
+
+### `0.4.2-agent-perception-and-schemas`
+
+- Type: mixed or code
+- Status: planned
+- Purpose: add generic Agent-in-World schema models and a bounded perception builder that reads runtime state, recent events, world params, and optional runtime-context summary without mutating state.
+
+### `0.4.3-action-intent-validation-and-result-adapter`
+
+- Type: mixed or code
+- Status: planned
+- Purpose: implement the minimal generic action intent validator and result adapter for noop and validated params.patch, reusing existing param validation and dry-run safeguards.
+
+### `0.4.4-minimal-agent-loop-orchestration-and-api`
+
+- Type: mixed or code
+- Status: planned
+- Purpose: wire a request-driven minimal Agent-in-World loop that builds perception, obtains or accepts an intent, validates and applies the intent, emits inspectable result evidence, and returns a stable API response.
+
+### `0.4.5-agent-loop-evidence-and-compatibility-audit`
+
+- Type: documentation-only
+- Status: planned
+- Purpose: audit v0.4 implementation evidence, changed files, compatibility surfaces, unresolved findings, and handoff readiness for release-candidate review.
+
+### `0.4.6-v0.4-release-candidate-bundle`
+
+- Type: documentation-only
+- Status: planned
+- Purpose: prepare a v0.4 release-candidate bundle from reviewed implementation and audit evidence without declaring final release or adding implementation changes.
+
+### `0.4.7-v0.4-final-closeout`
+
+- Type: documentation-only
+- Status: planned
+- Purpose: mark v0.4 final / closeout complete only after release-candidate review approval, evidence consistency checks, and unresolved finding classification.
 
 ## Current State
 

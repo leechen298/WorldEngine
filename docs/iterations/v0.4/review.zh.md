@@ -115,6 +115,50 @@ Evaluator 结果：
 - Scope / goal-runner evaluator：未发现 P1 或 P2。曾发现一项 P3，即本文件在更新前仍有 stale pending review evidence；本次 review 更新已修复。
 - Mirror / automation-consumption evaluator：未发现 P1。曾发现两项 P2：stale pending review evidence 与中文状态 literal 不一致；本次 review 更新均已修复。曾发现一项 P3：中文镜像有机械英文标题；本次已翻译通用中文标题。
 
+## 外部审核跟进
+
+来源：用户粘贴的 ChatGPT audit，发生在 commit `a08eec7` 之后。
+
+本次跟进修改文件：
+
+- `README.md`
+- `README.zh.md`
+- `docs/roadmap.md`
+- `docs/roadmap.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/review.md`
+- `docs/iterations/v0.4/review.zh.md`
+
+已处理 findings：
+
+- P2：根 README 状态现在说明 `v0.4` 分支处于 planning ready for review，当前已实现能力仍是 v0.3 final / closeout complete。
+- P2：roadmap v0.4 小节现在记录 `Status: planned / ready for review`。
+- P3：v0.4 README 的包索引改为按包分节，不再使用过宽 Markdown 表格。
+- P3：v0.4 中文 README 和 roadmap 的普通说明已做中文 polish，同时保留 canonical status literal、路径和契约术语。
+
+本次跟进运行命令：
+
+```bash
+git status --short --branch
+git diff --check
+rg -n 'current `v0\.3` branch|当前 `v0\.3` 分支|Status: v0\.3 final|状态：`v0\.3 final' README.md README.zh.md
+rg -n -A2 '## v0\.4 - Agent-in-World Minimal Loop' docs/roadmap.md docs/roadmap.zh.md
+rg -n '^\| Package \||^\| 包 \|' docs/iterations/v0.4/README.md docs/iterations/v0.4/README.zh.md
+rg -n 'deliverables|compatibility constraints|handoff rules|request-driven loop orchestration|child sequence' docs/iterations/v0.4/README.zh.md docs/roadmap.zh.md
+python3 -c "import subprocess,sys; allowed={'README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md','docs/iterations/v0.4/README.md','docs/iterations/v0.4/README.zh.md','docs/iterations/v0.4/review.md','docs/iterations/v0.4/review.zh.md'}; out=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines(); bad=[p for p in out if p not in allowed]; print('changed_files=' + str(len(out))); print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
+```
+
+本次跟进结果：
+
+- `git diff --check` 退出 `0`。
+- changed-file scope guard 退出 `0`；`changed_files=8` 且 `out_of_scope=0`。
+- 根 README stale status 扫描退出 `1` 且无输出。
+- roadmap v0.4 status 扫描退出 `0`，英文和中文 roadmap 都包含新的 v0.4 状态。
+- 包索引表格扫描退出 `1` 且无输出，package index 已改为分节。
+- 中文措辞扫描退出 `1` 且无输出，审核指出的混排短语已处理。
+- 本次跟进是 documentation-only，未修改实现文件，因此未运行 backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 或 test implementation 命令。
+
 ## 未解决 P1/P2/P3
 
 - P1：未发现。

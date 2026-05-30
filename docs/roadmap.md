@@ -86,6 +86,8 @@ public contracts without creating those repositories inside WorldEngine.
 
 ## v0.4 - Agent-in-World Minimal Loop
 
+Status: planned / ready for review
+
 Goal: let agents perceive world events, produce action intents, receive action
 results, and affect world state through a minimal validated loop.
 

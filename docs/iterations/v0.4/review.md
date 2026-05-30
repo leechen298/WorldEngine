@@ -115,6 +115,50 @@ Evaluator results:
 - Scope / goal-runner evaluator: no P1 or P2 findings. One P3 found stale pending review evidence before this update; fixed in this review pass.
 - Mirror / automation-consumption evaluator: no P1 findings. Two P2 findings found stale pending review evidence and inconsistent Chinese status literals; both fixed in this review pass. One P3 found mechanically English Chinese headings; generic Chinese headings were translated in this review pass.
 
+## External Audit Follow-Up
+
+Source: ChatGPT audit pasted by the user after commit `a08eec7`.
+
+Changed files for this follow-up:
+
+- `README.md`
+- `README.zh.md`
+- `docs/roadmap.md`
+- `docs/roadmap.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/review.md`
+- `docs/iterations/v0.4/review.zh.md`
+
+Implemented findings:
+
+- P2: root README status now says the `v0.4` branch is planning ready for review while implemented capability remains v0.3 final / closeout complete.
+- P2: roadmap v0.4 section now records `Status: planned / ready for review`.
+- P3: v0.4 README package index now uses per-package subsections instead of a wide Markdown table.
+- P3: v0.4 Chinese README and roadmap wording were polished for ordinary explanatory text while preserving canonical status literals, paths, and contract terms.
+
+Follow-up commands run:
+
+```bash
+git status --short --branch
+git diff --check
+rg -n 'current `v0\.3` branch|当前 `v0\.3` 分支|Status: v0\.3 final|状态：`v0\.3 final' README.md README.zh.md
+rg -n -A2 '## v0\.4 - Agent-in-World Minimal Loop' docs/roadmap.md docs/roadmap.zh.md
+rg -n '^\| Package \||^\| 包 \|' docs/iterations/v0.4/README.md docs/iterations/v0.4/README.zh.md
+rg -n 'deliverables|compatibility constraints|handoff rules|request-driven loop orchestration|child sequence' docs/iterations/v0.4/README.zh.md docs/roadmap.zh.md
+python3 -c "import subprocess,sys; allowed={'README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md','docs/iterations/v0.4/README.md','docs/iterations/v0.4/README.zh.md','docs/iterations/v0.4/review.md','docs/iterations/v0.4/review.zh.md'}; out=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines(); bad=[p for p in out if p not in allowed]; print('changed_files=' + str(len(out))); print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
+```
+
+Follow-up results:
+
+- `git diff --check` exited `0`.
+- Changed-file scope guard exited `0`; `changed_files=8` and `out_of_scope=0`.
+- Stale root README status scan exited `1` with no output.
+- Roadmap v0.4 status scan exited `0` and found the new v0.4 status in both English and Chinese roadmap files.
+- Package table scan exited `1` with no output after the package index was converted to sections.
+- Chinese wording scan exited `1` with no output for the reviewed mixed-language phrases.
+- Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands were not run because this follow-up is documentation-only and no implementation files changed.
+
 ## Unresolved P1/P2/P3
 
 - P1: none identified.
