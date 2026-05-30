@@ -1,6 +1,6 @@
 # External Fixture Runner Contract
 
-Status: ready for review
+Status: review complete
 
 ## Purpose
 

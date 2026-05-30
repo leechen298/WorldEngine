@@ -12,7 +12,10 @@ authorize v0.4 implementation.
 - Codex autonomous review:
   `../04-codex-autonomous-validation-execution/codex-autonomous-review.md`
 - Evidence commit: `da63cb8f28b484fba22596eb44fa5f09a218e45a`
-- Final documentation commit: not committed in this pass
+- Final documentation closeout commit:
+  `6712123b402fa8d454ede7779cc6a401d82ce684`
+- Evidence-to-closeout implementation delta: none for runtime, schema, API,
+  frontend, backend tests, fixtures, or migrations.
 - Validation date: 2026-05-29
 - Bundle author: Codex
 
@@ -37,10 +40,6 @@ authorize v0.4 implementation.
 - unresolved P1: none.
 - unresolved P2: none.
 - unresolved P3:
-  - `docs/iterations/v0.3/evidence-index.md` and
-    `docs/iterations/v0.3/compatibility-audit.md` still have top-level
-    `Status: ready for review` wording even though v0.3 release closeout is
-    final.
   - external fixture report schema and public runner invocation remain a later
     `v0.7-external-validation-readiness` hardening risk.
 - blockers: none.

@@ -208,13 +208,66 @@ Subagent checkpoints：
 范围结果：未修改 runtime、schema、API、frontend、backend test、fixture、migration、
 外部仓库或 v0.3 发布状态文件。
 
+## Metadata polish 跟进
+
+commit `6712123b402fa8d454ede7779cc6a401d82ce684` 之后的外部 review 发现一个
+P2：最终/来源报告元数据仍写着最终文档 `本轮未提交`。
+
+本次跟进把报告元数据更新为：最终文档收口 commit 是
+`6712123b402fa8d454ede7779cc6a401d82ce684`，并记录从证据 commit 到收口 commit
+的实现差异为空：没有 runtime、schema、API、frontend、backend tests、fixtures 或
+migrations 变更。
+
+本次跟进修改文件：
+
+- `docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.md`
+- `docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.zh.md`
+- `docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.md`
+- `docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.zh.md`
+- `docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.md`
+- `docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.zh.md`
+- `docs/iterations/v0.3-post-closeout/review.md`
+- `docs/iterations/v0.3-post-closeout/review.zh.md`
+
+本次跟进运行命令：
+
+```bash
+git status --short --branch
+rg -n "not committed in this pass|本轮未提交|Final documentation commit|最终文档 commit" \
+  docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.md \
+  docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.zh.md \
+  docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.md \
+  docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.zh.md \
+  docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.md \
+  docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.zh.md
+git diff --check
+```
+
+跟进结果：已替换填写完毕的验证报告中的陈旧 `本轮未提交` 元数据。未修改 runtime、
+schema、API、frontend、backend test、fixture、migration、外部仓库或 v0.3 发布状态文件。
+
+## Roadmap 和状态漂移跟进
+
+本次收口审计发现一个 P2 状态漂移和一个 P3 状态措辞漂移：
+
+- `docs/roadmap.md` 和 `docs/roadmap.zh.md` 在 v0.3 final closeout 后仍把
+  v0.3 标记为 `planned / in progress`。
+- `docs/iterations/v0.3/evidence-index.md`、
+  `docs/iterations/v0.3/evidence-index.zh.md`、
+  `docs/iterations/v0.3/compatibility-audit.md`、
+  `docs/iterations/v0.3/compatibility-audit.zh.md`、
+  `docs/contracts/runtime-context-bridge-contract.md` 和
+  `docs/contracts/external-fixture-runner-contract.md` 在对应 v0.3 review
+  gate 已关闭后，仍保留待评审类顶部状态。
+
+本跟进把这些状态表面同步为合适的 `final / closeout complete` 或
+`review complete`，并从 post-closeout summary reports 中移除已解决的证据入口
+P3。
+
 ## 未解决 P1/P2/P3
 
 - P1：未发现。
-- P2：执行和 subagent review 跟进后未发现。
-- P3：`docs/iterations/v0.3/evidence-index.md` 和
-  `docs/iterations/v0.3/compatibility-audit.md` 的顶部仍是
-  `Status: ready for review`，但 v0.3 release closeout 已是 final。
+- P2：执行、subagent review、metadata polish 和状态漂移跟进后未发现。
 - P3：external fixture report schema 和 public runner invocation 仍是后续
   `v0.7-external-validation-readiness` 的 hardening 风险。
 

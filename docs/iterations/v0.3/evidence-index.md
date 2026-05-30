@@ -1,6 +1,6 @@
 # v0.3 Evidence Index
 
-Status: ready for review
+Status: review complete
 
 ## Purpose
 

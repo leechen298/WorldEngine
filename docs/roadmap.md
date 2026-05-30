@@ -72,10 +72,12 @@ human / ChatGPT review.
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 
-Status: planned / in progress
+Status: final / closeout complete
 
 Goal: load validated generic WorldSpec data into runtime context without
 losing v0.1 runtime compatibility.
+
+Handoff: v0.4 may start only through its own reviewed iteration package.
 
 ## v0.3.5 - External Fixture Contract Readiness
 

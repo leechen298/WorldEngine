@@ -7,7 +7,10 @@ Status: passed with P3
 - reviewed branch: `v0.3`
 - execution branch: `v0.3`
 - evidence commit: `da63cb8f28b484fba22596eb44fa5f09a218e45a`
-- final documentation commit: not committed in this pass
+- final documentation closeout commit:
+  `6712123b402fa8d454ede7779cc6a401d82ce684`
+- evidence-to-closeout implementation delta: none for runtime, schema, API,
+  frontend, backend tests, fixtures, or migrations.
 - reviewer: Codex
 - review date: 2026-05-29
 
@@ -86,11 +89,6 @@ Status: passed with P3
 - unresolved P1/P2/P3:
   - P1: none.
   - P2: none.
-  - P3: `docs/iterations/v0.3/evidence-index.md` and
-    `docs/iterations/v0.3/compatibility-audit.md` still have top-level
-    `Status: ready for review` wording even though v0.3 release closeout is
-    final. This does not conflict with the current release claim, but later
-    reviewers could misread those evidence entrypoints as not closed.
   - P3: external fixture report schema and public runner invocation remain a
     later `v0.7-external-validation-readiness` hardening risk.
 

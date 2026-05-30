@@ -219,14 +219,73 @@ Subagent checkpoints:
 Scope result: no runtime, schema, API, frontend, backend test, fixture,
 migration, external repository, or v0.3 release-status file was changed.
 
+## Metadata Polish Follow-Up
+
+External review after commit `6712123b402fa8d454ede7779cc6a401d82ce684`
+identified one P2: the final/source report metadata still said final
+documentation was `not committed in this pass`.
+
+This follow-up updates the report metadata to record
+`6712123b402fa8d454ede7779cc6a401d82ce684` as the final documentation
+closeout commit and records that the evidence-to-closeout implementation delta
+is empty for runtime, schema, API, frontend, backend tests, fixtures, and
+migrations.
+
+Changed files for this follow-up:
+
+- `docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.md`
+- `docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.zh.md`
+- `docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.md`
+- `docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.zh.md`
+- `docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.md`
+- `docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.zh.md`
+- `docs/iterations/v0.3-post-closeout/review.md`
+- `docs/iterations/v0.3-post-closeout/review.zh.md`
+
+Commands run for the follow-up:
+
+```bash
+git status --short --branch
+rg -n "not committed in this pass|本轮未提交|Final documentation commit|最终文档 commit" \
+  docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.md \
+  docs/iterations/v0.3-post-closeout/02-e2e-validation-execution/e2e-validation-report.zh.md \
+  docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.md \
+  docs/iterations/v0.3-post-closeout/04-codex-autonomous-validation-execution/codex-autonomous-review.zh.md \
+  docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.md \
+  docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.zh.md
+git diff --check
+```
+
+Follow-up result: stale `not committed in this pass` metadata was replaced in
+the filled validation reports. No runtime, schema, API, frontend, backend
+test, fixture, migration, external repository, or v0.3 release-status file was
+changed.
+
+## Roadmap And Status Drift Follow-Up
+
+Current closeout audit found one P2 status drift and one P3 status-wording
+drift:
+
+- `docs/roadmap.md` and `docs/roadmap.zh.md` still marked v0.3
+  `planned / in progress` after v0.3 final closeout.
+- `docs/iterations/v0.3/evidence-index.md`,
+  `docs/iterations/v0.3/evidence-index.zh.md`,
+  `docs/iterations/v0.3/compatibility-audit.md`,
+  `docs/iterations/v0.3/compatibility-audit.zh.md`,
+  `docs/contracts/runtime-context-bridge-contract.md`, and
+  `docs/contracts/external-fixture-runner-contract.md` still carried
+  review-ready top-level status wording after their corresponding v0.3 review
+  gates had closed.
+
+This follow-up synchronizes those status surfaces to `final / closeout
+complete` or `review complete` as appropriate, and removes the now-resolved
+evidence-entrypoint status finding from the post-closeout summary reports.
+
 ## Unresolved P1/P2/P3
 
 - P1: none identified.
-- P2: none identified after execution and subagent review follow-up.
-- P3: `docs/iterations/v0.3/evidence-index.md` and
-  `docs/iterations/v0.3/compatibility-audit.md` still have top-level
-  `Status: ready for review` wording even though v0.3 release closeout is
-  final.
+- P2: none identified after execution, subagent review, metadata polish, and
+  status-drift follow-up.
 - P3: external fixture report schema and public runner invocation remain a
   later `v0.7-external-validation-readiness` hardening risk.
 

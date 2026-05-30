@@ -70,10 +70,12 @@ boundaries。
 
 ## v0.3 - WorldSpec Loader and Runtime Bridge
 
-状态：`planned / in progress`
+状态：`final / closeout complete`
 
 目标：在不破坏 v0.1 runtime compatibility 的前提下，把 validated generic WorldSpec
 data 加载进 runtime context。
+
+交接：v0.4 只能通过自己的已评审 iteration package 启动。
 
 ## v0.3.5 - External Fixture Contract Readiness
 

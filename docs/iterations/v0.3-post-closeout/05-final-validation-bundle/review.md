@@ -62,10 +62,6 @@ status.
 
 - P1: none identified.
 - P2: none identified.
-- P3: `docs/iterations/v0.3/evidence-index.md` and
-  `docs/iterations/v0.3/compatibility-audit.md` still have top-level
-  `Status: ready for review` wording even though v0.3 release closeout is
-  final.
 - P3: external fixture report schema and public runner invocation remain a
   later `v0.7-external-validation-readiness` hardening risk.
 

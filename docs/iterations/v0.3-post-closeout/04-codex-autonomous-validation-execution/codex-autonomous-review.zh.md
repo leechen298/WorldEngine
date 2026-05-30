@@ -7,7 +7,9 @@
 - review 分支：`v0.3`
 - 执行分支：`v0.3`
 - 证据 commit：`da63cb8f28b484fba22596eb44fa5f09a218e45a`
-- 最终文档 commit：本轮未提交
+- 最终文档收口 commit：`6712123b402fa8d454ede7779cc6a401d82ce684`
+- 从证据 commit 到收口 commit 的实现差异：无 runtime、schema、API、frontend、
+  backend tests、fixtures 或 migrations 变更。
 - reviewer：Codex
 - review 日期：2026-05-29
 
@@ -83,10 +85,6 @@
 - unresolved P1/P2/P3：
   - P1：无。
   - P2：无。
-  - P3：`docs/iterations/v0.3/evidence-index.md` 和
-    `docs/iterations/v0.3/compatibility-audit.md` 的顶部仍是
-    `Status: ready for review`，但 v0.3 release closeout 已是 final。它不与
-    当前 release claim 冲突，但后续 reviewer 可能误读这些证据入口尚未收口。
   - P3：external fixture report schema 和 public runner invocation 仍是后续
     `v0.7-external-validation-readiness` 的 hardening 风险。
 

@@ -88,9 +88,6 @@ v0.3 发布状态。
 
 - P1：未发现。
 - P2：未发现。
-- P3：`docs/iterations/v0.3/evidence-index.md` 和
-  `docs/iterations/v0.3/compatibility-audit.md` 的顶部仍是
-  `Status: ready for review`，但 v0.3 release closeout 已是 final。
 - P3：external fixture report schema 和 public runner invocation 仍是后续
   `v0.7-external-validation-readiness` 的 hardening 风险。
 

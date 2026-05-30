@@ -7,7 +7,10 @@ Status: passed
 - Reviewed branch: `v0.3`
 - Execution branch: `v0.3`
 - Evidence commit: `da63cb8f28b484fba22596eb44fa5f09a218e45a`
-- Final documentation commit: not committed in this pass
+- Final documentation closeout commit:
+  `6712123b402fa8d454ede7779cc6a401d82ce684`
+- Evidence-to-closeout implementation delta: none for runtime, schema, API,
+  frontend, backend tests, fixtures, or migrations.
 - Validation date: 2026-05-29
 - Executor: Codex
 

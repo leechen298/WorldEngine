@@ -11,7 +11,9 @@
 - Codex 自主评审：
   `../04-codex-autonomous-validation-execution/codex-autonomous-review.md`
 - 证据 commit：`da63cb8f28b484fba22596eb44fa5f09a218e45a`
-- 最终文档 commit：本轮未提交
+- 最终文档收口 commit：`6712123b402fa8d454ede7779cc6a401d82ce684`
+- 从证据 commit 到收口 commit 的实现差异：无 runtime、schema、API、frontend、
+  backend tests、fixtures 或 migrations 变更。
 - 验证日期：2026-05-29
 - 汇总作者：Codex
 
@@ -34,9 +36,6 @@
 - unresolved P1：无。
 - unresolved P2：无。
 - unresolved P3：
-  - `docs/iterations/v0.3/evidence-index.md` 和
-    `docs/iterations/v0.3/compatibility-audit.md` 的顶部仍是
-    `Status: ready for review`，但 v0.3 release closeout 已是 final。
   - external fixture report schema 和 public runner invocation 仍是后续
     `v0.7-external-validation-readiness` 的 hardening 风险。
 - blockers：无。

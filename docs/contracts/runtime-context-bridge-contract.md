@@ -1,6 +1,6 @@
 # Runtime Context Bridge Contract
 
-Status: ready for review
+Status: review complete
 
 ## Purpose
 

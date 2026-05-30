@@ -7,7 +7,9 @@
 - Review 分支：`v0.3`
 - 执行分支：`v0.3`
 - 证据 commit：`da63cb8f28b484fba22596eb44fa5f09a218e45a`
-- 最终文档 commit：本轮未提交
+- 最终文档收口 commit：`6712123b402fa8d454ede7779cc6a401d82ce684`
+- 从证据 commit 到收口 commit 的实现差异：无 runtime、schema、API、frontend、
+  backend tests、fixtures 或 migrations 变更。
 - 验证日期：2026-05-29
 - 执行者：Codex
 
