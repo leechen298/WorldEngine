@@ -1,6 +1,6 @@
 # 测试计划
 
-状态：planned / ready for review
+状态：review complete
 
 ## 文档检查
 
@@ -61,4 +61,3 @@ contract 对齐。
 
 原因：`0.5.0` 是 documentation-only，不修改 implementation、runtime、API、frontend、
 fixture、migration 或 validation-runner surfaces。
-

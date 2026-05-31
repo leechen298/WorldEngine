@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.event import Event
+from app.schemas.agent_memory import EpisodicMemoryRecord, WorkingMemoryRecord
 from app.schemas.params import ParamPatchItem
 
 
@@ -26,11 +27,17 @@ class RuntimeContextSummary(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
+class MemoryContextSummary(BaseModel):
+    working_memory: List[WorkingMemoryRecord] = Field(default_factory=list)
+    episodic_memory: List[EpisodicMemoryRecord] = Field(default_factory=list)
+
+
 class PerceptionFrame(BaseModel):
     runtime: RuntimeStateSummary
     params: Dict[str, Any] = Field(default_factory=dict)
     recent_events: List[Event] = Field(default_factory=list)
     runtime_context_summary: Optional[RuntimeContextSummary] = None
+    memory_context: Optional[MemoryContextSummary] = None
 
 
 class ActionParamPatchItem(ParamPatchItem):

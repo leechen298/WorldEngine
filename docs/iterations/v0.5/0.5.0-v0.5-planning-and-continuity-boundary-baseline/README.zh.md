@@ -1,6 +1,6 @@
 # 0.5.0 v0.5 规划与连续性边界基线
 
-状态：planned / ready for review
+状态：review complete
 类型：documentation-only
 implementation_authorized：no
 
@@ -62,6 +62,5 @@ memory/self-continuity boundary、compatibility baseline 和 v0.4 handoff mappin
 
 ## 当前评估
 
-本 package 仅处于 documentation stage。在 `review.md` 记录 documentation
-verification 后，可进入评审。
-
+本 package 是 documentation-stage only 且已完成 review。它交接给
+`0.5.1-memory-self-continuity-contracts`，implementation authorization 仍保持关闭。

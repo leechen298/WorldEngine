@@ -1,35 +1,34 @@
 # Current State
 
-Campaign status: planned / ready for review
-Active child package: `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
-Current route: `documentation-review-required`
+Campaign status: final / closeout complete
+Active child package: none
+Current route: `final-closeout-complete`
 Implementation authorization: no
 
 ## Child Package Status
 
 ```text
-0.5.0-v0.5-planning-and-continuity-boundary-baseline: planned / ready for review
-0.5.1-memory-self-continuity-contracts: planned
-0.5.2-working-and-episodic-memory-substrate: planned
-0.5.3-memory-context-loop-integration: planned
-0.5.4-reflection-relationship-and-drift-contract-followup: planned
-0.5.5-v0.5-evidence-and-compatibility-audit: planned
-0.5.6-v0.5-release-candidate-bundle: planned
-0.5.7-v0.5-final-closeout: planned
+0.5.0-v0.5-planning-and-continuity-boundary-baseline: review complete
+0.5.1-memory-self-continuity-contracts: review complete
+0.5.2-working-and-episodic-memory-substrate: review complete
+0.5.3-memory-context-loop-integration: review complete
+0.5.4-reflection-relationship-and-drift-contract-followup: review complete
+0.5.5-v0.5-evidence-and-compatibility-audit: review complete
+0.5.6-v0.5-release-candidate-bundle: review complete
+0.5.7-v0.5-final-closeout: final / closeout complete
 ```
 
 ## Current Route
 
-Default route: `documentation-review-required`.
+Final route: `final-closeout-complete`.
 
-The v0.5 parent campaign and first child package are documentation-stage only.
-No implementation is authorized until the relevant child package records
-review approval and `implementation_authorized: yes`.
+No v0.5 child package remains active. v0.5 final evidence consistency and
+closeout review passed.
 
 ## Next Action
 
-Review `0.5.0-v0.5-planning-and-continuity-boundary-baseline`. If it is
-approved, the next package is `0.5.1-memory-self-continuity-contracts`.
+No further v0.5 package work remains. v0.6 world generation v1 may start only
+from its own reviewed iteration package.
 
 ## Evidence Snapshot
 
@@ -47,4 +46,12 @@ approved, the next package is `0.5.1-memory-self-continuity-contracts`.
   still uses shared local world state.
 - These are handoff inputs only. They do not count as current v0.5 pass
   evidence.
-
+- v0.5 final closeout status: `final / closeout complete`.
+- v0.5 final current-session evidence: `git diff --check` passed; required
+  docs/mirrors `missing=0`; changed-file scope guard `out_of_scope=0`;
+  forbidden implementation surface sentinel had no output; focused backend
+  memory/loop/action compatibility `33 passed`; full backend regression
+  `145 passed`; closeout consistency evaluator PASS with no P1/P2/P3 findings.
+- v0.5 final closeout does not claim frontend, E2E, Agent smoke, autonomous,
+  external validation, projection readiness, or product readiness checks
+  passed.

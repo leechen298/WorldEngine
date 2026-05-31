@@ -1,6 +1,6 @@
 # 0.5.0 v0.5 Planning And Continuity Boundary Baseline
 
-Status: planned / ready for review
+Status: review complete
 Type: documentation-only
 implementation_authorized: no
 
@@ -61,6 +61,6 @@ Forbidden:
 
 ## Current Assessment
 
-This package is documentation-stage only and ready for review after
-documentation verification is recorded in `review.md`.
-
+This package is documentation-stage only and review complete. It hands off to
+`0.5.1-memory-self-continuity-contracts` with implementation authorization
+still closed.

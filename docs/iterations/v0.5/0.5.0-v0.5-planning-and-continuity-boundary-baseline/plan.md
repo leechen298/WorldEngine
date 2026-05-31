@@ -1,6 +1,6 @@
 # Plan
 
-Status: planned / ready for review
+Status: review complete
 
 ## Files
 
@@ -88,4 +88,3 @@ After verification, update both parent and child `review.md` and `.zh.md` with:
 - subagent/evaluator findings.
 - unresolved P1/P2/P3.
 - final assessment.
-

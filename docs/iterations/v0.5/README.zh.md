@@ -1,6 +1,6 @@
 # v0.5 记忆与自连续性基底
 
-状态：planned / ready for review
+状态：final / closeout complete
 类型：Codex `/goal` development campaign 与 iteration package root
 
 ## 目标
@@ -78,7 +78,7 @@ v0.5 禁止：
 ### `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
 
 - 类型：documentation-only
-- 状态：planned / ready for review
+- 状态：review complete
 - 目的：创建 v0.5 documentation root、goal-campaign controls、version plan、
   memory/self-continuity boundary、compatibility baseline 和 v0.4 handoff mapping，
   且不修改实现文件。
@@ -86,57 +86,57 @@ v0.5 禁止：
 ### `0.5.1-memory-self-continuity-contracts`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：review complete
 - 目的：在实现前定义 public memory/self-continuity concepts 与 schema semantics。
 
 ### `0.5.2-working-and-episodic-memory-substrate`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：只实现 additive generic working-memory 与 episodic-memory schemas、
   in-memory substrate 和 focused backend tests。
 
 ### `0.5.3-memory-context-loop-integration`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：把 bounded read-only memory context 接入 Agent Loop perception path，
   不改变 action semantics。
 
 ### `0.5.4-reflection-relationship-and-drift-contract-followup`
 
 - 类型：documentation-only or mixed
-- 状态：planned
+- 状态：review complete
 - 目的：在任何行为影响 action 前，细化 relationship state、self-summary、
   reflection record 和 personality drift signal contracts。
 
 ### `0.5.5-v0.5-evidence-and-compatibility-audit`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：review complete
 - 目的：审计 v0.5 implementation evidence、compatibility surfaces、unresolved
   findings 和 release-candidate review handoff readiness。
 
 ### `0.5.6-v0.5-release-candidate-bundle`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：review complete
 - 目的：基于已评审 implementation 和 audit evidence 准备 v0.5 release-candidate
   bundle，但不声明 final release。
 
 ### `0.5.7-v0.5-final-closeout`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：final / closeout complete
 - 目的：只有在 release-candidate review approval、evidence consistency checks 和
   unresolved finding classification 完成后，才标记 v0.5 final / closeout complete。
 
 ## 当前状态
 
 Active child package：
-`0.5.0-v0.5-planning-and-continuity-boundary-baseline`。
+none。
 
-Current route：`documentation-review-required`。
+Current route：`final-closeout-complete`。
 
 Implementation authorization：no。
 
@@ -146,10 +146,13 @@ Implementation authorization：no。
 - v0.4 post-closeout 状态：validation clean pass after frontend build repair。
 - v0.4 与 post-closeout command evidence 只作为 baseline 和 handoff evidence。
   它们不是当前 v0.5 implementation pass claims。
-- 未来任何 v0.5 implementation、validation、runtime、API、E2E、build、
-  Agent smoke 或 release claim，都需要新的 v0.5 command evidence。
+- v0.5 final current-session evidence：`git diff --check` 通过；required
+  docs/mirrors `missing=0`；changed-file scope guard `out_of_scope=0`；
+  focused backend memory/loop/action compatibility `33 passed`；full backend
+  regression `145 passed`；closeout consistency evaluator PASS。
+- 不声明 frontend、E2E、Agent smoke、autonomous、external validation、projection
+  readiness 或 product readiness 已通过。
 
 ## 最终评估状态
 
-当前值：`planned / ready for review`。
-
+当前值：`final / closeout complete`。

@@ -1,6 +1,6 @@
 # Review
 
-Status: planned / ready for review
+Status: review complete
 
 implementation_authorized: no
 
@@ -260,6 +260,27 @@ Evaluator checkpoint C: read-only review-fix verification.
 - Findings: clean approval supported for the review-fix state; no P1, P2, or
   P3 findings.
 
+Evaluator checkpoint D: closeout consistency review.
+
+- Agent id: `019e7d14-2b8e-7a20-82a1-34cedb8d0d6f`.
+- Review scope: whether `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
+  can close and hand off to `0.5.1-memory-self-continuity-contracts`.
+- Commands run by evaluator: `git status --short --branch`, `git diff --check`,
+  `git diff --cached --check`, required docs/mirrors existence check,
+  current worktree scope guard, `v0.4...HEAD` scope guard, forbidden
+  implementation-surface check, child status/auth check, active auth-field
+  check, and targeted `find` checks for the emerging `0.5.1` draft.
+- Commands not run by evaluator: backend, frontend, API, E2E, runtime,
+  Agent smoke, autonomous, fixture, migration, and build commands because this
+  was a read-only docs closeout review.
+- Findings: PASS. No P1 or P2 blockers. P3 note was a transient observation
+  that the main worktree already contained the next package draft while the
+  evaluator was running; this did not block `0.5.0`, and the main agent later
+  completed the `0.5.1` mirrors.
+- Handoff: parent `CURRENT_STATE.md` may move the active child to `0.5.1` and
+  then continue through the v0.5 child sequence without treating `0.5.0` as an
+  implementation authorization source.
+
 ## Unresolved P1/P2/P3
 
 - P1: none.
@@ -268,8 +289,9 @@ Evaluator checkpoint C: read-only review-fix verification.
 
 ## Final Assessment
 
-planned / ready for review
+review complete
 
-This documentation-only package is complete for review. It created the v0.5
-campaign root and first child package, kept implementation authorization as
-`no`, and changed no files outside `docs/iterations/v0.5/**`.
+This documentation-only package completed review. It created the v0.5 campaign
+root and first child package, kept implementation authorization as `no`, and
+changed no files outside `docs/iterations/v0.5/**`. It hands off to
+`0.5.1-memory-self-continuity-contracts`.

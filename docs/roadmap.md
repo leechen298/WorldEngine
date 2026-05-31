@@ -96,9 +96,26 @@ memory and self-continuity remain explicitly future scope.
 
 ## v0.5 - Memory and Self-Continuity Substrate
 
+Status: final / closeout complete
+
 Goal: introduce working memory, episodic memory, relationship state,
 self-summary, reflection records, and personality drift signals that can affect
 future action.
+
+Closed scope: v0.5 implemented additive generic working-memory and
+episodic-memory backend schemas, a process-local in-memory substrate, and
+bounded read-only memory context in Agent Loop perception. Relationship state,
+self-summary, reflection records, and personality drift signals are refined as
+deferred contracts only.
+
+Final evidence: focused backend memory/loop/action compatibility `33 passed`;
+full backend regression `145 passed`; required docs/mirrors `missing=0`;
+changed-file scope guard `out_of_scope=0`; closeout consistency evaluator
+PASS. No frontend, E2E, Agent smoke, autonomous, external validation,
+projection readiness, or product readiness pass claim is made.
+
+Handoff: v0.6 world generation v1 may start only from its own reviewed
+iteration package.
 
 ## v0.6 - World Generation v1
 

@@ -1,6 +1,6 @@
 # Review
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 implementation_authorized: no
 
@@ -280,11 +280,42 @@ Evaluator checkpoint C: read-only review-fix verification.
 - P3: none for this package. Post-closeout handoff caveats remain outside
   `0.5.0` scope.
 
-## Final Assessment
+## Current Assessment
 
-planned / ready for review
+final / closeout complete
 
-The v0.5 parent campaign and `0.5.0` documentation package are created with
-Chinese mirrors. Documentation verification passed, changed-file scope is
-limited to `docs/iterations/v0.5/**`, and implementation authorization remains
-`no`.
+`0.5.0`, `0.5.1`, `0.5.2`, `0.5.3`, `0.5.4`, `0.5.5`, and `0.5.6` are
+review complete. `0.5.7` is `final / closeout complete`. No v0.5 child package
+remains active.
+
+`0.5.3` current-session evidence includes TDD red, focused perception/API
+tests, memory/loop/action adjacent compatibility, runtime/world/event
+compatibility, full backend regression (`145 passed`), implementation-scope
+PASS, code-review PASS, and validation-evidence PASS. The closeout consistency
+checkpoint passed and is recorded in the `0.5.3` review.
+
+`0.5.4` is documentation-only. It refined relationship state, self-summary,
+reflection record, and personality drift signal contracts, kept
+`implementation_authorized: no`, passed documentation checks, and passed the
+documentation/contract evaluator with no P1/P2/P3 findings. Schema-only
+implementation remains deferred.
+
+`0.5.5` is documentation-only. It audited current v0.5 evidence and
+compatibility, kept `implementation_authorized: no`, refreshed focused
+compatibility (`33 passed`) and full backend regression (`145 passed`), and
+passed the evidence/compatibility evaluator with no P1/P2/P3 findings. It does
+not declare release-candidate or final status.
+
+`0.5.6` is documentation-only. It prepared the release-candidate bundle for
+review, kept `implementation_authorized: no`, verified bundle docs/mirrors and
+scope, passed the release-candidate bundle evaluator with no P1/P2/P3 findings,
+and did not declare final release.
+
+`0.5.7` is documentation-only final closeout. It kept
+`implementation_authorized: no`, refreshed final docs/mirrors/scope checks,
+focused backend memory/loop/action compatibility (`33 passed`), full backend
+regression (`145 passed`), and passed the closeout consistency evaluator with
+no P1/P2/P3 findings. v0.5 is now `final / closeout complete`.
+
+No frontend, E2E, Agent smoke, autonomous, external validation, projection
+readiness, or product readiness pass claim is made.

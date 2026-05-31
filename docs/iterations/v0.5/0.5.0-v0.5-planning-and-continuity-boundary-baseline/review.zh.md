@@ -1,6 +1,6 @@
 # 审核
 
-状态：planned / ready for review
+状态：review complete
 
 implementation_authorized：no
 
@@ -250,6 +250,23 @@ Evaluator checkpoint C：只读 review-fix verification。
   `docs/iterations/v0.5/**` 下。
 - Findings：当前 review-fix state 支持 clean approval；无 P1、P2 或 P3 findings。
 
+Evaluator checkpoint D：closeout consistency review。
+
+- Agent id：`019e7d14-2b8e-7a20-82a1-34cedb8d0d6f`。
+- Review scope：判断 `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
+  是否可以 close 并交接给 `0.5.1-memory-self-continuity-contracts`。
+- Evaluator 运行的命令：`git status --short --branch`、`git diff --check`、
+  `git diff --cached --check`、required docs/mirrors existence check、
+  current worktree scope guard、`v0.4...HEAD` scope guard、forbidden
+  implementation-surface check、child status/auth check、active auth-field
+  check，以及针对刚开始起草的 `0.5.1` 的 `find` 检查。
+- Evaluator 未运行的命令：backend、frontend、API、E2E、runtime、Agent smoke、
+  autonomous、fixture、migration 和 build commands，因为这是只读 docs closeout review。
+- Findings：PASS。无 P1 或 P2 blocker。P3 note 是 evaluator 运行期间观察到主 worktree
+  已出现下一个 package draft；它不阻塞 `0.5.0`，且 main agent 后续已补齐 `0.5.1` mirrors。
+- Handoff：parent `CURRENT_STATE.md` 可以把 active child 移到 `0.5.1`，并继续执行 v0.5 child sequence；
+  但不得把 `0.5.0` 当作任何 implementation authorization 来源。
+
 ## 未解决 P1/P2/P3
 
 - P1：none。
@@ -258,8 +275,9 @@ Evaluator checkpoint C：只读 review-fix verification。
 
 ## 最终评估
 
-planned / ready for review
+review complete
 
-本 documentation-only package 已完成，可进入评审。它创建了 v0.5 campaign root 和第一个
+本 documentation-only package 已完成 review。它创建了 v0.5 campaign root 和第一个
 child package，保持 implementation authorization 为 `no`，且没有修改
-`docs/iterations/v0.5/**` 之外的文件。
+`docs/iterations/v0.5/**` 之外的文件。它交接给
+`0.5.1-memory-self-continuity-contracts`。

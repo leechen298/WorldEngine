@@ -22,6 +22,7 @@ from app.world.validation.policy import WorldValidationPolicy
 from app.agent.action_adapter import ActionResultAdapter
 from app.agent.llm_provider import MockLLMProvider
 from app.agent.loop_service import AgentLoopService
+from app.agent.memory import InMemoryAgentMemoryStore
 from app.agent.params_agent import ParamsAgent
 from app.agent.perception import PerceptionBuilder
 
@@ -97,6 +98,7 @@ def create_app() -> FastAPI:
     )
     app.state.snapshot_store = InMemorySnapshotStore()
     app.state.summary_store = InMemorySummaryStore()
+    app.state.agent_memory_store = InMemoryAgentMemoryStore()
     app.state.runtime_engine = RuntimeEngine.from_env(
         event_log=app.state.event_log,
         world_root_module=app.state.world_root_module,
@@ -129,6 +131,7 @@ def create_app() -> FastAPI:
             runtime_engine=app.state.runtime_engine,
             event_log=app.state.event_log,
             world_state=app.state.world_state,
+            memory_store=app.state.agent_memory_store,
         ),
         action_adapter=ActionResultAdapter(
             world_state=app.state.world_state,

@@ -1,6 +1,6 @@
 # Contract
 
-Status: planned / ready for review
+Status: review complete
 
 ## Public Concepts
 
@@ -87,4 +87,3 @@ WorldEngine into a demo-specific or application-specific backend.
   reflection, and personality drift action modifiers.
 - v0.6 world generation, v0.7 external validation readiness, and v0.8
   projection application readiness.
-

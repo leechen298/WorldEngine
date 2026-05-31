@@ -1,6 +1,6 @@
 # v0.5 Memory And Self-Continuity Substrate
 
-Status: planned / ready for review
+Status: final / closeout complete
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
@@ -85,7 +85,7 @@ Forbidden v0.5 scope:
 ### `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
 
 - Type: documentation-only
-- Status: planned / ready for review
+- Status: review complete
 - Purpose: create the v0.5 documentation root, goal-campaign controls,
   version plan, memory/self-continuity boundary, compatibility baseline, and
   v0.4 handoff mapping without changing implementation files.
@@ -93,49 +93,49 @@ Forbidden v0.5 scope:
 ### `0.5.1-memory-self-continuity-contracts`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: define public memory/self-continuity concepts and schema semantics
   before implementation.
 
 ### `0.5.2-working-and-episodic-memory-substrate`
 
 - Type: mixed or code
-- Status: planned
+- Status: review complete
 - Purpose: implement only additive generic working-memory and episodic-memory
   schemas, an in-memory substrate, and focused backend tests.
 
 ### `0.5.3-memory-context-loop-integration`
 
 - Type: mixed or code
-- Status: planned
+- Status: review complete
 - Purpose: add bounded read-only memory context into the Agent Loop perception
   path without changing action semantics.
 
 ### `0.5.4-reflection-relationship-and-drift-contract-followup`
 
 - Type: documentation-only or mixed
-- Status: planned
+- Status: review complete
 - Purpose: refine relationship state, self-summary, reflection record, and
   personality drift signal contracts before any behavior affects action.
 
 ### `0.5.5-v0.5-evidence-and-compatibility-audit`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: audit v0.5 implementation evidence, compatibility surfaces,
   unresolved findings, and handoff readiness for release-candidate review.
 
 ### `0.5.6-v0.5-release-candidate-bundle`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: prepare a v0.5 release-candidate bundle from reviewed
   implementation and audit evidence without declaring final release.
 
 ### `0.5.7-v0.5-final-closeout`
 
 - Type: documentation-only
-- Status: planned
+- Status: final / closeout complete
 - Purpose: mark v0.5 final / closeout complete only after release-candidate
   review approval, evidence consistency checks, and unresolved finding
   classification.
@@ -143,9 +143,9 @@ Forbidden v0.5 scope:
 ## Current State
 
 Active child package:
-`0.5.0-v0.5-planning-and-continuity-boundary-baseline`.
+none.
 
-Current route: `documentation-review-required`.
+Current route: `final-closeout-complete`.
 
 Implementation authorization: no.
 
@@ -156,10 +156,13 @@ Implementation authorization: no.
   repair.
 - v0.4 and post-closeout command evidence are baseline and handoff evidence
   only. They are not current v0.5 implementation pass claims.
-- Fresh v0.5 command evidence is required before any future implementation,
-  validation, runtime, API, E2E, build, Agent smoke, or release claim.
+- v0.5 final current-session evidence: `git diff --check` passed; required
+  docs/mirrors `missing=0`; changed-file scope guard `out_of_scope=0`;
+  focused backend memory/loop/action compatibility `33 passed`; full backend
+  regression `145 passed`; closeout consistency evaluator PASS.
+- No frontend, E2E, Agent smoke, autonomous, external validation, projection
+  readiness, or product readiness pass claim is made.
 
 ## Final Assessment State
 
-Current value: `planned / ready for review`.
-
+Current value: `final / closeout complete`.

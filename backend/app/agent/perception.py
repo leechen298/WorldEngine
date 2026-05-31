@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from app.agent.memory import InMemoryAgentMemoryStore
 from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_context import (
     RuntimeContext,
@@ -9,11 +10,16 @@ from app.core.runtime_context import (
 )
 from app.core.runtime_engine import RuntimeEngine
 from app.schemas.agent_loop import (
+    MemoryContextSummary,
     PerceptionFrame,
     RuntimeContextSummary,
     RuntimeStateSummary,
 )
 from app.world.state import WorldState
+
+
+DEFAULT_AGENT_ID = "agent.default"
+DEFAULT_WORLD_ID = "world.default"
 
 
 class PerceptionBuilder:
@@ -25,12 +31,22 @@ class PerceptionBuilder:
         runtime_engine: RuntimeEngine,
         event_log: InMemoryEventLog,
         world_state: WorldState,
+        memory_store: InMemoryAgentMemoryStore | None = None,
+        agent_id: str = DEFAULT_AGENT_ID,
+        world_id: str = DEFAULT_WORLD_ID,
         default_event_limit: int = 20,
+        working_memory_limit: int = 5,
+        episodic_memory_limit: int = 5,
     ) -> None:
         self._runtime_engine = runtime_engine
         self._event_log = event_log
         self._world_state = world_state
+        self._memory_store = memory_store
+        self._agent_id = agent_id
+        self._world_id = world_id
         self._default_event_limit = default_event_limit
+        self._working_memory_limit = working_memory_limit
+        self._episodic_memory_limit = episodic_memory_limit
 
     def build(self, *, event_limit: int | None = None) -> PerceptionFrame:
         runtime_state = self._runtime_engine.get_state()
@@ -51,6 +67,7 @@ class PerceptionBuilder:
             params=self._world_state.get_params(),
             recent_events=recent_events,
             runtime_context_summary=self._runtime_context_summary(),
+            memory_context=self._memory_context_summary(),
         )
 
     def _normalize_event_limit(self, event_limit: int | None) -> int:
@@ -71,4 +88,21 @@ class PerceptionBuilder:
             source_type=summary.source_type,
             source_label=summary.source_label,
             metadata=deepcopy(dict(summary.metadata)),
+        )
+
+    def _memory_context_summary(self) -> MemoryContextSummary | None:
+        if self._memory_store is None:
+            return None
+
+        return MemoryContextSummary(
+            working_memory=self._memory_store.list_working_memory(
+                agent_id=self._agent_id,
+                world_id=self._world_id,
+                limit=self._working_memory_limit,
+            ),
+            episodic_memory=self._memory_store.list_episodic_memory(
+                agent_id=self._agent_id,
+                world_id=self._world_id,
+                limit=self._episodic_memory_limit,
+            ),
         )

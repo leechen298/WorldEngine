@@ -3,11 +3,38 @@ from __future__ import annotations
 from fastapi.testclient import TestClient
 
 from app.api.app_factory import create_app
+from app.schemas.agent_memory import EpisodicMemoryRecord, WorkingMemoryRecord
 from app.schemas.event import Event
 
 
 def _event_items(response) -> list[dict]:
     return response.json()["data"]["items"]
+
+
+def _working_memory(memory_id: str) -> WorkingMemoryRecord:
+    return WorkingMemoryRecord(
+        memory_id=memory_id,
+        agent_id="agent.default",
+        world_id="world.default",
+        content="remember the stable preference",
+        source="test",
+        priority=5,
+        created_at="2026-05-30T00:00:00+00:00",
+        updated_at="2026-05-30T00:01:00+00:00",
+    )
+
+
+def _episodic_memory(memory_id: str) -> EpisodicMemoryRecord:
+    return EpisodicMemoryRecord(
+        memory_id=memory_id,
+        agent_id="agent.default",
+        world_id="world.default",
+        summary="agent observed a prior event",
+        tick=2,
+        world_time_seconds=1200,
+        source="test",
+        created_at="2026-05-30T00:02:00+00:00",
+    )
 
 
 def test_loop_step_endpoint_returns_noop_response_by_default() -> None:
@@ -35,6 +62,28 @@ def test_loop_step_endpoint_returns_noop_response_by_default() -> None:
     assert data["result"]["status"] == "noop"
     assert data["result"]["applied"] is False
     assert [event["id"] for event in data["perception"]["recent_events"]] == ["event-1"]
+
+
+def test_loop_step_endpoint_includes_read_only_memory_context() -> None:
+    app = create_app()
+    app.state.agent_memory_store.add_working_memory(_working_memory("working-1"))
+    app.state.agent_memory_store.add_episodic_memory(_episodic_memory("episodic-1"))
+    client = TestClient(app)
+
+    response = client.post("/world/agent/loop/step", json={"event_limit": 1})
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["result"]["status"] == "noop"
+    assert data["result"]["applied"] is False
+
+    memory_context = data["perception"]["memory_context"]
+    assert [item["memory_id"] for item in memory_context["working_memory"]] == [
+        "working-1"
+    ]
+    assert [item["memory_id"] for item in memory_context["episodic_memory"]] == [
+        "episodic-1"
+    ]
 
 
 def test_loop_step_endpoint_applies_params_patch_with_agent_loop_source() -> None:

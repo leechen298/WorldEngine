@@ -1,6 +1,6 @@
 # Test Plan
 
-Status: planned / ready for review
+Status: review complete
 
 ## Documentation Checks
 
@@ -64,4 +64,3 @@ The following checks are intentionally not run:
 
 Reason: `0.5.0` is documentation-only and does not modify implementation,
 runtime, API, frontend, fixture, migration, or validation-runner surfaces.
-

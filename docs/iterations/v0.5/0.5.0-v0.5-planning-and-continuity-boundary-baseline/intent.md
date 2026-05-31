@@ -1,6 +1,6 @@
 # Intent
 
-Status: planned / ready for review
+Status: review complete
 
 ## Problem
 
@@ -65,4 +65,3 @@ application-specific backend behavior.
 If reviewed successfully, this package hands off to
 `0.5.1-memory-self-continuity-contracts`. That package should define public
 concepts and schema semantics before `0.5.2` implements any substrate.
-

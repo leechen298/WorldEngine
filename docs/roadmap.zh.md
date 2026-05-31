@@ -94,8 +94,23 @@ self-continuity 仍是明确的 future scope。
 
 ## v0.5 - Memory and Self-Continuity Substrate
 
+状态：`final / closeout complete`
+
 目标：引入 working memory、episodic memory、relationship state、self-summary、
 reflection records，以及会影响 future action 的 personality drift signals。
+
+关闭范围：v0.5 已实现 additive generic working-memory 和 episodic-memory backend
+schemas、process-local in-memory substrate，以及 Agent Loop perception 中的 bounded
+read-only memory context。Relationship state、self-summary、reflection records 和
+personality drift signals 只作为 deferred contracts 完成细化。
+
+Final evidence：focused backend memory/loop/action compatibility `33 passed`；
+full backend regression `145 passed`；required docs/mirrors `missing=0`；
+changed-file scope guard `out_of_scope=0`；closeout consistency evaluator PASS。
+不声明 frontend、E2E、Agent smoke、autonomous、external validation、projection
+readiness 或 product readiness 已通过。
+
+交接：v0.6 world generation v1 只能从自己的 reviewed iteration package 启动。
 
 ## v0.6 - World Generation v1
 

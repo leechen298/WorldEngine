@@ -1,6 +1,6 @@
 # 审核
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 implementation_authorized：no
 
@@ -271,10 +271,39 @@ Evaluator checkpoint C：只读 review-fix verification。
 - P2：none。
 - P3：本 package 无 P3。Post-closeout handoff caveats 仍在 `0.5.0` 范围外。
 
-## 最终评估
+## 当前评估
 
-planned / ready for review
+final / closeout complete
 
-v0.5 parent campaign 和 `0.5.0` documentation package 已创建，并包含中文镜像。
-Documentation verification 已通过，changed-file scope 仅限 `docs/iterations/v0.5/**`，
-implementation authorization 保持 `no`。
+`0.5.0`、`0.5.1`、`0.5.2`、`0.5.3`、`0.5.4`、`0.5.5` 和 `0.5.6` 已
+review complete。`0.5.7` 是 `final / closeout complete`。v0.5 已无 active child
+package。
+
+`0.5.3` current-session evidence 包括 TDD red、focused perception/API tests、
+memory/loop/action adjacent compatibility、runtime/world/event compatibility、
+full backend regression（`145 passed`）、implementation-scope PASS、code-review
+PASS 和 validation-evidence PASS。Closeout consistency checkpoint 已通过，并已记录到
+`0.5.3` review。
+
+`0.5.4` 是 documentation-only。它细化了 relationship state、self-summary、
+reflection record 和 personality drift signal contracts，保持
+`implementation_authorized: no`，通过 documentation checks，并通过 documentation/contract
+evaluator，且无 P1/P2/P3 findings。Schema-only implementation 继续 deferred。
+
+`0.5.5` 是 documentation-only。它审计了当前 v0.5 evidence 和 compatibility，保持
+`implementation_authorized: no`，刷新 focused compatibility（`33 passed`）和 full backend
+regression（`145 passed`），并通过 evidence/compatibility evaluator，且无 P1/P2/P3
+findings。它不声明 release-candidate 或 final status。
+
+`0.5.6` 是 documentation-only。它准备了 release-candidate bundle for review，保持
+`implementation_authorized: no`，验证 bundle docs/mirrors 和 scope，通过
+release-candidate bundle evaluator，且无 P1/P2/P3 findings，并且未声明 final release。
+
+`0.5.7` 是 documentation-only final closeout。它保持 `implementation_authorized: no`，
+刷新 final docs/mirrors/scope checks、focused backend memory/loop/action
+compatibility（`33 passed`）、full backend regression（`145 passed`），并通过 closeout
+consistency evaluator，且无 P1/P2/P3 findings。v0.5 当前为
+`final / closeout complete`。
+
+不声明 frontend、E2E、Agent smoke、autonomous、external validation、projection
+readiness 或 product readiness 已通过。

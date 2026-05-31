@@ -1,6 +1,6 @@
 # 契约
 
-状态：planned / ready for review
+状态：review complete
 
 ## 公共概念
 
@@ -82,4 +82,3 @@
   reflection 和 personality drift action modifiers。
 - v0.6 world generation、v0.7 external validation readiness 和 v0.8 projection
   application readiness。
-

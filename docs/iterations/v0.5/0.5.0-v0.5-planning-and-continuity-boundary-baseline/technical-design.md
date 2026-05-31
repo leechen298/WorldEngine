@@ -1,6 +1,6 @@
 # Technical Design
 
-Status: planned / ready for review
+Status: review complete
 
 ## Current State
 
@@ -112,4 +112,3 @@ these v0.4 surfaces as compatibility-sensitive:
 - Risk: mirror drift.
   Mitigation: create English and Chinese files in the same pass and include
   mirror checks in review.
-

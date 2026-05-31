@@ -1,6 +1,6 @@
 # 技术设计
 
-状态：planned / ready for review
+状态：review complete
 
 ## 当前状态
 
@@ -106,4 +106,3 @@ surfaces 视为 compatibility-sensitive：
   projection 和 `backend/worldengine/` 禁止项。
 - 风险：mirror drift。
   缓解：同一轮创建英文和中文文件，并在 review 中包含 mirror checks。
-

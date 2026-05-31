@@ -1,35 +1,33 @@
 # 当前状态
 
-Campaign status：planned / ready for review
-Active child package：`0.5.0-v0.5-planning-and-continuity-boundary-baseline`
-Current route：`documentation-review-required`
+Campaign status：final / closeout complete
+Active child package：none
+Current route：`final-closeout-complete`
 Implementation authorization：no
 
 ## 子包状态
 
 ```text
-0.5.0-v0.5-planning-and-continuity-boundary-baseline: planned / ready for review
-0.5.1-memory-self-continuity-contracts: planned
-0.5.2-working-and-episodic-memory-substrate: planned
-0.5.3-memory-context-loop-integration: planned
-0.5.4-reflection-relationship-and-drift-contract-followup: planned
-0.5.5-v0.5-evidence-and-compatibility-audit: planned
-0.5.6-v0.5-release-candidate-bundle: planned
-0.5.7-v0.5-final-closeout: planned
+0.5.0-v0.5-planning-and-continuity-boundary-baseline: review complete
+0.5.1-memory-self-continuity-contracts: review complete
+0.5.2-working-and-episodic-memory-substrate: review complete
+0.5.3-memory-context-loop-integration: review complete
+0.5.4-reflection-relationship-and-drift-contract-followup: review complete
+0.5.5-v0.5-evidence-and-compatibility-audit: review complete
+0.5.6-v0.5-release-candidate-bundle: review complete
+0.5.7-v0.5-final-closeout: final / closeout complete
 ```
 
 ## 当前路由
 
-默认 route：`documentation-review-required`。
+Final route：`final-closeout-complete`。
 
-v0.5 parent campaign 和第一个 child package 仅处于 documentation stage。只有
-相关 child package 记录 review approval 并写明 `implementation_authorized: yes`
-后，才允许 implementation。
+v0.5 已无 active child package。v0.5 final evidence consistency 和 closeout review 已通过。
 
 ## 下一步动作
 
-评审 `0.5.0-v0.5-planning-and-continuity-boundary-baseline`。如果通过，下一个
-package 是 `0.5.1-memory-self-continuity-contracts`。
+v0.5 无剩余 package work。v0.6 world generation v1 只能从自己的 reviewed iteration
+package 启动。
 
 ## 证据快照
 
@@ -45,4 +43,11 @@ package 是 `0.5.1-memory-self-continuity-contracts`。
   pass claim；stale unreferenced smoke screenshot 可能仍存在；E2E 仍使用 shared
   local world state。
 - 这些只作为 handoff inputs。它们不算当前 v0.5 pass evidence。
-
+- v0.5 final closeout 状态：`final / closeout complete`。
+- v0.5 final current-session evidence：`git diff --check` 通过；required
+  docs/mirrors `missing=0`；changed-file scope guard `out_of_scope=0`；
+  forbidden implementation surface sentinel 无输出；focused backend
+  memory/loop/action compatibility `33 passed`；full backend regression
+  `145 passed`；closeout consistency evaluator PASS，且无 P1/P2/P3 findings。
+- v0.5 final closeout 不声明 frontend、E2E、Agent smoke、autonomous、external
+  validation、projection readiness 或 product readiness checks 已通过。

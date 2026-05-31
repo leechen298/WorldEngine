@@ -1,6 +1,6 @@
 # 执行计划
 
-状态：planned / ready for review
+状态：review complete
 
 ## 文件
 
@@ -86,4 +86,3 @@ Verification 后，同时更新 parent 和 child 的 `review.md` 与 `.zh.md`：
 - subagent/evaluator findings。
 - unresolved P1/P2/P3。
 - final assessment。
-

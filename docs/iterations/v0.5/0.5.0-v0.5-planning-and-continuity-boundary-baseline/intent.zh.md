@@ -1,6 +1,6 @@
 # 意图
 
-状态：planned / ready for review
+状态：review complete
 
 ## 问题
 
@@ -56,4 +56,3 @@ demo-world 或 application-specific backend behavior。
 
 如果评审通过，本 package handoff 到 `0.5.1-memory-self-continuity-contracts`。该
 package 应先定义 public concepts 和 schema semantics，再由 `0.5.2` 实现 substrate。
-
