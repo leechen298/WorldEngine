@@ -1,8 +1,8 @@
-# Contract
+# 契约
 
 状态：planned / ready for review
 
-## Public Concepts
+## 公共概念
 
 - `v0.5 Memory and Self-Continuity Substrate`：用于 inspectable agent memory 与
   engineered pseudo-self continuity 的版本边界。
@@ -19,7 +19,7 @@
 - `Personality drift signal`：未来可影响 action 的 inspectable signal；在
   action-modifier behavior 评审前只做 contract-only。
 
-## Capability Split
+## 能力拆分
 
 | Capability | This package | First implementation candidate |
 | --- | --- | --- |
@@ -30,7 +30,7 @@
 | Reflection records | 定义边界 | 暂无 automatic reflection |
 | Personality drift signals | 定义边界 | 暂无 action modifier |
 
-## Compatibility Constraints
+## 兼容性约束
 
 - Existing v0.4 Agent Loop schemas 和 APIs 在 `0.5.0` 中保持不变。
 - `PerceptionFrame`、`ActionIntent`、`ActionResult`、request-scoped `LoopStep` 和
@@ -43,7 +43,7 @@
 - v0.4 与 post-closeout command evidence 只作为 handoff evidence，不是当前 v0.5
   pass evidence。
 
-## Allowed Changes
+## 允许修改
 
 - 创建 `docs/iterations/v0.5/**` documentation。
 - 创建 parent campaign files、child package files、中文镜像、review evidence 和
@@ -54,7 +54,7 @@
   - `backend/app/tests/test_agent_memory_*.py`
 - 记录 read-only review 中的 subagent/evaluator findings。
 
-## Forbidden Changes
+## 禁止修改
 
 - 不修改 runtime、schema、API、frontend、backend test、fixture、migration、
   generated result、external repository 或 `backend/worldengine/` implementation
@@ -66,13 +66,13 @@
   seed data、UI-specific app behavior、private validation oracle details、world
   generation、external validation readiness 或 projection app readiness。
 
-## North Star Check
+## North Star 检查
 
 本 package 通过把 memory、relationship history、self-narrative 和 personality drift
 准备成可检查的 engineered contracts 来符合 north star。它不声明 real consciousness，
 也不把 WorldEngine 收窄成 demo-specific 或 application-specific backend。
 
-## Out-of-Scope Follow-ups
+## 范围外后续
 
 - `0.5.1`：public memory/self-continuity concept contracts 与 schema semantics。
 - `0.5.2`：首个 working/episodic memory schema 和 in-memory substrate

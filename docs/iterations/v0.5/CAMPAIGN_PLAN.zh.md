@@ -1,4 +1,4 @@
-# Campaign Plan
+# 战役计划
 
 状态：planned / ready for review
 
@@ -28,7 +28,7 @@ backend behavior。
 - `docs/testing/results/2026-05-31-v0.4-overall-product-capability-validation.md`
 - `docs/testing/results/2026-05-31-v0.4-e2e-agent-test-expansion.md`
 
-## Campaign Rules
+## 战役规则
 
 - Active child package 是唯一 implementation scope。
 - `0.5.0` 是 documentation-only，不得修改 implementation files。
@@ -40,7 +40,7 @@ backend behavior。
 - 中文镜像必须在 status、type、goal、scope、forbidden changes、compatibility
   requirements、findings 和 final assessment 语义上与英文一致。
 
-## Planned Child Sequence
+## 计划子包序列
 
 1. `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
 2. `0.5.1-memory-self-continuity-contracts`
@@ -51,7 +51,7 @@ backend behavior。
 7. `0.5.6-v0.5-release-candidate-bundle`
 8. `0.5.7-v0.5-final-closeout`
 
-## Cross-Child Handoff Rules
+## 子包间交接规则
 
 - `0.5.0` 将已评审的 campaign structure 和 capability boundaries 交给 `0.5.1`。
 - `0.5.1` 将 public concept 和 schema semantics 交给 `0.5.2`。
@@ -63,7 +63,7 @@ backend behavior。
 - `0.5.6` 将 release-candidate findings 交给 final closeout。
 - `0.5.7` 只有在 evidence consistency 和 review gates 通过后，才能标记 final status。
 
-## Campaign Exit Criteria
+## 战役退出标准
 
 只有满足以下条件时，v0.5 才可标记为 `final / closeout complete`：
 
@@ -76,7 +76,7 @@ backend behavior。
   `backend/worldengine/` work 混入。
 - Unresolved findings 已分类，且没有未被明确接受并说明理由的 P1/P2。
 
-## Stop Conditions
+## 停止条件
 
 遇到以下情况时，必须在 implementation 或 closeout 前停止：
 
@@ -85,4 +85,3 @@ backend behavior。
 - Implementation 触及 active package contract 外的文件。
 - Verification commands 失败，且 package 无法诚实记录 pass evidence。
 - README、current state、plan、review 和 closeout docs 之间出现 status drift。
-

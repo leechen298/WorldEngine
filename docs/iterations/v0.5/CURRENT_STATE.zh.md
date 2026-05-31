@@ -1,11 +1,11 @@
-# Current State
+# 当前状态
 
 Campaign status：planned / ready for review
 Active child package：`0.5.0-v0.5-planning-and-continuity-boundary-baseline`
 Current route：`documentation-review-required`
 Implementation authorization：no
 
-## Child Package Status
+## 子包状态
 
 ```text
 0.5.0-v0.5-planning-and-continuity-boundary-baseline: planned / ready for review
@@ -18,7 +18,7 @@ Implementation authorization：no
 0.5.7-v0.5-final-closeout: planned
 ```
 
-## Current Route
+## 当前路由
 
 默认 route：`documentation-review-required`。
 
@@ -26,12 +26,12 @@ v0.5 parent campaign 和第一个 child package 仅处于 documentation stage。
 相关 child package 记录 review approval 并写明 `implementation_authorized: yes`
 后，才允许 implementation。
 
-## Next Action
+## 下一步动作
 
 评审 `0.5.0-v0.5-planning-and-continuity-boundary-baseline`。如果通过，下一个
 package 是 `0.5.1-memory-self-continuity-contracts`。
 
-## Evidence Snapshot
+## 证据快照
 
 - v0.4 final closeout 状态：`final / closeout complete`。
 - v0.4 final backend/API evidence：v0.4 closeout record 中记录了 focused

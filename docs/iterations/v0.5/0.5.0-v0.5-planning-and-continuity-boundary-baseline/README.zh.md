@@ -1,4 +1,4 @@
-# 0.5.0 v0.5 Planning And Continuity Boundary Baseline
+# 0.5.0 v0.5 规划与连续性边界基线
 
 状态：planned / ready for review
 类型：documentation-only
@@ -43,7 +43,7 @@ memory/self-continuity boundary、compatibility baseline 和 v0.4 handoff mappin
 - Documentation-stage verification plan 和 review evidence。
 - 明确 handoff 到 `0.5.1-memory-self-continuity-contracts`。
 
-## Documents
+## 文档
 
 - [x] `README.md`
 - [x] `README.zh.md`

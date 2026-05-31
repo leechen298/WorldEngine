@@ -1,8 +1,8 @@
-# Plan
+# 执行计划
 
 状态：planned / ready for review
 
-## Files
+## 文件
 
 创建：
 
@@ -33,7 +33,7 @@
 - external repositories
 - generated result artifacts
 
-## Steps
+## 步骤
 
 1. 用 `git status --short --branch` 确认当前 branch 和 working tree。
 2. 确认不存在既有 `docs/iterations/v0.5/` package。
@@ -51,7 +51,7 @@
 8. 用精确 command results 更新 `review.md` 和 `review.zh.md`。
 9. 停在 documentation-stage ready-for-review state。
 
-## Stop Conditions
+## 停止条件
 
 遇到以下情况时停止并记录 blocker：
 
@@ -63,7 +63,7 @@
   generated result、external repository 或 `backend/worldengine/` files。
 - v0.4 evidence 被当作当前 v0.5 pass evidence。
 
-## Verification
+## 验证
 
 运行：
 
@@ -74,7 +74,7 @@ python3 -c "from pathlib import Path; parent=Path('docs/iterations/v0.5'); child
 python3 -c "import subprocess, sys; allowed='docs/iterations/v0.5/'; out=subprocess.check_output(['git','status','--short'], text=True); bad=[]; [bad.append(line) for line in out.splitlines() if line and not line[3:].startswith(allowed)]; print('out_of_scope=' + str(len(bad))); [print(line) for line in bad]; raise SystemExit(1 if bad else 0)"
 ```
 
-## Review Update Step
+## 审核更新步骤
 
 Verification 后，同时更新 parent 和 child 的 `review.md` 与 `.zh.md`：
 

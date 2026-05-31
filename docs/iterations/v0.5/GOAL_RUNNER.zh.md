@@ -1,8 +1,8 @@
-# Goal Runner
+# 目标运行器
 
 状态：planned / ready for review
 
-## Goal Entry
+## 目标入口
 
 本 campaign 覆盖的自然语言目标包括：
 
@@ -11,7 +11,7 @@
 启动 WorldEngine v0.5：Memory and Self-Continuity Substrate
 ```
 
-## Route Selection
+## 路由选择
 
 1. 读取 `CURRENT_STATE.md`。
 2. 如果 `CURRENT_STATE.md` 指向某个 child package，按以下顺序读取该 package：
@@ -27,7 +27,7 @@
 4. 直到 active child package review 记录 `implementation_authorized: yes` 前，
    不得 implementation。
 
-## Documentation Stage Gate
+## 文档阶段关口
 
 Documentation-only work 可以创建或更新 v0.5 iteration documents、package plans、
 contracts、review evidence 和中文镜像。
@@ -36,7 +36,7 @@ Documentation-only work 不得修改 runtime、schema、API、frontend、backend
 fixture、migration、external repository、generated result 或 `backend/worldengine/`
 实现文件。
 
-## Implementation Authorization Rule
+## 实现授权规则
 
 Implementation authorization 默认关闭。
 
@@ -50,7 +50,7 @@ Implementation authorization 默认关闭。
 如果 implementation 暴露 design gap，必须停止 implementation，更新相关文档，并只在
 更新后的 contract/design/test plan/execution plan 通过评审后继续。
 
-## Subagent / Evaluator Requirements
+## Subagent / Evaluator 要求
 
 因为 v0.5 是 `/goal` campaign，且后续存在 implementation-bearing children，必须使用
 subagent/evaluator checkpoints：
@@ -68,7 +68,7 @@ subagent/evaluator checkpoints：
 contracts、release status、validation templates 或 mirror obligations 的
 documentation-only children，必须使用 read-only documentation evaluator。
 
-## Reporting Rules
+## 报告规则
 
 - 历史 v0.4 与 post-closeout evidence 只能作为 handoff evidence 引用。
 - 没有 current-session command evidence 时，不得把 v0.5 implementation、runtime、
@@ -81,7 +81,7 @@ documentation-only children，必须使用 read-only documentation evaluator。
   status。
 - P3 只能在有明确 handoff 时保留。
 
-## Scope Stop Conditions
+## 范围停止条件
 
 如果任务会导致以下情况，必须停止并记录 blocker：
 

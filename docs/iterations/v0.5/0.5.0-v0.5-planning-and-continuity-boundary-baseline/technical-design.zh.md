@@ -1,8 +1,8 @@
-# Technical Design
+# 技术设计
 
 状态：planned / ready for review
 
-## Current State
+## 当前状态
 
 v0.4 已 final / closeout complete。它交付了 minimal request-driven
 Agent-in-World loop，包括 bounded perception、action intent/result contracts、
@@ -14,7 +14,7 @@ build type repair 后记录 clean pass。该 evidence 只作为 baseline 和 han
 
 本次工作前不存在 `docs/iterations/v0.5/` package。
 
-## Contract Alignment and Invariants
+## 契约对齐与不变量
 
 本 package 是 documentation-only。它必须保持以下 invariants：
 
@@ -27,7 +27,7 @@ build type repair 后记录 clean pass。该 evidence 只作为 baseline 和 han
 - Working memory 和 episodic memory 是唯一的首批 implementation candidates。
 - Historical v0.4 evidence 不得提升为 v0.5 pass evidence。
 
-## Documentation Structure
+## 文档结构
 
 Parent campaign docs：
 
@@ -58,7 +58,7 @@ Child package docs：
 
 每份 active doc 都有 `.zh.md` 镜像。
 
-## Planned Future Implementation Interfaces
+## 未来计划实现接口
 
 本 package 可以命名 future implementation paths，但不得创建它们：
 
@@ -69,7 +69,7 @@ Child package docs：
 未来任何 implementation package 都必须在 implementation 前定义 exact schemas、
 services、interfaces、data flow、tests 和 compatibility checks。
 
-## Compatibility Strategy
+## 兼容性策略
 
 `0.5.0` 不改变 product behavior。未来 implementation packages 必须将以下 v0.4
 surfaces 视为 compatibility-sensitive：
@@ -86,7 +86,7 @@ surfaces 视为 compatibility-sensitive：
 - params behavior
 - archive behavior
 
-## Anti-Drift Rules
+## 防漂移规则
 
 - 保持 parent `README.md`、`CURRENT_STATE.md`、`v0.5-plan.md`、
   `CAMPAIGN_PLAN.md` 和 `review.md` status values 一致。
@@ -95,7 +95,7 @@ surfaces 视为 compatibility-sensitive：
 - 对本 docs-only package，将 implementation checks 记录为 not run。
 - 如果 changed-file set 出现任何 implementation file class，必须停止。
 
-## Risks
+## 风险
 
 - 风险：文档暗示 implementation authorization。
   缓解：在 package docs 和 review 中记录 `implementation_authorized: no`。

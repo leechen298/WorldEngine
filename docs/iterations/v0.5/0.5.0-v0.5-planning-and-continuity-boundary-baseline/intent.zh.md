@@ -1,8 +1,8 @@
-# Intent
+# 意图
 
 状态：planned / ready for review
 
-## Problem
+## 问题
 
 v0.4 明确排除了 memory、episodic memory、relationship state、self-summary、
 reflection 和 personality drift。v0.5 负责这个 roadmap scope，但如果没有已评审
@@ -24,7 +24,7 @@ package：
 - 将 v0.4 final closeout 和 post-closeout clean pass 只记录为 handoff evidence。
 - 保持 implementation authorization closed。
 
-## Non-goals
+## 非目标
 
 - 不实现 runtime、schema、API、frontend、backend tests、fixtures、migrations 或
   external repository changes。
@@ -37,7 +37,7 @@ package：
 - 不添加 world generation、external validation readiness、projection app readiness、
   concrete world content 或 private validation details。
 
-## Why Now
+## 当前原因
 
 Roadmap 声明 v0.5 接在已评审 v0.4 request-driven minimal loop 后，引入 working
 memory、episodic memory、relationship state、self-summary、reflection records 和
@@ -45,14 +45,14 @@ personality drift signals，并使其未来可以影响 action。Post-closeout v
 为 v0.5 提供了更强 baseline，但这些 evidence 在 v0.5 产生 fresh command evidence 前
 只能作为 handoff context。
 
-## North Star Alignment
+## North Star 对齐
 
 本 package 为 north star 中的 engineered pseudo-self substrate 做准备：identity
 continuity、self-narrative、relationship history、personality drift，以及由 prior
 experience 塑造的 decision patterns。它保持设计 generic 且 inspectable，并拒绝 concrete
 demo-world 或 application-specific backend behavior。
 
-## Expected Handoff
+## 预期交接
 
 如果评审通过，本 package handoff 到 `0.5.1-memory-self-continuity-contracts`。该
 package 应先定义 public concepts 和 schema semantics，再由 `0.5.2` 实现 substrate。

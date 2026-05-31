@@ -1,4 +1,4 @@
-# v0.5 Memory And Self-Continuity Substrate
+# v0.5 记忆与自连续性基底
 
 状态：planned / ready for review
 类型：Codex `/goal` development campaign 与 iteration package root
@@ -12,7 +12,7 @@ memory 与 self-continuity substrate。
 memory/self-continuity 边界通用、可检查、以证据为准。它不得把 WorldEngine
 收窄成 demo-specific backend 或 application surface。
 
-## Goal Entry
+## 目标入口
 
 自然语言目标：
 
@@ -73,7 +73,7 @@ v0.5 禁止：
   API、frontend、test implementation、fixture、migration、external repository 或
   `backend/worldengine/` 文件。
 
-## Package Index
+## 包索引
 
 ### `0.5.0-v0.5-planning-and-continuity-boundary-baseline`
 
@@ -131,7 +131,7 @@ v0.5 禁止：
 - 目的：只有在 release-candidate review approval、evidence consistency checks 和
   unresolved finding classification 完成后，才标记 v0.5 final / closeout complete。
 
-## Current State
+## 当前状态
 
 Active child package：
 `0.5.0-v0.5-planning-and-continuity-boundary-baseline`。
@@ -140,7 +140,7 @@ Current route：`documentation-review-required`。
 
 Implementation authorization：no。
 
-## Handoff Baseline
+## 交接基线
 
 - v0.4 状态：`final / closeout complete`。
 - v0.4 post-closeout 状态：validation clean pass after frontend build repair。
