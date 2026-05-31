@@ -24,11 +24,12 @@ Read first:
 - `docs/project-north-star.md`
 - `docs/product-model.md`
 - `docs/current-implementation.md`
-- `docs/api-reference-v0.1.md`
-- `docs/releases/v0.3.md`
+- `docs/backend-implementation.md`
+- `docs/api-reference-v0.5.md`
+- `docs/releases/v0.5.md`
 - `docs/iterations/v0.5/README.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
-- `docs/iterations/v0.3/README.md`
+- `docs/testing/results/2026-05-31-v0.5-overall-validation.md`
 - `docs/iterations/README.md`
 
 ## Repository Structure
@@ -125,12 +126,12 @@ Default frontend API target is `http://localhost:8000` (configure via `VITE_API_
 
 ## Verification
 
-Recorded v0.3 closeout evidence is mapped in
-`docs/iterations/v0.3/evidence-index.md` and summarized in
-`docs/releases/v0.3.md`.
+Current v0.5 release and validation evidence is summarized in
+`docs/releases/v0.5.md`, `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`,
+and `docs/testing/results/2026-05-31-v0.5-overall-validation.md`.
 
-The v0.1 runtime closeout evidence remains the compatibility baseline and is
-mapped in `docs/testing/v0.1-test-map.md`.
+Earlier v0.1/v0.3 closeout evidence remains compatibility baseline material,
+not the current API or implementation map.
 
 Key recorded evidence includes:
 
@@ -139,24 +140,19 @@ Key recorded evidence includes:
   focused backend memory/loop/action compatibility `33 passed`, full backend
   regression `145 passed`, required docs/mirrors `missing=0`, changed-file
   scope guard `out_of_scope=0`, and closeout consistency evaluator PASS.
+- v0.5 overall validation in
+  `docs/testing/results/2026-05-31-v0.5-overall-validation.md`: focused memory
+  substrate `7 passed`, focused perception/loop API `16 passed`, focused
+  memory/loop/action compatibility `33 passed`, full backend regression
+  `145 passed`, frontend unit `28 passed`, focused Agent Loop E2E `9 passed`,
+  full E2E `15 passed`, Agent smoke saved-result checker PASS, and minimal
+  autonomous saved-result checker PASS.
 - v0.4 final closeout evidence in `docs/iterations/v0.4/review.md` and
   `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/final-closeout.md`:
   focused backend/API `35 passed`, full backend `139 passed`, final docs
   mirror check `missing=0`, and final scope guard `out_of_scope=0`.
 - v0.3 loader and runtime bridge package evidence, compatibility audit, and
   final closeout review.
-- `make check-backend` and `make check-frontend`.
-- backend pytest: `63 passed`.
-- frontend unit tests: `24 passed`; focused frontend coverage later recorded
-  `28 passed`.
-- frontend production build: succeeded with a documented chunk-size warning.
-- `make test-e2e`: `6 passed`.
-- live Agent smoke:
-  - `dashboard-params-flow`: 0.1.8 evidence preserved by
-    `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` and
-    commit `c6da552`.
-  - `dashboard-invalid-param`: current validated evidence under
-    `test-results/agent-smoke/latest/`.
 
 These are recorded closeout results, not tests rerun by this README update.
 
@@ -164,10 +160,10 @@ Implementation docs:
 
 - `docs/iterations/v0.5/README.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
-- `docs/iterations/v0.3/README.md`
-- `docs/releases/v0.3.md`
+- `docs/releases/v0.5.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/frontend-implementation.md`
-- `docs/api-reference-v0.1.md`
+- `docs/api-reference-v0.5.md`
+- `docs/api-reference-v0.1.md` for the legacy v0.1 API reference
 - `docs/testing/v0.1-test-map.md`

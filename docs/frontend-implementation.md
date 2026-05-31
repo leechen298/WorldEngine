@@ -1,6 +1,6 @@
 # Frontend Implementation
 
-Status: v0.1 frontend map
+Status: current frontend map through v0.5
 
 This document describes the current `frontend/src/` implementation.
 
@@ -28,7 +28,7 @@ pnpm build
 
 `frontend/src/App.vue` renders `DashboardPage`.
 
-`DashboardPage` is the main v0.1 surface. It loads and coordinates:
+`DashboardPage` is the main dashboard surface. It loads and coordinates:
 
 - backend health.
 - runtime state.
@@ -66,6 +66,10 @@ Implemented client functions:
 - `getWorldSummaries()`
 
 The frontend does not currently call snapshot APIs.
+
+The frontend client also does not expose the v0.4/v0.5 Agent Loop endpoint as
+a dashboard workflow. Agent Loop behavior is covered by browser E2E through
+direct API calls.
 
 ## Dashboard Page
 
@@ -141,7 +145,7 @@ Agent flow:
 
 File: `frontend/src/components/AgentPanel.vue`
 
-The v0.1 Agent Panel is a placeholder. It does not show persistent agent state,
+The Agent Panel is a placeholder. It does not show persistent agent state,
 memory, identity, goals, or actions.
 
 ## Memory Panel
@@ -173,4 +177,8 @@ panels. Component-specific styles live inside scoped style blocks.
 - Snapshot APIs are not exposed in the dashboard.
 - Agent and memory panels are placeholders or archive displays, not full agent
   cognition surfaces.
+- No frontend product behavior exposes v0.5 memory records or memory-context
+  management.
+- Agent Loop is covered by E2E API/browser baseline tests, not by a dashboard
+  product control.
 - Production build currently emits a chunk-size warning.

@@ -1,12 +1,10 @@
-# API Reference v0.1
+# API Reference v0.5
 
-状态：legacy v0.1 API reference
+状态：当前 API reference，覆盖到 v0.5
 
-英文版本：`api-reference-v0.1.md`。
+英文版本：`api-reference-v0.5.md`。
 
-Local development base URL: `http://localhost:8000`
-
-当前 API reference：`docs/api-reference-v0.5.md`。
+Local development base URL：`http://localhost:8000`
 
 所有 successful responses 使用：
 
@@ -189,7 +187,8 @@ Reserved prefixes：
 - `runtime`
 - `_internal`
 
-Validation errors 返回 HTTP `422`，并包含 `data.errors`。Dry-run errors 还包含 `data.metrics`。
+Validation errors 返回 HTTP `422`，并包含 `data.errors`。Dry-run errors 还包含
+`data.metrics`。
 
 ## Params Agent
 
@@ -215,7 +214,84 @@ Request body：
 }
 ```
 
-如果 proposals 在 max attempts 后仍被 rejected，route 返回 HTTP `422`，并带 errors 和 metrics。
+如果 proposals 在 max attempts 后仍被 rejected，route 返回 HTTP `422`，并在 `data`
+中带 errors、metrics 和 attempts。
+
+## Agent Loop
+
+### `POST /world/agent/loop/step`
+
+执行一次 request-scoped Agent-in-World loop step。
+
+Request body：
+
+```json
+{
+  "event_limit": 20,
+  "intent": {
+    "type": "noop",
+    "reason": "inspect only"
+  }
+}
+```
+
+`intent` 可省略。省略时 service 使用 deterministic `noop` intent。`event_limit`
+被限制在 `1` 到 `200`。
+
+Supported action types：
+
+- `noop`
+- `params.patch`
+
+`noop` 不接受 patches，也不会修改 world params。
+
+`params.patch` 使用与 `POST /world/params/apply` 相同的 patch object shape 和
+static/dry-run validation rules。
+
+Response data：
+
+```json
+{
+  "perception": {
+    "runtime": {
+      "tick_id": 0,
+      "world_time_seconds": 0,
+      "step_seconds": 600,
+      "is_running": false,
+      "updated_at": null
+    },
+    "params": {},
+    "recent_events": [],
+    "runtime_context_summary": null,
+    "memory_context": {
+      "working_memory": [],
+      "episodic_memory": []
+    }
+  },
+  "intent": {
+    "type": "noop",
+    "patches": [],
+    "reason": "default deterministic noop",
+    "metadata": {}
+  },
+  "result": {
+    "status": "noop",
+    "applied": false,
+    "action_type": "noop",
+    "patches": [],
+    "errors": [],
+    "metrics": {},
+    "params": {},
+    "event_id": null,
+    "message": "No action applied."
+  }
+}
+```
+
+`perception.memory_context` 是 v0.5 additive response field。当 process-local
+memory store 中存在匹配 default agent/world scope 的记录时，它会包含 bounded
+read-only working 和 episodic memory records。API 不暴露 memory write、seed、
+search 或 persistence endpoints。
 
 ## Archive
 
@@ -251,12 +327,12 @@ Query params：
 
 按 id 返回 summary；找不到时返回 HTTP `404`。
 
-## Current API Limits
+## 当前 API 限制
 
-- 所有 runtime/archive/event state 都是 process-local 和 in-memory。
+- 所有 runtime/archive/event/memory state 都是 process-local 和 in-memory。
 - 没有 authentication 或 tenant boundary。
-- 没有 stable external recursive-world contract。
-- Event schema 是 minimal。
-- 本 legacy document 只描述 v0.1 behavior。它不包含 v0.3 WorldSpec
-  loader/runtime-context bridge internals、v0.4 Agent Loop endpoint，或 v0.5
-  additive `perception.memory_context` response field。
+- 没有 public memory read/write/search API。
+- Memory、runtime、archive 或 event state 都没有 durable persistence。
+- Loaded `WorldSpec` data 不通过 public loader API 暴露，也不会作为 active
+  recursive runtime state 执行。
+- 当前没有 world generation API；该未来范围属于 v0.6。

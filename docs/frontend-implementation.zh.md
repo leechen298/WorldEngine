@@ -1,6 +1,6 @@
 # Frontend Implementation
 
-Status: v0.1 frontend map
+状态：当前前端地图，覆盖到 v0.5
 
 英文版本：`frontend-implementation.md`。
 
@@ -29,7 +29,7 @@ pnpm build
 
 `frontend/src/App.vue` 渲染 `DashboardPage`。
 
-`DashboardPage` 是 v0.1 的 main surface。它加载并协调：
+`DashboardPage` 是 main dashboard surface。它加载并协调：
 
 - backend health。
 - runtime state。
@@ -66,6 +66,9 @@ API client 封装 fetch，并期望 backend envelope：
 - `getWorldSummaries()`
 
 Frontend 当前不调用 snapshot APIs。
+
+Frontend client 也没有把 v0.4/v0.5 Agent Loop endpoint 暴露为 dashboard workflow。
+Agent Loop behavior 通过 browser E2E 中的 direct API calls 覆盖。
 
 ## Dashboard Page
 
@@ -139,7 +142,7 @@ Agent flow：
 
 File: `frontend/src/components/AgentPanel.vue`
 
-v0.1 Agent Panel 是 placeholder。它不展示 persistent agent state、memory、identity、goals 或 actions。
+Agent Panel 是 placeholder。它不展示 persistent agent state、memory、identity、goals 或 actions。
 
 ## Memory Panel
 
@@ -169,4 +172,6 @@ dashboard 使用 centered max-width layout，并用 responsive grid 布局 panel
 - 没有 persistent client-side store。
 - dashboard 不暴露 Snapshot APIs。
 - Agent 和 memory panels 是 placeholders 或 archive displays，不是完整 Agent cognition surfaces。
+- 没有 frontend product behavior 暴露 v0.5 memory records 或 memory-context management。
+- Agent Loop 由 E2E API/browser baseline tests 覆盖，不是 dashboard product control。
 - Production build 当前会输出 chunk-size warning。

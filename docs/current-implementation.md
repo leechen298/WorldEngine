@@ -1,31 +1,40 @@
 # Current Implementation
 
-Status: v0.1 implementation map
+Status: current implementation map through v0.5
 
-This document summarizes what is implemented in the current `v0.1` branch. It
-describes current code, not planned v0.2 behavior.
+This document summarizes the active implementation after the v0.5 final
+closeout. The current `v0.6` branch is documentation-planned for world
+generation, but no v0.6 runtime implementation is described here until a
+reviewed v0.6 package authorizes and lands code.
+
+Chinese mirror: `current-implementation.zh.md`.
 
 ## Summary
 
-v0.1 is a runtime scaffold with a backend, dashboard, in-memory runtime state,
-event timeline, world params flow, dry-run validation, archive summaries, and a
-params-oriented agent endpoint.
+WorldEngine currently provides a FastAPI backend, Vue dashboard, process-local
+runtime state, event timeline, world params flow, dry-run validation, archive
+summaries, a params-oriented agent endpoint, a request-scoped Agent Loop, a
+generic WorldSpec loader/runtime-context bridge, and the first process-local
+memory substrate for bounded Agent Loop perception context.
 
-v0.1 is not yet a recursive world engine. It does not implement WorldCell,
-WorldSpec loading, world generation, agent memory, or pseudo-self continuity.
+The active implementation is still not a complete recursive world engine. It
+does not run recursive `WorldCell` structures as active runtime state, generate
+worlds, persist memory durably, expose public memory APIs, run automatic
+reflection or self-summary behavior, modify actions through relationship or
+personality drift, or provide external projection applications.
 
 ## Active Paths
 
 - `backend/app/` - active backend.
 - `frontend/src/` - active dashboard.
-- `docs/` - project, release, iteration, and implementation docs.
-- `backend/worldengine/` - legacy path; not used by the active app.
+- `docs/` - project, release, iteration, validation, and implementation docs.
+- `backend/worldengine/` - legacy pre-v0.1 path; not used by the active app.
 
 ## Runtime Model
 
 The active backend is assembled in `backend/app/api/app_factory.py`.
 
-At app startup, the factory creates in-memory singletons on `app.state`:
+At app startup, the factory creates process-local services on `app.state`:
 
 - `InMemoryEventLog`
 - `WorldState`
@@ -34,9 +43,11 @@ At app startup, the factory creates in-memory singletons on `app.state`:
 - `ParamDryRunValidator`
 - `InMemorySnapshotStore`
 - `InMemorySummaryStore`
+- `InMemoryAgentMemoryStore`
 - `RuntimeEngine`
 - `ArchiveService`
 - `ParamsAgent`
+- `AgentLoopService`
 
 The runtime loop is manual. A caller posts to `/runtime/step`, and
 `RuntimeEngine.step()`:
@@ -49,25 +60,29 @@ The runtime loop is manual. A caller posts to `/runtime/step`, and
 6. calls archive callbacks.
 7. returns the current runtime state.
 
+`RuntimeEngine` may also carry an optional inert runtime-context summary derived
+from a loaded generic `WorldSpec`. The current runtime still does not execute
+loaded `WorldSpec` data as active recursive world state.
+
 ## Current World Model
 
-The world model in v0.1 is parameter-driven and module-driven:
+The active runtime world model is still parameter-driven and module-driven:
 
 - `WorldState` stores a nested params dictionary.
-- `ParamRegistry.default()` defines writable paths.
+- `ParamRegistry.default()` defines writable params paths.
 - `WorldModule` instances receive `TickContext` and emit events.
-- the default module tree contains:
-  - `root.heartbeat`
-  - `root.counter`
+- the default module tree contains `root.heartbeat` and `root.counter`.
 
-This is not yet a WorldCell or WorldSpec model.
+Generic recursive-world schema support exists through `WorldCell` and
+`WorldSpec` schema validation plus loader/runtime-context bridge helpers. That
+support is a compatibility and handoff substrate; it is not yet world
+generation or recursive runtime execution.
 
 ## Current Agent Model
 
-The current implemented agent path is `ParamsAgent`. It is a params proposal
-and validation loop, not an agent-in-world cognition model.
+The active agent implementation has two paths.
 
-`ParamsAgent`:
+`ParamsAgent` is an LLM-style params proposal and validation loop. It:
 
 - builds prompts from runtime state, current params, recent events, and a goal.
 - calls an `LLMProvider` protocol.
@@ -77,8 +92,37 @@ and validation loop, not an agent-in-world cognition model.
 - applies valid patches to `WorldState`.
 - appends `params.applied` or `params.proposal_rejected` events.
 
-The default app factory wires a `MockLLMProvider`, so v0.1 does not require a
-real provider to start.
+`AgentLoopService` runs one request-scoped Agent-in-World loop step. It:
+
+- builds a bounded `PerceptionFrame` from runtime state, world params, recent
+  events, optional runtime-context summary, and optional memory context.
+- accepts an explicit `ActionIntent` or uses a deterministic `noop` intent.
+- applies only the reviewed `noop` and `params.patch` action boundary.
+- returns `LoopStepResponse` with perception, intent, and action result
+  evidence.
+
+Action semantics are unchanged by v0.5 memory work. Memory context is read-only
+input to perception, not a hidden action side effect.
+
+## Current Memory Model
+
+v0.5 added a generic process-local memory substrate:
+
+- `MemoryEvidenceRef`
+- `WorkingMemoryRecord`
+- `EpisodicMemoryRecord`
+- `InMemoryAgentMemoryStore`
+- `MemoryContextSummary` on `PerceptionFrame`
+
+Working and episodic records are generic, scoped by `agent_id` and `world_id`,
+and carry inspectable provenance. The in-memory store returns deep copies,
+applies deterministic bounded ordering, and is wired into the default app so
+perception can include bounded read-only memory context.
+
+There is no public memory read/write API, no durable persistence, no vector
+retrieval, no automatic reflection, no self-summary generation, no relationship
+behavior, and no personality drift action modifier in the current
+implementation.
 
 ## Current Archive Model
 
@@ -90,9 +134,8 @@ It creates:
 - summaries every `WORLD_SUMMARY_INTERVAL_TICKS` ticks, default `20`.
 
 Snapshots store runtime state and params. Summaries count event types and write
-a small text summary from events in the interval.
-
-Storage is in-memory.
+a small text summary from events in the interval. Storage is process-local and
+in-memory.
 
 ## Current Dashboard
 
@@ -110,12 +153,16 @@ It exposes:
 - timeline pagination and expanded event details.
 - manual world param patch form.
 - params-agent auto-tune form.
-- placeholder agent state panel.
+- agent loop baseline interactions covered by E2E.
 - latest summary panel.
+
+The dashboard does not expose product memory management, world generation,
+projection application readiness, or external validation UI.
 
 ## Current API Surfaces
 
-See `docs/api-reference-v0.1.md` for endpoint-level details.
+See `docs/api-reference-v0.5.md` for the current API reference and
+`docs/api-reference-v0.1.md` for the legacy v0.1 reference.
 
 High-level groups:
 
@@ -124,27 +171,47 @@ High-level groups:
 - timeline: `/world/events`, `/world/event-steps`
 - params: `/world/params`, `/world/params/apply`
 - params agent: `/world/agent/params/propose-and-apply`
+- agent loop: `/world/agent/loop/step`
 - archive: `/world/snapshots`, `/world/summaries`
+
+No public memory API exists in v0.5.
 
 ## Current Verification
 
-See `docs/testing/v0.1-test-map.md` and
-`docs/testing/results/2026-05-23-v0.1-closeout.md`.
+Current v0.5 closeout and validation evidence is recorded in:
 
-Latest recorded closeout results:
+- `docs/releases/v0.5.md`
+- `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
+- `docs/testing/results/2026-05-31-v0.5-overall-validation.md`
 
-- backend: `63 passed`.
-- frontend unit tests: `24 passed`.
-- frontend production build: passed with a chunk-size warning.
+Key recorded results include:
+
+- focused backend memory substrate: `7 passed`.
+- focused perception and loop API: `16 passed`.
+- focused backend memory/loop/action compatibility: `33 passed`.
+- full backend regression: `145 passed`.
+- frontend unit baseline: `28 passed`.
+- frontend production build: passed with an existing Vite chunk-size warning.
+- focused Agent Loop E2E: `9 passed`.
+- full E2E: `15 passed`.
+- Agent smoke saved-result checker: PASS.
+- minimal autonomous saved-result checker: PASS.
+
+These are recorded v0.5 evidence artifacts. This document update does not
+rerun those full validation flows.
 
 ## Known Implementation Limits
 
 - Runtime state is process-local and in-memory.
 - Event log is in-memory.
-- Snapshot and summary stores are in-memory.
-- World and agent schemas are placeholders.
-- Event schema has only minimal fields.
-- No WorldCell or WorldSpec exists yet.
-- No world generation exists yet.
-- No agent perception/action/memory loop exists yet.
-- No external projection application consumer exists yet.
+- Snapshot, summary, and memory stores are in-memory.
+- Loaded `WorldSpec` data can inform inert runtime context but is not executed
+  as active recursive world state.
+- World generation remains v0.6 planned scope and is not implemented here.
+- No durable persistence or migrations are present for runtime, archive, or
+  memory state.
+- No public memory API exists.
+- No vector retrieval, automatic reflection, self-summary generation,
+  relationship behavior, or personality drift action modifier exists.
+- No external validation readiness or projection application readiness is
+  claimed.

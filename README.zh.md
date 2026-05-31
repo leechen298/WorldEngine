@@ -23,11 +23,12 @@ content 仍属于后续版本范围。
 - `docs/project-north-star.md`
 - `docs/product-model.md`
 - `docs/current-implementation.md`
-- `docs/api-reference-v0.1.md`
-- `docs/releases/v0.3.md`
+- `docs/backend-implementation.md`
+- `docs/api-reference-v0.5.md`
+- `docs/releases/v0.5.zh.md`
 - `docs/iterations/v0.5/README.zh.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`
-- `docs/iterations/v0.3/README.zh.md`
+- `docs/testing/results/2026-05-31-v0.5-overall-validation.md`
 - `docs/iterations/README.md`
 
 ## 仓库结构
@@ -116,11 +117,11 @@ pnpm dev
 
 ## 验证
 
-已记录的 v0.3 closeout evidence 汇总在
-`docs/iterations/v0.3/evidence-index.md`，并由 `docs/releases/v0.3.md` 总结。
+当前 v0.5 release 与 validation evidence 汇总在 `docs/releases/v0.5.zh.md`、
+`docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md` 和
+`docs/testing/results/2026-05-31-v0.5-overall-validation.md`。
 
-v0.1 runtime closeout evidence 仍是兼容性基线，记录在
-`docs/testing/v0.1-test-map.md`。
+早期 v0.1/v0.3 closeout evidence 仍是兼容性基线材料，不是当前 API 或实现地图。
 
 关键已记录证据包括：
 
@@ -129,23 +130,18 @@ v0.1 runtime closeout evidence 仍是兼容性基线，记录在
   focused backend memory/loop/action compatibility `33 passed`、full backend
   regression `145 passed`、required docs/mirrors `missing=0`、changed-file
   scope guard `out_of_scope=0`，以及 closeout consistency evaluator PASS。
+- v0.5 overall validation 见
+  `docs/testing/results/2026-05-31-v0.5-overall-validation.md`：focused memory
+  substrate `7 passed`、focused perception/loop API `16 passed`、focused
+  memory/loop/action compatibility `33 passed`、full backend regression
+  `145 passed`、frontend unit `28 passed`、focused Agent Loop E2E `9 passed`、
+  full E2E `15 passed`、Agent smoke saved-result checker PASS，以及 minimal
+  autonomous saved-result checker PASS。
 - v0.4 final closeout evidence 见 `docs/iterations/v0.4/review.md` 和
   `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/final-closeout.md`：
   聚焦 backend/API `35 passed`、全 backend `139 passed`、最终文档镜像检查
   `missing=0`、最终范围检查 `out_of_scope=0`。
 - v0.3 加载器和运行时桥接迭代包证据、兼容性审计与最终收口评审。
-- `make check-backend` 和 `make check-frontend`。
-- backend pytest: `63 passed`。
-- frontend unit tests: `24 passed`；后续 focused frontend coverage 记录为
-  `28 passed`。
-- frontend production build: 成功，并保留已记录的 chunk-size warning。
-- `make test-e2e`: `6 passed`。
-- live Agent smoke：
-  - `dashboard-params-flow`: 0.1.8 evidence 通过
-    `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` 和 commit
-    `c6da552` 保留。
-  - `dashboard-invalid-param`: 当前 validated evidence 位于
-    `test-results/agent-smoke/latest/`。
 
 这些是已经记录的 closeout results，不是本次 README 更新重新运行的测试。
 
@@ -153,10 +149,10 @@ v0.1 runtime closeout evidence 仍是兼容性基线，记录在
 
 - `docs/iterations/v0.5/README.zh.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`
-- `docs/iterations/v0.3/README.zh.md`
-- `docs/releases/v0.3.md`
+- `docs/releases/v0.5.zh.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/frontend-implementation.md`
-- `docs/api-reference-v0.1.md`
+- `docs/api-reference-v0.5.md`
+- `docs/api-reference-v0.1.md`，作为 legacy v0.1 API reference
 - `docs/testing/v0.1-test-map.md`

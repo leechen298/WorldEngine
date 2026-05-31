@@ -1,10 +1,10 @@
-# API Reference v0.1
+# API Reference v0.5
 
-Status: legacy v0.1 API reference
+Status: current API reference through v0.5
 
 Base URL in local development: `http://localhost:8000`
 
-Current API reference: `docs/api-reference-v0.5.md`.
+Chinese mirror: `api-reference-v0.5.zh.md`.
 
 All successful responses use:
 
@@ -216,7 +216,83 @@ Response data on success:
 ```
 
 If proposals are rejected after the max attempts, the route returns HTTP `422`
-with errors and metrics.
+with errors, metrics, and attempts in `data`.
+
+## Agent Loop
+
+### `POST /world/agent/loop/step`
+
+Runs one request-scoped Agent-in-World loop step.
+
+Request body:
+
+```json
+{
+  "event_limit": 20,
+  "intent": {
+    "type": "noop",
+    "reason": "inspect only"
+  }
+}
+```
+
+`intent` is optional. When omitted, the service uses a deterministic `noop`
+intent. `event_limit` is bounded from `1` to `200`.
+
+Supported action types:
+
+- `noop`
+- `params.patch`
+
+`noop` accepts no patches and does not mutate world params.
+
+`params.patch` uses the same patch object shape and static/dry-run validation
+rules as `POST /world/params/apply`.
+
+Response data:
+
+```json
+{
+  "perception": {
+    "runtime": {
+      "tick_id": 0,
+      "world_time_seconds": 0,
+      "step_seconds": 600,
+      "is_running": false,
+      "updated_at": null
+    },
+    "params": {},
+    "recent_events": [],
+    "runtime_context_summary": null,
+    "memory_context": {
+      "working_memory": [],
+      "episodic_memory": []
+    }
+  },
+  "intent": {
+    "type": "noop",
+    "patches": [],
+    "reason": "default deterministic noop",
+    "metadata": {}
+  },
+  "result": {
+    "status": "noop",
+    "applied": false,
+    "action_type": "noop",
+    "patches": [],
+    "errors": [],
+    "metrics": {},
+    "params": {},
+    "event_id": null,
+    "message": "No action applied."
+  }
+}
+```
+
+`perception.memory_context` is an additive v0.5 response field. It contains
+bounded read-only working and episodic memory records when the process-local
+memory store has matching records for the default agent/world scope. The API
+does not expose memory write, seed, search, or persistence endpoints.
 
 ## Archive
 
@@ -254,10 +330,10 @@ Returns a summary by id, or HTTP `404` if not found.
 
 ## Current API Limits
 
-- All runtime/archive/event state is process-local and in-memory.
+- All runtime/archive/event/memory state is process-local and in-memory.
 - No authentication or tenant boundary exists.
-- No stable external recursive-world contract exists.
-- Event schema is minimal.
-- This legacy document describes v0.1 behavior only. It does not include the
-  v0.3 WorldSpec loader/runtime-context bridge internals, the v0.4 Agent Loop
-  endpoint, or the v0.5 additive `perception.memory_context` response field.
+- No public memory read/write/search API exists.
+- No durable persistence exists for memory, runtime, archive, or event state.
+- Loaded `WorldSpec` data is not exposed through a public loader API and is not
+  executed as active recursive runtime state.
+- No world generation API exists yet; v0.6 owns that future scope.

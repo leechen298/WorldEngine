@@ -1,8 +1,12 @@
 # Backend Implementation
 
-Status: v0.1 backend map
+Status: current backend map through v0.5
 
-This document describes the current `backend/app/` implementation.
+This document describes the active `backend/app/` implementation after the
+v0.5 final closeout. It does not describe planned v0.6 world-generation code
+until a reviewed v0.6 package lands that implementation.
+
+Chinese mirror: `backend-implementation.zh.md`.
 
 ## Application Assembly
 
@@ -11,7 +15,7 @@ Entry points:
 - `backend/app/main.py`
 - `backend/app/api/app_factory.py`
 
-`create_app()` builds a FastAPI app, configures CORS, creates in-memory
+`create_app()` builds a FastAPI app, configures CORS, creates process-local
 runtime services, registers exception handlers, and includes routers.
 
 Environment variables:
@@ -28,6 +32,16 @@ Environment variables:
 | `WORLD_DRYRUN_MAX_AVG_EVENTS_PER_TICK` | `20` | Dry-run event-rate limit. |
 | `WORLD_DRYRUN_MAX_TOTAL_EVENTS` | `500` | Dry-run total event limit. |
 | `WORLD_DRYRUN_MAX_FINAL_COUNTER` | `100000` | Dry-run counter upper bound. |
+
+The app factory creates these active state/services:
+
+- event log, world state, default world module tree.
+- params validators and dry-run validator.
+- snapshot and summary stores.
+- process-local agent memory store.
+- runtime engine and archive service.
+- params agent with mock provider.
+- Agent Loop service with perception builder and action adapter.
 
 ## API Envelope and Errors
 
@@ -56,6 +70,8 @@ Files:
 
 - `backend/app/core/runtime_engine.py`
 - `backend/app/core/event_bus.py`
+- `backend/app/core/runtime_context.py`
+- `backend/app/core/worldspec_loader.py`
 
 `RuntimeEngine` stores:
 
@@ -63,6 +79,7 @@ Files:
 - `world_time_seconds`
 - `step_seconds`
 - `updated_at`
+- optional inert runtime context
 
 `step()` appends a `tick.advanced` event and then runs the configured world
 root module.
@@ -73,6 +90,10 @@ root module.
 - bounded list access.
 - cursor pagination over newest-first events.
 - grouped event-step pagination by tick.
+
+`worldspec_loader.py` and `runtime_context.py` validate generic `WorldSpec`
+data and derive a bounded runtime-context summary. This bridge does not make
+loaded `WorldSpec` data execute as active recursive runtime state.
 
 ## World State and Modules
 
@@ -108,6 +129,22 @@ root
 `CompositeModule` runs child modules, aggregates child summaries, and emits
 `module.aggregate`.
 
+## WorldSpec Schema And Loader
+
+Files:
+
+- `backend/app/schemas/entity.py`
+- `backend/app/schemas/world_cell.py`
+- `backend/app/core/worldspec_loader.py`
+- `backend/app/core/runtime_context.py`
+
+`WorldCell` and `WorldSpec` provide additive recursive-world schema contracts.
+The loader accepts mappings, JSON strings, or JSON bytes and returns either a
+validated loaded spec or structured errors.
+
+The runtime-context bridge derives inspectable metadata from a loaded spec and
+keeps raw `WorldSpec` payloads out of runtime step outputs and event payloads.
+
 ## World Params
 
 Files:
@@ -117,7 +154,7 @@ Files:
 - `backend/app/world/validation/*`
 - `backend/app/world/dry_run.py`
 
-Writable params in v0.1:
+Writable params:
 
 | Path | Type | Notes |
 |---|---|---|
@@ -145,9 +182,9 @@ Before applying params, the route runs:
 4. `params.applied` event append.
 
 Dry-run validation clones `WorldState`, creates a fresh default module tree,
-runs a sandbox `RuntimeEngine`, and checks metrics such as total events, average
-events per tick, final counter value, duplicate set paths, and no-effect
-counter changes.
+runs a sandbox `RuntimeEngine`, and checks metrics such as total events,
+average events per tick, final counter value, duplicate set paths, and
+no-effect counter changes.
 
 ## Archive
 
@@ -207,11 +244,64 @@ Flow:
 
 The app factory currently uses `MockLLMProvider`.
 
+## Agent Loop
+
+Files:
+
+- `backend/app/agent/perception.py`
+- `backend/app/agent/action_adapter.py`
+- `backend/app/agent/loop_service.py`
+- `backend/app/schemas/agent_loop.py`
+- `backend/app/api/routes/world_agent.py`
+
+`PerceptionBuilder` creates a bounded `PerceptionFrame` from:
+
+- runtime state.
+- current params.
+- recent events.
+- optional runtime-context summary.
+- optional memory context.
+
+`AgentLoopService` accepts `LoopStepRequest`, uses a deterministic `noop` when
+no intent is supplied, applies the reviewed action boundary, and returns
+`LoopStepResponse`.
+
+Supported action types:
+
+- `noop`
+- `params.patch`
+
+Unsupported actions are rejected. `params.patch` uses the same static and
+dry-run validation path as world params.
+
+## Memory Substrate
+
+Files:
+
+- `backend/app/schemas/agent_memory.py`
+- `backend/app/agent/memory.py`
+- `backend/app/agent/perception.py`
+
+v0.5 adds:
+
+- `MemoryEvidenceRef`
+- `WorkingMemoryRecord`
+- `EpisodicMemoryRecord`
+- `InMemoryAgentMemoryStore`
+- optional `PerceptionFrame.memory_context`
+
+The store is process-local and generic. It scopes records by `agent_id` and
+`world_id`, returns deep copies, and provides deterministic bounded list access
+for perception.
+
+There is no public memory API, no durable persistence, no vector store, and no
+automatic reflection/self-summary/relationship/personality drift behavior.
+
 ## Placeholder Ports and Legacy Code
 
 `backend/app/infra/ports` and `backend/app/infra/sqlite` contain placeholder
 repository interfaces/adapters. They are not the active persistence path for
-runtime state in v0.1.
+runtime, archive, or memory state.
 
 `backend/worldengine/` is legacy code and is not wired into the active FastAPI
 app.

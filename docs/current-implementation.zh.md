@@ -1,31 +1,39 @@
-# Current Implementation
+# 当前实现
 
-Status: v0.1 implementation map
+状态：当前实现地图，覆盖到 v0.5
 
 英文版本：`current-implementation.md`。
 
-本文档总结当前 `v0.1` 分支已经实现的内容。它描述 current code，不描述 planned v0.2 behavior。
+本文总结 v0.5 最终收口后的 active implementation。当前 `v0.6` 分支处于 world
+generation 文档规划阶段；在已评审 v0.6 package 授权并落地代码前，本文不描述
+v0.6 runtime implementation。
 
-## Summary
+## 摘要
 
-v0.1 是 runtime scaffold，包含 backend、dashboard、in-memory runtime state、event timeline、
-world params flow、dry-run validation、archive summaries 和 params-oriented agent endpoint。
+WorldEngine 当前包含 FastAPI backend、Vue dashboard、process-local runtime
+state、event timeline、world params flow、dry-run validation、archive summaries、
+params-oriented agent endpoint、request-scoped Agent Loop、generic WorldSpec
+loader/runtime-context bridge，以及第一层 process-local memory substrate，用于
+Agent Loop perception 中的 bounded memory context。
 
-v0.1 还不是 recursive world engine。它没有实现 WorldCell、WorldSpec loading、world generation、
-Agent memory 或 pseudo-self continuity。
+当前实现仍不是完整的递归世界引擎。它不会把递归 `WorldCell` 结构作为活跃运行时
+状态运行，不会生成 worlds，不会 durable persistence memory，不暴露 public
+memory APIs，不运行 automatic reflection 或 self-summary behavior，不通过
+relationship 或 personality drift 修改 actions，也不提供 external projection
+applications。
 
-## Active Paths
+## 活跃路径
 
 - `backend/app/` - active backend。
 - `frontend/src/` - active dashboard。
-- `docs/` - project、release、iteration 和 implementation docs。
-- `backend/worldengine/` - legacy path；active app 不使用它。
+- `docs/` - project、release、iteration、validation 和 implementation docs。
+- `backend/worldengine/` - legacy pre-v0.1 path；active app 不使用它。
 
-## Runtime Model
+## 运行时模型
 
 Active backend 在 `backend/app/api/app_factory.py` 中组装。
 
-App startup 时，factory 会在 `app.state` 上创建 in-memory singletons：
+App startup 时，factory 会在 `app.state` 上创建 process-local services：
 
 - `InMemoryEventLog`
 - `WorldState`
@@ -34,13 +42,15 @@ App startup 时，factory 会在 `app.state` 上创建 in-memory singletons：
 - `ParamDryRunValidator`
 - `InMemorySnapshotStore`
 - `InMemorySummaryStore`
+- `InMemoryAgentMemoryStore`
 - `RuntimeEngine`
 - `ArchiveService`
 - `ParamsAgent`
+- `AgentLoopService`
 
 Runtime loop 是手动的。调用方 POST `/runtime/step`，`RuntimeEngine.step()` 会：
 
-1. increment `tick_id`。
+1. 递增 `tick_id`。
 2. 按 `step_seconds` 推进 `world_time_seconds`。
 3. 追加 `tick.advanced` event。
 4. 运行 default world module tree。
@@ -48,25 +58,28 @@ Runtime loop 是手动的。调用方 POST `/runtime/step`，`RuntimeEngine.step
 6. 调用 archive callbacks。
 7. 返回 current runtime state。
 
-## Current World Model
+`RuntimeEngine` 也可以携带由 loaded generic `WorldSpec` 派生出的可选 inert
+runtime-context summary。当前 runtime 仍不会把 loaded `WorldSpec` data 作为活跃递归
+世界状态执行。
 
-v0.1 的 world model 是 parameter-driven 和 module-driven：
+## 当前世界模型
+
+活跃 runtime world model 仍是 parameter-driven 和 module-driven：
 
 - `WorldState` 存储 nested params dictionary。
-- `ParamRegistry.default()` 定义 writable paths。
+- `ParamRegistry.default()` 定义 writable params paths。
 - `WorldModule` 接收 `TickContext` 并 emit events。
-- default module tree 包含：
-  - `root.heartbeat`
-  - `root.counter`
+- default module tree 包含 `root.heartbeat` 和 `root.counter`。
 
-这还不是 WorldCell 或 WorldSpec model。
+Generic recursive-world schema support 已通过 `WorldCell`、`WorldSpec` schema
+validation，以及 loader/runtime-context bridge helpers 存在。该能力是兼容性和交接
+基座，不是 world generation，也不是 recursive runtime execution。
 
-## Current Agent Model
+## 当前 Agent 模型
 
-当前实现的 agent path 是 `ParamsAgent`。它是 params proposal 与 validation loop，不是
-agent-in-world cognition model。
+当前 agent implementation 有两条路径。
 
-`ParamsAgent`：
+`ParamsAgent` 是 LLM-style params proposal 与 validation loop。它会：
 
 - 从 runtime state、current params、recent events 和 goal 构造 prompts。
 - 调用 `LLMProvider` protocol。
@@ -76,9 +89,37 @@ agent-in-world cognition model。
 - 将 valid patches 应用到 `WorldState`。
 - 追加 `params.applied` 或 `params.proposal_rejected` events。
 
-默认 app factory 使用 `MockLLMProvider`，所以 v0.1 启动不需要真实 provider。
+`AgentLoopService` 执行一次 request-scoped Agent-in-World loop step。它会：
 
-## Current Archive Model
+- 从 runtime state、world params、recent events、可选 runtime-context summary 和
+  可选 memory context 构建 bounded `PerceptionFrame`。
+- 接受显式 `ActionIntent`，或使用 deterministic `noop` intent。
+- 只应用已评审的 `noop` 和 `params.patch` action boundary。
+- 返回包含 perception、intent 和 action result evidence 的 `LoopStepResponse`。
+
+v0.5 memory work 不改变 action semantics。Memory context 只是 perception 的
+read-only input，不是隐藏 action side effect。
+
+## 当前 Memory 模型
+
+v0.5 新增了 generic process-local memory substrate：
+
+- `MemoryEvidenceRef`
+- `WorkingMemoryRecord`
+- `EpisodicMemoryRecord`
+- `InMemoryAgentMemoryStore`
+- `PerceptionFrame` 上的 `MemoryContextSummary`
+
+Working 和 episodic records 是通用结构，按 `agent_id` 和 `world_id` 归属，并带有
+可审查 provenance。In-memory store 返回 deep copies，使用 deterministic bounded
+ordering，并已接入 default app，使 perception 可以包含 bounded read-only memory
+context。
+
+当前实现没有 public memory read/write API、durable persistence、vector retrieval、
+automatic reflection、self-summary generation、relationship behavior，也没有
+personality drift action modifier。
+
+## 当前归档模型
 
 `ArchiveService` 注册为 runtime step callback。
 
@@ -87,12 +128,10 @@ agent-in-world cognition model。
 - 每 `WORLD_SNAPSHOT_INTERVAL_TICKS` ticks 创建 snapshots，默认 `10`。
 - 每 `WORLD_SUMMARY_INTERVAL_TICKS` ticks 创建 summaries，默认 `20`。
 
-Snapshots 存储 runtime state 和 params。Summaries 统计 event types，并根据 interval 内的 events
-写入简短 text summary。
+Snapshots 存储 runtime state 和 params。Summaries 统计 event types，并根据 interval
+内的 events 写入简短 text summary。Storage 是 process-local 和 in-memory。
 
-Storage 是 in-memory。
-
-## Current Dashboard
+## 当前 Dashboard
 
 Frontend 是 Vue 3 + TypeScript dashboard。它加载：
 
@@ -108,41 +147,61 @@ Frontend 是 Vue 3 + TypeScript dashboard。它加载：
 - timeline pagination 和 expanded event details。
 - manual world param patch form。
 - params-agent auto-tune form。
-- placeholder agent state panel。
+- E2E 覆盖的 agent loop baseline interactions。
 - latest summary panel。
 
-## Current API Surfaces
+Dashboard 不暴露 product memory management、world generation、projection
+application readiness 或 external validation UI。
 
-Endpoint 级别细节见 `docs/api-reference-v0.1.md`。
+## 当前 API surfaces
+
+当前 API reference 见 `docs/api-reference-v0.5.md`；legacy v0.1 reference 见
+`docs/api-reference-v0.1.md`。
 
 High-level groups：
 
-- health: `/health`
-- runtime: `/runtime/state`, `/runtime/step`
-- timeline: `/world/events`, `/world/event-steps`
-- params: `/world/params`, `/world/params/apply`
-- params agent: `/world/agent/params/propose-and-apply`
-- archive: `/world/snapshots`, `/world/summaries`
+- health：`/health`
+- runtime：`/runtime/state`, `/runtime/step`
+- timeline：`/world/events`, `/world/event-steps`
+- params：`/world/params`, `/world/params/apply`
+- params agent：`/world/agent/params/propose-and-apply`
+- agent loop：`/world/agent/loop/step`
+- archive：`/world/snapshots`, `/world/summaries`
 
-## Current Verification
+v0.5 没有 public memory API。
 
-见 `docs/testing/v0.1-test-map.md` 和
-`docs/testing/results/2026-05-23-v0.1-closeout.md`。
+## 当前验证
 
-最新记录的 closeout results：
+当前 v0.5 closeout 和 validation evidence 记录在：
 
-- backend: `63 passed`。
-- frontend unit tests: `24 passed`。
-- frontend production build: passed with a chunk-size warning。
+- `docs/releases/v0.5.md`
+- `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
+- `docs/testing/results/2026-05-31-v0.5-overall-validation.md`
 
-## Known Implementation Limits
+关键已记录结果包括：
+
+- focused backend memory substrate：`7 passed`。
+- focused perception and loop API：`16 passed`。
+- focused backend memory/loop/action compatibility：`33 passed`。
+- full backend regression：`145 passed`。
+- frontend unit baseline：`28 passed`。
+- frontend production build：通过，仅有既有 Vite chunk-size warning。
+- focused Agent Loop E2E：`9 passed`。
+- full E2E：`15 passed`。
+- Agent smoke saved-result checker：PASS。
+- minimal autonomous saved-result checker：PASS。
+
+这些是已记录的 v0.5 evidence artifacts。本次文档更新不重新运行这些完整验证流程。
+
+## 已知实现限制
 
 - Runtime state 是 process-local 和 in-memory。
 - Event log 是 in-memory。
-- Snapshot 和 summary stores 是 in-memory。
-- World 和 Agent schemas 仍是 placeholders。
-- Event schema 只有 minimal fields。
-- 还没有 WorldCell 或 WorldSpec。
-- 还没有 world generation。
-- 还没有 Agent perception/action/memory loop。
-- 还没有 external projection application consumer。
+- Snapshot、summary 和 memory stores 都是 in-memory。
+- Loaded `WorldSpec` data 可以提供 inert runtime context，但不会作为活跃递归世界状态执行。
+- World generation 仍是 v0.6 planned scope，当前未实现。
+- Runtime、archive 或 memory state 均没有 durable persistence 或 migrations。
+- 没有 public memory API。
+- 没有 vector retrieval、automatic reflection、self-summary generation、
+  relationship behavior 或 personality drift action modifier。
+- 不声明 external validation readiness 或 projection application readiness。
