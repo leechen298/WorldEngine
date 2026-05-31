@@ -29,6 +29,78 @@ def test_valid_invalid_param_fixture_passes() -> None:
     assert errors == []
 
 
+def test_valid_agent_autotune_fixture_passes() -> None:
+    errors = validate_result_dir(FIXTURES_DIR / "valid-agent-autotune")
+
+    assert errors == []
+
+
+def test_evidence_helper_builds_agent_autotune_summary(tmp_path: Path) -> None:
+    operation_log = tmp_path / "operation-log.jsonl"
+    operation_log.write_text(
+        "\n".join(
+            [
+                json.dumps(
+                    {
+                        "seq": 1,
+                        "type": "ui",
+                        "target": "world-agent-success",
+                        "action": "read",
+                    }
+                ),
+                json.dumps(
+                    {
+                        "seq": 2,
+                        "type": "ui",
+                        "target": "world-agent-patches",
+                        "action": "read",
+                    }
+                ),
+            ]
+        )
+        + "\n"
+    )
+
+    summary = build_api_summary_from_state(
+        scenario="dashboard-agent-autotune",
+        baseline={
+            "health_status": "ok",
+            "runtime": {"tick_id": 4},
+            "world_params": {"counter": {"increment": {"value": 2, "type": "number"}}},
+        },
+        health={"status": "ok"},
+        runtime={"tick_id": 4},
+        params={"counter": {"increment": {"value": 1, "type": "number"}}},
+        events=[
+            {
+                "tick_id": 4,
+                "type": "params.applied",
+                "source": "agent.params",
+                "payload": {
+                    "patches": [
+                        {
+                            "op": "set",
+                            "path": "counter.increment",
+                            "value": {"value": 1, "type": "number"},
+                        }
+                    ]
+                },
+            }
+        ],
+        operation_log_path=operation_log,
+    )
+
+    assert summary["scenario"] == "dashboard-agent-autotune"
+    assert summary["baseline_counter_increment"] == 2
+    assert summary["observed_counter_increment"] == 1
+    assert summary["counter_changed"] is True
+    assert summary["patches_count"] == 1
+    assert summary["patch_paths"] == ["counter.increment"]
+    assert summary["params_applied_event_seen"] is True
+    assert summary["ui_success_seen"] is True
+    assert summary["ui_patches_seen"] is True
+
+
 def test_evidence_helper_builds_params_flow_summary() -> None:
     summary = build_api_summary_from_state(
         scenario="dashboard-params-flow",

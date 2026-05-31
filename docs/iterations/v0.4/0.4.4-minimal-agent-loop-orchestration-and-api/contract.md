@@ -10,7 +10,9 @@
 ## Allowed Changes
 
 - Add request-driven loop service under approved `backend/app/` modules.
+- Extend existing agent-loop schemas additively for loop step request/response models.
 - Add one reviewed API route only if contract-authorized.
+- Register/wire the loop service through the backend app factory and route dependency state.
 - Use deterministic providers or explicit test intents for tests.
 - Add focused service/API tests and adjacent compatibility checks.
 

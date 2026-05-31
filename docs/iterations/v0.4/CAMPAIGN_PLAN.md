@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: ready for review
+Status: final / closeout complete
 Type: Codex `/goal` development campaign plan
 
 ## Purpose

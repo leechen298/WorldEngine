@@ -17,7 +17,7 @@ Package-specific verification expectations:
 - changed-file scope guard against the active package contract
 - Run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...`.
 - Run adjacent compatibility tests for touched surfaces.
-- Run FastAPI TestClient API smoke if a route is added.
+- Do not add an API route in this package; API smoke is not applicable unless a later contract-authorized package adds a route.
 
 If this package changes backend implementation files in a future execution pass, run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...` and then run adjacent compatibility tests named in the active implementation review.
 

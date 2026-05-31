@@ -1,20 +1,20 @@
 # WorldEngine
 
-Status: v0.4 planning ready for review; current implementation capability
-remains v0.3 final / closeout complete.
+Status: v0.4 final / closeout complete.
 
 Chinese mirror: `README.zh.md`.
 
 WorldEngine is a recursive world generation and runtime engine.
 
-The `v0.4` branch currently contains planning and goal-campaign documentation
-for the Agent-in-World Minimal Loop. It has not implemented v0.4 runtime,
-schema, API, frontend, test, fixture, migration, or legacy code changes.
+The `v0.4` branch implements the Agent-in-World Minimal Loop. It adds bounded
+perception, inspectable action intent/result schemas, validated `noop` and
+`params.patch` action handling, and a request-driven loop API while preserving
+the v0.3 WorldSpec Loader and Runtime Bridge capability.
 
-Current implemented capability remains the v0.3 WorldSpec Loader and Runtime
-Bridge milestone: it adds a minimal generic `WorldSpec` loader and an optional
-inert runtime context bridge while preserving the v0.1 runtime scaffold. It is
-not yet a recursive world engine implementation.
+WorldEngine is still not a complete recursive world engine implementation.
+Memory/self-continuity, world generation, external validation readiness,
+projection application readiness, and concrete world/demo content remain future
+version scope.
 
 Read first:
 
@@ -35,9 +35,10 @@ Read first:
 - `backend/app/` - active backend path.
 - `backend/worldengine/` - legacy pre-v0.1 path; do not add new features there.
 
-## Current v0.3 Capability
+## Current v0.4 Capability
 
-v0.3 preserves the v0.1 runtime scaffold and can:
+v0.4 preserves the v0.1 runtime scaffold and v0.3 loader/runtime bridge while
+adding the minimal Agent-in-World loop. It can:
 
 - start backend and frontend development services from the repository root.
 - expose health, runtime, world event, world params, archive, and agent params
@@ -50,6 +51,14 @@ v0.3 preserves the v0.1 runtime scaffold and can:
 - dry-run world parameter patches before applying them.
 - create in-memory snapshots and summaries on configured intervals.
 - use an LLM-style params agent service interface to propose and apply patches.
+- build a bounded agent perception frame from runtime state, recent events,
+  world params, and optional runtime context summary.
+- validate inspectable `ActionIntent` payloads and return `ActionResult`
+  evidence.
+- handle `noop` and validated `params.patch` actions through a small checked
+  boundary.
+- expose `POST /world/agent/loop/step` for one request-scoped perceive ->
+  intent -> validate/apply -> result cycle.
 - render a dashboard for runtime controls, timeline, world params, and agent
   params interactions.
 - load and validate generic `WorldSpec` data through the minimal loader.
@@ -57,12 +66,12 @@ v0.3 preserves the v0.1 runtime scaffold and can:
 - keep runtime step outputs and event payloads free of raw `WorldSpec` or root
   tree data.
 
-v0.3 still cannot:
+v0.4 still cannot:
 
 - run recursive `WorldCell` structures as active runtime state.
 - run loaded `WorldSpec` data as active recursive world state.
 - generate worlds from templates or prompts.
-- run agents through a perception/action/memory loop.
+- run agents through a memory/self-continuity loop.
 - model agent pseudo-self continuity.
 - run external projection applications as engine consumers.
 - provide a packaged external product surface.
@@ -112,6 +121,10 @@ mapped in `docs/testing/v0.1-test-map.md`.
 
 Key recorded evidence includes:
 
+- v0.4 final closeout evidence in `docs/iterations/v0.4/review.md` and
+  `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/final-closeout.md`:
+  focused backend/API `35 passed`, full backend `139 passed`, final docs
+  mirror check `missing=0`, and final scope guard `out_of_scope=0`.
 - v0.3 loader and runtime bridge package evidence, compatibility audit, and
   final closeout review.
 - `make check-backend` and `make check-frontend`.

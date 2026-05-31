@@ -1,6 +1,6 @@
 # 0.4.0 v0.4 Planning And Compatibility Baseline
 
-Status: ready for review
+Status: review complete
 Type: documentation-only
 
 ## Goal
@@ -49,14 +49,14 @@ Chinese mirrors are required in this package and are created in the same documen
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Implementation authorized, when applicable
-- [ ] Implementation complete, when applicable
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Implementation not applicable for this documentation-only package
+- [x] Implementation complete not applicable for this documentation-only package
+- [x] Documentation evidence complete
+- [x] Review complete
 
 ## Final Assessment State
 
-Current value: `ready for review`.
+Current value: `review complete`.

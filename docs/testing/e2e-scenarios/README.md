@@ -25,6 +25,7 @@ evidence. Those API reads are not Agent operations.
 | `dashboard-archive-summary` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with low archive intervals scoped to the Playwright backend web server. |
 | `dashboard-agent-autotune` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with deterministic params-agent patch assertions. |
 | `dashboard-timeline-navigation` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with generated events, pagination, and expanded-detail assertions. |
+| `agent-loop-step` | `implemented` | Implemented in `frontend/e2e/agent-loop.spec.ts` with Playwright request assertions for the v0.4 Agent Loop API. |
 
 ## Execution Rule
 

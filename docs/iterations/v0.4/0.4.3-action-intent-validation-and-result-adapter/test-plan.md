@@ -15,11 +15,20 @@ Package-specific verification expectations:
 - `git diff --check`
 - file existence checks for required docs and mirrors
 - changed-file scope guard against the active package contract
-- Run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...`.
-- Run adjacent compatibility tests for touched surfaces.
-- Run FastAPI TestClient API smoke if a route is added.
+- Run focused backend tests from `backend/`:
 
-If this package changes backend implementation files in a future execution pass, run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...` and then run adjacent compatibility tests named in the active implementation review.
+```bash
+.venv/bin/python -m pytest app/tests/test_agent_action_adapter.py app/tests/test_param_validator.py app/tests/test_dry_run_validation.py app/tests/test_world_params.py -q
+```
+
+- Run adjacent compatibility tests for touched surfaces with the focused command above.
+- Do not add an API route in this package; API smoke is not applicable unless a later contract-authorized package adds a route.
+
+If this package changes backend implementation files in a future execution pass, run the focused command above and then:
+
+```bash
+.venv/bin/python -m pytest app/tests tests -q
+```
 
 ## Expected Results
 

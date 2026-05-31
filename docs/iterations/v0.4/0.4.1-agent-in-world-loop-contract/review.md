@@ -1,63 +1,66 @@
 # Review
 
-Status: planned
+Status: review complete
 
 ## Changed Files
 
-Planned or current documentation files for this package:
+Current closeout updates for this package:
 
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/README.md`
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/README.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/intent.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/intent.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/contract.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/contract.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/technical-design.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/technical-design.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/test-plan.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/test-plan.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/plan.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/plan.zh.md`
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/review.md`
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/review.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/v0.4-plan.md`
+- `docs/iterations/v0.4/v0.4-plan.zh.md`
+- `docs/iterations/v0.4/CURRENT_STATE.md`
+- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
 
-No implementation files are changed by this documentation creation pass.
+No runtime, schema, API, frontend, backend test, fixture, migration, or legacy implementation files are changed by this documentation-only package.
 
 ## Commands Run
 
-Commands are recorded by the executor when this package is actively worked. For the initial v0.4 documentation creation pass, package-specific backend, frontend, API, E2E, runtime, fixture, migration, and build commands are not run because this package is not being implemented.
+```bash
+git status --short --branch
+git diff --check
+find docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract -maxdepth 1 -type f | sort
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract'); docs=['README','intent','contract','technical-design','test-plan','plan','review']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "import subprocess,sys; out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True).splitlines(); allowed=('docs/iterations/v0.4/','README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md'); bad=[line for line in out if not line[3:].startswith(allowed)]; print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
+```
 
 ## Test Results
 
-Not executed for this child during initial documentation creation. Future execution must use `test-plan.md` and record exact command evidence here.
+- Documentation commands passed in the current v0.4 goal session.
+- Required English and Chinese package files exist.
+- Changed-file scope stayed inside v0.4 documentation and already-approved v0.4 status surfaces.
+- Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands were not run for this child because it is documentation-only and changes no implementation files.
 
 ## Compatibility Review
 
-- `RuntimeEngine` tick and `world_time_seconds` behavior must remain compatible unless the active child explicitly changes it.
-- API envelope and error shape must remain compatible.
-- `/runtime/state`, `/runtime/step`, `/world/events`, and `/world/event-steps` are compatibility-sensitive.
-- World params, params apply behavior, existing ParamsAgent endpoint, archive behavior, and Event.refs optional serialization are compatibility-sensitive.
-- Schema changes must be additive unless the active contract explicitly allows a breaking change.
-
-During initial documentation creation, runtime, schema, API, frontend, backend tests, fixtures, migrations, and legacy behavior remain unchanged.
+This package defines the public v0.4 Agent-in-World loop contract only. It authorizes no runtime, schema, API, frontend, backend test, fixture, migration, or legacy implementation changes. Existing runtime tick behavior, API envelope, event serialization, world params behavior, archive behavior, ParamsAgent endpoint, and `backend/worldengine/` legacy boundary remain unchanged.
 
 ## Scope Review
 
-- Stop when a required evaluator checkpoint is missing.
-- Stop on P1 or unresolved P2 findings.
-- Stop and record a blocker when required file classes are not authorized by the active contract.
-- Do not treat historical evidence as current-session pass evidence.
+The contract keeps v0.4 bounded to PerceptionFrame, ActionIntent, ActionResult, and one request-scoped LoopStep. It excludes v0.5 memory/self-continuity, v0.6 generation, v0.7 external validation readiness, v0.8 projection readiness, concrete world content, application-specific backend logic, and `backend/worldengine/` runtime changes.
 
 ## Subagent / Evaluator Findings
 
-Required checkpoints are defined by `GOAL_RUNNER.md`. They are not complete for this child until a future run records them here.
+Documentation / contract evaluator and closeout consistency review were required before any implementation-bearing child could start.
+
+- Documentation / contract evaluator: no P1/P2 findings; the contract is sufficient to hand off to `0.4.2`.
+- Closeout consistency review: no unresolved P1/P2 after child and parent status surfaces were synchronized.
 
 ## Unresolved P1/P2/P3
 
-- P1: none identified in this initial documentation draft.
-- P2: none identified in this initial documentation draft.
-- P3: implementation or validation evidence is not executed yet unless this package is `0.4.0`; the target handoff is recorded in `v0.4-plan.md`.
+- P1: none.
+- P2: none.
+- P3: v0.4 implementation evidence is not executed yet; next package must produce current-session implementation evidence before making runtime or schema claims.
+
+## Handoff
+
+`0.4.1-agent-in-world-loop-contract` is review complete. The next active child is `0.4.2-agent-perception-and-schemas`, which must record `implementation_authorized: yes` after its own documentation / contract evaluator before backend implementation starts.
 
 ## Final Assessment
 
-planned
+review complete

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" role="img" aria-label="dashboard agent autotune fixture">
+  <rect width="640" height="360" fill="#f8fafc"/>
+  <rect x="32" y="32" width="576" height="296" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="64" y="96" font-family="Arial, sans-serif" font-size="24" fill="#0f172a">WorldEngine Dashboard</text>
+  <text x="64" y="146" font-family="Arial, sans-serif" font-size="18" fill="#334155">Auto-Tune: Applied 1 patch(es)</text>
+  <text x="64" y="190" font-family="Arial, sans-serif" font-size="16" fill="#475569">counter.increment -> 1</text>
+</svg>

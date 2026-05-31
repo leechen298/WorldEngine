@@ -1,36 +1,28 @@
 # 评审
 
-状态：ready for review（待评审）
+状态：final / closeout complete
 
-## 变更文件
+## Changed Files
 
-创建的父级文件：
+最终 v0.4 closeout 包含三类变更：
 
-- `docs/iterations/v0.4/README.md`
-- `docs/iterations/v0.4/README.zh.md`
-- `docs/iterations/v0.4/v0.4-plan.md`
-- `docs/iterations/v0.4/v0.4-plan.zh.md`
-- `docs/iterations/v0.4/GOAL_RUNNER.md`
-- `docs/iterations/v0.4/GOAL_RUNNER.zh.md`
-- `docs/iterations/v0.4/CURRENT_STATE.md`
-- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
-- `docs/iterations/v0.4/CAMPAIGN_PLAN.md`
-- `docs/iterations/v0.4/CAMPAIGN_PLAN.zh.md`
-- `docs/iterations/v0.4/review.md`
-- `docs/iterations/v0.4/review.zh.md`
+- 公开状态面：`README.md`、`README.zh.md`、`docs/roadmap.md`、`docs/roadmap.zh.md`。
+- `docs/iterations/v0.4/**` 下的 v0.4 iteration package 和 evidence docs。
+- 已授权 backend implementation/test files：
+  - `backend/app/schemas/agent_loop.py`
+  - `backend/app/agent/perception.py`
+  - `backend/app/agent/action_adapter.py`
+  - `backend/app/agent/loop_service.py`
+  - `backend/app/api/routes/world_agent.py`
+  - `backend/app/api/app_factory.py`
+  - `backend/app/tests/test_agent_perception.py`
+  - `backend/app/tests/test_agent_action_adapter.py`
+  - `backend/app/tests/test_agent_loop_service.py`
+  - `backend/app/tests/test_agent_loop_api.py`
 
-创建的 child package 文件：
+未修改 frontend、fixture、migration、external validation runner、projection app 或 legacy `backend/worldengine/` implementation files。
 
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.2-agent-perception-and-schemas/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.3-action-intent-validation-and-result-adapter/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.5-agent-loop-evidence-and-compatibility-audit/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-- `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/{README,intent,contract,technical-design,test-plan,plan,review}.md` 及 `.zh.md` 镜像
-
-## 已读文件
+## Files Read
 
 - `AGENTS.md`
 - `docs/project-north-star.md`
@@ -39,132 +31,107 @@
 - `docs/roadmap.md`
 - `docs/iterations/README.md`
 - `docs/iterations/AGENTS.md`
-- `docs/iterations/v0.3-post-closeout/GOAL_RUNNER.md`
-- `docs/iterations/v0.3-post-closeout/CURRENT_STATE.md`
-- `docs/iterations/v0.3-post-closeout/CAMPAIGN_PLAN.md`
-- `docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
-- `backend/app/schemas/agent.py`
-- `backend/app/core/runtime_context.py`
+- `docs/iterations/v0.4/**` 下的 active v0.4 package documents
+- `backend/app/**` 下由 v0.4 触及的 active backend files
 
-## 已运行命令
+## Commands Run
+
+TDD 和 backend 验证：
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_action_adapter.py app/tests/test_agent_loop_api.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_perception.py app/tests/test_agent_action_adapter.py app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py app/tests/test_params_agent.py app/tests/test_event_api_compat.py app/tests/test_runtime_step.py -q
+cd backend && .venv/bin/python -m pytest app/tests tests -q
+```
+
+文档和范围验证：
 
 ```bash
 git status --short --branch
 git diff --check
-python3 -c "from pathlib import Path; bad=[]
-for path in Path('docs/iterations/v0.4').rglob('*.md'):
-    for idx,line in enumerate(path.read_text().splitlines(True),1):
-        body=line.rstrip('\n\r')
-        if body.rstrip(' \t') != body:
-            bad.append(f'{path}:{idx}')
-print('trailing_whitespace_findings=' + str(len(bad)))
-[print(x) for x in bad]
-raise SystemExit(1 if bad else 0)"
-python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4'); parents=['README.md','README.zh.md','v0.4-plan.md','v0.4-plan.zh.md','GOAL_RUNNER.md','GOAL_RUNNER.zh.md','CURRENT_STATE.md','CURRENT_STATE.zh.md','CAMPAIGN_PLAN.md','CAMPAIGN_PLAN.zh.md','review.md','review.zh.md']; packages=['0.4.0-v0.4-planning-and-compatibility-baseline','0.4.1-agent-in-world-loop-contract','0.4.2-agent-perception-and-schemas','0.4.3-action-intent-validation-and-result-adapter','0.4.4-minimal-agent-loop-orchestration-and-api','0.4.5-agent-loop-evidence-and-compatibility-audit','0.4.6-v0.4-release-candidate-bundle','0.4.7-v0.4-final-closeout']; docs=['README.md','intent.md','contract.md','technical-design.md','test-plan.md','plan.md','review.md']; expected=[base/p for p in parents]; expected += [base/pkg/doc for pkg in packages for doc in docs]; expected += [base/pkg/(doc[:-3]+'.zh.md') for pkg in packages for doc in docs]; missing=[str(p) for p in expected if not p.exists()]; file_count=sum(1 for p in base.rglob('*') if p.is_file()); print('file_count=' + str(file_count)); print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing or file_count != 124 else 0)"
-python3 -c "from pathlib import Path; text='\n'.join(p.read_text() for p in Path('docs/iterations/v0.4').rglob('*.md')); terms=['完成 v0.4','Active child package','active child','implementation_authorized','subagent','evaluator','P1','P2','P3','Stop Conditions','停止条件']; missing=[term for term in terms if term not in text]; print('route_terms_missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
-python3 -c "import subprocess,sys; out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True); bad=[]; [bad.append(line) for line in out.splitlines() if not line[3:].startswith('docs/iterations/v0.4/')]; print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
-python3 -c "from pathlib import Path; terms=('TBD','TODO','PLACEHOLDER','Pending until verification','not yet','to be filled'); bad=[]; base=Path('docs/iterations/v0.4')
-for path in base.rglob('*.md'):
-    in_code=False
-    for idx,line in enumerate(path.read_text().splitlines(),1):
-        if line.strip().startswith(chr(96)*3):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
-        if any(term in line for term in terms):
-            bad.append(f'{path}:{idx}:{line}')
-print('placeholder_findings=' + str(len(bad)))
-[print(x) for x in bad]
-raise SystemExit(1 if bad else 0)"
-rg -n '^# (Contract|Intent|Technical Design|Test Plan|Plan|Review)$|^## (Public Concepts|Allowed Changes|Forbidden Changes|Compatibility Requirements|Implementation Authorization|Out-of-Scope Follow-ups|Changed Files|Commands Run|Test Results|Compatibility Review|Scope Review|Final Assessment)$' docs/iterations/v0.4 -g '*.zh.md'
-rg -n '状态：待评审$|Campaign status：文档待评审$|Status: 待评审$' docs/iterations/v0.4 -g '*.zh.md'
-rg -n 'concrete demo-world|memory/self-continuity|self-continuity|world generation|external validation runner|backend/worldengine/' docs/iterations/v0.4
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.7-v0.4-final-closeout'); docs=['README','intent','contract','technical-design','test-plan','plan','review','final-closeout']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "<changed-file scope guard over git status --short>"
+python3 -c "<stale public-status scan over README.md, README.zh.md, docs/roadmap.md, docs/roadmap.zh.md>"
+python3 -c "<stale v0.4 status scan excluding command-log self-matches>"
 ```
 
-## 测试结果
+## Test Results
 
-- `git status --short --branch` 显示分支为 `v0.4...origin/v0.4`，且只有未跟踪目录 `docs/iterations/v0.4/`。
-- `git diff --check` 退出 `0`；未报告空白错误。
-- 对 `docs/iterations/v0.4/*.md` 的直接行尾空白扫描退出 `0`；`trailing_whitespace_findings=0`。
-- 文件存在性检查退出 `0`；`file_count=124` 且 `missing=0`。
-- route/status term check 退出 `0`；`route_terms_missing=0`。
-- changed-file scope guard 退出 `0`；`out_of_scope=0`，当前改动仅限 `docs/iterations/v0.4/**`。
-- 占位符扫描退出 `0`；`placeholder_findings=0`。
-- 中文镜像标题扫描退出 `1` 且无输出，通用 review heading 已本地化。
-- 中文状态漂移扫描退出 `1` 且无输出，没有仅本地化、缺少 canonical status 的状态字面量。
-- 禁止范围词扫描只发现边界/禁止范围引用和命令证据行，没有实现声明或实现文件变更。
-- 本轮是 documentation-only 创建，没有修改实现文件，因此未运行 backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 或 test implementation 命令。
+- 针对 review feedback 的 red regression run：`3 failed, 12 passed`；失败证明 `noop` 接受 patches，且 loop request/action intent extra fields 会被静默忽略。
+- 修复后聚焦 regression：`15 passed in 0.29s`。
+- 聚焦 perception/action/loop/API 命令：`24 passed in 0.36s`。
+- 聚焦 backend/API compatibility 命令：`35 passed in 0.55s`。
+- 全 backend 回归：`139 passed in 0.98s`。
+- `git diff --check` passed。
+- Final closeout docs/mirrors check 通过，结果为 `missing=0`。
+- Changed-file scope guard 通过；针对已授权 v0.4 public status、docs、backend implementation 和 backend test 文件集合，结果为 `changed_files_count=82`、`out_of_scope=0`。
+- Stale public-status scan 未发现过时的 planning、ready-for-review 或未实现 v0.4 claims。
+- Stale final-status scan 未在 active v0.4 status surfaces 下发现过时的 in-progress、candidate 或 incomplete final-route claims。
 
-## 兼容性评审
+## Compatibility Review
 
-本轮仅修改文档。runtime behavior、schema behavior、API behavior、frontend behavior、fixture behavior、migration behavior、Event.refs behavior、WorldSpec loader behavior、runtime context bridge behavior、既有 ParamsAgent behavior 和 legacy `backend/worldengine/` behavior 保持不变。
+v0.4 保持 additive：
 
-## 范围评审
+- `PerceptionFrame`、`ActionIntent`、`ActionResult`、`LoopStepRequest` 和 `LoopStepResponse` 是新增 agent-loop schemas。
+- `ActionIntent`、`LoopStepRequest` 和 loop action patch items 现在拒绝未知字段，并使用既有 422 API envelope，避免 action-boundary payload 被静默丢弃。
+- `noop` 仍然无 effect，但现在会拒绝 unexpected `patches`，不产生 event，也不修改状态。
+- `params.patch` 使用严格的 `ActionParamPatchItem` schema，保持与 `ParamPatchItem` 兼容，然后继续复用 `ParamValidator`、`ParamDryRunValidator` 和 `WorldState.apply_patch()`。
+- `POST /world/agent/loop/step` 是 additive。
+- 既有 `/world/agent/params/propose-and-apply`、runtime、event APIs、archive behavior、frontend、fixtures、migrations 和 legacy `backend/worldengine/` 保持兼容。
 
-变更预期只位于 `docs/iterations/v0.4/**`。本轮只创建 v0.4 planning 和 campaign 文档，不授权实现；带实现 child package 必须通过自己的 review gates。
+## Scope Review
+
+最终 scope guard 不是 docs-only。它明确允许已评审的 v0.4 backend implementation/test files 和 public status docs；它会拒绝无关文件，当前结果为 `out_of_scope=0`。
+
+v0.4 仍排除 memory/self-continuity、world generation、external validation runner readiness、projection readiness、concrete world/demo content、frontend changes、fixtures、migrations 和 `backend/worldengine/` 下的新 runtime features。
 
 ## Subagent / Evaluator Checkpoint
 
-本轮文档创建定义 goal routing、package sequencing、evidence rules、automation-consumption contracts 和英文/中文镜像义务，因此需要 read-only evaluator review。
+整个 campaign 使用了 subagent/evaluator checkpoints：
 
-Evaluator 结果：
+- implementation children 的 documentation/contract authorization checks；
+- implementation-scope review；
+- code review；
+- validation-evidence review；
+- documentation closeout consistency checks；
+- release-candidate review；
+- final closeout review。
 
-- Scope / goal-runner evaluator：未发现 P1 或 P2。曾发现一项 P3，即本文件在更新前仍有 stale pending review evidence；本次 review 更新已修复。
-- Mirror / automation-consumption evaluator：未发现 P1。曾发现两项 P2：stale pending review evidence 与中文状态 literal 不一致；本次 review 更新均已修复。曾发现一项 P3：中文镜像有机械英文标题；本次已翻译通用中文标题。
+Final closeout evaluator 已批准 final status flip。之后的 external review 发现该 flip 后仍有 P1/P2/P3 不一致；本 review 记录修复结果。
 
-## 外部审核跟进
+Post-repair subagent/evaluator checkpoints 已完成：
 
-来源：用户粘贴的 ChatGPT audit，发生在 commit `a08eec7` 之后。
+- code/API evaluator 确认无 P1/P2，并发现一个 `noop` 携带 `patches` 的 API-level coverage gap；
+- 该 P3 已通过 route-level API regression 修复，覆盖 HTTP 200 rejected result、无 params mutation、无 `params.applied` event；
+- documentation/status evaluator 确认无 P1，并发现一个 P2 scope wording issue 与 P3 documentation clarity issues；
+- wording 和 evidence-entry issues 已在 parent README、root README 和 0.4.7 docs 中修复；
+- final read-only evaluator 已复核 public status、active child state、changed-file scope、stale status scans 和 API coverage，结论为无 P1/P2/P3。
+- 后续 P2 review 发现 nested `patches[*]` unknown fields 仍会被静默丢弃；已通过严格 loop patch-item schema validation 和 API regression 修复，验证 422、无 mutation、无 `params.applied` event。
 
-本次跟进修改文件：
+## External Review Repair
 
-- `README.md`
-- `README.zh.md`
-- `docs/roadmap.md`
-- `docs/roadmap.zh.md`
-- `docs/iterations/v0.4/README.md`
-- `docs/iterations/v0.4/README.zh.md`
-- `docs/iterations/v0.4/review.md`
-- `docs/iterations/v0.4/review.zh.md`
+已修复最新 review findings：
 
-已处理 findings：
+- P1：根 `README.md`、`README.zh.md`、`docs/roadmap.md` 和 `docs/roadmap.zh.md` 现在都报告 v0.4 `final / closeout complete`。
+- P1：本顶层 review 现在记录真实 mixed docs/backend changed-file scope，不再沿用初始 docs-only scope。
+- P2：`ActionIntent` 和 `LoopStepRequest` 现在禁止 unknown fields；API regressions 验证 422 且不修改状态。
+- P2：nested loop `params.patch` items 现在通过严格 `ActionParamPatchItem` 禁止 unknown fields；API regressions 验证 422、无 mutation、无 event。
+- P2：`CURRENT_STATE.md` 和 parent README 现在一致说明 final closeout 后没有 active child。
+- P3：`noop` 携带 unexpected patches 时现在返回 rejected `ActionResult`，且不修改状态、不产生 event。
 
-- P2：根 README 状态现在说明 `v0.4` 分支处于 planning ready for review，当前已实现能力仍是 v0.3 final / closeout complete。
-- P2：roadmap v0.4 小节现在记录 `Status: planned / ready for review`。
-- P3：v0.4 README 的包索引改为按包分节，不再使用过宽 Markdown 表格。
-- P3：v0.4 中文 README 和 roadmap 的普通说明已做中文 polish，同时保留 canonical status literal、路径和契约术语。
+## Commands Not Run
 
-本次跟进运行命令：
+未运行 frontend、browser E2E、Agent smoke、build、fixture、migration 和 external validation runner commands，因为 v0.4 未修改或授权这些 surface。
 
-```bash
-git status --short --branch
-git diff --check
-rg -n 'current `v0\.3` branch|当前 `v0\.3` 分支|Status: v0\.3 final|状态：`v0\.3 final' README.md README.zh.md
-rg -n -A2 '## v0\.4 - Agent-in-World Minimal Loop' docs/roadmap.md docs/roadmap.zh.md
-rg -n '^\| Package \||^\| 包 \|' docs/iterations/v0.4/README.md docs/iterations/v0.4/README.zh.md
-rg -n 'deliverables|compatibility constraints|handoff rules|request-driven loop orchestration|child sequence' docs/iterations/v0.4/README.zh.md docs/roadmap.zh.md
-python3 -c "import subprocess,sys; allowed={'README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md','docs/iterations/v0.4/README.md','docs/iterations/v0.4/README.zh.md','docs/iterations/v0.4/review.md','docs/iterations/v0.4/review.zh.md'}; out=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines(); bad=[p for p in out if p not in allowed]; print('changed_files=' + str(len(out))); print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
-```
+## Unresolved P1/P2/P3
 
-本次跟进结果：
+- P1：none。
+- P2：none。
+- P3：none。
 
-- `git diff --check` 退出 `0`。
-- changed-file scope guard 退出 `0`；`changed_files=8` 且 `out_of_scope=0`。
-- 根 README stale status 扫描退出 `1` 且无输出。
-- roadmap v0.4 status 扫描退出 `0`，英文和中文 roadmap 都包含新的 v0.4 状态。
-- 包索引表格扫描退出 `1` 且无输出，package index 已改为分节。
-- 中文措辞扫描退出 `1` 且无输出，审核指出的混排短语已处理。
-- 本次跟进是 documentation-only，未修改实现文件，因此未运行 backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 或 test implementation 命令。
+## Final Assessment
 
-## 未解决 P1/P2/P3
-
-- P1：未发现。
-- P2：review evidence 和中文状态修复后未发现。
-- P3：v0.4 implementation evidence 尚未执行。target_package：`0.4.2-agent-perception-and-schemas`。defer_reason：implementation 只能在 contract/design/test-plan review 后启动。
-
-## 最终评估
-
-ready for review
+final / closeout complete

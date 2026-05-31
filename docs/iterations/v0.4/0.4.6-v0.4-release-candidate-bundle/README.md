@@ -1,6 +1,6 @@
 # 0.4.6 v0.4 Release Candidate Bundle
 
-Status: planned
+Status: review complete
 Type: documentation-only
 
 ## Goal
@@ -46,17 +46,22 @@ Forbidden changes:
 
 Chinese mirrors are required in this package and are created in the same documentation pass.
 
+## Supplemental Documents
+
+- [x] `release-candidate-bundle.md`
+- [x] `release-candidate-bundle.zh.md`
+
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Implementation authorized, when applicable
-- [ ] Implementation complete, when applicable
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Implementation not applicable for this documentation-only package
+- [x] Implementation complete not applicable for this documentation-only package
+- [x] Documentation evidence complete
+- [x] Review complete
 
 ## Final Assessment State
 
-Current value: `planned`.
+Current value: `review complete`.

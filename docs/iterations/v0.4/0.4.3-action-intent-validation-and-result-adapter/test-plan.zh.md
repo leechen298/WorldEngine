@@ -15,11 +15,20 @@ git diff --check
 - `git diff --check`
 - 检查必需文档和镜像是否存在
 - 按 active package contract 执行 changed-file scope guard
-- 在 `backend/` 下用 `.venv/bin/python -m pytest ...` 运行聚焦后端测试。
-- 按 touched surface 运行相邻兼容性测试。
-- 如新增 API route，通过 FastAPI TestClient 做 API smoke。
+- 在 `backend/` 下运行聚焦后端测试：
 
-如果本包在未来执行中修改 backend 实现文件，必须在 `backend/` 下用 `.venv/bin/python -m pytest ...` 运行聚焦 backend tests，然后运行 active implementation review 中指定的相邻兼容性测试。
+```bash
+.venv/bin/python -m pytest app/tests/test_agent_action_adapter.py app/tests/test_param_validator.py app/tests/test_dry_run_validation.py app/tests/test_world_params.py -q
+```
+
+- 使用上面的聚焦命令运行 touched surface 的相邻兼容性测试。
+- 本包不新增 API route；除非后续 contract-authorized package 新增 route，否则 API smoke 不适用。
+
+如果本包在未来执行中修改 backend 实现文件，必须先运行上面的聚焦命令，然后运行：
+
+```bash
+.venv/bin/python -m pytest app/tests tests -q
+```
 
 ## 预期结果
 

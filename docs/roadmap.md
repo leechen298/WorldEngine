@@ -86,10 +86,13 @@ public contracts without creating those repositories inside WorldEngine.
 
 ## v0.4 - Agent-in-World Minimal Loop
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 Goal: let agents perceive world events, produce action intents, receive action
 results, and affect world state through a minimal validated loop.
+
+Handoff: v0.5 may start from the reviewed request-driven minimal loop, but
+memory and self-continuity remain explicitly future scope.
 
 ## v0.5 - Memory and Self-Continuity Substrate
 

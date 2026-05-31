@@ -1,63 +1,66 @@
 # 评审
 
-状态：ready for review
+状态：review complete
 
 ## 变更文件
 
-本包计划或当前文档文件：
+本包当前 closeout 更新：
 
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/README.md`
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/README.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/intent.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/intent.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/contract.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/contract.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/technical-design.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/technical-design.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/test-plan.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/test-plan.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/plan.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/plan.zh.md`
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/review.md`
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/review.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/v0.4-plan.md`
+- `docs/iterations/v0.4/v0.4-plan.zh.md`
+- `docs/iterations/v0.4/CURRENT_STATE.md`
+- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
 
-本轮文档创建不修改实现文件。
+本 documentation-only package 不修改 runtime、schema、API、frontend、backend test、fixture、migration 或 legacy implementation files。
 
 ## 已运行命令
 
-当本包被实际处理时，由执行者记录命令。初始 v0.4 文档创建期间，本包没有被实现，因此不运行 package-specific backend、frontend、API、E2E、runtime、fixture、migration 或 build 命令。
+```bash
+git status --short --branch
+git diff --check
+find docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline -maxdepth 1 -type f | sort
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline'); docs=['README','intent','contract','technical-design','test-plan','plan','review']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "import subprocess,sys; out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True).splitlines(); allowed=('docs/iterations/v0.4/','README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md'); bad=[line for line in out if not line[3:].startswith(allowed)]; print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
+```
 
 ## 测试结果
 
-初始文档创建期间，本 child 未执行测试。未来执行必须使用 `test-plan.md`，并在此记录精确命令证据。
+- 当前 v0.4 goal session 中 documentation commands 通过。
+- 必需英文和中文 package files 均存在。
+- changed-file scope 限定在 v0.4 documentation 与已批准的 v0.4 status surfaces。
+- backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 和 test implementation commands 未为本 child 运行，因为本包是 documentation-only 且不改实现文件。
 
 ## 兼容性评审
 
-- 除非 active child 明确改变，否则 `RuntimeEngine` tick 和 `world_time_seconds` 行为必须兼容。
-- API envelope 和 error shape 必须兼容。
-- `/runtime/state`、`/runtime/step`、`/world/events` 和 `/world/event-steps` 是兼容性敏感 surface。
-- world params、params apply behavior、既有 ParamsAgent endpoint、archive behavior 和 Event.refs 可选序列化都是兼容性敏感 surface。
-- 除非 active contract 明确允许 breaking change，否则 schema changes 必须 additive。
-
-初始文档创建期间，runtime、schema、API、frontend、backend tests、fixtures、migrations 和 legacy behavior 保持不变。
+本包保持 documentation-only。runtime behavior、schema behavior、API behavior、frontend behavior、fixture behavior、migration behavior、Event.refs behavior、WorldSpec loader behavior、runtime context bridge behavior、既有 ParamsAgent behavior 和 legacy `backend/worldengine/` behavior 均未改变。
 
 ## 范围评审
 
-- 未完成必需 evaluator checkpoint 时停止。
-- 发现 P1 或未解决 P2 时停止。
-- 如果需要 active contract 未授权的文件类别，停止并记录 blocker。
-- 不得用历史证据冒充当前会话通过证据。
+active package scope 已满足：v0.4 父级文档、package sequencing、goal routing、evidence rules 和 mirror obligations 已评审，未扩大到实现。v0.3 历史证据仍只作为 handoff context，不计为新鲜 v0.4 runtime evidence。
 
 ## Subagent / Evaluator Findings
 
-必需 checkpoints 由 `GOAL_RUNNER.md` 定义。未来运行在此记录前，本 child 的 checkpoint 尚未完成。
+本包定义 goal routing、evidence rules、package sequencing、automation-consumption contracts 和 English / Chinese mirror obligations，因此需要 documentation evaluator 和 closeout consistency review。
+
+- Documentation / contract evaluator：通过在本 review 记录 child-level evaluator 与 command evidence 修复 P1；无剩余 P1/P2。
+- Closeout consistency review：status surfaces 和 mirrors 同步后无未解决 P1/P2。
 
 ## 未解决 P1/P2/P3
 
-- P1：初始文档草案中未发现。
-- P2：初始文档草案中未发现。
-- P3：除非本包是 `0.4.0`，否则 implementation 或 validation evidence 尚未执行；target handoff 记录在 `v0.4-plan.md`。
+- P1：无。
+- P2：无。
+- P3：v0.4 implementation evidence 尚未执行；实现只在后续已评审的 implementation-bearing children 中开始。
+
+## 交接
+
+`0.4.0-v0.4-planning-and-compatibility-baseline` 已 review complete。campaign 已通过 `0.4.1-agent-in-world-loop-contract` review，并路由到 `0.4.2-agent-perception-and-schemas` 做 implementation authorization review。
 
 ## 最终评估
 
-ready for review
+review complete

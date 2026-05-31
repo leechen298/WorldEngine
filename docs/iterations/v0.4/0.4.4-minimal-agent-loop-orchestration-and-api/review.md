@@ -1,15 +1,15 @@
 # Review
 
-Status: planned
+Status: review complete
+
+implementation_authorized: yes
 
 ## Changed Files
 
-Planned or current documentation files for this package:
+Documentation and status files:
 
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/README.md`
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/README.zh.md`
-- `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/intent.md`
-- `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/intent.zh.md`
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/contract.md`
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/contract.zh.md`
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/technical-design.md`
@@ -20,44 +20,97 @@ Planned or current documentation files for this package:
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/plan.zh.md`
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/review.md`
 - `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/review.zh.md`
+- `docs/iterations/v0.4/CURRENT_STATE.md`
+- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/v0.4-plan.md`
+- `docs/iterations/v0.4/v0.4-plan.zh.md`
 
-No implementation files are changed by this documentation creation pass.
+Implementation files:
+
+- `backend/app/agent/loop_service.py`
+- `backend/app/schemas/agent_loop.py`
+- `backend/app/api/routes/world_agent.py`
+- `backend/app/api/app_factory.py`
+- `backend/app/tests/test_agent_loop_service.py`
+- `backend/app/tests/test_agent_loop_api.py`
+
+Prior accepted 0.4.2 and 0.4.3 files remain in the same uncommitted worktree and were treated as already reviewed package evidence, not new 0.4.4 scope.
 
 ## Commands Run
 
-Commands are recorded by the executor when this package is actively worked. For the initial v0.4 documentation creation pass, package-specific backend, frontend, API, E2E, runtime, fixture, migration, and build commands are not run because this package is not being implemented.
+Authorization and documentation checks:
+
+```bash
+git status --short --branch
+git diff --check
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api'); docs=['README','intent','contract','technical-design','test-plan','plan','review']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+```
+
+TDD and implementation verification:
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py app/tests/test_params_agent.py app/tests/test_event_api_compat.py app/tests/test_runtime_step.py -q
+cd backend && .venv/bin/python -m pytest app/tests tests -q
+```
+
+Post-implementation closeout checks:
+
+```bash
+git diff --check
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api'); docs=['README','intent','contract','technical-design','test-plan','plan','review']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "<changed-file scope guard over git status --short>"
+```
 
 ## Test Results
 
-Not executed for this child during initial documentation creation. Future execution must use `test-plan.md` and record exact command evidence here.
+- Red test: `cd backend && .venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py -q` failed before implementation with `ModuleNotFoundError: No module named 'app.agent.loop_service'`.
+- Initial loop service/API tests after implementation: `8 passed in 0.23s`.
+- Code-review P3 coverage fix added an API test for invalid `params.patch` returning HTTP 200 with `ActionResult(status="rejected")`, no world param mutation, and no `params.applied` event.
+- Final loop service/API tests: `9 passed in 0.23s`.
+- Focused backend/API command: `31 passed in 0.42s`.
+- Full backend regression: `134 passed in 0.77s`.
+- Post-implementation `git diff --check` passed.
+- Required docs/mirrors check passed with `missing=0`.
+- Changed-file scope guard passed with `out_of_scope=0`.
+- Frontend, E2E, Agent smoke, build, fixture, and migration commands were not run because this package did not touch or authorize those surfaces.
 
 ## Compatibility Review
 
-- `RuntimeEngine` tick and `world_time_seconds` behavior must remain compatible unless the active child explicitly changes it.
-- API envelope and error shape must remain compatible.
-- `/runtime/state`, `/runtime/step`, `/world/events`, and `/world/event-steps` are compatibility-sensitive.
-- World params, params apply behavior, existing ParamsAgent endpoint, archive behavior, and Event.refs optional serialization are compatibility-sensitive.
-- Schema changes must be additive unless the active contract explicitly allows a breaking change.
+The implementation is additive. It adds `LoopStepRequest`, `LoopStepResponse`, `AgentLoopService`, and one API route: `POST /world/agent/loop/step`. The loop builds perception before applying an intent, uses a deterministic `noop` intent when none is supplied, and delegates effects to the already-reviewed `ActionResultAdapter`.
 
-During initial documentation creation, runtime, schema, API, frontend, backend tests, fixtures, migrations, and legacy behavior remain unchanged.
+Compatibility-sensitive behavior was checked:
+
+- Existing `/world/agent/params/propose-and-apply` remains unchanged and covered by `test_params_agent.py` plus route compatibility smoke in `test_agent_loop_api.py`.
+- Rejected loop actions return HTTP 200 with `ActionResult(status="rejected")`; request body schema errors keep the existing 422 API envelope.
+- Successful loop `params.patch` emits `params.applied` with `source="agent.loop"`.
+- Invalid loop `params.patch` emits no `params.applied` event and does not mutate world params.
+- Runtime state, runtime step, event API compatibility, and world params behavior are covered by the focused command and full backend regression.
 
 ## Scope Review
 
-- Stop when a required evaluator checkpoint is missing.
-- Stop on P1 or unresolved P2 findings.
-- Stop and record a blocker when required file classes are not authorized by the active contract.
-- Do not treat historical evidence as current-session pass evidence.
+All 0.4.4 implementation changes stay inside authorized file classes: additive agent-loop schemas, request-driven loop service, one reviewed API route, backend app factory wiring, and focused backend/API tests. No frontend, migration, fixture, external validation runner, projection readiness, memory/self-continuity, generation, concrete world content, application-specific backend logic, or `backend/worldengine/` runtime change was added.
 
 ## Subagent / Evaluator Findings
 
-Required checkpoints are defined by `GOAL_RUNNER.md`. They are not complete for this child until a future run records them here.
+- Documentation / contract evaluator initially found P2 because schema extension and app factory / route dependency wiring were not explicitly authorized. The contract/design/README/v0.4-plan and Chinese mirrors were updated, then re-review authorized implementation with no P1/P2.
+- Implementation-scope evaluator passed with no P1/P2. P3 stale review wording is resolved by this final review update.
+- Code-review evaluator found no P1/P2. It reported P3 coverage gap for invalid `params.patch` at the route boundary; this was fixed with a new API test and re-review reported no remaining findings.
+- Validation-evidence evaluator initially found P2 because post-implementation docs/scope checks were not recorded. Post-implementation `git diff --check`, docs/mirrors check, and changed-file scope guard were run; re-review found evidence sufficient with no P1/P2.
+- Closeout consistency review: no unresolved P1/P2/P3 after this final review and status update.
 
 ## Unresolved P1/P2/P3
 
-- P1: none identified in this initial documentation draft.
-- P2: none identified in this initial documentation draft.
-- P3: implementation or validation evidence is not executed yet unless this package is `0.4.0`; the target handoff is recorded in `v0.4-plan.md`.
+- P1: none.
+- P2: none.
+- P3: none.
+
+## Handoff
+
+`0.4.4-minimal-agent-loop-orchestration-and-api` is review complete. The next active child is `0.4.5-agent-loop-evidence-and-compatibility-audit`, which is documentation-only and must not modify runtime, schema, API, backend test, frontend, fixture, migration, legacy, or external validation implementation files.
 
 ## Final Assessment
 
-planned
+review complete

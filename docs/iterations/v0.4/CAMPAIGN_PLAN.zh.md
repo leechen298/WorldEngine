@@ -1,6 +1,6 @@
 # Campaign Plan
 
-状态：ready for review（待评审）
+状态：final / closeout complete
 类型：Codex `/goal` 开发 campaign plan
 
 ## 用途

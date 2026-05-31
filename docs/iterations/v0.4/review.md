@@ -1,34 +1,26 @@
 # Review
 
-Status: ready for review
+Status: final / closeout complete
 
 ## Changed Files
 
-Parent files created:
+Final v0.4 closeout includes three classes of changes:
 
-- `docs/iterations/v0.4/README.md`
-- `docs/iterations/v0.4/README.zh.md`
-- `docs/iterations/v0.4/v0.4-plan.md`
-- `docs/iterations/v0.4/v0.4-plan.zh.md`
-- `docs/iterations/v0.4/GOAL_RUNNER.md`
-- `docs/iterations/v0.4/GOAL_RUNNER.zh.md`
-- `docs/iterations/v0.4/CURRENT_STATE.md`
-- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
-- `docs/iterations/v0.4/CAMPAIGN_PLAN.md`
-- `docs/iterations/v0.4/CAMPAIGN_PLAN.zh.md`
-- `docs/iterations/v0.4/review.md`
-- `docs/iterations/v0.4/review.zh.md`
+- Public status surfaces: `README.md`, `README.zh.md`, `docs/roadmap.md`, `docs/roadmap.zh.md`.
+- v0.4 iteration package and evidence docs under `docs/iterations/v0.4/**`.
+- Authorized backend implementation/test files:
+  - `backend/app/schemas/agent_loop.py`
+  - `backend/app/agent/perception.py`
+  - `backend/app/agent/action_adapter.py`
+  - `backend/app/agent/loop_service.py`
+  - `backend/app/api/routes/world_agent.py`
+  - `backend/app/api/app_factory.py`
+  - `backend/app/tests/test_agent_perception.py`
+  - `backend/app/tests/test_agent_action_adapter.py`
+  - `backend/app/tests/test_agent_loop_service.py`
+  - `backend/app/tests/test_agent_loop_api.py`
 
-Child package files created:
-
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.2-agent-perception-and-schemas/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.3-action-intent-validation-and-result-adapter/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.4-minimal-agent-loop-orchestration-and-api/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.5-agent-loop-evidence-and-compatibility-audit/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
-- `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/{README,intent,contract,technical-design,test-plan,plan,review}.md` and `.zh.md` mirrors
+No frontend, fixture, migration, external validation runner, projection app, or legacy `backend/worldengine/` implementation files are changed.
 
 ## Files Read
 
@@ -39,132 +31,107 @@ Child package files created:
 - `docs/roadmap.md`
 - `docs/iterations/README.md`
 - `docs/iterations/AGENTS.md`
-- `docs/iterations/v0.3-post-closeout/GOAL_RUNNER.md`
-- `docs/iterations/v0.3-post-closeout/CURRENT_STATE.md`
-- `docs/iterations/v0.3-post-closeout/CAMPAIGN_PLAN.md`
-- `docs/iterations/v0.3-post-closeout/05-final-validation-bundle/final-validation-bundle.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
-- `backend/app/schemas/agent.py`
-- `backend/app/core/runtime_context.py`
+- active v0.4 package documents under `docs/iterations/v0.4/**`
+- active backend files under `backend/app/**` touched by v0.4
 
 ## Commands Run
+
+TDD and backend verification:
+
+```bash
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_action_adapter.py app/tests/test_agent_loop_api.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_perception.py app/tests/test_agent_action_adapter.py app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py -q
+cd backend && .venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py app/tests/test_params_agent.py app/tests/test_event_api_compat.py app/tests/test_runtime_step.py -q
+cd backend && .venv/bin/python -m pytest app/tests tests -q
+```
+
+Documentation and scope verification:
 
 ```bash
 git status --short --branch
 git diff --check
-python3 -c "from pathlib import Path; bad=[]
-for path in Path('docs/iterations/v0.4').rglob('*.md'):
-    for idx,line in enumerate(path.read_text().splitlines(True),1):
-        body=line.rstrip('\n\r')
-        if body.rstrip(' \t') != body:
-            bad.append(f'{path}:{idx}')
-print('trailing_whitespace_findings=' + str(len(bad)))
-[print(x) for x in bad]
-raise SystemExit(1 if bad else 0)"
-python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4'); parents=['README.md','README.zh.md','v0.4-plan.md','v0.4-plan.zh.md','GOAL_RUNNER.md','GOAL_RUNNER.zh.md','CURRENT_STATE.md','CURRENT_STATE.zh.md','CAMPAIGN_PLAN.md','CAMPAIGN_PLAN.zh.md','review.md','review.zh.md']; packages=['0.4.0-v0.4-planning-and-compatibility-baseline','0.4.1-agent-in-world-loop-contract','0.4.2-agent-perception-and-schemas','0.4.3-action-intent-validation-and-result-adapter','0.4.4-minimal-agent-loop-orchestration-and-api','0.4.5-agent-loop-evidence-and-compatibility-audit','0.4.6-v0.4-release-candidate-bundle','0.4.7-v0.4-final-closeout']; docs=['README.md','intent.md','contract.md','technical-design.md','test-plan.md','plan.md','review.md']; expected=[base/p for p in parents]; expected += [base/pkg/doc for pkg in packages for doc in docs]; expected += [base/pkg/(doc[:-3]+'.zh.md') for pkg in packages for doc in docs]; missing=[str(p) for p in expected if not p.exists()]; file_count=sum(1 for p in base.rglob('*') if p.is_file()); print('file_count=' + str(file_count)); print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing or file_count != 124 else 0)"
-python3 -c "from pathlib import Path; text='\n'.join(p.read_text() for p in Path('docs/iterations/v0.4').rglob('*.md')); terms=['完成 v0.4','Active child package','active child','implementation_authorized','subagent','evaluator','P1','P2','P3','Stop Conditions','停止条件']; missing=[term for term in terms if term not in text]; print('route_terms_missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
-python3 -c "import subprocess,sys; out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True); bad=[]; [bad.append(line) for line in out.splitlines() if not line[3:].startswith('docs/iterations/v0.4/')]; print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
-python3 -c "from pathlib import Path; terms=('TBD','TODO','PLACEHOLDER','Pending until verification','not yet','to be filled'); bad=[]; base=Path('docs/iterations/v0.4')
-for path in base.rglob('*.md'):
-    in_code=False
-    for idx,line in enumerate(path.read_text().splitlines(),1):
-        if line.strip().startswith(chr(96)*3):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
-        if any(term in line for term in terms):
-            bad.append(f'{path}:{idx}:{line}')
-print('placeholder_findings=' + str(len(bad)))
-[print(x) for x in bad]
-raise SystemExit(1 if bad else 0)"
-rg -n '^# (Contract|Intent|Technical Design|Test Plan|Plan|Review)$|^## (Public Concepts|Allowed Changes|Forbidden Changes|Compatibility Requirements|Implementation Authorization|Out-of-Scope Follow-ups|Changed Files|Commands Run|Test Results|Compatibility Review|Scope Review|Final Assessment)$' docs/iterations/v0.4 -g '*.zh.md'
-rg -n '状态：待评审$|Campaign status：文档待评审$|Status: 待评审$' docs/iterations/v0.4 -g '*.zh.md'
-rg -n 'concrete demo-world|memory/self-continuity|self-continuity|world generation|external validation runner|backend/worldengine/' docs/iterations/v0.4
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.7-v0.4-final-closeout'); docs=['README','intent','contract','technical-design','test-plan','plan','review','final-closeout']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "<changed-file scope guard over git status --short>"
+python3 -c "<stale public-status scan over README.md, README.zh.md, docs/roadmap.md, docs/roadmap.zh.md>"
+python3 -c "<stale v0.4 status scan excluding command-log self-matches>"
 ```
 
 ## Test Results
 
-- `git status --short --branch` showed branch `v0.4...origin/v0.4` and only the untracked `docs/iterations/v0.4/` directory.
-- `git diff --check` exited `0`; no whitespace errors were reported.
-- Direct trailing-whitespace scan over `docs/iterations/v0.4/*.md` exited `0`; `trailing_whitespace_findings=0`.
-- File existence check exited `0`; `file_count=124` and `missing=0`.
-- Route/status term check exited `0`; `route_terms_missing=0`.
-- Changed-file scope guard exited `0`; `out_of_scope=0`, so current changes are limited to `docs/iterations/v0.4/**`.
-- Placeholder scan exited `0`; `placeholder_findings=0`.
-- Chinese mirror heading scan exited `1` with no output after generic review headings were localized.
-- Chinese status drift scan exited `1` with no output for localized-only status literals.
-- Forbidden-scope term scan found only boundary/forbidden-scope references and command-evidence lines, not implementation claims or changed implementation files.
-- Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands were not run because this is a documentation-only creation pass and no implementation files changed.
+- Red regression run for review feedback: `3 failed, 12 passed`; failures proved that `noop` accepted patches and loop request/action intent extra fields were silently ignored.
+- Focused regression after fixes: `15 passed in 0.29s`.
+- Focused perception/action/loop/API command: `24 passed in 0.36s`.
+- Focused backend/API compatibility command: `35 passed in 0.55s`.
+- Full backend regression: `139 passed in 0.98s`.
+- `git diff --check` passed.
+- Final closeout docs/mirrors check passed with `missing=0`.
+- Changed-file scope guard passed with `changed_files_count=82` and `out_of_scope=0` against the authorized v0.4 public status, docs, backend implementation, and backend test file set.
+- Stale public-status scan found no obsolete planning, ready-for-review, or unimplemented v0.4 claims in current public status surfaces.
+- Stale final-status scan found no obsolete in-progress, candidate, or incomplete final-route claims under active v0.4 status surfaces.
 
 ## Compatibility Review
 
-This pass is documentation-only. Runtime behavior, schema behavior, API behavior, frontend behavior, fixture behavior, migration behavior, Event.refs behavior, WorldSpec loader behavior, runtime context bridge behavior, existing ParamsAgent behavior, and legacy `backend/worldengine/` behavior remain unchanged.
+v0.4 remains additive:
+
+- `PerceptionFrame`, `ActionIntent`, `ActionResult`, `LoopStepRequest`, and `LoopStepResponse` are new agent-loop schemas.
+- `ActionIntent`, `LoopStepRequest`, and loop action patch items now reject unknown fields with the existing 422 API envelope, preventing silent action-boundary payload loss.
+- `noop` remains no-effect, but now rejects unexpected `patches` without emitting events or mutating state.
+- `params.patch` uses strict `ActionParamPatchItem` schemas that remain `ParamPatchItem` compatible, then reuses `ParamValidator`, `ParamDryRunValidator`, and `WorldState.apply_patch()`.
+- `POST /world/agent/loop/step` is additive.
+- Existing `/world/agent/params/propose-and-apply`, runtime, event APIs, archive behavior, frontend, fixtures, migrations, and legacy `backend/worldengine/` remain compatible.
 
 ## Scope Review
 
-Changes are intended to stay under `docs/iterations/v0.4/**`. This pass creates v0.4 planning and campaign documentation only. It does not authorize implementation; implementation-bearing child packages must pass their own review gates.
+The final scope guard is not docs-only. It explicitly allows the reviewed v0.4 backend implementation/test files and public status docs. It rejects unrelated files and currently reports `out_of_scope=0`.
+
+v0.4 still excludes memory/self-continuity, world generation, external validation runner readiness, projection readiness, concrete world/demo content, frontend changes, fixtures, migrations, and new runtime features under `backend/worldengine/`.
 
 ## Subagent / Evaluator Checkpoint
 
-This documentation creation pass required read-only evaluator review because it defines goal routing, package sequencing, evidence rules, automation-consumption contracts, and English / Chinese mirror obligations.
+Subagent/evaluator checkpoints were used across the campaign:
 
-Evaluator results:
+- documentation/contract authorization checks for implementation children;
+- implementation-scope review;
+- code review;
+- validation-evidence review;
+- documentation closeout consistency checks;
+- release-candidate review;
+- final closeout review.
 
-- Scope / goal-runner evaluator: no P1 or P2 findings. One P3 found stale pending review evidence before this update; fixed in this review pass.
-- Mirror / automation-consumption evaluator: no P1 findings. Two P2 findings found stale pending review evidence and inconsistent Chinese status literals; both fixed in this review pass. One P3 found mechanically English Chinese headings; generic Chinese headings were translated in this review pass.
+The final closeout evaluator approved the final status flip. A later external review found P1/P2/P3 inconsistencies after that flip; this review records the repair.
 
-## External Audit Follow-Up
+Post-repair subagent/evaluator checkpoints completed:
 
-Source: ChatGPT audit pasted by the user after commit `a08eec7`.
+- code/API evaluator confirmed no P1/P2, found one P3 API-level coverage gap for `noop` plus `patches`;
+- the P3 was fixed with a route-level API regression covering HTTP 200 rejected result, no params mutation, and no `params.applied` event;
+- documentation/status evaluator confirmed no P1 and found one P2 scope wording issue plus P3 documentation clarity issues;
+- the wording and evidence-entry issues were fixed in parent README, root README, and 0.4.7 docs;
+- final read-only evaluator rechecked public status, active child state, changed-file scope, stale status scans, and API coverage, and reported no P1/P2/P3.
+- a later P2 review found nested `patches[*]` unknown fields were still silently discarded; this was fixed with strict loop patch-item schema validation and an API regression proving 422, no mutation, and no `params.applied` event.
 
-Changed files for this follow-up:
+## External Review Repair
 
-- `README.md`
-- `README.zh.md`
-- `docs/roadmap.md`
-- `docs/roadmap.zh.md`
-- `docs/iterations/v0.4/README.md`
-- `docs/iterations/v0.4/README.zh.md`
-- `docs/iterations/v0.4/review.md`
-- `docs/iterations/v0.4/review.zh.md`
+Fixed findings from the latest review:
 
-Implemented findings:
+- P1: root `README.md`, `README.zh.md`, `docs/roadmap.md`, and `docs/roadmap.zh.md` now report v0.4 `final / closeout complete`.
+- P1: this top-level review now records the actual mixed docs/backend changed-file scope instead of the obsolete initial docs-only scope.
+- P2: `ActionIntent` and `LoopStepRequest` now forbid unknown fields; API regressions verify 422 and no mutation.
+- P2: nested loop `params.patch` items now forbid unknown fields through strict `ActionParamPatchItem`; API regressions verify 422, no mutation, and no event.
+- P2: `CURRENT_STATE.md` and parent README now agree that no active child remains after final closeout.
+- P3: `noop` with unexpected patches now returns rejected `ActionResult` without mutation or event emission.
 
-- P2: root README status now says the `v0.4` branch is planning ready for review while implemented capability remains v0.3 final / closeout complete.
-- P2: roadmap v0.4 section now records `Status: planned / ready for review`.
-- P3: v0.4 README package index now uses per-package subsections instead of a wide Markdown table.
-- P3: v0.4 Chinese README and roadmap wording were polished for ordinary explanatory text while preserving canonical status literals, paths, and contract terms.
+## Commands Not Run
 
-Follow-up commands run:
-
-```bash
-git status --short --branch
-git diff --check
-rg -n 'current `v0\.3` branch|当前 `v0\.3` 分支|Status: v0\.3 final|状态：`v0\.3 final' README.md README.zh.md
-rg -n -A2 '## v0\.4 - Agent-in-World Minimal Loop' docs/roadmap.md docs/roadmap.zh.md
-rg -n '^\| Package \||^\| 包 \|' docs/iterations/v0.4/README.md docs/iterations/v0.4/README.zh.md
-rg -n 'deliverables|compatibility constraints|handoff rules|request-driven loop orchestration|child sequence' docs/iterations/v0.4/README.zh.md docs/roadmap.zh.md
-python3 -c "import subprocess,sys; allowed={'README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md','docs/iterations/v0.4/README.md','docs/iterations/v0.4/README.zh.md','docs/iterations/v0.4/review.md','docs/iterations/v0.4/review.zh.md'}; out=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines(); bad=[p for p in out if p not in allowed]; print('changed_files=' + str(len(out))); print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
-```
-
-Follow-up results:
-
-- `git diff --check` exited `0`.
-- Changed-file scope guard exited `0`; `changed_files=8` and `out_of_scope=0`.
-- Stale root README status scan exited `1` with no output.
-- Roadmap v0.4 status scan exited `0` and found the new v0.4 status in both English and Chinese roadmap files.
-- Package table scan exited `1` with no output after the package index was converted to sections.
-- Chinese wording scan exited `1` with no output for the reviewed mixed-language phrases.
-- Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands were not run because this follow-up is documentation-only and no implementation files changed.
+Frontend, browser E2E, Agent smoke, build, fixture, migration, and external validation runner commands were not run because v0.4 did not modify or authorize those surfaces.
 
 ## Unresolved P1/P2/P3
 
-- P1: none identified.
-- P2: none identified after review evidence and Chinese status fixes.
-- P3: v0.4 implementation evidence is not executed yet. target_package: `0.4.2-agent-perception-and-schemas`. defer_reason: implementation starts only after contract/design/test-plan review.
+- P1: none.
+- P2: none.
+- P3: none.
 
 ## Final Assessment
 
-ready for review
+final / closeout complete

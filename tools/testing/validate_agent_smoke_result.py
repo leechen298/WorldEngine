@@ -20,6 +20,7 @@ SUPPORTED_SCENARIOS = {
     "dashboard-basic-runtime",
     "dashboard-params-flow",
     "dashboard-invalid-param",
+    "dashboard-agent-autotune",
 }
 REQUIRED_UI_TARGETS = {
     "dashboard-basic-runtime": {
@@ -41,6 +42,18 @@ REQUIRED_UI_TARGETS = {
         "world-params-value-input",
         "world-params-apply-button",
         "world-params-error",
+    },
+    "dashboard-agent-autotune": {
+        "dashboard",
+        "world-params-path-input",
+        "world-params-type-select",
+        "world-params-value-input",
+        "world-params-apply-button",
+        "world-params-json",
+        "world-agent-goal-input",
+        "world-agent-autotune-button",
+        "world-agent-success",
+        "world-agent-patches",
     },
 }
 
@@ -238,6 +251,8 @@ def _validate_api_summary(result_dir: Path, result: dict[str, Any], errors: list
         _validate_params_flow_api_summary(api_summary, errors)
     elif scenario == "dashboard-invalid-param":
         _validate_invalid_param_api_summary(api_summary, errors)
+    elif scenario == "dashboard-agent-autotune":
+        _validate_agent_autotune_api_summary(api_summary, errors)
 
 
 def _validate_basic_runtime_api_summary(api_summary: dict[str, Any], errors: list[str]) -> None:
@@ -293,6 +308,37 @@ def _validate_invalid_param_api_summary(api_summary: dict[str, Any], errors: lis
         return
     if before_params != after_params:
         errors.append("api-summary.json before_params and after_params must match")
+
+
+def _validate_agent_autotune_api_summary(api_summary: dict[str, Any], errors: list[str]) -> None:
+    if api_summary.get("baseline_counter_increment") != 2:
+        errors.append("api-summary.json baseline_counter_increment must be 2")
+
+    observed_increment = api_summary.get("observed_counter_increment")
+    if not isinstance(observed_increment, (int, float)):
+        errors.append("api-summary.json observed_counter_increment must be numeric")
+    elif observed_increment == 2:
+        errors.append("api-summary.json observed_counter_increment must differ from baseline 2")
+
+    if api_summary.get("counter_changed") is not True:
+        errors.append("api-summary.json counter_changed must be true")
+
+    patches_count = api_summary.get("patches_count")
+    if not isinstance(patches_count, int) or patches_count < 1:
+        errors.append("api-summary.json patches_count must be at least 1")
+
+    patch_paths = api_summary.get("patch_paths")
+    if not isinstance(patch_paths, list) or "counter.increment" not in patch_paths:
+        errors.append("api-summary.json patch_paths must include counter.increment")
+
+    if api_summary.get("params_applied_event_seen") is not True:
+        errors.append("api-summary.json params_applied_event_seen must be true")
+    if api_summary.get("params_applied_event_source") != "agent.params":
+        errors.append("api-summary.json params_applied_event_source must be agent.params")
+    if api_summary.get("ui_success_seen") is not True:
+        errors.append("api-summary.json ui_success_seen must be true")
+    if api_summary.get("ui_patches_seen") is not True:
+        errors.append("api-summary.json ui_patches_seen must be true")
 
 
 def validate_result_dir(result_dir: Path | str) -> list[str]:

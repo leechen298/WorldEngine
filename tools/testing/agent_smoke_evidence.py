@@ -15,6 +15,7 @@ SUPPORTED_SCENARIOS = {
     "dashboard-basic-runtime",
     "dashboard-params-flow",
     "dashboard-invalid-param",
+    "dashboard-agent-autotune",
 }
 
 
@@ -116,6 +117,38 @@ def _find_counter_increment_event(events: list[dict[str, Any]], before_tick: int
     return None
 
 
+def _find_agent_params_applied_event(events: list[dict[str, Any]]) -> dict[str, Any] | None:
+    for event in events:
+        if event.get("type") != "params.applied":
+            continue
+        if event.get("source") != "agent.params":
+            continue
+        payload = event.get("payload")
+        if not isinstance(payload, dict) or not isinstance(payload.get("patches"), list):
+            continue
+        return event
+    return None
+
+
+def _patch_paths(event: dict[str, Any] | None) -> list[str]:
+    if event is None:
+        return []
+    payload = event.get("payload")
+    if not isinstance(payload, dict):
+        return []
+    patches = payload.get("patches")
+    if not isinstance(patches, list):
+        return []
+    paths: list[str] = []
+    for patch in patches:
+        if not isinstance(patch, dict):
+            continue
+        path = patch.get("path")
+        if isinstance(path, str):
+            paths.append(path)
+    return paths
+
+
 def build_api_summary_from_state(
     *,
     scenario: str,
@@ -160,6 +193,26 @@ def build_api_summary_from_state(
             "after_tick": after_tick,
             "counter_event_tick": counter_event.get("tick_id") if isinstance(counter_event, dict) else None,
             "counter_event_increment": counter_payload.get("increment") if isinstance(counter_payload, dict) else None,
+        }
+
+    if scenario == "dashboard-agent-autotune":
+        before_params = baseline.get("world_params")
+        baseline_increment = _param_value(before_params, "counter.increment") if isinstance(before_params, dict) else None
+        observed_increment = _param_value(params, "counter.increment")
+        applied_event = _find_agent_params_applied_event(events)
+        patch_paths = _patch_paths(applied_event)
+        ui_targets = _read_ui_targets(operation_log_path)
+        return {
+            **base,
+            "baseline_counter_increment": baseline_increment,
+            "observed_counter_increment": observed_increment,
+            "counter_changed": baseline_increment != observed_increment,
+            "patches_count": len(patch_paths),
+            "patch_paths": patch_paths,
+            "params_applied_event_seen": applied_event is not None,
+            "params_applied_event_source": applied_event.get("source") if isinstance(applied_event, dict) else None,
+            "ui_success_seen": "world-agent-success" in ui_targets,
+            "ui_patches_seen": "world-agent-patches" in ui_targets,
         }
 
     before_params = baseline.get("world_params")

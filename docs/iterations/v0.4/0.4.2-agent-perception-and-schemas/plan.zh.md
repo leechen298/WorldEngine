@@ -3,7 +3,7 @@
 ## 有序执行步骤
 
 1. 阅读父级 v0.4 docs 和本包 docs。
-2. 确认 `CURRENT_STATE.md` 中的当前 route 与 `schema-implementation` 匹配，否则在 `review.md` 记录 route mismatch。
+2. 在授权前确认 `CURRENT_STATE.md` 中的当前 route 是 `implementation-authorization-review`，在 `review.md` 记录 `implementation_authorized: yes` 后再切换到 `schema-implementation`；否则在 `review.md` 记录 route mismatch。
 3. 从 `contract.md` 确认允许和禁止的文件类别。
 4. 在 `GOAL_RUNNER.md` 要求时运行 documentation / contract evaluator。
 5. 如果本包是 documentation-only，只更新获批文档并保持 implementation authorization 关闭。

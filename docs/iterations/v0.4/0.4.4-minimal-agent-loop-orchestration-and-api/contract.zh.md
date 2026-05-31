@@ -10,7 +10,9 @@
 ## 允许修改
 
 - 在获批 `backend/app/` 模块下添加 request-driven loop service。
+- 以 additive 方式扩展既有 agent-loop schemas，用于 loop step request/response models。
 - 只有 contract 授权时才新增一个已评审 API route。
+- 通过 backend app factory 和 route dependency state 注册/接入 loop service。
 - 测试中使用确定性 provider 或显式 test intent。
 - 添加聚焦 service/API 测试和相邻兼容性检查。
 

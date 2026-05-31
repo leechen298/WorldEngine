@@ -1,63 +1,66 @@
 # Review
 
-Status: ready for review
+Status: review complete
 
 ## Changed Files
 
-Planned or current documentation files for this package:
+Current closeout updates for this package:
 
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/README.md`
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/README.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/intent.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/intent.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/contract.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/contract.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/technical-design.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/technical-design.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/test-plan.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/test-plan.zh.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/plan.md`
-- `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/plan.zh.md`
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/review.md`
 - `docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline/review.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/v0.4-plan.md`
+- `docs/iterations/v0.4/v0.4-plan.zh.md`
+- `docs/iterations/v0.4/CURRENT_STATE.md`
+- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
 
-No implementation files are changed by this documentation creation pass.
+No runtime, schema, API, frontend, backend test, fixture, migration, or legacy implementation files are changed by this documentation-only package.
 
 ## Commands Run
 
-Commands are recorded by the executor when this package is actively worked. For the initial v0.4 documentation creation pass, package-specific backend, frontend, API, E2E, runtime, fixture, migration, and build commands are not run because this package is not being implemented.
+```bash
+git status --short --branch
+git diff --check
+find docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline -maxdepth 1 -type f | sort
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.0-v0.4-planning-and-compatibility-baseline'); docs=['README','intent','contract','technical-design','test-plan','plan','review']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "import subprocess,sys; out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True).splitlines(); allowed=('docs/iterations/v0.4/','README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md'); bad=[line for line in out if not line[3:].startswith(allowed)]; print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
+```
 
 ## Test Results
 
-Not executed for this child during initial documentation creation. Future execution must use `test-plan.md` and record exact command evidence here.
+- Documentation commands passed in the current v0.4 goal session.
+- Required English and Chinese package files exist.
+- Changed-file scope stayed inside v0.4 documentation and already-approved v0.4 status surfaces.
+- Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands were not run for this child because it is documentation-only and changes no implementation files.
 
 ## Compatibility Review
 
-- `RuntimeEngine` tick and `world_time_seconds` behavior must remain compatible unless the active child explicitly changes it.
-- API envelope and error shape must remain compatible.
-- `/runtime/state`, `/runtime/step`, `/world/events`, and `/world/event-steps` are compatibility-sensitive.
-- World params, params apply behavior, existing ParamsAgent endpoint, archive behavior, and Event.refs optional serialization are compatibility-sensitive.
-- Schema changes must be additive unless the active contract explicitly allows a breaking change.
-
-During initial documentation creation, runtime, schema, API, frontend, backend tests, fixtures, migrations, and legacy behavior remain unchanged.
+This package remains documentation-only. Runtime behavior, schema behavior, API behavior, frontend behavior, fixture behavior, migration behavior, Event.refs behavior, WorldSpec loader behavior, runtime context bridge behavior, existing ParamsAgent behavior, and legacy `backend/worldengine/` behavior remain unchanged.
 
 ## Scope Review
 
-- Stop when a required evaluator checkpoint is missing.
-- Stop on P1 or unresolved P2 findings.
-- Stop and record a blocker when required file classes are not authorized by the active contract.
-- Do not treat historical evidence as current-session pass evidence.
+The active package scope is satisfied: v0.4 parent docs, package sequencing, goal routing, evidence rules, and mirror obligations are reviewed without widening into implementation. Historical v0.3 evidence remains handoff context only and is not counted as fresh v0.4 runtime evidence.
 
 ## Subagent / Evaluator Findings
 
-Required checkpoints are defined by `GOAL_RUNNER.md`. They are not complete for this child until a future run records them here.
+Documentation evaluator and closeout consistency review were required because this package defines goal routing, evidence rules, package sequencing, automation-consumption contracts, and English / Chinese mirror obligations.
+
+- Documentation / contract evaluator: P1 fixed by recording child-level evaluator and command evidence in this review; no remaining P1/P2.
+- Closeout consistency review: no unresolved P1/P2 after status surfaces and mirrors were synchronized.
 
 ## Unresolved P1/P2/P3
 
-- P1: none identified in this initial documentation draft.
-- P2: none identified in this initial documentation draft.
-- P3: implementation or validation evidence is not executed yet unless this package is `0.4.0`; the target handoff is recorded in `v0.4-plan.md`.
+- P1: none.
+- P2: none.
+- P3: v0.4 implementation evidence is not executed yet; implementation starts only in later reviewed implementation-bearing children.
+
+## Handoff
+
+`0.4.0-v0.4-planning-and-compatibility-baseline` is review complete. The campaign has advanced through `0.4.1-agent-in-world-loop-contract` review and is now routed to `0.4.2-agent-perception-and-schemas` for implementation authorization review.
 
 ## Final Assessment
 
-ready for review
+review complete

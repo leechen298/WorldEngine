@@ -57,6 +57,9 @@ validate-agent-smoke-result: check-backend
 
 validate-agent-smoke-fixtures: check-backend
 	@$(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/valid-basic-runtime
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/valid-params-flow
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/valid-invalid-param
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/valid-agent-autotune
 	@if $(BACKEND_PYTHON) tools/testing/validate_agent_smoke_result.py tools/testing/fixtures/agent-smoke/invalid-agent-verdict >/tmp/worldengine-invalid-agent-smoke.out 2>&1; then \
 		cat /tmp/worldengine-invalid-agent-smoke.out; \
 		echo "Expected invalid-agent-verdict fixture to fail, but it passed."; \

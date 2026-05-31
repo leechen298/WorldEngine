@@ -1,19 +1,19 @@
 # WorldEngine
 
-状态：`v0.4 planning ready for review`；当前已实现能力仍是
-`v0.3 final / closeout complete`
+状态：`v0.4 final / closeout complete`
 
 英文版本：`README.md`。
 
 WorldEngine 是递归世界生成与运行时引擎。
 
-当前 `v0.4` 分支只包含 Agent-in-World Minimal Loop 的规划文档和 `/goal`
-开发活动文档。它尚未实现 v0.4 runtime、schema、API、frontend、test、
-fixture、migration 或 legacy 代码变更。
+当前 `v0.4` 分支已实现 Agent-in-World Minimal Loop。它新增有界 perception、
+可审查 action intent/result schemas、经过校验的 `noop` 与 `params.patch`
+action handling，以及 request-driven loop API，同时保留 v0.3 WorldSpec Loader
+and Runtime Bridge 能力。
 
-当前已实现能力仍停留在 v0.3 WorldSpec Loader and Runtime Bridge 里程碑：它新增
-最小通用 `WorldSpec` 加载器和可选的惰性运行时上下文桥接层，同时保持 v0.1
-运行时脚手架兼容。它还不是完整的递归世界引擎实现。
+WorldEngine 仍不是完整的递归世界引擎实现。Memory/self-continuity、world
+generation、external validation readiness、projection application readiness 和
+concrete world/demo content 仍属于后续版本范围。
 
 优先阅读：
 
@@ -34,9 +34,10 @@ fixture、migration 或 legacy 代码变更。
 - `backend/app/` - active backend path。
 - `backend/worldengine/` - legacy pre-v0.1 path；不要在那里新增 feature。
 
-## 当前 v0.3 能力
+## 当前 v0.4 能力
 
-v0.3 保留 v0.1 运行时脚手架，并且可以：
+v0.4 保留 v0.1 运行时脚手架和 v0.3 loader/runtime bridge，同时新增最小
+Agent-in-World loop。它可以：
 
 - 从仓库根目录启动 backend 和 frontend development services。
 - 暴露 health、runtime、world event、world params、archive 和 agent params routes。
@@ -48,17 +49,23 @@ v0.3 保留 v0.1 运行时脚手架，并且可以：
 - 在应用前 dry-run world parameter patches。
 - 按配置 interval 创建 in-memory snapshots 和 summaries。
 - 使用 LLM-style params agent service interface 提出并应用 patches。
+- 从 runtime state、recent events、world params 和可选 runtime context summary
+  构建有界 agent perception frame。
+- 校验可审查的 `ActionIntent` payload，并返回 `ActionResult` evidence。
+- 通过小而经过检查的边界处理 `noop` 和已校验的 `params.patch` actions。
+- 暴露 `POST /world/agent/loop/step`，执行一次 request-scoped perceive ->
+  intent -> validate/apply -> result cycle。
 - 渲染 runtime controls、timeline、world params 和 agent params interactions 的 dashboard。
 - 通过最小加载器加载并校验通用 `WorldSpec` 数据。
 - 从已加载的 `WorldSpec` 数据派生可选、惰性的运行时上下文。
 - 保持 runtime step 输出和 event payload 不暴露原始 `WorldSpec` 或 root tree 数据。
 
-v0.3 仍不能：
+v0.4 仍不能：
 
 - 把递归 `WorldCell` 结构作为活跃运行时状态运行。
 - 把已加载的 `WorldSpec` 数据作为活跃递归世界状态运行。
 - 从 templates 或 prompts 生成 worlds。
-- 运行 Agent perception/action/memory loop。
+- 运行 Agent memory/self-continuity loop。
 - 建模 Agent pseudo-self continuity。
 - 以 engine consumer 形式运行 external projection applications。
 - 提供 packaged external product surface。
@@ -107,6 +114,10 @@ v0.1 runtime closeout evidence 仍是兼容性基线，记录在
 
 关键已记录证据包括：
 
+- v0.4 final closeout evidence 见 `docs/iterations/v0.4/review.md` 和
+  `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/final-closeout.md`：
+  聚焦 backend/API `35 passed`、全 backend `139 passed`、最终文档镜像检查
+  `missing=0`、最终范围检查 `out_of_scope=0`。
 - v0.3 加载器和运行时桥接迭代包证据、兼容性审计与最终收口评审。
 - `make check-backend` 和 `make check-frontend`。
 - backend pytest: `63 passed`。

@@ -1,6 +1,6 @@
 # 0.4.0 v0.4 规划与兼容性基线
 
-状态：ready for review
+状态：review complete
 类型：documentation-only
 
 ## 目标
@@ -49,14 +49,14 @@
 ## 状态清单
 
 - [x] 文档已草拟
-- [ ] 契约已评审
-- [ ] 技术设计已评审
-- [ ] 测试计划已评审
-- [ ] 已授权实现，如适用
-- [ ] 实现完成，如适用
-- [ ] 测试/证据完成
-- [ ] 评审完成
+- [x] 契约已评审
+- [x] 技术设计已评审
+- [x] 测试计划已评审
+- [x] 本 documentation-only package 不适用实现授权
+- [x] 本 documentation-only package 不适用实现完成
+- [x] 文档证据完成
+- [x] 评审完成
 
 ## 最终评估状态
 
-当前值：`ready for review`。
+当前值：`review complete`。

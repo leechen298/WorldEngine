@@ -9,8 +9,10 @@ type RuntimeState = {
 };
 
 type WorldEvent = {
+  id: string;
   tick_id: number;
   type: string;
+  source: string;
   payload: Record<string, unknown>;
 };
 
@@ -67,6 +69,11 @@ async function getEventsForTick(request: APIRequestContext, tickId: number): Pro
     request,
     `/world/events?from_tick=${tickId}&to_tick=${tickId}&limit=50`,
   );
+  return page.items;
+}
+
+async function getRecentEvents(request: APIRequestContext): Promise<WorldEvent[]> {
+  const page = await getApiData<{ items: WorldEvent[] }>(request, "/world/events?limit=100");
   return page.items;
 }
 
@@ -197,6 +204,7 @@ test("dashboard-agent-autotune applies the deterministic params-agent patch", as
 
   await setWorldParam(page, "counter.increment", "number", "2");
   await expect.poll(async () => readCounterIncrement(await getWorldParams(request))).toBe(2);
+  const beforeAutotuneEventIds = new Set((await getRecentEvents(request)).map((event) => event.id));
 
   await page.getByTestId("world-agent-goal-input").fill("speed up counter");
   await page.getByTestId("world-agent-autotune-button").click();
@@ -217,6 +225,20 @@ test("dashboard-agent-autotune applies the deterministic params-agent patch", as
   await expect.poll(async () => readCounterIncrement(await getWorldParams(request))).toBe(patchIncrement);
   await expect(page.getByTestId("world-params-json")).toContainText('"increment"');
   await expect(page.getByTestId("world-params-json")).toContainText(String(patchIncrement));
+  await expect
+    .poll(async () =>
+      (await getRecentEvents(request)).some((event) => {
+        const patches = event.payload.patches as ParamPatch[] | undefined;
+        return (
+          event.type === "params.applied" &&
+          event.source === "agent.params" &&
+          !beforeAutotuneEventIds.has(event.id) &&
+          Array.isArray(patches) &&
+          patches.some((item) => item.path === "counter.increment")
+        );
+      }),
+    )
+    .toBe(true);
 });
 
 test("dashboard-timeline-navigation paginates and expands generated event details", async ({ page, request }) => {

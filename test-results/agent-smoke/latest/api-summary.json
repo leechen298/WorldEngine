@@ -1,9 +1,15 @@
 {
-  "after_params": {},
-  "before_params": {},
+  "baseline_counter_increment": 2,
+  "counter_changed": true,
   "health_status": "ok",
-  "invalid_path": "system.secret",
-  "params_unchanged": true,
-  "scenario": "dashboard-invalid-param",
-  "ui_error_seen": true
+  "observed_counter_increment": 1,
+  "params_applied_event_seen": true,
+  "params_applied_event_source": "agent.params",
+  "patch_paths": [
+    "counter.increment"
+  ],
+  "patches_count": 1,
+  "scenario": "dashboard-agent-autotune",
+  "ui_patches_seen": true,
+  "ui_success_seen": true
 }

@@ -1,63 +1,66 @@
 # 评审
 
-状态：planned
+状态：review complete
 
 ## 变更文件
 
-本包计划或当前文档文件：
+本包当前 closeout 更新：
 
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/README.md`
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/README.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/intent.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/intent.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/contract.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/contract.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/technical-design.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/technical-design.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/test-plan.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/test-plan.zh.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/plan.md`
-- `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/plan.zh.md`
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/review.md`
 - `docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract/review.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/v0.4-plan.md`
+- `docs/iterations/v0.4/v0.4-plan.zh.md`
+- `docs/iterations/v0.4/CURRENT_STATE.md`
+- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
 
-本轮文档创建不修改实现文件。
+本 documentation-only package 不修改 runtime、schema、API、frontend、backend test、fixture、migration 或 legacy implementation files。
 
 ## 已运行命令
 
-当本包被实际处理时，由执行者记录命令。初始 v0.4 文档创建期间，本包没有被实现，因此不运行 package-specific backend、frontend、API、E2E、runtime、fixture、migration 或 build 命令。
+```bash
+git status --short --branch
+git diff --check
+find docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract -maxdepth 1 -type f | sort
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.1-agent-in-world-loop-contract'); docs=['README','intent','contract','technical-design','test-plan','plan','review']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "import subprocess,sys; out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True).splitlines(); allowed=('docs/iterations/v0.4/','README.md','README.zh.md','docs/roadmap.md','docs/roadmap.zh.md'); bad=[line for line in out if not line[3:].startswith(allowed)]; print('out_of_scope=' + str(len(bad))); [print(x) for x in bad]; sys.exit(1 if bad else 0)"
+```
 
 ## 测试结果
 
-初始文档创建期间，本 child 未执行测试。未来执行必须使用 `test-plan.md`，并在此记录精确命令证据。
+- 当前 v0.4 goal session 中 documentation commands 通过。
+- 必需英文和中文 package files 均存在。
+- changed-file scope 限定在 v0.4 documentation 与已批准的 v0.4 status surfaces。
+- backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 和 test implementation commands 未为本 child 运行，因为本包是 documentation-only 且不改实现文件。
 
 ## 兼容性评审
 
-- 除非 active child 明确改变，否则 `RuntimeEngine` tick 和 `world_time_seconds` 行为必须兼容。
-- API envelope 和 error shape 必须兼容。
-- `/runtime/state`、`/runtime/step`、`/world/events` 和 `/world/event-steps` 是兼容性敏感 surface。
-- world params、params apply behavior、既有 ParamsAgent endpoint、archive behavior 和 Event.refs 可选序列化都是兼容性敏感 surface。
-- 除非 active contract 明确允许 breaking change，否则 schema changes 必须 additive。
-
-初始文档创建期间，runtime、schema、API、frontend、backend tests、fixtures、migrations 和 legacy behavior 保持不变。
+本包仅定义 v0.4 世界内 Agent 闭环公开契约，不授权 runtime、schema、API、frontend、backend test、fixture、migration 或 legacy implementation changes。既有 runtime tick behavior、API envelope、event serialization、world params behavior、archive behavior、ParamsAgent endpoint 和 `backend/worldengine/` legacy boundary 均未改变。
 
 ## 范围评审
 
-- 未完成必需 evaluator checkpoint 时停止。
-- 发现 P1 或未解决 P2 时停止。
-- 如果需要 active contract 未授权的文件类别，停止并记录 blocker。
-- 不得用历史证据冒充当前会话通过证据。
+contract 将 v0.4 限定在 PerceptionFrame、ActionIntent、ActionResult 和一个 request-scoped LoopStep。它排除 v0.5 memory/self-continuity、v0.6 generation、v0.7 external validation readiness、v0.8 projection readiness、concrete world content、application-specific backend logic 和 `backend/worldengine/` runtime changes。
 
 ## Subagent / Evaluator Findings
 
-必需 checkpoints 由 `GOAL_RUNNER.md` 定义。未来运行在此记录前，本 child 的 checkpoint 尚未完成。
+任何带实现 child 开始前都必须完成 documentation / contract evaluator 和 closeout consistency review。
+
+- Documentation / contract evaluator：无 P1/P2 findings；contract 足以交接到 `0.4.2`。
+- Closeout consistency review：child 和 parent status surfaces 同步后无未解决 P1/P2。
 
 ## 未解决 P1/P2/P3
 
-- P1：初始文档草案中未发现。
-- P2：初始文档草案中未发现。
-- P3：除非本包是 `0.4.0`，否则 implementation 或 validation evidence 尚未执行；target handoff 记录在 `v0.4-plan.md`。
+- P1：无。
+- P2：无。
+- P3：v0.4 implementation evidence 尚未执行；下一包必须生成当前会话实现证据后，才能声明 runtime 或 schema claims。
+
+## 交接
+
+`0.4.1-agent-in-world-loop-contract` 已 review complete。下一 active child 是 `0.4.2-agent-perception-and-schemas`，它必须先在自己的 documentation / contract evaluator 后记录 `implementation_authorized: yes`，才能开始 backend implementation。
 
 ## 最终评估
 
-planned
+review complete

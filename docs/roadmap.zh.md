@@ -84,10 +84,13 @@ data 加载进 runtime context。
 
 ## v0.4 - Agent-in-World Minimal Loop
 
-状态：`planned / ready for review`
+状态：`final / closeout complete`
 
 目标：让 Agent 感知世界事件、产生 action intent、接收 action result，并通过一个最小、
 经过校验的闭环影响 world state。
+
+交接：v0.5 可以基于已评审的 request-driven minimal loop 启动，但 memory 和
+self-continuity 仍是明确的 future scope。
 
 ## v0.5 - Memory and Self-Continuity Substrate
 

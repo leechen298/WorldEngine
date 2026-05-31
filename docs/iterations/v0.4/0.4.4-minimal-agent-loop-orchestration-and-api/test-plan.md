@@ -15,11 +15,21 @@ Package-specific verification expectations:
 - `git diff --check`
 - file existence checks for required docs and mirrors
 - changed-file scope guard against the active package contract
-- Run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...`.
-- Run adjacent compatibility tests for touched surfaces.
-- Run FastAPI TestClient API smoke if a route is added.
+- Run focused backend/API tests from `backend/`:
 
-If this package changes backend implementation files in a future execution pass, run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...` and then run adjacent compatibility tests named in the active implementation review.
+```bash
+.venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py app/tests/test_params_agent.py app/tests/test_event_api_compat.py app/tests/test_runtime_step.py -q
+```
+
+- Run the broad backend regression from `backend/` after implementation changes:
+
+```bash
+.venv/bin/python -m pytest app/tests tests -q
+```
+
+- Treat `app/tests/test_agent_loop_api.py` as the FastAPI TestClient API smoke for the new route and the compatibility check for the existing `/world/agent/params/propose-and-apply` route.
+
+If this package changes backend implementation files in a future execution pass, run the focused backend/API command above and then the broad backend regression command above.
 
 ## Expected Results
 
@@ -30,7 +40,7 @@ If this package changes backend implementation files in a future execution pass,
 
 ## Commands Not Run And Why
 
-Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands are not run during documentation drafting unless implementation files are changed in a later authorized pass.
+Backend, API smoke, runtime behavior, and test implementation commands are not run during documentation drafting unless implementation files are changed in a later authorized pass. Frontend, E2E, Agent smoke, build, fixture, and migration commands are not expected unless this package unexpectedly touches those surfaces; such scope expansion would require review before execution.
 
 ## Blocker Recording Rule
 

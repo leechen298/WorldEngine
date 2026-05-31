@@ -1,6 +1,6 @@
 # 0.4.4 最小 Agent 闭环编排与 API
 
-状态：planned
+状态：review complete
 类型：mixed or code
 
 ## 目标
@@ -14,7 +14,9 @@
 允许修改：
 
 - 在获批 `backend/app/` 模块下添加 request-driven loop service。
+- 以 additive 方式扩展既有 agent-loop schemas，用于 loop step request/response models。
 - 只有 contract 授权时才新增一个已评审 API route。
+- 通过 backend app factory 和 route dependency state 注册/接入 loop service。
 - 测试中使用确定性 provider 或显式 test intent。
 - 添加聚焦 service/API 测试和相邻兼容性检查。
 
@@ -49,14 +51,14 @@
 ## 状态清单
 
 - [x] 文档已草拟
-- [ ] 契约已评审
-- [ ] 技术设计已评审
-- [ ] 测试计划已评审
-- [ ] 已授权实现，如适用
-- [ ] 实现完成，如适用
-- [ ] 测试/证据完成
-- [ ] 评审完成
+- [x] 契约已评审
+- [x] 技术设计已评审
+- [x] 测试计划已评审
+- [x] 已授权实现，如适用
+- [x] 实现完成，如适用
+- [x] 测试/证据完成
+- [x] 评审完成
 
 ## 最终评估状态
 
-当前值：`planned`。
+当前值：`review complete`。

@@ -15,11 +15,21 @@ git diff --check
 - `git diff --check`
 - 检查必需文档和镜像是否存在
 - 按 active package contract 执行 changed-file scope guard
-- 在 `backend/` 下用 `.venv/bin/python -m pytest ...` 运行聚焦后端测试。
-- 按 touched surface 运行相邻兼容性测试。
-- 如新增 API route，通过 FastAPI TestClient 做 API smoke。
+- 在 `backend/` 下运行聚焦 backend/API 测试：
 
-如果本包在未来执行中修改 backend 实现文件，必须在 `backend/` 下用 `.venv/bin/python -m pytest ...` 运行聚焦 backend tests，然后运行 active implementation review 中指定的相邻兼容性测试。
+```bash
+.venv/bin/python -m pytest app/tests/test_agent_loop_service.py app/tests/test_agent_loop_api.py app/tests/test_params_agent.py app/tests/test_event_api_compat.py app/tests/test_runtime_step.py -q
+```
+
+- 实现变更后在 `backend/` 下运行全 backend 回归：
+
+```bash
+.venv/bin/python -m pytest app/tests tests -q
+```
+
+- 将 `app/tests/test_agent_loop_api.py` 作为新 route 的 FastAPI TestClient API smoke，并作为既有 `/world/agent/params/propose-and-apply` route 的兼容性检查。
+
+如果本包在未来执行中修改 backend 实现文件，必须运行上面的聚焦 backend/API 命令，然后运行上面的全 backend 回归命令。
 
 ## 预期结果
 
@@ -30,7 +40,7 @@ git diff --check
 
 ## 未运行命令及原因
 
-文档草拟期间不运行 backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 或 test implementation 命令，除非后续获授权执行中修改实现文件。
+文档草拟期间不运行 backend、API smoke、runtime behavior 或 test implementation 命令，除非后续获授权执行中修改实现文件。除非本包意外触及对应 surface，否则不预期运行 frontend、E2E、Agent smoke、build、fixture 或 migration 命令；此类范围扩张必须先评审。
 
 ## Blocker 记录规则
 

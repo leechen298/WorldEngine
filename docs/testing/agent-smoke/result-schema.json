@@ -18,7 +18,8 @@
       "enum": [
         "dashboard-basic-runtime",
         "dashboard-params-flow",
-        "dashboard-invalid-param"
+        "dashboard-invalid-param",
+        "dashboard-agent-autotune"
       ]
     },
     "status": {

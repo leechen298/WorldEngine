@@ -1,6 +1,6 @@
 # 0.4.7 v0.4 最终收口
 
-状态：planned
+状态：final / closeout complete
 类型：documentation-only
 
 ## 目标
@@ -31,7 +31,7 @@
 ## 交付物
 
 - 完整 package docs 和中文镜像。
-- documentation-only verification 和未运行代码测试的理由。
+- documentation-only verification，以及 final evaluator 重新运行的 backend/API verification，记录在 `review.md` 和 `final-closeout.md`。
 - 记录 changed files、commands、compatibility review、scope review 和 P1/P2/P3 findings 的 review。
 
 ## 文档
@@ -46,17 +46,22 @@
 
 本包需要中文镜像，并在同一轮文档创建中生成。
 
+## 补充文档
+
+- [x] `final-closeout.md`
+- [x] `final-closeout.zh.md`
+
 ## 状态清单
 
 - [x] 文档已草拟
-- [ ] 契约已评审
-- [ ] 技术设计已评审
-- [ ] 测试计划已评审
-- [ ] 已授权实现，如适用
-- [ ] 实现完成，如适用
-- [ ] 测试/证据完成
-- [ ] 评审完成
+- [x] 契约已评审
+- [x] 技术设计已评审
+- [x] 测试计划已评审
+- [x] 实现不适用于本 documentation-only package
+- [x] 实现完成不适用于本 documentation-only package
+- [x] 文档和 backend 证据完成
+- [x] 评审完成
 
 ## 最终评估状态
 
-当前值：`planned`。
+当前值：`final / closeout complete`。

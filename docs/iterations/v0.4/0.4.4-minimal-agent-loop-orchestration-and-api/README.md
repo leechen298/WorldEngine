@@ -1,6 +1,6 @@
 # 0.4.4 Minimal Agent Loop Orchestration And API
 
-Status: planned
+Status: review complete
 Type: mixed or code
 
 ## Goal
@@ -14,7 +14,9 @@ Connect the minimal loop and reviewed API boundary without background autonomy.
 Allowed changes:
 
 - Add request-driven loop service under approved `backend/app/` modules.
+- Extend existing agent-loop schemas additively for loop step request/response models.
 - Add one reviewed API route only if contract-authorized.
+- Register/wire the loop service through the backend app factory and route dependency state.
 - Use deterministic providers or explicit test intents for tests.
 - Add focused service/API tests and adjacent compatibility checks.
 
@@ -49,14 +51,14 @@ Chinese mirrors are required in this package and are created in the same documen
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Implementation authorized, when applicable
-- [ ] Implementation complete, when applicable
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Implementation authorized, when applicable
+- [x] Implementation complete, when applicable
+- [x] Tests/evidence complete
+- [x] Review complete
 
 ## Final Assessment State
 
-Current value: `planned`.
+Current value: `review complete`.

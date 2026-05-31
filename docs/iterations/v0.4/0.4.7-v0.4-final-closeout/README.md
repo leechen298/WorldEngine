@@ -1,6 +1,6 @@
 # 0.4.7 v0.4 Final Closeout
 
-Status: planned
+Status: final / closeout complete
 Type: documentation-only
 
 ## Goal
@@ -31,7 +31,7 @@ Forbidden changes:
 ## Deliverables
 
 - Complete package docs and Chinese mirrors.
-- Documentation-only verification and rationale for not running code tests.
+- Documentation-only verification, plus any final backend/API verification rerun by the final evaluator recorded in `review.md` and `final-closeout.md`.
 - Review recording changed files, commands, compatibility review, scope review, and P1/P2/P3 findings.
 
 ## Documents
@@ -46,17 +46,22 @@ Forbidden changes:
 
 Chinese mirrors are required in this package and are created in the same documentation pass.
 
+## Supplemental Documents
+
+- [x] `final-closeout.md`
+- [x] `final-closeout.zh.md`
+
 ## Status Checklist
 
 - [x] Docs drafted
-- [ ] Contract reviewed
-- [ ] Technical design reviewed
-- [ ] Test plan reviewed
-- [ ] Implementation authorized, when applicable
-- [ ] Implementation complete, when applicable
-- [ ] Tests/evidence complete
-- [ ] Review complete
+- [x] Contract reviewed
+- [x] Technical design reviewed
+- [x] Test plan reviewed
+- [x] Implementation not applicable for this documentation-only package
+- [x] Implementation complete not applicable for this documentation-only package
+- [x] Documentation and backend evidence complete
+- [x] Review complete
 
 ## Final Assessment State
 
-Current value: `planned`.
+Current value: `final / closeout complete`.

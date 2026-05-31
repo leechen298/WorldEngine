@@ -3,7 +3,7 @@
 ## Ordered Execution Steps
 
 1. Read parent v0.4 docs and this package docs.
-2. Confirm the current route in `CURRENT_STATE.md` matches `loop-orchestration-implementation` or record a route mismatch in `review.md`.
+2. Confirm the current route in `CURRENT_STATE.md` matches `implementation-authorization-review` before implementation is authorized, or `loop-orchestration-implementation` after authorization is recorded; otherwise record a route mismatch in `review.md`.
 3. Confirm allowed and forbidden file classes from `contract.md`.
 4. Run a documentation / contract evaluator when required by `GOAL_RUNNER.md`.
 5. If this is documentation-only, update only approved docs and keep implementation authorization closed.

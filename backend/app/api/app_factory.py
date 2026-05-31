@@ -19,8 +19,11 @@ from app.world.state import WorldState
 from app.world.storage import InMemorySnapshotStore, InMemorySummaryStore
 from app.world.validation import ParamRegistry, ParamValidator
 from app.world.validation.policy import WorldValidationPolicy
+from app.agent.action_adapter import ActionResultAdapter
 from app.agent.llm_provider import MockLLMProvider
+from app.agent.loop_service import AgentLoopService
 from app.agent.params_agent import ParamsAgent
+from app.agent.perception import PerceptionBuilder
 
 
 def _error_code_from_status(status_code: int) -> int:
@@ -120,6 +123,20 @@ def create_app() -> FastAPI:
         event_log=app.state.event_log,
         runtime_engine=app.state.runtime_engine,
         registry=registry,
+    )
+    app.state.agent_loop_service = AgentLoopService(
+        perception_builder=PerceptionBuilder(
+            runtime_engine=app.state.runtime_engine,
+            event_log=app.state.event_log,
+            world_state=app.state.world_state,
+        ),
+        action_adapter=ActionResultAdapter(
+            world_state=app.state.world_state,
+            event_log=app.state.event_log,
+            runtime_engine=app.state.runtime_engine,
+            param_validator=app.state.param_validator,
+            param_dry_run_validator=app.state.param_dry_run_validator,
+        ),
     )
 
     @app.exception_handler(StarletteHTTPException)

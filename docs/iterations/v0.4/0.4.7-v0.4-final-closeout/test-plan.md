@@ -15,7 +15,7 @@ Package-specific verification expectations:
 - `git diff --check`
 - file existence checks for required docs and mirrors
 - changed-file scope guard against the active package contract
-- Record backend/frontend/API/E2E/runtime tests as not run because the package is documentation-only.
+- Record backend/frontend/API/E2E/runtime tests as not required by this documentation-only package; if the final evaluator reruns backend/API commands, record the commands and results in `review.md` and `final-closeout.md`.
 
 If this package changes backend implementation files in a future execution pass, run focused backend tests from `backend/` with `.venv/bin/python -m pytest ...` and then run adjacent compatibility tests named in the active implementation review.
 
@@ -28,7 +28,7 @@ If this package changes backend implementation files in a future execution pass,
 
 ## Commands Not Run And Why
 
-Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands are not run during documentation drafting unless implementation files are changed in a later authorized pass.
+Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands are not required during documentation drafting. If final closeout repair or evaluator review reruns backend/API checks, those current-session results must be recorded in `review.md` and `final-closeout.md`.
 
 ## Blocker Recording Rule
 

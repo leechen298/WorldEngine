@@ -1,8 +1,14 @@
-{"seq":1,"type":"cli","command":"tools/testing/agent_smoke_evidence.py baseline --base-url http://127.0.0.1:8000 --out test-results/agent-smoke/latest/api-baseline.json","exit_code":0,"summary":"Collected helper-generated baseline API evidence before dashboard UI actions."}
-{"seq":2,"type":"ui","target":"dashboard","action":"open","summary":"Opened the WorldEngine dashboard at http://127.0.0.1:5173/."}
-{"seq":3,"type":"ui","target":"world-params-path-input","action":"fill","summary":"Filled system.secret."}
-{"seq":4,"type":"ui","target":"world-params-value-input","action":"fill","summary":"Filled blocked."}
-{"seq":5,"type":"ui","target":"world-params-apply-button","action":"click","summary":"Clicked Apply for an invalid reserved params path."}
-{"seq":6,"type":"ui","target":"world-params-error","action":"read","summary":"Observed validation error: Param validation failed; system.secret: Reserved params cannot be modified."}
-{"seq":7,"type":"cli","command":"tools/testing/agent_smoke_evidence.py collect --scenario dashboard-invalid-param --base-url http://127.0.0.1:8000 --baseline test-results/agent-smoke/latest/api-baseline.json --operation-log test-results/agent-smoke/latest/operation-log.jsonl --out test-results/agent-smoke/latest/api-summary.json","exit_code":0,"summary":"Generated api-summary.json with the approved helper after dashboard UI actions."}
-{"seq":8,"type":"cli","command":"make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest","exit_code":0,"summary":"Ran deterministic checker on the saved evidence directory."}
+{"seq":1,"type":"ui","target":"dashboard","action":"open","summary":"Opened the WorldEngine dashboard."}
+{"seq":2,"type":"ui","target":"world-params-path-input","action":"fill","summary":"Filled counter.increment."}
+{"seq":3,"type":"ui","target":"world-params-type-select","action":"select","summary":"Selected number."}
+{"seq":4,"type":"ui","target":"world-params-value-input","action":"fill","summary":"Filled value 2."}
+{"seq":5,"type":"ui","target":"world-params-apply-button","action":"click","summary":"Applied baseline params patch through the dashboard."}
+{"seq":6,"type":"ui","target":"world-params-json","action":"read","summary":"Observed baseline params JSON."}
+{"seq":7,"type":"cli","command":"/Users/leechen/projects/WorldEnginProjects/WorldEngine/backend/.venv/bin/python tools/testing/agent_smoke_evidence.py baseline --base-url http://127.0.0.1:8000 --out test-results/agent-smoke/latest/api-baseline.json","exit_code":0,"summary":"Collected baseline backend state after setting counter.increment to 2."}
+{"seq":8,"type":"ui","target":"world-agent-goal-input","action":"fill","summary":"Filled the Auto-Tune goal."}
+{"seq":9,"type":"ui","target":"world-agent-autotune-button","action":"click","summary":"Triggered dashboard Auto-Tune through UI."}
+{"seq":10,"type":"ui","target":"world-agent-success","action":"read","summary":"Observed Auto-Tune success feedback."}
+{"seq":11,"type":"ui","target":"world-agent-patches","action":"read","summary":"Observed returned patch evidence."}
+{"seq":12,"type":"ui","target":"world-params-json","action":"read","summary":"Observed updated params JSON."}
+{"seq":13,"type":"cli","command":"/Users/leechen/projects/WorldEnginProjects/WorldEngine/backend/.venv/bin/python tools/testing/agent_smoke_evidence.py collect --scenario dashboard-agent-autotune --base-url http://127.0.0.1:8000 --baseline test-results/agent-smoke/latest/api-baseline.json --operation-log test-results/agent-smoke/latest/operation-log.jsonl --out test-results/agent-smoke/latest/api-summary.json","exit_code":0,"summary":"Collected scenario-specific deterministic checker evidence."}
+{"seq":14,"type":"cli","command":"make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest","exit_code":0,"summary":"Ran deterministic checker on the saved evidence directory."}

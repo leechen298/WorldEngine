@@ -1,63 +1,84 @@
 # Review
 
-Status: planned
+Status: review complete
+
+implementation_authorized: not applicable - documentation-only package
 
 ## Changed Files
 
-Planned or current documentation files for this package:
+0.4.6 documentation files:
 
 - `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/README.md`
 - `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/README.zh.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/intent.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/intent.zh.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/contract.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/contract.zh.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/technical-design.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/technical-design.zh.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/test-plan.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/test-plan.zh.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/plan.md`
-- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/plan.zh.md`
+- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/release-candidate-bundle.md`
+- `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/release-candidate-bundle.zh.md`
 - `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/review.md`
 - `docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle/review.zh.md`
 
-No implementation files are changed by this documentation creation pass.
+Parent status files:
+
+- `docs/iterations/v0.4/CURRENT_STATE.md`
+- `docs/iterations/v0.4/CURRENT_STATE.zh.md`
+- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.4/README.zh.md`
+- `docs/iterations/v0.4/v0.4-plan.md`
+- `docs/iterations/v0.4/v0.4-plan.zh.md`
+
+No runtime, schema, API, backend test, frontend, fixture, migration, legacy, or external validation implementation files were changed by 0.4.6. Prior accepted 0.4.2-0.4.4 implementation files remain in the same uncommitted worktree and are treated as already reviewed evidence.
 
 ## Commands Run
 
-Commands are recorded by the executor when this package is actively worked. For the initial v0.4 documentation creation pass, package-specific backend, frontend, API, E2E, runtime, fixture, migration, and build commands are not run because this package is not being implemented.
+Documentation checks:
+
+```bash
+git status --short --branch
+git diff --check
+python3 -c "from pathlib import Path; base=Path('docs/iterations/v0.4/0.4.6-v0.4-release-candidate-bundle'); docs=['README','intent','contract','technical-design','test-plan','plan','review','release-candidate-bundle']; missing=[str(base/(name+suffix)) for name in docs for suffix in ('.md','.zh.md') if not (base/(name+suffix)).exists()]; print('missing=' + str(len(missing))); [print(x) for x in missing]; raise SystemExit(1 if missing else 0)"
+python3 -c "<changed-file scope guard over git status --short>"
+```
 
 ## Test Results
 
-Not executed for this child during initial documentation creation. Future execution must use `test-plan.md` and record exact command evidence here.
+- `git diff --check` passed.
+- Required docs/mirrors check for 0.4.6, including `release-candidate-bundle`, passed with `missing=0`.
+- Changed-file scope guard passed with `out_of_scope=0`; prior reviewed implementation files were explicitly separated from 0.4.6 docs-only changes.
+- Backend, frontend, API smoke, E2E, Agent smoke, runtime behavior, build, schema execution, fixture, migration, and test implementation commands were not run for 0.4.6 because this package is documentation-only and did not change implementation files.
+- The latest implementation evidence available after final closeout repair is: loop service/API `9 passed in 0.23s`, focused backend/API `35 passed in 0.55s`, and full backend `139 passed in 0.98s`.
 
 ## Compatibility Review
 
-- `RuntimeEngine` tick and `world_time_seconds` behavior must remain compatible unless the active child explicitly changes it.
-- API envelope and error shape must remain compatible.
-- `/runtime/state`, `/runtime/step`, `/world/events`, and `/world/event-steps` are compatibility-sensitive.
-- World params, params apply behavior, existing ParamsAgent endpoint, archive behavior, and Event.refs optional serialization are compatibility-sensitive.
-- Schema changes must be additive unless the active contract explicitly allows a breaking change.
+`release-candidate-bundle.md` records reviewed compatibility claims from `0.4.5`:
 
-During initial documentation creation, runtime, schema, API, frontend, backend tests, fixtures, migrations, and legacy behavior remain unchanged.
+- schema additions are additive;
+- runtime tick/time behavior remains compatible;
+- event route compatibility remains covered;
+- world params validation/apply behavior remains compatible;
+- successful loop `params.patch` emits `params.applied` with `source="agent.loop"`;
+- rejected actions and no-op actions do not emit events;
+- unsupported or invalid loop actions return HTTP 200 with rejected `ActionResult`;
+- invalid request bodies keep the existing 422 API envelope;
+- archive, frontend, fixture, migration, and legacy `backend/worldengine/` surfaces remain unchanged.
 
 ## Scope Review
 
-- Stop when a required evaluator checkpoint is missing.
-- Stop on P1 or unresolved P2 findings.
-- Stop and record a blocker when required file classes are not authorized by the active contract.
-- Do not treat historical evidence as current-session pass evidence.
+0.4.6 changed documentation only. It packages reviewed evidence and final review questions for 0.4.7. It does not declare final release or final closeout and does not reopen any implementation-bearing surface.
 
 ## Subagent / Evaluator Findings
 
-Required checkpoints are defined by `GOAL_RUNNER.md`. They are not complete for this child until a future run records them here.
+- Release-candidate evaluator found no P2 in the RC bundle itself and confirmed that it avoids final release/closeout overclaiming.
+- Release-candidate evaluator found P1 because `review.md` was still stale and did not record actual 0.4.6 closeout evidence.
+- This final review update fixes the P1 by recording changed files, docs-only command evidence, commands-not-run rationale, evaluator findings, final RC status, and handoff to 0.4.7.
 
 ## Unresolved P1/P2/P3
 
-- P1: none identified in this initial documentation draft.
-- P2: none identified in this initial documentation draft.
-- P3: implementation or validation evidence is not executed yet unless this package is `0.4.0`; the target handoff is recorded in `v0.4-plan.md`.
+- P1: none.
+- P2: none.
+- P3: none.
+
+## Handoff
+
+`0.4.6-v0.4-release-candidate-bundle` is review complete. The next active child is `0.4.7-v0.4-final-closeout`, which is documentation-only and is the only child that may mark v0.4 `final / closeout complete`.
 
 ## Final Assessment
 
-planned
+review complete

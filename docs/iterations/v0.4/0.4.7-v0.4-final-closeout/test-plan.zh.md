@@ -15,7 +15,7 @@ git diff --check
 - `git diff --check`
 - 检查必需文档和镜像是否存在
 - 按 active package contract 执行 changed-file scope guard
-- 记录 backend/frontend/API/E2E/runtime tests not run because the package is documentation-only。
+- 记录 backend/frontend/API/E2E/runtime tests 不由本 documentation-only package 强制要求；如果 final evaluator 重新运行 backend/API 命令，必须在 `review.md` 和 `final-closeout.md` 中记录命令和结果。
 
 如果本包在未来执行中修改 backend 实现文件，必须在 `backend/` 下用 `.venv/bin/python -m pytest ...` 运行聚焦 backend tests，然后运行 active implementation review 中指定的相邻兼容性测试。
 
@@ -28,7 +28,7 @@ git diff --check
 
 ## 未运行命令及原因
 
-文档草拟期间不运行 backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 或 test implementation 命令，除非后续获授权执行中修改实现文件。
+文档草拟期间不强制运行 backend、frontend、API smoke、E2E、Agent smoke、runtime behavior、build、schema execution、fixture、migration 或 test implementation 命令。如果 final closeout repair 或 evaluator review 重新运行 backend/API checks，必须在 `review.md` 和 `final-closeout.md` 记录当前会话结果。
 
 ## Blocker 记录规则
 

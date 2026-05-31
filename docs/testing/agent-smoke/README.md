@@ -15,9 +15,13 @@ transcript notes, but Codex may not issue the final PASS verdict.
 | `dashboard-basic-runtime` | `executable` | `docs/testing/agent-smoke/scenarios/dashboard-basic-runtime.md` |
 | `dashboard-params-flow` | `live-smoke-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-params-flow.md` |
 | `dashboard-invalid-param` | `live-smoke-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-invalid-param.md` |
+| `dashboard-agent-autotune` | `live-smoke-recorded` | `docs/testing/agent-smoke/scenarios/dashboard-agent-autotune.md` |
 
-`dashboard-invalid-param` now has deterministic validator support and a live
-smoke result under `test-results/agent-smoke/latest/`. `dashboard-params-flow`
+`dashboard-agent-autotune` has deterministic validator support and is
+executable, with v0.4 post-closeout live smoke evidence under
+`test-results/agent-smoke/latest/`. `dashboard-invalid-param` has
+deterministic validator support and previous live smoke evidence in history
+before the v0.4 post-closeout latest replacement. `dashboard-params-flow`
 keeps its 0.1.8 live smoke status; its previous raw `latest/` evidence remains
 available through commit `c6da552` and is summarized in
 `docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md`.

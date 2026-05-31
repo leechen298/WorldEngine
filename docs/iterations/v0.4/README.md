@@ -1,13 +1,13 @@
 # v0.4 Agent-in-World Minimal Loop
 
-Status: ready for review
+Status: final / closeout complete
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
 
 v0.4 establishes the minimal Agent-in-World loop. The version lets agents perceive world events, produce action intents, receive action results, and affect world state through a small validated boundary.
 
-This documentation pass does not implement runtime, schema, API, frontend, test, fixture, migration, or legacy code changes. It creates the reviewed documentation gate that later implementation-bearing child packages must follow.
+This campaign has completed the implementation-bearing children, evidence audit, release-candidate bundle, and final closeout. Runtime, schema, API, frontend, test, fixture, migration, or legacy code changes are closed unless a later reviewed package explicitly reopens them.
 
 ## Goal Entry
 
@@ -50,66 +50,66 @@ Forbidden v0.4 scope:
 - Parent goal-campaign documents: `README.md`, `v0.4-plan.md`, `GOAL_RUNNER.md`, `CURRENT_STATE.md`, `CAMPAIGN_PLAN.md`, and `review.md`, with Chinese mirrors.
 - Eight child package document sets, each with README, intent, contract, technical design, test plan, plan, review, and Chinese mirrors.
 - Explicit subagent/evaluator checkpoint rules for `/goal` execution.
-- Documentation-stage review evidence proving this pass is docs-only.
+- Documentation-stage/root review evidence plus final implementation, compatibility, and closeout evidence.
 
 ## Package Index
 
 ### `0.4.0-v0.4-planning-and-compatibility-baseline`
 
 - Type: documentation-only
-- Status: ready for review
+- Status: review complete
 - Purpose: create the v0.4 documentation root, goal-campaign controls, version plan, compatibility baseline, and v0.3 handoff mapping without changing implementation files.
 
 ### `0.4.1-agent-in-world-loop-contract`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: define the public v0.4 Agent-in-World loop concepts, event semantics, API boundary, error model, and implementation authorization criteria before code changes.
 
 ### `0.4.2-agent-perception-and-schemas`
 
 - Type: mixed or code
-- Status: planned
+- Status: review complete
 - Purpose: add generic Agent-in-World schema models and a bounded perception builder that reads runtime state, recent events, world params, and optional runtime-context summary without mutating state.
 
 ### `0.4.3-action-intent-validation-and-result-adapter`
 
 - Type: mixed or code
-- Status: planned
+- Status: review complete
 - Purpose: implement the minimal generic action intent validator and result adapter for noop and validated params.patch, reusing existing param validation and dry-run safeguards.
 
 ### `0.4.4-minimal-agent-loop-orchestration-and-api`
 
 - Type: mixed or code
-- Status: planned
+- Status: review complete
 - Purpose: wire a request-driven minimal Agent-in-World loop that builds perception, obtains or accepts an intent, validates and applies the intent, emits inspectable result evidence, and returns a stable API response.
 
 ### `0.4.5-agent-loop-evidence-and-compatibility-audit`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: audit v0.4 implementation evidence, changed files, compatibility surfaces, unresolved findings, and handoff readiness for release-candidate review.
 
 ### `0.4.6-v0.4-release-candidate-bundle`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: prepare a v0.4 release-candidate bundle from reviewed implementation and audit evidence without declaring final release or adding implementation changes.
 
 ### `0.4.7-v0.4-final-closeout`
 
 - Type: documentation-only
-- Status: planned
+- Status: final / closeout complete
 - Purpose: mark v0.4 final / closeout complete only after release-candidate review approval, evidence consistency checks, and unresolved finding classification.
 
 ## Current State
 
-Active child package: `0.4.0-v0.4-planning-and-compatibility-baseline`.
+Active child package: none - v0.4 final / closeout complete.
 
-Current route: documentation planning and review. No implementation child is authorized until its package docs are reviewed and its required evaluator checkpoint records no blocking findings.
+Current route: final-closeout-complete. v0.4 is final / closeout complete after evidence and evaluator checks passed.
 
 ## Final Assessment State
 
-Current value: `ready for review`.
+Current value: `final / closeout complete`.
 
-v0.4 is not implementation complete, release-candidate complete, or final closeout complete. Later packages must record their own evidence before making runtime, API, test, E2E, or release claims.
+Future packages must record their own evidence before making runtime, API, test, E2E, or release claims.
