@@ -119,9 +119,27 @@ iteration package.
 
 ## v0.6 - World Generation v1
 
+Status: final / closeout complete
+
 Goal: generate runnable WorldSpec data from templates and structured
 AI-assisted generation with validation, metadata, preview, and regeneration
 support.
+
+Closed scope: v0.6 implemented generic world-generation contracts, template
+semantics, deterministic template catalog generation, structured generation
+plan compilation, AI-assisted plan import boundaries without live provider
+integration, validation metadata, preview/regeneration/runtime-readiness APIs,
+and dashboard generation preview with focused E2E smoke.
+
+Final evidence: full backend regression `220 passed`; frontend unit
+`36 passed`; frontend build passed with a Vite large-chunk warning only; E2E
+`16 passed`; required docs/mirrors `missing=0`; changed-file scope guard
+`out_of_scope=0`; closeout consistency evaluator PASS. No external validation
+readiness, projection readiness, product readiness, Agent smoke, autonomous
+runner, live provider, or generation-quality pass claim is made.
+
+Handoff: v0.7 external validation readiness may start only from its own
+reviewed iteration package.
 
 ## v0.7 - External Validation Readiness / Projection Consumer Readiness
 

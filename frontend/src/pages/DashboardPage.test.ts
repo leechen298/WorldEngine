@@ -3,11 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import DashboardPage from "./DashboardPage.vue";
 
-const { fetchHealthMock, getRuntimeStateMock, getWorldEventStepsMock, getWorldParamsMock } = vi.hoisted(() => ({
+const { fetchHealthMock, getRuntimeStateMock, getWorldEventStepsMock, getWorldParamsMock, getWorldSummariesMock } = vi.hoisted(() => ({
   fetchHealthMock: vi.fn(),
   getRuntimeStateMock: vi.fn(),
   getWorldEventStepsMock: vi.fn(),
   getWorldParamsMock: vi.fn(),
+  getWorldSummariesMock: vi.fn(),
 }));
 
 vi.mock("../api/client", () => ({
@@ -15,6 +16,7 @@ vi.mock("../api/client", () => ({
   getRuntimeState: getRuntimeStateMock,
   getWorldEventSteps: getWorldEventStepsMock,
   getWorldParams: getWorldParamsMock,
+  getWorldSummaries: getWorldSummariesMock,
 }));
 
 describe("DashboardPage", () => {
@@ -58,6 +60,10 @@ describe("DashboardPage", () => {
         increment: 2,
       },
     });
+    getWorldSummariesMock.mockResolvedValue({
+      items: [],
+      total: 0,
+    });
   });
 
   it("loads and renders health and runtime state on mount", async () => {
@@ -69,6 +75,7 @@ describe("DashboardPage", () => {
           WorldPanel: true,
           AgentPanel: true,
           MemoryPanel: true,
+          GenerationPanel: true,
         },
       },
     });
@@ -101,6 +108,7 @@ describe("DashboardPage", () => {
           WorldPanel: true,
           AgentPanel: true,
           MemoryPanel: true,
+          GenerationPanel: true,
         },
       },
     });
@@ -146,5 +154,26 @@ describe("DashboardPage", () => {
     expect(getWorldParamsMock).toHaveBeenCalledTimes(1);
     expect(wrapper.text()).toContain("tick_id");
     expect(wrapper.text()).toContain("4");
+  });
+
+  it("mounts the generation panel in the dashboard grid", async () => {
+    const wrapper = mount(DashboardPage, {
+      global: {
+        stubs: {
+          RuntimeControls: true,
+          TimelinePanel: true,
+          WorldPanel: true,
+          AgentPanel: true,
+          MemoryPanel: true,
+          GenerationPanel: {
+            template: "<section data-test='generation-panel-stub'>Generation</section>",
+          },
+        },
+      },
+    });
+
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='generation-panel-stub']").exists()).toBe(true);
   });
 });

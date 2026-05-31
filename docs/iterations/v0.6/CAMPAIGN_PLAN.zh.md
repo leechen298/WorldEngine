@@ -1,6 +1,6 @@
 # Campaign 计划
 
-状态：in progress / 0.6.0 review complete
+状态：final / closeout complete
 
 ## 目标
 

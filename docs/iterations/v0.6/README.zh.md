@@ -1,6 +1,6 @@
 # v0.6 世界生成 v1
 
-状态：in progress / 0.6.0 review complete
+状态：final / closeout complete
 类型：Codex `/goal` development campaign 和 iteration package root
 
 ## 目标
@@ -68,9 +68,10 @@ v0.6 禁止的范围：
 
 - Parent goal-campaign documents：`README.md`、`v0.6-plan.md`、`GOAL_RUNNER.md`、
   `CURRENT_STATE.md`、`CAMPAIGN_PLAN.md` 和 `review.md`，以及中文镜像。
-- First child package：
+- 已评审 child packages through `0.6.1`，包括 first child package：
   `0.6.0-v0.6-planning-and-generation-boundary-baseline`，包含 README、intent、
-  contract、technical design、test plan、plan、review 和中文镜像。
+  contract、technical design、test plan、plan、review 和中文镜像，以及
+  `0.6.1-world-generation-contracts-and-template-semantics` 的同等完整文档集和中文镜像。
 - 贯穿 final closeout 的 planned child package sequence。
 - `/goal` 执行所需的 explicit evaluator checkpoint rules。
 - Documentation-stage review evidence，证明 first package 没有修改 runtime、schema、
@@ -90,7 +91,7 @@ v0.6 禁止的范围：
 ### `0.6.1-world-generation-contracts-and-template-semantics`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：review complete
 - 目的：在写代码前定义 generation public concepts、request/result semantics、
   template semantics、structured-plan semantics、metadata、preview、regeneration、
   compatibility rules 和 authorization criteria。
@@ -98,72 +99,72 @@ v0.6 禁止的范围：
 ### `0.6.2-template-catalog-and-deterministic-generator-core`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：只实现 generic template contracts、deterministic template-to-`WorldSpec`
   generator core 和 focused backend tests。
 
 ### `0.6.3-structured-generation-plan-compiler`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：把已验证的 structured generation plans 编译为 valid `WorldSpec` data，同时不引入
   concrete world content 或 hidden AI side effects。
 
 ### `0.6.4-ai-assisted-generation-boundary-and-plan-import`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：添加 provider-independent AI-assisted plan import boundaries、validation、
   error reporting 和 mock-provider tests，且不要求 live external LLM calls。
 
 ### `0.6.5-generation-validation-metadata-and-preview-api`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：暴露已评审的 backend schemas/services/API，用于 generation validation、
   metadata 和 preview，同时保持现有 API envelopes。
 
 ### `0.6.6-regeneration-and-runtime-readiness-integration`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：添加 bounded regeneration support，并证明 generated specs 能通过
   loader/runtime-context readiness，同时不改变无关 runtime tick behavior。
 
 ### `0.6.7-dashboard-generation-preview-and-e2e-smoke`
 
 - 类型：mixed or code
-- 状态：planned
+- 状态：review complete
 - 目的：在 backend/API generation contracts 稳定后，加入 dashboard-facing generation
   preview workflow 和 browser E2E smoke。
 
 ### `0.6.8-v0.6-evidence-and-compatibility-audit`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：review complete
 - 目的：审计 v0.6 implementation evidence、compatibility surfaces、unresolved
   findings 和 release-candidate readiness。
 
 ### `0.6.9-v0.6-release-candidate-bundle`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：review complete
 - 目的：基于已评审 implementation 和 audit evidence 准备 release-candidate bundle，
   但不声明 final release。
 
 ### `0.6.10-v0.6-final-closeout`
 
 - 类型：documentation-only
-- 状态：planned
+- 状态：final / closeout complete
 - 目的：只有在 release-candidate approval、evidence consistency checks 和 unresolved
   finding classification 完成后，才把 v0.6 标记为 final / closeout complete。
 
 ## 当前状态
 
 Active child package：
-`0.6.1-world-generation-contracts-and-template-semantics`。
+none。
 
-Current route：`next-child-documentation-needed`。
+Current route：`final-closeout-complete`。
 
 Implementation authorization：no。
 
@@ -178,8 +179,23 @@ Implementation authorization：no。
 
 ## 最终评估状态
 
-当前值：`in progress / 0.6.0 review complete`。
+当前值：`final / closeout complete`。
 
-`0.6.0-v0.6-planning-and-generation-boundary-baseline` 已记录 review complete
-documentation evidence。v0.6 implementation 仍未授权，直到某个 implementation-bearing
-child package 记录 `implementation_authorized: yes`。
+`0.6.0-v0.6-planning-and-generation-boundary-baseline`、
+`0.6.1-world-generation-contracts-and-template-semantics`、
+`0.6.2-template-catalog-and-deterministic-generator-core` 和
+`0.6.3-structured-generation-plan-compiler` 均已记录 review complete evidence。
+`0.6.4-ai-assisted-generation-boundary-and-plan-import` 已 review complete，并把 reviewed
+import/provenance semantics 交接给 `0.6.5`。
+`0.6.5-generation-validation-metadata-and-preview-api` 已 review complete，并把 public
+preview/API metadata semantics 交接给
+`0.6.6-regeneration-and-runtime-readiness-integration`。`0.6.6` 已 review complete，
+并把 stable regeneration/readiness API semantics 交接给
+`0.6.7-dashboard-generation-preview-and-e2e-smoke`。`0.6.7` 已 review complete，
+并把 dashboard preview 与 E2E smoke evidence 交接给
+`0.6.8-v0.6-evidence-and-compatibility-audit`。`0.6.8` 已 review complete，并把
+evidence/compatibility audit results 交接给
+`0.6.9-v0.6-release-candidate-bundle`。`0.6.9` 已 review complete，并把
+release-candidate approval 交接给 `0.6.10-v0.6-final-closeout`。当前 route 为
+`final-closeout-complete`；`0.6.10` 已 `final / closeout complete`，没有剩余 active
+v0.6 child package。

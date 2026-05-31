@@ -1,23 +1,26 @@
 # WorldEngine
 
-Status: v0.5 final / closeout complete.
+Status: v0.6 final / closeout complete.
 
 Chinese mirror: `README.zh.md`.
 
 WorldEngine is a recursive world generation and runtime engine.
 
-The `v0.5` branch completes the Memory and Self-Continuity Substrate closeout.
-It preserves the v0.4 Agent-in-World Minimal Loop and adds additive generic
-working-memory and episodic-memory schemas, a process-local in-memory memory
-substrate, and bounded read-only memory context in the Agent Loop perception
-path. Action semantics remain unchanged.
+The `v0.6` branch completes World Generation v1. It preserves the v0.5 memory
+substrate and v0.4 Agent-in-World Minimal Loop while adding generic
+world-generation contracts, deterministic template generation, structured plan
+compilation, AI-assisted plan import boundaries, validation metadata,
+preview/regeneration/runtime-readiness APIs, and a dashboard generation preview
+with focused E2E smoke. Existing runtime and action semantics remain
+compatible.
 
 WorldEngine is still not a complete recursive world engine implementation.
-Durable memory persistence, public memory APIs, automatic reflection,
-self-summary generation, relationship behavior, personality drift action
-modifiers, world generation, external validation readiness, projection
-application readiness, and concrete world/demo content remain future version
-scope.
+External validation readiness, projection application readiness, full product
+readiness, Agent smoke/autonomous runner coverage, live provider integration,
+subjective generation-quality approval, durable memory persistence, public
+memory APIs, automatic reflection, self-summary generation, relationship
+behavior, personality drift action modifiers, and concrete world/demo content
+remain future version scope.
 
 Read first:
 
@@ -25,11 +28,10 @@ Read first:
 - `docs/product-model.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
-- `docs/api-reference-v0.5.md`
-- `docs/releases/v0.5.md`
-- `docs/iterations/v0.5/README.md`
-- `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
-- `docs/testing/results/2026-05-31-v0.5-overall-validation.md`
+- `docs/api-reference-v0.5.md` for the pre-generation API baseline
+- `docs/iterations/v0.6/README.md`
+- `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
+- `docs/iterations/v0.6/review.md`
 - `docs/iterations/README.md`
 
 ## Repository Structure
@@ -40,11 +42,11 @@ Read first:
 - `backend/app/` - active backend path.
 - `backend/worldengine/` - legacy pre-v0.1 path; do not add new features there.
 
-## Current v0.5 Capability
+## Current v0.6 Capability
 
-v0.5 preserves the v0.1 runtime scaffold, v0.3 loader/runtime bridge, and v0.4
-request-driven Agent-in-World loop while adding the first generic memory
-substrate. It can:
+v0.6 preserves the v0.1 runtime scaffold, v0.3 loader/runtime bridge, v0.4
+request-driven Agent-in-World loop, and v0.5 memory substrate while adding
+World Generation v1. It can:
 
 - start backend and frontend development services from the repository root.
 - expose health, runtime, world event, world params, archive, and agent params
@@ -77,17 +79,29 @@ substrate. It can:
 - derive optional inert runtime context from loaded `WorldSpec` data.
 - keep runtime step outputs and event payloads free of raw `WorldSpec` or root
   tree data.
+- define generic world-generation request, template, plan, validation, and
+  provenance schemas.
+- generate deterministic generic `WorldSpec` data from reviewed templates.
+- compile structured generation plans into inspectable generation material.
+- import AI-assisted plan JSON through a strict boundary without live provider
+  or runtime AI integration.
+- expose preview, regeneration, and runtime-readiness generation APIs under
+  `/world/generation`.
+- render a dashboard generation preview workflow with validation/readiness
+  diagnostics.
 
-v0.5 still cannot:
+v0.6 still cannot:
 
 - run recursive `WorldCell` structures as active runtime state.
 - run loaded `WorldSpec` data as active recursive world state.
-- generate worlds from templates or prompts.
+- claim external validation-world readiness or projection application
+  readiness.
+- claim full product readiness, Agent smoke, autonomous runner, live provider,
+  or generation-quality validation.
 - persist memory durably or expose public memory APIs.
 - run automatic reflection, self-summary generation, relationship behavior, or
   personality drift action modifiers.
 - model full agent pseudo-self continuity.
-- run external projection applications as engine consumers.
 - provide a packaged external product surface.
 
 ## Root-Level Quick Start
@@ -126,14 +140,24 @@ Default frontend API target is `http://localhost:8000` (configure via `VITE_API_
 
 ## Verification
 
-Current v0.5 release and validation evidence is summarized in
-`docs/releases/v0.5.md`, `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`,
-and `docs/testing/results/2026-05-31-v0.5-overall-validation.md`.
+Current v0.6 closeout evidence is summarized in
+`docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md` and
+`docs/iterations/v0.6/review.md`.
 
 Earlier v0.1/v0.3 closeout evidence remains compatibility baseline material,
 not the current API or implementation map.
 
 Key recorded evidence includes:
+
+- v0.6 final closeout evidence in `docs/iterations/v0.6/review.md` and
+  `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`:
+  full backend regression `220 passed`, frontend unit `36 passed`, frontend
+  build passed with a Vite large-chunk warning only, E2E `16 passed`, required
+  docs/mirrors `missing=0`, changed-file scope guard `out_of_scope=0`, and
+  closeout consistency evaluator PASS.
+- v0.6 deliberately does not claim external validation readiness, projection
+  readiness, product readiness, Agent smoke, autonomous runner, live provider,
+  or generation-quality pass.
 
 - v0.5 final closeout evidence in `docs/iterations/v0.5/review.md` and
   `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`:
@@ -158,6 +182,8 @@ These are recorded closeout results, not tests rerun by this README update.
 
 Implementation docs:
 
+- `docs/iterations/v0.6/README.md`
+- `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
 - `docs/iterations/v0.5/README.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
 - `docs/releases/v0.5.md`

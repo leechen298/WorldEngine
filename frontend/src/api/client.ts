@@ -56,6 +56,160 @@ export interface WorldEventStepsPage {
 
 export type WorldParams = Record<string, unknown>;
 
+export interface GenerationDiagnostic {
+  code: string;
+  severity: string;
+  message: string;
+  path?: string | null;
+  source_context: Record<string, unknown>;
+}
+
+export interface GenerationPreviewMetadata {
+  generation_id: string;
+  request_id: string;
+  source_kind: "template" | "plan" | "imported_plan";
+  template_id?: string | null;
+  template_version?: string | null;
+  plan_id?: string | null;
+  plan_version?: string | null;
+  seed_digest: string;
+  validation_status: "passed" | "failed";
+  diagnostics_count: number;
+  preview_summary: Record<string, unknown>;
+  import_source?: Record<string, unknown> | null;
+}
+
+export interface TemplateCell {
+  id: string;
+  label?: string | null;
+  entity_refs: Array<Record<string, unknown>>;
+  child_cells: TemplateCell[];
+  metadata: Record<string, unknown>;
+}
+
+export interface WorldTemplate {
+  id: string;
+  version: string;
+  root: TemplateCell;
+  metadata: Record<string, unknown>;
+  constraints: Record<string, unknown>;
+}
+
+export interface TemplateGenerationRequest {
+  request_id: string;
+  template: WorldTemplate;
+  seed_material?: unknown;
+  constraints?: Record<string, unknown>;
+}
+
+export interface PlanCell {
+  id: string;
+  label?: string | null;
+  entity_refs: Array<Record<string, unknown>>;
+  child_cells: PlanCell[];
+  metadata: Record<string, unknown>;
+}
+
+export interface GenerationPlan {
+  id: string;
+  version: string;
+  root: PlanCell;
+  metadata: Record<string, unknown>;
+  constraints: Record<string, unknown>;
+}
+
+export interface PlanGenerationRequest {
+  request_id: string;
+  plan: GenerationPlan;
+  seed_material?: unknown;
+  constraints?: Record<string, unknown>;
+}
+
+export interface PlanImportSource {
+  source_kind: "ai_assisted" | "tool" | "user";
+  source_id?: string | null;
+  provider_label?: string | null;
+  model_label?: string | null;
+  redacted: boolean;
+  metadata: Record<string, unknown>;
+}
+
+export interface PlanImportRequest {
+  import_id: string;
+  plan: GenerationPlan;
+  source: PlanImportSource;
+  metadata: Record<string, unknown>;
+}
+
+interface GenerationPreviewBaseRequest {
+  request_id: string;
+  seed_material?: unknown;
+  constraints?: Record<string, unknown>;
+}
+
+export type GenerationPreviewRequest =
+  | (GenerationPreviewBaseRequest & {
+      source_kind: "template";
+      template_request: TemplateGenerationRequest;
+      plan_request?: never;
+      import_request?: never;
+    })
+  | (GenerationPreviewBaseRequest & {
+      source_kind: "plan";
+      template_request?: never;
+      plan_request: PlanGenerationRequest;
+      import_request?: never;
+    })
+  | (GenerationPreviewBaseRequest & {
+      source_kind: "imported_plan";
+      template_request?: never;
+      plan_request?: never;
+      import_request: PlanImportRequest;
+    });
+
+export interface GenerationPreviewResponse {
+  request_id: string;
+  source_kind: "template" | "plan" | "imported_plan";
+  validation_status: "passed" | "failed";
+  metadata: GenerationPreviewMetadata;
+  diagnostics: GenerationDiagnostic[];
+  worldspec_preview?: Record<string, unknown> | null;
+}
+
+export interface RuntimeReadinessRequest {
+  request_id: string;
+  worldspec: Record<string, unknown>;
+  source_label?: string | null;
+}
+
+export interface RuntimeReadinessResult {
+  request_id: string;
+  validation_status: "passed" | "failed";
+  loader_passed: boolean;
+  runtime_context_passed: boolean;
+  does_not_mutate_runtime: boolean;
+  runtime_context_summary?: Record<string, unknown> | null;
+  diagnostics: GenerationDiagnostic[];
+}
+
+export interface GenerationRegenerationRequest {
+  request_id: string;
+  base_preview_request: GenerationPreviewRequest;
+  parent_generation_id?: string | null;
+  reason?: string | null;
+  seed_material?: unknown;
+  constraints?: Record<string, unknown>;
+}
+
+export interface GenerationRegenerationResult {
+  request_id: string;
+  validation_status: "passed" | "failed";
+  lineage: Record<string, unknown>;
+  preview: GenerationPreviewResponse;
+  runtime_readiness: RuntimeReadinessResult;
+  diagnostics: GenerationDiagnostic[];
+}
+
 export interface ParamPatchItem {
   op: "add" | "set" | "remove";
   path: string;
@@ -121,6 +275,16 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   return successPayload.data;
+}
+
+function postJson<T>(path: string, body: unknown): Promise<T> {
+  return request<T>(path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
 }
 
 export async function fetchHealth(): Promise<HealthResponse> {
@@ -194,13 +358,25 @@ export async function getWorldParams(): Promise<WorldParams> {
 export async function applyWorldParams(
   body: ApplyWorldParamsRequest,
 ): Promise<WorldParams> {
-  return request<WorldParams>("/world/params/apply", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  return postJson<WorldParams>("/world/params/apply", body);
+}
+
+export async function previewGeneration(
+  body: GenerationPreviewRequest,
+): Promise<GenerationPreviewResponse> {
+  return postJson<GenerationPreviewResponse>("/world/generation/preview", body);
+}
+
+export async function checkGenerationRuntimeReadiness(
+  body: RuntimeReadinessRequest,
+): Promise<RuntimeReadinessResult> {
+  return postJson<RuntimeReadinessResult>("/world/generation/runtime-readiness", body);
+}
+
+export async function regenerateWorld(
+  body: GenerationRegenerationRequest,
+): Promise<GenerationRegenerationResult> {
+  return postJson<GenerationRegenerationResult>("/world/generation/regenerate", body);
 }
 
 // ---------------------------------------------------------------------------

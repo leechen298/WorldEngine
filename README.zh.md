@@ -1,22 +1,24 @@
 # WorldEngine
 
-状态：`v0.5 final / closeout complete`
+状态：`v0.6 final / closeout complete`
 
 英文版本：`README.md`。
 
 WorldEngine 是递归世界生成与运行时引擎。
 
-当前 `v0.5` 分支已完成 Memory and Self-Continuity Substrate 收口。它保留
-v0.4 Agent-in-World Minimal Loop，并新增 additive generic working-memory 和
-episodic-memory schemas、process-local in-memory memory substrate，以及接入
-Agent Loop perception path 的 bounded read-only memory context。Action
-semantics 保持不变。
+当前 `v0.6` 分支已完成 World Generation v1。它保留 v0.5 memory substrate 和
+v0.4 Agent-in-World Minimal Loop，并新增 generic world-generation contracts、
+deterministic template generation、structured plan compilation、AI-assisted plan
+import boundaries、validation metadata、preview/regeneration/runtime-readiness APIs，
+以及带 focused E2E smoke 的 dashboard generation preview。既有 runtime 与 action
+semantics 保持兼容。
 
-WorldEngine 仍不是完整的递归世界引擎实现。Durable memory persistence、public
-memory APIs、automatic reflection、self-summary generation、relationship
-behavior、personality drift action modifiers、world generation、external
-validation readiness、projection application readiness 和 concrete world/demo
-content 仍属于后续版本范围。
+WorldEngine 仍不是完整的递归世界引擎实现。External validation readiness、
+projection application readiness、full product readiness、Agent smoke/autonomous
+runner coverage、live provider integration、subjective generation-quality approval、
+durable memory persistence、public memory APIs、automatic reflection、self-summary
+generation、relationship behavior、personality drift action modifiers 和 concrete
+world/demo content 仍属于后续版本范围。
 
 优先阅读：
 
@@ -24,11 +26,10 @@ content 仍属于后续版本范围。
 - `docs/product-model.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
-- `docs/api-reference-v0.5.md`
-- `docs/releases/v0.5.zh.md`
-- `docs/iterations/v0.5/README.zh.md`
-- `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`
-- `docs/testing/results/2026-05-31-v0.5-overall-validation.md`
+- `docs/api-reference-v0.5.md`，作为 generation 之前的 API baseline
+- `docs/iterations/v0.6/README.zh.md`
+- `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
+- `docs/iterations/v0.6/review.zh.md`
 - `docs/iterations/README.md`
 
 ## 仓库结构
@@ -39,10 +40,10 @@ content 仍属于后续版本范围。
 - `backend/app/` - active backend path。
 - `backend/worldengine/` - legacy pre-v0.1 path；不要在那里新增 feature。
 
-## 当前 v0.5 能力
+## 当前 v0.6 能力
 
-v0.5 保留 v0.1 运行时脚手架、v0.3 loader/runtime bridge 和 v0.4
-request-driven Agent-in-World loop，同时新增第一层 generic memory substrate。它可以：
+v0.6 保留 v0.1 运行时脚手架、v0.3 loader/runtime bridge、v0.4 request-driven
+Agent-in-World loop 和 v0.5 memory substrate，同时新增 World Generation v1。它可以：
 
 - 从仓库根目录启动 backend 和 frontend development services。
 - 暴露 health、runtime、world event、world params、archive 和 agent params routes。
@@ -68,17 +69,26 @@ request-driven Agent-in-World loop，同时新增第一层 generic memory substr
 - 通过最小加载器加载并校验通用 `WorldSpec` 数据。
 - 从已加载的 `WorldSpec` 数据派生可选、惰性的运行时上下文。
 - 保持 runtime step 输出和 event payload 不暴露原始 `WorldSpec` 或 root tree 数据。
+- 定义 generic world-generation request、template、plan、validation 和 provenance
+  schemas。
+- 从已评审 templates 生成 deterministic generic `WorldSpec` 数据。
+- 将 structured generation plans 编译为可审查 generation material。
+- 通过严格边界导入 AI-assisted plan JSON，不接入 live provider 或 runtime AI。
+- 在 `/world/generation` 下暴露 preview、regeneration 和 runtime-readiness generation
+  APIs。
+- 渲染带 validation/readiness diagnostics 的 dashboard generation preview workflow。
 
-v0.5 仍不能：
+v0.6 仍不能：
 
 - 把递归 `WorldCell` 结构作为活跃运行时状态运行。
 - 把已加载的 `WorldSpec` 数据作为活跃递归世界状态运行。
-- 从 templates 或 prompts 生成 worlds。
+- 声明 external validation-world readiness 或 projection application readiness。
+- 声明 full product readiness、Agent smoke、autonomous runner、live provider 或
+  generation-quality validation。
 - 持久化保存 memory 或暴露 public memory APIs。
 - 运行 automatic reflection、self-summary generation、relationship behavior 或
   personality drift action modifiers。
 - 建模完整 Agent pseudo-self continuity。
-- 以 engine consumer 形式运行 external projection applications。
 - 提供 packaged external product surface。
 
 ## 根目录快速启动
@@ -117,13 +127,22 @@ pnpm dev
 
 ## 验证
 
-当前 v0.5 release 与 validation evidence 汇总在 `docs/releases/v0.5.zh.md`、
-`docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md` 和
-`docs/testing/results/2026-05-31-v0.5-overall-validation.md`。
+当前 v0.6 closeout evidence 汇总在
+`docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md` 和
+`docs/iterations/v0.6/review.zh.md`。
 
 早期 v0.1/v0.3 closeout evidence 仍是兼容性基线材料，不是当前 API 或实现地图。
 
 关键已记录证据包括：
+
+- v0.6 final closeout evidence 见 `docs/iterations/v0.6/review.md` 和
+  `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`：
+  full backend regression `220 passed`、frontend unit `36 passed`、frontend build
+  通过且仅有 Vite large-chunk warning、E2E `16 passed`、required docs/mirrors
+  `missing=0`、changed-file scope guard `out_of_scope=0`，以及 closeout
+  consistency evaluator PASS。
+- v0.6 明确不声明 external validation readiness、projection readiness、product
+  readiness、Agent smoke、autonomous runner、live provider 或 generation-quality pass。
 
 - v0.5 final closeout evidence 见 `docs/iterations/v0.5/review.md` 和
   `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`：
@@ -147,6 +166,8 @@ pnpm dev
 
 实现文档：
 
+- `docs/iterations/v0.6/README.zh.md`
+- `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
 - `docs/iterations/v0.5/README.zh.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`
 - `docs/releases/v0.5.zh.md`

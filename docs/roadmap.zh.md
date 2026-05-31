@@ -114,8 +114,25 @@ readiness 或 product readiness 已通过。
 
 ## v0.6 - World Generation v1
 
+状态：`final / closeout complete`
+
 目标：从 templates 和 structured AI-assisted generation 生成 runnable WorldSpec data，
 并包含 validation、metadata、preview 和 regeneration support。
+
+关闭范围：v0.6 已实现 generic world-generation contracts、template semantics、
+deterministic template catalog generation、structured generation plan compilation、
+不含 live provider integration 的 AI-assisted plan import boundaries、validation
+metadata、preview/regeneration/runtime-readiness APIs，以及带 focused E2E smoke 的
+dashboard generation preview。
+
+Final evidence：full backend regression `220 passed`；frontend unit `36 passed`；
+frontend build 通过且仅有 Vite large-chunk warning；E2E `16 passed`；required
+docs/mirrors `missing=0`；changed-file scope guard `out_of_scope=0`；closeout
+consistency evaluator PASS。不声明 external validation readiness、projection
+readiness、product readiness、Agent smoke、autonomous runner、live provider 或
+generation-quality pass。
+
+交接：v0.7 external validation readiness 只能从自己的 reviewed iteration package 开始。
 
 ## v0.7 - External Validation Readiness / Projection Consumer Readiness
 

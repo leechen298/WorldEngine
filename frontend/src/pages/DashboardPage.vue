@@ -52,6 +52,7 @@
 
       <section class="panel-grid">
         <RuntimeControls class="panel-grid-full" @stepped="handleRuntimeStepped" />
+        <GenerationPanel class="panel-grid-full" />
         <TimelinePanel
           class="panel-grid-full"
           :steps="eventSteps"
@@ -109,6 +110,7 @@ import {
   type WorldSummary,
 } from "../api/client";
 import RuntimeControls from "../components/RuntimeControls.vue";
+import GenerationPanel from "../components/GenerationPanel.vue";
 import TimelinePanel from "../components/TimelinePanel.vue";
 import WorldPanel from "../components/WorldPanel.vue";
 import AgentPanel from "../components/AgentPanel.vue";

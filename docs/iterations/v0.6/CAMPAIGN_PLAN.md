@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: in progress / 0.6.0 review complete
+Status: final / closeout complete
 
 ## Objective
 

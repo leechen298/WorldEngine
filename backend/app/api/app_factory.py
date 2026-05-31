@@ -8,7 +8,15 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api.routes import archive_router, health_router, runtime_router, world_agent_router, world_params_router, world_router
+from app.api.routes import (
+    archive_router,
+    health_router,
+    runtime_router,
+    world_agent_router,
+    world_generation_router,
+    world_params_router,
+    world_router,
+)
 from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_engine import RuntimeEngine
 from app.schemas.api import ApiErrorResponse
@@ -165,5 +173,6 @@ def create_app() -> FastAPI:
     app.include_router(world_router)
     app.include_router(world_params_router)
     app.include_router(world_agent_router)
+    app.include_router(world_generation_router)
     app.include_router(archive_router)
     return app
