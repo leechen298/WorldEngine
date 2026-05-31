@@ -158,6 +158,52 @@ reviewed.
 - Prefer focused verification tied to the iteration contract, then broader
   regression commands when the blast radius requires it.
 
+## Natural-Language Validation Triggers
+
+When the user says a short validation request such as `测试 <version>`,
+`验证 <version>`, `<version> 是否通过`, `测试 <iteration-package>`,
+`验证当前产品`, or asks for a `clean pass`, treat it as a request to run the
+reusable product capability validation flow in
+`docs/testing/product-capability-validation-playbook.md`.
+
+The phrase is only a trigger. It is not itself a PASS verdict.
+
+Before reporting the result:
+
+- read the active version or package state and determine the in-scope
+  validation surface.
+- create or use the required iteration package when validation will change
+  tests, checkers, fixtures, result schemas, runtime/API/frontend behavior, or
+  durable evidence rules.
+- run or explicitly classify each in-scope command/checker as passed, failed,
+  blocked, skipped, or out of scope.
+- distinguish E2E, Agent smoke, minimal autonomous saved-result validation,
+  full autonomous runner/full suite, and manual observation.
+- record command results, artifact paths, unresolved P1/P2/P3 findings, and
+  final verdict in the relevant `review.md` or `docs/testing/results/`
+  summary.
+
+If current evidence does not cover frontend, E2E, Agent smoke, autonomous,
+external validation, projection readiness, or product readiness, name those
+exclusions instead of implying a broader PASS.
+
+## Natural-Language Test Documentation Triggers
+
+When the user says a short test-documentation request such as
+`编写 <version> 测试方案`, `补充 <iteration-package> 测试文档`,
+`设计 <feature> 测试用例`, `写 E2E 测试场景`, or `生成测试矩阵`, treat it as a
+request to run the reusable test-documentation flow in
+`docs/testing/test-documentation-playbook.md`.
+
+This trigger is separate from validation. It produces or updates test
+documentation, plans, scenarios, and cases. It does not claim that tests ran or
+passed.
+
+If the request combines writing test documentation with executing validation,
+write or update the test documentation first, then use
+`docs/testing/product-capability-validation-playbook.md` for the execution and
+verdict phase.
+
 ## Git Safety
 
 - Do not revert or overwrite user changes that are already present in the

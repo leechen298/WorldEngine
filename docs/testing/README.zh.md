@@ -32,6 +32,23 @@ YYYY-MM-DD-<version-package>-<slug>.md
 - failures 或 skipped checks。
 - 回链到 iteration package。
 
+## Product Capability Validation
+
+当用户询问某个 version、release candidate 或当前产品状态是否真的通过时，使用
+`docs/testing/product-capability-validation-playbook.zh.md`。一句话请求可以触发
+playbook，但 PASS 仍然必须来自当前会话命令或 checker evidence。
+
+## Test Documentation
+
+当用户要求编写、补充、整理或 review 测试文档、测试方案、测试场景或测试用例时，使用
+`docs/testing/test-documentation-playbook.zh.md`。一句话请求可以触发 playbook，但产物是
+test-documentation artifact，不是 PASS verdict。
+
+版本级测试方案文档：
+
+- `docs/testing/v0.4-overall-test-plan.zh.md`
+- `docs/testing/v0.5-overall-test-plan.zh.md`
+
 ## Agent Smoke
 
 Agent-assisted smoke tests 必须遵循 `docs/testing/agent-smoke/`。Codex 或其他 agent

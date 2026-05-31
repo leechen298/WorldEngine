@@ -33,6 +33,25 @@ Each result file should include:
 - failures or skipped checks.
 - link back to the iteration package.
 
+## Product Capability Validation
+
+Use `docs/testing/product-capability-validation-playbook.md` when a user asks
+whether a version, release candidate, or current product state has really
+passed. A one-line request may trigger the playbook, but PASS still requires
+current-session command or checker evidence.
+
+## Test Documentation
+
+Use `docs/testing/test-documentation-playbook.md` when a user asks to write,
+supplement, organize, or review test documentation, test plans, scenarios, or
+test cases. A one-line request may trigger the playbook, but the output is a
+test-documentation artifact, not a PASS verdict.
+
+Version-level test-plan artifacts:
+
+- `docs/testing/v0.4-overall-test-plan.zh.md`
+- `docs/testing/v0.5-overall-test-plan.zh.md`
+
 ## Agent Smoke
 
 Agent-assisted smoke tests must follow `docs/testing/agent-smoke/`. Codex or any

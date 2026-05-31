@@ -146,6 +146,44 @@ contract/design 更新并通过 review 后，才能继续。
 - 优先运行与 iteration contract 对应的 focused verification；当 blast radius 需要时，再运行
   broader regression commands。
 
+## Natural-Language Validation Triggers
+
+当用户说出 `测试 <version>`、`验证 <version>`、`<version> 是否通过`、
+`测试 <iteration-package>`、`验证当前产品`，或要求 `clean pass` 这类短 validation
+request 时，把它视为启动 `docs/testing/product-capability-validation-playbook.zh.md`
+中可复用产品能力验证流程的请求。
+
+这句话只是 trigger，本身不是 PASS verdict。
+
+报告结果前必须：
+
+- 读取 active version 或 package state，确定 in-scope validation surface。
+- 如果 validation 会修改 tests、checkers、fixtures、result schemas、runtime/API/frontend
+  behavior 或 durable evidence rules，先创建或使用所需 iteration package。
+- 对每个 in-scope command/checker，实际运行或明确分类为 passed、failed、blocked、
+  skipped 或 out of scope。
+- 区分 E2E、Agent smoke、minimal autonomous saved-result validation、full autonomous
+  runner/full suite 和人工观察。
+- 在相关 `review.md` 或 `docs/testing/results/` summary 中记录 command results、
+  artifact paths、unresolved P1/P2/P3 findings 和 final verdict。
+
+如果当前 evidence 没有覆盖 frontend、E2E、Agent smoke、autonomous、external
+validation、projection readiness 或 product readiness，必须点名这些 exclusions，不得暗示
+更宽范围已经 PASS。
+
+## Natural-Language Test Documentation Triggers
+
+当用户说出 `编写 <version> 测试方案`、`补充 <iteration-package> 测试文档`、
+`设计 <feature> 测试用例`、`写 E2E 测试场景` 或 `生成测试矩阵` 这类短
+test-documentation request 时，把它视为启动
+`docs/testing/test-documentation-playbook.zh.md` 中可复用测试文档流程的请求。
+
+这个 trigger 与 validation 分开。它产出或更新测试文档、测试方案、测试场景和测试用例；
+不声明 tests 已运行或通过。
+
+如果请求同时要求编写测试文档和执行验证，先编写或更新测试文档，再使用
+`docs/testing/product-capability-validation-playbook.zh.md` 进入执行和 verdict 阶段。
+
 ## Git Safety
 
 - 不要 revert 或覆盖 working tree 中已经存在的用户修改。
