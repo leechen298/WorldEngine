@@ -1,6 +1,6 @@
 # Test Plan
 
-Status: planned / ready for review
+Status: review complete
 
 ## Documentation Checks
 

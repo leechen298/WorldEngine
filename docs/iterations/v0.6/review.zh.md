@@ -1,6 +1,6 @@
 # 评审
 
-状态：planned / ready for review
+状态：in progress / 0.6.0 review complete
 
 implementation_authorized: no
 
@@ -161,6 +161,20 @@ Documentation checks 已通过：
 - Changed-file scope guard：`unexpected_status=0`。
 - Chinese mirror heading audit：`generic_english_only_headings=0`。
 
+记录 evaluator evidence 后的 evidence-sync verification：
+
+- `git diff --check`：通过，无输出。
+- Required v0.6 docs and mirrors check：`missing=0`。
+- Planned-package field check：`planned_package_count=11` 且
+  `planned_package_missing_fields=0`。
+- Chinese mirror heading audit：`generic_english_only_headings=0`。
+- v0.6 trailing whitespace audit：`trailing_whitespace=0`。
+- v0.6 status split：`v06_status=26`。
+- 本次 evidence-sync update 期间存在非 v0.6 worktree changes，且这些外部状态在验证期间
+  继续变化。它们不属于本次 status-sync 范围，并已从本 package assessment 中排除。
+- Stale active-status search 在 `docs/iterations/v0.6/` 下未发现残留的 `0.6.0`
+  planned status、旧 documentation review route 或 missing-evaluator blocker text。
+
 Backend、frontend、API、E2E、runtime、Agent smoke、autonomous validation、build、
 fixture、migration 和 external validation commands 因 `0.6.0` 是 documentation-only
 且不修改这些 implementation surfaces，故意不运行。
@@ -188,16 +202,41 @@ package。它不创建 planned future implementation paths。
 
 ## Evaluator 证据
 
-尚未记录 independent documentation evaluator。由于当前用户请求未明确授权 subagent/evaluator
-use，本 package 保持 `planned / ready for review`，而不是 `review complete`。
+已在 2026-05-31 从 HEAD `7edecb9 docs: add v0.6 planning campaign` 的只读评审中记录
+independent documentation evaluator evidence。
+
+Evaluator 结论：
+
+- 未发现新的 P0/P1/P2 blocking issues。
+- 写入本 evidence 前，status 正确保持为 `planned / ready for review`。
+- Active child 正确记录为
+  `0.6.0-v0.6-planning-and-generation-boundary-baseline`。
+- Implementation authorization 正确保持关闭。
+- 此前唯一 unresolved P2 是缺少 independent documentation evaluator evidence；本节记录该
+  evidence，并解除 `0.6.0` 的 documentation-review blocker。
+
+Evaluator 已验证证据：
+
+- `git status --short --branch`：本 evidence-sync update 前，worktree 在
+  `v0.6...origin/v0.6` 上干净。
+- HEAD：`7edecb9 docs: add v0.6 planning campaign`。
+- v0.6 commit scope：只新增 `docs/iterations/v0.6/` 下 26 个 documentation files。
+- Required docs and mirrors：`missing=0`。
+- Planned package check：`planned_package_count=11`、
+  `planned_package_missing_fields=0`。
+- Scope guard：`unexpected_status=0`。
+- Chinese mirror heading audit：`generic_english_only_headings=0`。
+- Trailing whitespace audit：`trailing_whitespace=0`。
+- `git diff --check`：通过，无输出。
 
 ## 未解决 Findings
 
-- P1：起草阶段未发现。
-- P2：尚未记录 independent documentation evaluator evidence，因此 implementation
-  authorization 必须保持关闭。
-- P3：起草阶段未发现。
+- P1：未发现。
+- P2：independent documentation evaluator evidence 已记录后，未发现。
+- P3：未发现。
 
 ## 最终评估
 
-v0.6 documentation draft 已准备好进入 user 和 evaluator review。它不授权 implementation。
+`0.6.0-v0.6-planning-and-generation-boundary-baseline` 已 review complete，并交接给
+`0.6.1-world-generation-contracts-and-template-semantics`。v0.6 implementation 仍未授权，
+直到后续 implementation-bearing child package 记录 `implementation_authorized: yes`。

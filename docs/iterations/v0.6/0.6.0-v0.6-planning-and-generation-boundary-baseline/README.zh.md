@@ -1,6 +1,6 @@
 # 0.6.0 v0.6 规划与生成边界基线
 
-状态：planned / ready for review
+状态：review complete
 类型：documentation-only
 implementation_authorized: no
 
@@ -61,6 +61,7 @@ files。
 
 ## 当前评估
 
-本 package 只处于 documentation-stage，当前 ready for review。只有完成评审后，才交接给
-`0.6.1-world-generation-contracts-and-template-semantics`，且 implementation
-authorization 继续关闭。
+本 documentation-only package 已 review complete。它交接给
+`0.6.1-world-generation-contracts-and-template-semantics`，且 v0.6 implementation
+authorization 仍关闭，直到后续 implementation-bearing child package 明确记录
+`implementation_authorized: yes`。

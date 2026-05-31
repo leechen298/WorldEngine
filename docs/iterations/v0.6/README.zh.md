@@ -1,6 +1,6 @@
 # v0.6 世界生成 v1
 
-状态：planned / ready for review
+状态：in progress / 0.6.0 review complete
 类型：Codex `/goal` development campaign 和 iteration package root
 
 ## 目标
@@ -82,7 +82,7 @@ v0.6 禁止的范围：
 ### `0.6.0-v0.6-planning-and-generation-boundary-baseline`
 
 - 类型：documentation-only
-- 状态：planned / ready for review
+- 状态：review complete
 - 目的：创建 v0.6 documentation root、goal-campaign controls、version plan、
   generation boundary、compatibility baseline 和 v0.5 handoff mapping，且不修改
   implementation files。
@@ -161,9 +161,9 @@ v0.6 禁止的范围：
 ## 当前状态
 
 Active child package：
-`0.6.0-v0.6-planning-and-generation-boundary-baseline`。
+`0.6.1-world-generation-contracts-and-template-semantics`。
 
-Current route：`documentation-review-needed`。
+Current route：`next-child-documentation-needed`。
 
 Implementation authorization：no。
 
@@ -178,4 +178,8 @@ Implementation authorization：no。
 
 ## 最终评估状态
 
-当前值：`planned / ready for review`。
+当前值：`in progress / 0.6.0 review complete`。
+
+`0.6.0-v0.6-planning-and-generation-boundary-baseline` 已记录 review complete
+documentation evidence。v0.6 implementation 仍未授权，直到某个 implementation-bearing
+child package 记录 `implementation_authorized: yes`。

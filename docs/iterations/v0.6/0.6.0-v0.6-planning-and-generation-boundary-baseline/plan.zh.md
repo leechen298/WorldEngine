@@ -1,6 +1,6 @@
 # 计划
 
-状态：planned / ready for review
+状态：review complete
 
 ## 文件
 
@@ -41,11 +41,12 @@
    v0.5 final closeout 和当前 WorldSpec/runtime-context code。
 2. 起草 v0.6 parent campaign docs 和 package sequence。
 3. 起草 `0.6.0` package docs 和中文镜像。
-4. 保持所有 status values 为 `planned / ready for review`，并保持
+4. 起草阶段保持所有 status values 为 `planned / ready for review`，并保持
    `implementation_authorized: no`。
 5. 运行 `test-plan.md` 中的 documentation checks。
 6. 用实际 command evidence 更新 parent 和 child `review.md` / `review.zh.md`。
-7. 保持 implementation authorization closed，并交接给 documentation review。
+7. independent documentation evaluator evidence 记录后，将 `0.6.0` 标记为 review
+   complete，保持 implementation authorization closed，并交接给 `0.6.1`。
 
 ## 阶段边界
 

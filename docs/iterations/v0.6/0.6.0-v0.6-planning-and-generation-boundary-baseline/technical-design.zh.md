@@ -1,6 +1,6 @@
 # 技术设计
 
-状态：planned / ready for review
+状态：review complete
 
 ## 文档结构
 
@@ -95,4 +95,5 @@ Campaign 在写代码前识别 compatibility-sensitive surfaces：
 - 风险：generated `WorldSpec` output 破坏 loader/runtime-context behavior。
   缓解：后续 child packages 必须运行 focused loader 和 runtime-context tests。
 - 风险：缺少 evaluator evidence 却被误认为 review complete。
-  缓解：状态保持 `planned / ready for review`，且 `implementation_authorized: no`。
+  缓解：evidence 缺失时状态保持 `planned / ready for review`；evidence 记录后可以将
+  `0.6.0` 标记为 complete，但继续保持 `implementation_authorized: no`。

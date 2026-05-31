@@ -1,6 +1,6 @@
 # Review
 
-Status: planned / ready for review
+Status: in progress / 0.6.0 review complete
 
 implementation_authorized: no
 
@@ -161,6 +161,22 @@ Documentation checks passed:
 - Changed-file scope guard: `unexpected_status=0`.
 - Chinese mirror heading audit: `generic_english_only_headings=0`.
 
+Evidence-sync verification after recording evaluator evidence:
+
+- `git diff --check`: passed with no output.
+- Required v0.6 docs and mirrors check: `missing=0`.
+- Planned-package field check: `planned_package_count=11` and
+  `planned_package_missing_fields=0`.
+- Chinese mirror heading audit: `generic_english_only_headings=0`.
+- v0.6 trailing whitespace audit: `trailing_whitespace=0`.
+- v0.6 status split: `v06_status=26`.
+- Non-v0.6 worktree changes were present during this evidence-sync update and
+  changed while verification was running. They are outside this status-sync
+  scope and are excluded from this package assessment.
+- Stale active-status search found no remaining `0.6.0` planned status,
+  old documentation review route, or missing-evaluator blocker text under
+  `docs/iterations/v0.6/`.
+
 Backend, frontend, API, E2E, runtime, Agent smoke, autonomous validation,
 build, fixture, migration, and external validation commands are intentionally
 not run for `0.6.0` because this package is documentation-only and does not
@@ -191,19 +207,44 @@ paths.
 
 ## Evaluator Evidence
 
-No independent documentation evaluator has been recorded yet. Because
-subagent/evaluator use is not explicitly authorized in the current user
-request, this package remains `planned / ready for review` rather than
-`review complete`.
+Independent documentation evaluator evidence was recorded on 2026-05-31 from
+a read-only review of HEAD `7edecb9 docs: add v0.6 planning campaign`.
+
+Evaluator conclusion:
+
+- No new P0/P1/P2 blocking issues were found.
+- The pre-evidence status was correctly held at `planned / ready for review`.
+- The active child was correctly recorded as
+  `0.6.0-v0.6-planning-and-generation-boundary-baseline`.
+- Implementation authorization was correctly closed.
+- The only previously unresolved P2 was the missing independent documentation
+  evaluator evidence; this section records that evidence and resolves the
+  documentation-review blocker for `0.6.0`.
+
+Evaluator-verified evidence:
+
+- `git status --short --branch`: clean worktree on `v0.6...origin/v0.6`
+  before this evidence-sync update.
+- HEAD: `7edecb9 docs: add v0.6 planning campaign`.
+- v0.6 commit scope: 26 documentation files under `docs/iterations/v0.6/`.
+- Required docs and mirrors: `missing=0`.
+- Planned package check: `planned_package_count=11`,
+  `planned_package_missing_fields=0`.
+- Scope guard: `unexpected_status=0`.
+- Chinese mirror heading audit: `generic_english_only_headings=0`.
+- Trailing whitespace audit: `trailing_whitespace=0`.
+- `git diff --check`: passed with no output.
 
 ## Unresolved Findings
 
-- P1: none known from drafting.
-- P2: independent documentation evaluator evidence is not recorded yet, so
-  implementation authorization must remain closed.
-- P3: none known from drafting.
+- P1: none known.
+- P2: none known after independent documentation evaluator evidence was
+  recorded.
+- P3: none known.
 
 ## Final Assessment
 
-The v0.6 documentation draft is ready for user and evaluator review. It does
-not authorize implementation.
+`0.6.0-v0.6-planning-and-generation-boundary-baseline` is review complete and
+hands off to `0.6.1-world-generation-contracts-and-template-semantics`.
+v0.6 implementation remains unauthorized until a later implementation-bearing
+child package records `implementation_authorized: yes`.

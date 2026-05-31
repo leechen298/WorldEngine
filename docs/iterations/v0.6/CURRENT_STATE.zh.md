@@ -1,14 +1,14 @@
 # 当前状态
 
-Campaign status：planned / ready for review
-Active child package：`0.6.0-v0.6-planning-and-generation-boundary-baseline`
-Current route：`documentation-review-needed`
+Campaign status：in progress / 0.6.0 review complete
+Active child package：`0.6.1-world-generation-contracts-and-template-semantics`
+Current route：`next-child-documentation-needed`
 Implementation authorization：no
 
 ## 子包状态
 
 ```text
-0.6.0-v0.6-planning-and-generation-boundary-baseline: planned / ready for review
+0.6.0-v0.6-planning-and-generation-boundary-baseline: review complete
 0.6.1-world-generation-contracts-and-template-semantics: planned
 0.6.2-template-catalog-and-deterministic-generator-core: planned
 0.6.3-structured-generation-plan-compiler: planned
@@ -23,16 +23,17 @@ Implementation authorization：no
 
 ## 当前路由
 
-Current route：`documentation-review-needed`。
+Current route：`next-child-documentation-needed`。
 
-Active child package 是 documentation-only。只有在 documentation checks 和必需的
-documentation evaluator evidence 被记录后，才能把它标记为 review complete。
+`0.6.0-v0.6-planning-and-generation-boundary-baseline` 已 review complete。当前
+active child 是下一个 documentation-only package：
+`0.6.1-world-generation-contracts-and-template-semantics`。
 
 ## 下一步
 
-评审 `0.6.0-v0.6-planning-and-generation-boundary-baseline`。在 active child 切换到
-implementation-bearing package，且该 package 记录 `implementation_authorized: yes`
-前，不得开始 implementation。
+创建或评审 `0.6.1-world-generation-contracts-and-template-semantics` documentation。
+在 implementation-bearing package 记录 `implementation_authorized: yes` 前，不得开始
+implementation。
 
 ## 证据快照
 

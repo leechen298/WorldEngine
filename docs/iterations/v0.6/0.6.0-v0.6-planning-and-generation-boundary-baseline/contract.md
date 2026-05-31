@@ -1,6 +1,6 @@
 # Contract
 
-Status: planned / ready for review
+Status: review complete
 
 ## Public Concepts
 

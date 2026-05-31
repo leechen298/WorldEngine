@@ -1,6 +1,6 @@
 # Intent
 
-Status: planned / ready for review
+Status: review complete
 
 ## Problem / Purpose
 

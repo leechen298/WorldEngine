@@ -1,6 +1,6 @@
 # Goal Runner
 
-Status: planned / ready for review
+Status: in progress / 0.6.0 review complete
 
 ## Goal Entry
 

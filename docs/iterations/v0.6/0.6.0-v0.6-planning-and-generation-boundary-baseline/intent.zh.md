@@ -1,6 +1,6 @@
 # 意图
 
-状态：planned / ready for review
+状态：review complete
 
 ## 问题 / 目的
 

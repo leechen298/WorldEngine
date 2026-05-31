@@ -1,6 +1,6 @@
 # Technical Design
 
-Status: planned / ready for review
+Status: review complete
 
 ## Documentation Structure
 
@@ -98,5 +98,6 @@ before claiming pass.
   Mitigation: later child packages must run focused loader and runtime-context
   tests.
 - Risk: missing evaluator evidence is mistaken for review completion.
-  Mitigation: status remains `planned / ready for review` and
-  `implementation_authorized: no`.
+  Mitigation: status remains `planned / ready for review` when evidence is
+  missing; after evidence is recorded, review may mark `0.6.0` complete while
+  keeping `implementation_authorized: no`.

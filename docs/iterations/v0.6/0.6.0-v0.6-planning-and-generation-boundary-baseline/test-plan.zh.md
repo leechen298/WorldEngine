@@ -1,6 +1,6 @@
 # 测试计划
 
-状态：planned / ready for review
+状态：review complete
 
 ## 文档检查
 

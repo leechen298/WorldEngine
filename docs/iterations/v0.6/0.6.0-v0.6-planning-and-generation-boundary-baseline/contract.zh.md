@@ -1,6 +1,6 @@
 # 契约
 
-状态：planned / ready for review
+状态：review complete
 
 ## 公共概念
 

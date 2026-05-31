@@ -1,6 +1,6 @@
 # v0.6 World Generation v1
 
-Status: planned / ready for review
+Status: in progress / 0.6.0 review complete
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
@@ -95,7 +95,7 @@ Forbidden v0.6 scope:
 ### `0.6.0-v0.6-planning-and-generation-boundary-baseline`
 
 - Type: documentation-only
-- Status: planned / ready for review
+- Status: review complete
 - Purpose: create the v0.6 documentation root, goal-campaign controls,
   version plan, generation boundary, compatibility baseline, and v0.5 handoff
   mapping without changing implementation files.
@@ -178,9 +178,9 @@ Forbidden v0.6 scope:
 ## Current State
 
 Active child package:
-`0.6.0-v0.6-planning-and-generation-boundary-baseline`.
+`0.6.1-world-generation-contracts-and-template-semantics`.
 
-Current route: `documentation-review-needed`.
+Current route: `next-child-documentation-needed`.
 
 Implementation authorization: no.
 
@@ -197,4 +197,9 @@ Implementation authorization: no.
 
 ## Final Assessment State
 
-Current value: `planned / ready for review`.
+Current value: `in progress / 0.6.0 review complete`.
+
+`0.6.0-v0.6-planning-and-generation-boundary-baseline` has review complete
+documentation evidence recorded. v0.6 implementation remains unauthorized
+until an implementation-bearing child package records
+`implementation_authorized: yes`.

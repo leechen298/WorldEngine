@@ -1,6 +1,6 @@
 # 目标运行器
 
-状态：planned / ready for review
+状态：in progress / 0.6.0 review complete
 
 ## 目标入口
 

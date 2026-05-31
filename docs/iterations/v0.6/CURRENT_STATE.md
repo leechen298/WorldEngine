@@ -1,14 +1,14 @@
 # Current State
 
-Campaign status: planned / ready for review
-Active child package: `0.6.0-v0.6-planning-and-generation-boundary-baseline`
-Current route: `documentation-review-needed`
+Campaign status: in progress / 0.6.0 review complete
+Active child package: `0.6.1-world-generation-contracts-and-template-semantics`
+Current route: `next-child-documentation-needed`
 Implementation authorization: no
 
 ## Child Package Status
 
 ```text
-0.6.0-v0.6-planning-and-generation-boundary-baseline: planned / ready for review
+0.6.0-v0.6-planning-and-generation-boundary-baseline: review complete
 0.6.1-world-generation-contracts-and-template-semantics: planned
 0.6.2-template-catalog-and-deterministic-generator-core: planned
 0.6.3-structured-generation-plan-compiler: planned
@@ -23,17 +23,17 @@ Implementation authorization: no
 
 ## Current Route
 
-Current route: `documentation-review-needed`.
+Current route: `next-child-documentation-needed`.
 
-The active child package is documentation-only. It may be reviewed, revised,
-and then marked review complete only after documentation checks and any
-required documentation evaluator evidence are recorded.
+`0.6.0-v0.6-planning-and-generation-boundary-baseline` is review complete.
+The active child is now the next documentation-only package,
+`0.6.1-world-generation-contracts-and-template-semantics`.
 
 ## Next Action
 
-Review `0.6.0-v0.6-planning-and-generation-boundary-baseline`. Do not start
-implementation until the active child changes to an implementation-bearing
-package and that package records `implementation_authorized: yes`.
+Create or review `0.6.1-world-generation-contracts-and-template-semantics`
+documentation. Do not start implementation until an implementation-bearing
+package records `implementation_authorized: yes`.
 
 ## Evidence Snapshot
 

@@ -1,6 +1,6 @@
 # 0.6.0 v0.6 Planning And Generation Boundary Baseline
 
-Status: planned / ready for review
+Status: review complete
 Type: documentation-only
 implementation_authorized: no
 
@@ -61,6 +61,7 @@ Forbidden:
 
 ## Current Assessment
 
-This package is documentation-stage only and ready for review. It hands off to
-`0.6.1-world-generation-contracts-and-template-semantics` only after review,
-with implementation authorization still closed.
+This documentation-only package is review complete. It hands off to
+`0.6.1-world-generation-contracts-and-template-semantics`, with v0.6
+implementation authorization still closed until a later implementation-bearing
+child package explicitly records `implementation_authorized: yes`.

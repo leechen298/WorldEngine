@@ -1,6 +1,6 @@
 # Plan
 
-Status: planned / ready for review
+Status: review complete
 
 ## Files
 
@@ -41,13 +41,14 @@ Do not touch:
    v0.5 final closeout, and current WorldSpec/runtime-context code.
 2. Draft v0.6 parent campaign docs and package sequence.
 3. Draft `0.6.0` package docs and Chinese mirrors.
-4. Keep all status values at `planned / ready for review` and
+4. During drafting, keep all status values at `planned / ready for review` and
    `implementation_authorized: no`.
 5. Run documentation checks from `test-plan.md`.
 6. Update parent and child `review.md` / `review.zh.md` with actual command
    evidence.
-7. Leave implementation authorization closed and hand off for documentation
-   review.
+7. After independent documentation evaluator evidence is recorded, mark
+   `0.6.0` review complete, leave implementation authorization closed, and
+   hand off to `0.6.1`.
 
 ## Phase Boundaries
 
