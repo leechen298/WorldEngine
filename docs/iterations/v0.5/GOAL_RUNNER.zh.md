@@ -1,6 +1,6 @@
 # 目标运行器
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 ## 目标入口
 
@@ -93,4 +93,3 @@ documentation-only children，必须使用 read-only documentation evaluator。
 - 在 `backend/worldengine/` 下新增 runtime feature。
 - 把 v0.4 historical evidence 当作当前 v0.5 pass evidence。
 - 绕过必需的 subagent/evaluator gates。
-

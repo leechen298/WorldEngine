@@ -1,20 +1,23 @@
 # WorldEngine
 
-Status: v0.4 final / closeout complete.
+Status: v0.5 final / closeout complete.
 
 Chinese mirror: `README.zh.md`.
 
 WorldEngine is a recursive world generation and runtime engine.
 
-The `v0.4` branch implements the Agent-in-World Minimal Loop. It adds bounded
-perception, inspectable action intent/result schemas, validated `noop` and
-`params.patch` action handling, and a request-driven loop API while preserving
-the v0.3 WorldSpec Loader and Runtime Bridge capability.
+The `v0.5` branch completes the Memory and Self-Continuity Substrate closeout.
+It preserves the v0.4 Agent-in-World Minimal Loop and adds additive generic
+working-memory and episodic-memory schemas, a process-local in-memory memory
+substrate, and bounded read-only memory context in the Agent Loop perception
+path. Action semantics remain unchanged.
 
 WorldEngine is still not a complete recursive world engine implementation.
-Memory/self-continuity, world generation, external validation readiness,
-projection application readiness, and concrete world/demo content remain future
-version scope.
+Durable memory persistence, public memory APIs, automatic reflection,
+self-summary generation, relationship behavior, personality drift action
+modifiers, world generation, external validation readiness, projection
+application readiness, and concrete world/demo content remain future version
+scope.
 
 Read first:
 
@@ -23,7 +26,8 @@ Read first:
 - `docs/current-implementation.md`
 - `docs/api-reference-v0.1.md`
 - `docs/releases/v0.3.md`
-- `docs/iterations/v0.4/README.md`
+- `docs/iterations/v0.5/README.md`
+- `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
 - `docs/iterations/v0.3/README.md`
 - `docs/iterations/README.md`
 
@@ -35,10 +39,11 @@ Read first:
 - `backend/app/` - active backend path.
 - `backend/worldengine/` - legacy pre-v0.1 path; do not add new features there.
 
-## Current v0.4 Capability
+## Current v0.5 Capability
 
-v0.4 preserves the v0.1 runtime scaffold and v0.3 loader/runtime bridge while
-adding the minimal Agent-in-World loop. It can:
+v0.5 preserves the v0.1 runtime scaffold, v0.3 loader/runtime bridge, and v0.4
+request-driven Agent-in-World loop while adding the first generic memory
+substrate. It can:
 
 - start backend and frontend development services from the repository root.
 - expose health, runtime, world event, world params, archive, and agent params
@@ -59,6 +64,12 @@ adding the minimal Agent-in-World loop. It can:
   boundary.
 - expose `POST /world/agent/loop/step` for one request-scoped perceive ->
   intent -> validate/apply -> result cycle.
+- represent generic working-memory and episodic-memory records with
+  inspectable provenance.
+- keep process-local working and episodic memory in a bounded in-memory
+  backend substrate.
+- add optional bounded read-only memory context to Agent Loop perception frames
+  without changing action request, intent, or result semantics.
 - render a dashboard for runtime controls, timeline, world params, and agent
   params interactions.
 - load and validate generic `WorldSpec` data through the minimal loader.
@@ -66,13 +77,15 @@ adding the minimal Agent-in-World loop. It can:
 - keep runtime step outputs and event payloads free of raw `WorldSpec` or root
   tree data.
 
-v0.4 still cannot:
+v0.5 still cannot:
 
 - run recursive `WorldCell` structures as active runtime state.
 - run loaded `WorldSpec` data as active recursive world state.
 - generate worlds from templates or prompts.
-- run agents through a memory/self-continuity loop.
-- model agent pseudo-self continuity.
+- persist memory durably or expose public memory APIs.
+- run automatic reflection, self-summary generation, relationship behavior, or
+  personality drift action modifiers.
+- model full agent pseudo-self continuity.
 - run external projection applications as engine consumers.
 - provide a packaged external product surface.
 
@@ -121,6 +134,11 @@ mapped in `docs/testing/v0.1-test-map.md`.
 
 Key recorded evidence includes:
 
+- v0.5 final closeout evidence in `docs/iterations/v0.5/review.md` and
+  `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`:
+  focused backend memory/loop/action compatibility `33 passed`, full backend
+  regression `145 passed`, required docs/mirrors `missing=0`, changed-file
+  scope guard `out_of_scope=0`, and closeout consistency evaluator PASS.
 - v0.4 final closeout evidence in `docs/iterations/v0.4/review.md` and
   `docs/iterations/v0.4/0.4.7-v0.4-final-closeout/final-closeout.md`:
   focused backend/API `35 passed`, full backend `139 passed`, final docs
@@ -144,6 +162,8 @@ These are recorded closeout results, not tests rerun by this README update.
 
 Implementation docs:
 
+- `docs/iterations/v0.5/README.md`
+- `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
 - `docs/iterations/v0.3/README.md`
 - `docs/releases/v0.3.md`
 - `docs/current-implementation.md`

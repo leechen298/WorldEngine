@@ -305,5 +305,16 @@ compatibility（`33 passed`）、full backend regression（`145 passed`），并
 consistency evaluator，且无 P1/P2/P3 findings。v0.5 当前为
 `final / closeout complete`。
 
+commit `49a3c52` 之后的审核后 P2 drift repair 已把根 `README.md` /
+`README.zh.md`、父级 `GOAL_RUNNER.md` / `GOAL_RUNNER.zh.md`，以及父级
+`CAMPAIGN_PLAN.md` / `CAMPAIGN_PLAN.zh.md` 同步到当前 v0.5 closeout state。
+Expanded status consistency check 已覆盖这些 surfaces，并返回
+`status_consistency_issues=0`。Repair verification 同时通过 `git diff --check`、
+required docs/mirrors 加根 README mirror `missing=0`、documentation-only follow-up
+scope guard `out_of_scope=0`、forbidden implementation surface sentinel 无输出、
+focused backend memory/loop/action compatibility `33 passed`、full backend
+regression `145 passed`，以及审核后 closeout consistency evaluator
+`019e7e00-5160-7902-a816-98ee3a376731` PASS，且无 P1/P2/P3 findings。
+
 不声明 frontend、E2E、Agent smoke、autonomous、external validation、projection
 readiness 或 product readiness 已通过。

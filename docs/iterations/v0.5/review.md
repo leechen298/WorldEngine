@@ -317,5 +317,18 @@ focused backend memory/loop/action compatibility (`33 passed`), full backend
 regression (`145 passed`), and passed the closeout consistency evaluator with
 no P1/P2/P3 findings. v0.5 is now `final / closeout complete`.
 
+Post-review P2 drift repair after commit `49a3c52` synchronized root
+`README.md` / `README.zh.md`, parent `GOAL_RUNNER.md` /
+`GOAL_RUNNER.zh.md`, and parent `CAMPAIGN_PLAN.md` /
+`CAMPAIGN_PLAN.zh.md` to the current v0.5 closeout state. The expanded status
+consistency check now covers those surfaces and reports
+`status_consistency_issues=0`. Repair verification also passed
+`git diff --check`, required docs/mirrors plus root README mirror `missing=0`,
+documentation-only follow-up scope guard `out_of_scope=0`, forbidden
+implementation surface sentinel with no output, focused backend
+memory/loop/action compatibility `33 passed`, full backend regression
+`145 passed`, and post-review closeout consistency evaluator
+`019e7e00-5160-7902-a816-98ee3a376731` PASS with no P1/P2/P3 findings.
+
 No frontend, E2E, Agent smoke, autonomous, external validation, projection
 readiness, or product readiness pass claim is made.

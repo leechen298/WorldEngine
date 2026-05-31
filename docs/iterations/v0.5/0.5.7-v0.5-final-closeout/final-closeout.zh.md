@@ -44,6 +44,16 @@ Deferred scope：
 - Post-status-sync status consistency：`status_consistency_issues=0`。
 - Post-status-sync focused backend compatibility：`33 passed in 0.35s`。
 - Post-status-sync full backend regression：`145 passed in 0.85s`。
+- commit `49a3c52` 之后的审核后状态漂移修复：parent `GOAL_RUNNER` 和
+  `CAMPAIGN_PLAN` 的英文/中文状态行已同步为 `final / closeout complete`；根
+  `README.md` 和 `README.zh.md` 已同步为 v0.5 当前状态，并在第一屏说明 v0.5
+  capability。
+- 审核后修复验证：`git diff --check` 通过；required docs/mirrors 加根 README
+  mirror `missing=0`；documentation-only scope guard `out_of_scope=0`；
+  forbidden implementation surface sentinel 无输出；expanded status consistency
+  `status_consistency_issues=0`；focused backend memory/loop/action compatibility
+  `33 passed`；full backend regression `145 passed`；审核后 closeout consistency
+  evaluator `019e7e00-5160-7902-a816-98ee3a376731` PASS，且无 P1/P2/P3 findings。
 
 未运行的检查：
 

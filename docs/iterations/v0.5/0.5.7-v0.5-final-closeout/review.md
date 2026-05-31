@@ -160,6 +160,52 @@ Closeout consistency evaluator:
   status surfaces and `docs/roadmap.md` / `docs/roadmap.zh.md` to be
   synchronized to `final / closeout complete` after this result is recorded.
 
+## Post-Review Drift Repair
+
+External review after commit `49a3c52` found two P2 status-surface drifts:
+
+- `GOAL_RUNNER.md`, `GOAL_RUNNER.zh.md`, `CAMPAIGN_PLAN.md`, and
+  `CAMPAIGN_PLAN.zh.md` still reported `planned / ready for review`.
+- Root `README.md` and `README.zh.md` still presented v0.4 as the current
+  top-level capability and lacked v0.5 current capability text in the first
+  90 lines.
+
+Repairs applied in this follow-up:
+
+- Parent goal-runner and campaign-plan status lines now report
+  `final / closeout complete` in English and Chinese.
+- Root README files now report `v0.5 final / closeout complete`, describe the
+  v0.5 memory/loop capability boundary in the first screen, and record v0.5
+  final evidence without claiming frontend, E2E, Agent smoke, autonomous,
+  external validation, projection readiness, or product readiness passes.
+- The status consistency check now explicitly covers root README, parent
+  `GOAL_RUNNER`, parent `CAMPAIGN_PLAN`, parent state/review/plan, roadmap,
+  and the stale planned-status scan for the reviewed drift surfaces.
+
+Current-session repair verification:
+
+- `git diff --check`: passed.
+- Required v0.5 docs/mirrors plus root README mirror check: `missing=0`.
+- Documentation-only follow-up scope guard: `out_of_scope=0`.
+- Forbidden implementation surface sentinel:
+  `git status --short -- backend/worldengine frontend backend/app/alembic backend/migrations`
+  produced no output.
+- Expanded status consistency check: `status_consistency_issues=0`.
+- Focused backend memory/loop/action compatibility: `33 passed`.
+- Full backend regression: `145 passed`.
+
+Post-review closeout consistency evaluator:
+
+- Agent id: `019e7e00-5160-7902-a816-98ee3a376731`.
+- Result: PASS.
+- Commands run by evaluator: `git status --short --branch`, `git diff --check`,
+  targeted status `rg`, targeted README `rg`, and targeted repair-evidence
+  `rg`.
+- Findings: no P1, P2, or P3.
+- Conclusion: the evaluator supports this post-review clean closeout repair.
+
+Post-review P2 status: fixed. No P1/P2/P3 remains known after this repair.
+
 ## Unresolved P1/P2/P3
 
 - P1: none currently known.

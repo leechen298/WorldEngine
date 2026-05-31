@@ -47,6 +47,17 @@ Current-session final verification:
 - Post-status-sync status consistency: `status_consistency_issues=0`.
 - Post-status-sync focused backend compatibility: `33 passed in 0.35s`.
 - Post-status-sync full backend regression: `145 passed in 0.85s`.
+- Post-review drift repair after commit `49a3c52`: parent `GOAL_RUNNER` and
+  `CAMPAIGN_PLAN` English/Chinese status lines synchronized to
+  `final / closeout complete`; root `README.md` and `README.zh.md` synchronized
+  to v0.5 current status and capability in the first screen.
+- Post-review repair verification: `git diff --check` passed; required
+  docs/mirrors plus root README mirror `missing=0`; documentation-only scope
+  guard `out_of_scope=0`; forbidden implementation surface sentinel no output;
+  expanded status consistency `status_consistency_issues=0`; focused backend
+  memory/loop/action compatibility `33 passed`; full backend regression
+  `145 passed`; post-review closeout consistency evaluator
+  `019e7e00-5160-7902-a816-98ee3a376731` PASS with no P1/P2/P3 findings.
 
 Checks not run:
 

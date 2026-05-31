@@ -1,6 +1,6 @@
 # 战役计划
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 ## 目标
 

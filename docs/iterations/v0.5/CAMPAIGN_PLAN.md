@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 ## Objective
 
@@ -93,4 +93,3 @@ Stop before implementation or closeout if:
   evidence.
 - status surfaces drift between README, current state, plan, review, and
   closeout docs.
-

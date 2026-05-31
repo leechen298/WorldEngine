@@ -1,6 +1,6 @@
 # Goal Runner
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 ## Goal Entry
 
@@ -100,4 +100,3 @@ Stop and record a blocker if a task would:
 - add new runtime features under `backend/worldengine/`.
 - treat v0.4 historical evidence as current v0.5 pass evidence.
 - bypass required subagent/evaluator gates.
-

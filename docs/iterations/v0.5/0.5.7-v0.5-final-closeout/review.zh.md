@@ -156,6 +156,50 @@ Closeout consistency evaluator：
   surfaces 和 `docs/roadmap.md` / `docs/roadmap.zh.md` 同步为
   `final / closeout complete`。
 
+## 审核后状态漂移修复
+
+commit `49a3c52` 之后的外部 review 发现两个 P2 状态面漂移：
+
+- `GOAL_RUNNER.md`、`GOAL_RUNNER.zh.md`、`CAMPAIGN_PLAN.md` 和
+  `CAMPAIGN_PLAN.zh.md` 仍显示 `planned / ready for review`。
+- 根 `README.md` 和 `README.zh.md` 仍把 v0.4 作为当前顶层能力，并且前 90 行没有
+  v0.5 当前能力说明。
+
+本 follow-up 已完成的修复：
+
+- 父级 goal-runner 和 campaign-plan 的英文/中文状态行已同步为
+  `final / closeout complete`。
+- 根 README 已同步为 `v0.5 final / closeout complete`，在第一屏说明 v0.5
+  memory/loop capability boundary，并记录 v0.5 final evidence；不声明 frontend、
+  E2E、Agent smoke、autonomous、external validation、projection readiness 或 product
+  readiness 已通过。
+- 状态一致性检查已显式覆盖根 README、父级 `GOAL_RUNNER`、父级 `CAMPAIGN_PLAN`、
+  父级 state/review/plan、roadmap，以及本次 drift surfaces 的 stale planned-status
+  scan。
+
+当前会话 repair verification：
+
+- `git diff --check`：通过。
+- Required v0.5 docs/mirrors 加根 README mirror check：`missing=0`。
+- Documentation-only follow-up scope guard：`out_of_scope=0`。
+- Forbidden implementation surface sentinel：
+  `git status --short -- backend/worldengine frontend backend/app/alembic backend/migrations`
+  无输出。
+- Expanded status consistency check：`status_consistency_issues=0`。
+- Focused backend memory/loop/action compatibility：`33 passed`。
+- Full backend regression：`145 passed`。
+
+审核后 closeout consistency evaluator：
+
+- Agent id：`019e7e00-5160-7902-a816-98ee3a376731`。
+- Result：PASS。
+- Evaluator 运行命令：`git status --short --branch`、`git diff --check`、
+  targeted status `rg`、targeted README `rg` 和 targeted repair-evidence `rg`。
+- Findings：无 P1、P2 或 P3。
+- Conclusion：evaluator 支持本次审核后 clean closeout repair。
+
+审核后 P2 状态：已修复。当前没有已知 P1/P2/P3。
+
 ## 未解决 P1/P2/P3
 
 - P1：none currently known。
