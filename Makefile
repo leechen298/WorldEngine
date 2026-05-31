@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures validate-codex-skills sync-codex-skills
+.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures validate-agent-autonomous-result validate-agent-autonomous-fixtures validate-codex-skills sync-codex-skills
 
 BACKEND_DIR := backend
 FRONTEND_DIR := frontend
@@ -17,6 +17,8 @@ help:
 	@echo "  make test-e2e       Run browser E2E tests"
 	@echo "  make validate-agent-smoke-result RESULT_DIR=<dir>"
 	@echo "  make validate-agent-smoke-fixtures"
+	@echo "  make validate-agent-autonomous-result RESULT_DIR=<dir>"
+	@echo "  make validate-agent-autonomous-fixtures"
 	@echo "  make validate-codex-skills"
 
 setup: setup-backend setup-frontend
@@ -69,6 +71,24 @@ validate-agent-smoke-fixtures: check-backend
 		echo "invalid-agent-verdict fixture failed as expected."; \
 	fi
 	@$(BACKEND_PYTHON) -m pytest tools/testing/test_validate_agent_smoke_result.py -q
+
+validate-agent-autonomous-result: check-backend
+	@test -n "$(RESULT_DIR)" || (echo "Missing RESULT_DIR. Usage: make validate-agent-autonomous-result RESULT_DIR=<dir>" && exit 2)
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_autonomous_result.py "$(RESULT_DIR)"
+
+validate-agent-autonomous-fixtures: check-backend
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_autonomous_result.py tools/testing/fixtures/agent-autonomous/valid-dashboard-basic-runtime
+	@for fixture in invalid-agent-verdict invalid-direct-api-operation invalid-cli-nonzero-exit invalid-unverified-p1 invalid-failed-score-item invalid-missing-artifact; do \
+		if $(BACKEND_PYTHON) tools/testing/validate_agent_autonomous_result.py tools/testing/fixtures/agent-autonomous/$$fixture >/tmp/worldengine-invalid-agent-autonomous.out 2>&1; then \
+			cat /tmp/worldengine-invalid-agent-autonomous.out; \
+			echo "Expected $$fixture fixture to fail, but it passed."; \
+			exit 1; \
+		else \
+			cat /tmp/worldengine-invalid-agent-autonomous.out; \
+			echo "$$fixture fixture failed as expected."; \
+		fi; \
+	done
+	@$(BACKEND_PYTHON) -m pytest tools/testing/test_validate_agent_autonomous_result.py -q
 
 validate-codex-skills:
 	@python3 tools/testing/sync_codex_skills.py --dry-run

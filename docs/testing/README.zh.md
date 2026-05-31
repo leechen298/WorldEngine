@@ -44,10 +44,9 @@ Durable summaries 应放在 `docs/testing/results/` 下。
 
 当前 Agent smoke scenario contracts 位于 `docs/testing/agent-smoke/scenarios/`。
 `dashboard-basic-runtime` 可执行。`dashboard-params-flow` 和
-`dashboard-invalid-param` 都是 `live-smoke-recorded`。当前 raw `latest/`
-目录指向 `dashboard-invalid-param`；0.1.8 params-flow evidence 已通过
-`docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` 和 commit
-`c6da552` 保留。
+`dashboard-invalid-param`、`dashboard-agent-autotune` 都是 `live-smoke-recorded`。
+当前 raw `latest/` 目录指向 `dashboard-agent-autotune`；更早的 params-flow 和
+invalid-param raw evidence 通过 durable summaries 和历史提交保留。
 
 ## E2E Scenario Contracts
 
@@ -61,6 +60,7 @@ Durable summaries 应放在 `docs/testing/results/` 下。
 - `dashboard-agent-autotune`
 - `dashboard-timeline-navigation`
 - `dashboard-archive-summary`
+- `agent-loop-step`
 
 E2E PASS 仍必须来自当前会话的 Playwright assertion result。
 
@@ -71,8 +71,16 @@ Codex/test-runner autonomous test contracts 位于 `docs/testing/agent-autonomou
 该目录中的 "Agent" 指 Codex/test-runner agent 作为测试执行者操作 WorldEngine，
 不是未来 WorldEngine 世界里的 in-world Agent。
 
-当前所有 autonomous scenarios 都是 `contract-only-do-not-execute`。在有 scorecard checker
-之前，不得报告 PASS/FAIL。
+当前 autonomous scenarios 是 scorecard contracts。本仓库现在提供最小 saved-result
+checker：
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=<dir>
+make validate-agent-autonomous-fixtures
+```
+
+该 checker 可以验证已记录的 Codex/test-runner autonomous evidence。它不是 broad
+autonomous runner、调度器，也不代表每个 autonomous scenario 都已经 live-run。
 
 ## Future Implementation Prerequisites
 

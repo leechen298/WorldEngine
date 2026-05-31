@@ -32,7 +32,7 @@ describe("TimelinePanel", () => {
       },
     });
 
-    expect(wrapper.get("[data-test='timeline-row']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='timeline-row']").exists()).toBe(true);
     await wrapper.get("[data-test='timeline-row-expand']").trigger("click");
     await flushPromises();
 

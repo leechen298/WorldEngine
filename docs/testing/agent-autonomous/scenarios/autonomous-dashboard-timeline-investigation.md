@@ -1,6 +1,6 @@
 # Autonomous Scenario: autonomous-dashboard-timeline-investigation
 
-Status: contract-only-do-not-execute
+Status: saved-result-checker-supported
 
 ## Goal
 
@@ -12,7 +12,7 @@ through the dashboard timeline.
 - CLI operations to start services.
 - UI operations to step runtime, navigate the timeline, and inspect event
   details.
-- CLI operations to run a documented checker after one exists.
+- CLI operations to run the documented saved-result checker.
 
 ## Forbidden Operations
 
@@ -28,7 +28,7 @@ through the dashboard timeline.
 - transcript.
 - screenshots.
 - console log or explicit empty-console note.
-- scorecard result after a checker exists.
+- scorecard result.
 
 ## Scorecard Items
 
@@ -41,11 +41,13 @@ through the dashboard timeline.
 
 ## PASS Source
 
-Future autonomous scorecard checker. This scenario has no executable PASS
-source today.
+Saved-result autonomous scorecard checker:
+`make validate-agent-autonomous-result RESULT_DIR=<result-dir>`.
+
+This is not a broad autonomous runner verdict; it validates recorded evidence.
 
 ## Unverified Items
 
 - Timeline detail selectors are incomplete.
-- Autonomous scorecard schema is not implemented.
-- Autonomous checker is not implemented.
+- A broad autonomous runner is not implemented.
+- The scenario has no PASS unless a concrete result directory validates.

@@ -46,11 +46,11 @@ belong under `docs/testing/results/`.
 
 Current Agent smoke scenario contracts live under
 `docs/testing/agent-smoke/scenarios/`. `dashboard-basic-runtime` is executable.
-`dashboard-params-flow` and `dashboard-invalid-param` are
-`live-smoke-recorded`. The current raw `latest/` directory points to
-`dashboard-invalid-param`; 0.1.8 params-flow evidence is preserved through
-`docs/testing/results/2026-05-24-v0.1.8-params-flow-live-smoke.md` and commit
-`c6da552`.
+`dashboard-params-flow`, `dashboard-invalid-param`, and
+`dashboard-agent-autotune` are `live-smoke-recorded`. The current raw
+`latest/` directory points to `dashboard-agent-autotune`; earlier params-flow
+and invalid-param raw evidence remains available through durable summaries and
+history.
 
 ## E2E Scenario Contracts
 
@@ -65,6 +65,7 @@ Implemented current E2E coverage:
 - `dashboard-agent-autotune`
 - `dashboard-timeline-navigation`
 - `dashboard-archive-summary`
+- `agent-loop-step`
 
 E2E PASS still requires a current-session Playwright assertion result.
 
@@ -76,8 +77,17 @@ Codex/test-runner autonomous test contracts live under
 In that directory, "Agent" means a Codex/test-runner agent operating
 WorldEngine as a tester. It does not mean a future WorldEngine in-world Agent.
 
-All current autonomous scenarios are `contract-only-do-not-execute`. They
-require a scorecard checker before any PASS/FAIL claim.
+Current autonomous scenarios are scorecard contracts, and this repository now
+has a minimal saved-result checker for those contracts:
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=<dir>
+make validate-agent-autonomous-fixtures
+```
+
+This checker can validate recorded Codex/test-runner autonomous evidence. It
+is not a broad autonomous runner, scheduler, or proof that every autonomous
+scenario has been live-run.
 
 ## Future Implementation Prerequisites
 

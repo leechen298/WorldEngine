@@ -1,6 +1,6 @@
 # Autonomous Scenario: autonomous-dashboard-agent-autotune
 
-Status: contract-only-do-not-execute
+Status: saved-result-checker-supported
 
 ## Goal
 
@@ -11,7 +11,7 @@ walks the params-agent path or fails with explicit evidence.
 
 - CLI operations to start services.
 - UI operations to find the Auto-Tune control, enter a goal, and trigger it.
-- CLI operations to run a documented checker after one exists.
+- CLI operations to run the documented saved-result checker.
 
 ## Forbidden Operations
 
@@ -30,7 +30,7 @@ walks the params-agent path or fails with explicit evidence.
 - transcript.
 - screenshots.
 - console log or explicit empty-console note.
-- scorecard result after a checker exists.
+- scorecard result.
 
 ## Scorecard Items
 
@@ -45,12 +45,13 @@ walks the params-agent path or fails with explicit evidence.
 
 ## PASS Source
 
-Future autonomous scorecard checker. This scenario has no executable PASS
-source today.
+Saved-result autonomous scorecard checker:
+`make validate-agent-autonomous-result RESULT_DIR=<result-dir>`.
+
+This is not a broad autonomous runner verdict; it validates recorded evidence.
 
 ## Unverified Items
 
 - Auto-Tune stable selectors exist, but autonomous selector-driven execution
   has not been implemented.
-- Autonomous scorecard schema is not implemented.
-- Autonomous checker is not implemented.
+- The scenario has no PASS unless a concrete result directory validates.

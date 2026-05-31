@@ -23,6 +23,12 @@ The scenario covers:
   mutation.
 - strict request and nested patch schemas return the existing 422 API envelope
   with `code=30` and no mutation.
+- `noop` with unexpected patches returns rejected result and no mutation.
+- empty `params.patch` returns rejected result and no mutation.
+- dry-run rejected patches return metrics and no mutation.
+- `event_limit` lower and upper boundary errors keep the existing 422 envelope.
+- multi-patch and remove operations update params and event evidence
+  consistently.
 
 ## Verdict Source
 

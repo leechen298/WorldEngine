@@ -1,0 +1,3 @@
+{"seq":1,"type":"ui","target":"dashboard","action":"open","summary":"Opened the dashboard."}
+{"seq":2,"type":"ui","target":"runtime-tick-id","action":"read","summary":"Read the runtime tick."}
+{"seq":3,"type":"ui","target":"runtime-step-button","action":"click","summary":"Clicked Step."}

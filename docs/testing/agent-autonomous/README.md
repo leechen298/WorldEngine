@@ -1,14 +1,14 @@
 # Agent Autonomous Test Protocol
 
-Status: scenario contracts only
+Status: minimal saved-result checker available
 
 In this directory, "Agent" means a Codex/test-runner agent operating
 WorldEngine as a tester. It does not mean a future WorldEngine in-world Agent.
 
-WorldEngine currently does not have an executable full Agent autonomous test
-suite. This directory defines the minimum protocol for future
-Codex/test-runner autonomous tests. These contracts must not be executed until
-a scorecard checker and scenario runner exist.
+WorldEngine currently does not have a broad executable Agent autonomous runner
+or full autonomous scenario suite. This directory defines the protocol for
+Codex/test-runner autonomous tests, and the repository now has a minimal
+saved-result scorecard checker for recorded evidence.
 
 ## Distinction From Agent Smoke
 
@@ -35,11 +35,12 @@ Each autonomous scenario must define:
 
 ## Execution Rule
 
-Every current scenario in this directory has:
+Autonomous PASS requires a checker command such as:
 
-```text
-Status: contract-only-do-not-execute
+```bash
+make validate-agent-autonomous-result RESULT_DIR=<dir>
+make validate-agent-autonomous-fixtures
 ```
 
-If a user asks to run broader autonomous tests before a checker exists, the
-runner must stop and report that only contracts exist.
+The checker validates saved result artifacts. It is not a scenario runner and
+does not prove that every autonomous scenario has been live-run.

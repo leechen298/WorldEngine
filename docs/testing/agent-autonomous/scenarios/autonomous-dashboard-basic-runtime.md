@@ -1,6 +1,6 @@
 # Autonomous Scenario: autonomous-dashboard-basic-runtime
 
-Status: contract-only-do-not-execute
+Status: saved-result-checker-supported
 
 ## Goal
 
@@ -11,7 +11,7 @@ evidence for the new tick.
 
 - CLI operations to start services.
 - UI operations to inspect the dashboard and click controls.
-- CLI operations to run a documented checker after one exists.
+- CLI operations to run the documented saved-result checker.
 
 ## Forbidden Operations
 
@@ -27,7 +27,7 @@ evidence for the new tick.
 - transcript.
 - screenshots.
 - console log or explicit empty-console note.
-- scorecard result after a checker exists.
+- scorecard result.
 
 ## Scorecard Items
 
@@ -40,10 +40,12 @@ evidence for the new tick.
 
 ## PASS Source
 
-Future autonomous scorecard checker. This scenario has no executable PASS
-source today.
+Saved-result autonomous scorecard checker:
+`make validate-agent-autonomous-result RESULT_DIR=<result-dir>`.
+
+This is not a broad autonomous runner verdict; it validates recorded evidence.
 
 ## Unverified Items
 
-- Autonomous scorecard schema is not implemented.
-- Autonomous checker is not implemented.
+- A broad autonomous runner is not implemented.
+- The scenario has no PASS unless a concrete result directory validates.

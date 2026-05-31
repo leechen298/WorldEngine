@@ -1,0 +1,33 @@
+{
+  "scenario": "autonomous-dashboard-basic-runtime",
+  "goal": "Invalid fixture with unresolved P1.",
+  "mode": "scorecard_autonomous",
+  "status": "pass",
+  "verdict_source": "scorecard_checker",
+  "score_items": [
+    {
+      "name": "runtime step attempted",
+      "status": "pass",
+      "evidence": {
+        "source": "operation-log.jsonl"
+      }
+    }
+  ],
+  "required_artifacts": ["transcript", "console_log", "scorecard_summary", "operation_log", "screenshots"],
+  "artifacts": {
+    "transcript": "transcript.md",
+    "console_log": "console.log",
+    "scorecard_summary": "scorecard-summary.json",
+    "operation_log": "operation-log.jsonl",
+    "screenshots": ["screenshots/dashboard-basic-runtime.svg"]
+  },
+  "operation_log": "operation-log.jsonl",
+  "unverified_items": [
+    {
+      "severity": "P1",
+      "status": "open",
+      "summary": "Unresolved blocker must fail."
+    }
+  ],
+  "failures": []
+}

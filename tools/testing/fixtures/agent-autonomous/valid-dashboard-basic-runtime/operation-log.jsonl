@@ -1,0 +1,7 @@
+{"seq":1,"type":"cli","command":"make dev","exit_code":0,"summary":"Started backend and frontend services."}
+{"seq":2,"type":"ui","target":"dashboard","action":"open","summary":"Opened the WorldEngine dashboard."}
+{"seq":3,"type":"ui","target":"runtime-tick-id","action":"read","summary":"Read the current runtime tick."}
+{"seq":4,"type":"ui","target":"runtime-step-button","action":"click","summary":"Clicked Step through the UI."}
+{"seq":5,"type":"ui","target":"runtime-tick-id","action":"read","summary":"Read the advanced runtime tick."}
+{"seq":6,"type":"ui","target":"timeline-panel","action":"read","summary":"Observed timeline evidence after stepping."}
+{"seq":7,"type":"cli","command":"make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/latest","exit_code":0,"summary":"Ran deterministic autonomous scorecard checker."}

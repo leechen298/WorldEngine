@@ -1,20 +1,28 @@
 # Agent Autonomous Scorecard
 
-Status: contract-only-do-not-execute
+Status: minimal saved-result checker available
 
-## Required Fields
+## Result Required Fields
 
-Every future Codex/test-runner autonomous result must include:
+Every Codex/test-runner autonomous `result.json` validated by the minimal
+saved-result checker must include:
 
 - `scenario`
 - `goal`
 - `mode`
-- `allowed_operations`
-- `forbidden_operations`
-- `required_artifacts`
-- `score_items`
+- `status`
 - `verdict_source`
+- `score_items`
+- `required_artifacts`
+- `artifacts`
+- `operation_log`
 - `unverified_items`
+- `failures`
+
+`allowed_operations` and `forbidden_operations` belong in the scenario
+documentation. The checker enforces their result-level effects through
+`operation-log.jsonl`, including the rule that Agent operations may be only
+`ui` or `cli`.
 
 ## PASS Requirements
 
@@ -38,6 +46,7 @@ must be separate from the Agent operation log.
 
 ## Current State
 
-No executable autonomous scorecard checker exists in v0.1. All autonomous
-scenarios remain contract-only until a later package defines and verifies the
-checker.
+`make validate-agent-autonomous-result RESULT_DIR=<dir>` validates saved
+autonomous scorecard result artifacts. `make validate-agent-autonomous-fixtures`
+validates positive and negative checker fixtures. This is minimal checker
+support, not a broad autonomous runner or full-suite live execution.

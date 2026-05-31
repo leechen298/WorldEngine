@@ -28,7 +28,7 @@ describe("MemoryPanel", () => {
       },
     });
 
-    expect(wrapper.get("[data-test='memory-panel']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='memory-panel']").exists()).toBe(true);
     expect(wrapper.get("[data-test='memory-summary-text']").text()).toContain(
       "counter events were recorded",
     );
@@ -44,7 +44,7 @@ describe("MemoryPanel", () => {
       },
     });
 
-    expect(wrapper.get("[data-test='memory-panel']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='memory-panel']").exists()).toBe(true);
     expect(wrapper.get("[data-test='memory-summary-empty']").text()).toContain("No summaries yet");
   });
 });

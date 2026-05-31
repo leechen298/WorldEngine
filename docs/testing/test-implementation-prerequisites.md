@@ -67,8 +67,10 @@ autonomous timeline investigation remains future work.
 
 Agent smoke validator support exists for:
 
+- `dashboard-basic-runtime`
 - `dashboard-params-flow`
 - `dashboard-invalid-param`
+- `dashboard-agent-autotune`
 
 The validator must keep these existing invariants:
 
@@ -82,14 +84,15 @@ implemented.
 
 0.1.8 status: `dashboard-params-flow` live Agent smoke recorded.
 
-0.1.9 status: `dashboard-invalid-param` live Agent smoke recorded. The current
-`test-results/agent-smoke/latest/` raw evidence points to invalid-param;
-params-flow raw evidence remains available through commit `c6da552` and the
-durable summary under `docs/testing/results/`.
+0.1.9 status: `dashboard-invalid-param` live Agent smoke recorded. Later
+v0.4 post-closeout status: `dashboard-agent-autotune` live Agent smoke
+recorded. The current `test-results/agent-smoke/latest/` raw evidence points
+to `dashboard-agent-autotune`; earlier params-flow and invalid-param raw
+evidence remains available through durable summaries and history.
 
 ### Codex/Test-Runner Autonomous Checker
 
-Before any full Agent autonomous scenario can run, a later package must define:
+Before any full Agent autonomous scenario can run, a package must define:
 
 - scorecard schema.
 - result schema.
@@ -99,8 +102,11 @@ Before any full Agent autonomous scenario can run, a later package must define:
 - required artifact rules.
 - unverified item severity rules.
 
-No Codex/test-runner autonomous scenario may be reported as passed until the
-scorecard checker exists and returns PASS.
+v0.4 post-closeout status: minimal saved-result checker support exists through
+`make validate-agent-autonomous-result RESULT_DIR=<dir>` and
+`make validate-agent-autonomous-fixtures`. It validates recorded evidence and
+does not provide a broad autonomous runner or scheduler. No autonomous scenario
+may be reported as passed unless the checker exits `0` for that result.
 
 ## Test Environment Prerequisites
 

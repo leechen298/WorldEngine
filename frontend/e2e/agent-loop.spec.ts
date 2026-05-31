@@ -40,7 +40,9 @@ type LoopStepResponse = {
     applied: boolean;
     action_type: string;
     event_id?: string | null;
+    patches: Array<Record<string, unknown>>;
     errors: Array<Record<string, unknown>>;
+    metrics: Record<string, unknown>;
     params: WorldParams;
     message: string;
   };
@@ -97,6 +99,27 @@ function readCounterIncrement(params: WorldParams): unknown {
 
 function paramsAppliedEventIds(events: WorldEvent[]): Set<string> {
   return new Set(events.filter((event) => event.type === "params.applied").map((event) => event.id));
+}
+
+async function expectNoParamsMutationOrAppliedEvent(
+  request: APIRequestContext,
+  paramsBefore: WorldParams,
+  appliedBefore: Set<string>,
+): Promise<void> {
+  expect(await getWorldParams(request)).toEqual(paramsBefore);
+  expect(paramsAppliedEventIds(await getRecentEvents(request))).toEqual(appliedBefore);
+}
+
+async function postExpectValidationError(
+  request: APIRequestContext,
+  data: Record<string, unknown>,
+): Promise<ApiEnvelope<{ errors: Array<{ type: string }> }>> {
+  const response = await request.post(`${API_BASE_URL}/world/agent/loop/step`, { data });
+  expect(response.status()).toBe(422);
+  const body = (await response.json()) as ApiEnvelope<{ errors: Array<{ type: string }> }>;
+  expect(body.code).toBe(30);
+  expect(body.data.errors).not.toHaveLength(0);
+  return body;
 }
 
 test.describe.configure({ mode: "serial" });
@@ -185,8 +208,144 @@ test("agent-loop-reserved-path params-patch returns rejected result without muta
   expect(data.result.action_type).toBe("params.patch");
   expect(data.result.event_id ?? null).toBeNull();
   expect(data.result.errors[0].reason).toBe("reserved_prefix");
-  expect(await getWorldParams(request)).toEqual(paramsBefore);
-  expect(paramsAppliedEventIds(await getRecentEvents(request))).toEqual(appliedBefore);
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
+});
+
+test("agent-loop-noop intent rejects patches without mutation", async ({ request }) => {
+  const paramsBefore = await getWorldParams(request);
+  const appliedBefore = paramsAppliedEventIds(await getRecentEvents(request));
+
+  const data = await postApiData<LoopStepResponse>(request, "/world/agent/loop/step", {
+    intent: {
+      type: "noop",
+      patches: [
+        {
+          op: "set",
+          path: "counter.increment",
+          value: 3,
+        },
+      ],
+    },
+  });
+
+  expect(data.intent.type).toBe("noop");
+  expect(data.result.status).toBe("rejected");
+  expect(data.result.applied).toBe(false);
+  expect(data.result.action_type).toBe("noop");
+  expect(data.result.event_id ?? null).toBeNull();
+  expect(data.result.errors[0].reason).toBe("unexpected_payload");
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
+});
+
+test("agent-loop-empty params-patch rejects without mutation", async ({ request }) => {
+  const paramsBefore = await getWorldParams(request);
+  const appliedBefore = paramsAppliedEventIds(await getRecentEvents(request));
+
+  const data = await postApiData<LoopStepResponse>(request, "/world/agent/loop/step", {
+    intent: {
+      type: "params.patch",
+      patches: [],
+    },
+  });
+
+  expect(data.result.status).toBe("rejected");
+  expect(data.result.applied).toBe(false);
+  expect(data.result.action_type).toBe("params.patch");
+  expect(data.result.event_id ?? null).toBeNull();
+  expect(data.result.errors[0].reason).toBe("empty_patch");
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
+});
+
+test("agent-loop-dry-run rejection returns metrics without mutation", async ({ request }) => {
+  const paramsBefore = await getWorldParams(request);
+  const appliedBefore = paramsAppliedEventIds(await getRecentEvents(request));
+
+  const data = await postApiData<LoopStepResponse>(request, "/world/agent/loop/step", {
+    intent: {
+      type: "params.patch",
+      reason: "e2e duplicate path dry-run rejection",
+      patches: [
+        {
+          op: "set",
+          path: "counter.increment",
+          value: { value: 1, type: "number" },
+        },
+        {
+          op: "set",
+          path: "counter.increment",
+          value: { value: 1, type: "number" },
+        },
+      ],
+    },
+  });
+
+  expect(data.result.status).toBe("rejected");
+  expect(data.result.applied).toBe(false);
+  expect(data.result.errors.some((error) => error.reason === "high_frequency_toggle")).toBeTruthy();
+  expect(data.result.metrics.duplicate_set_paths).toEqual(["counter.increment"]);
+  expect(data.result.metrics.policy).toEqual(expect.any(Object));
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
+});
+
+test("agent-loop-multi-patch and remove flow updates params and event evidence", async ({ request }) => {
+  const currentIncrement = readCounterIncrement(await getWorldParams(request));
+  const targetIncrement = currentIncrement === 5 ? 6 : 5;
+
+  const data = await postApiData<LoopStepResponse>(request, "/world/agent/loop/step", {
+    intent: {
+      type: "params.patch",
+      reason: "e2e multi patch and remove",
+      patches: [
+        {
+          op: "set",
+          path: "counter.increment",
+          value: { value: targetIncrement, type: "number" },
+        },
+        {
+          op: "set",
+          path: "scene.weather",
+          value: { value: "rain", type: "string" },
+        },
+        {
+          op: "remove",
+          path: "scene.weather",
+        },
+      ],
+    },
+  });
+
+  expect(data.result.status).toBe("accepted");
+  expect(data.result.applied).toBe(true);
+  expect(data.result.action_type).toBe("params.patch");
+  expect(data.result.event_id).toEqual(expect.any(String));
+  expect(data.result.event_id).not.toBe("");
+  expect(data.result.patches).toHaveLength(3);
+  expect(readCounterIncrement(await getWorldParams(request))).toBe(targetIncrement);
+  expect((await getWorldParams(request)).scene).toBeUndefined();
+
+  const event = (await getRecentEvents(request)).find((item) => item.id === data.result.event_id);
+  expect(event).toBeTruthy();
+  expect(event?.id).toBe(data.result.event_id);
+  expect(event?.type).toBe("params.applied");
+  expect(event?.source).toBe("agent.loop");
+  expect(event?.payload.reason).toBe("e2e multi patch and remove");
+  expect(event?.payload.patches).toEqual([
+    {
+      op: "set",
+      path: "counter.increment",
+      value: { value: targetIncrement, type: "number" },
+    },
+    {
+      op: "set",
+      path: "scene.weather",
+      value: { value: "rain", type: "string" },
+    },
+    {
+      op: "remove",
+      path: "scene.weather",
+      value: null,
+    },
+  ]);
 });
 
 test("agent-loop-rejected-action preserves state and returns 200 result", async ({ request }) => {
@@ -205,47 +364,45 @@ test("agent-loop-rejected-action preserves state and returns 200 result", async 
   expect(data.result.action_type).toBe("world.spawn");
   expect(data.result.errors[0].reason).toBe("unsupported_action");
   expect(data.result.event_id ?? null).toBeNull();
-  expect(await getWorldParams(request)).toEqual(paramsBefore);
-  expect(paramsAppliedEventIds(await getRecentEvents(request))).toEqual(appliedBefore);
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
 });
 
 test("agent-loop-schema-errors stay 422 and do not mutate params", async ({ request }) => {
   const paramsBefore = await getWorldParams(request);
+  const appliedBefore = paramsAppliedEventIds(await getRecentEvents(request));
 
-  const requestExtraResponse = await request.post(`${API_BASE_URL}/world/agent/loop/step`, {
-    data: {
-      event_limit: 1,
-      unexpected: "drop-me",
-      intent: {
-        type: "params.patch",
-        patches: [{ op: "set", path: "counter.increment", value: 8 }],
-      },
+  const zeroLimitBody = await postExpectValidationError(request, { event_limit: 0 });
+  expect(zeroLimitBody.data.errors[0].type).toBe("greater_than_equal");
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
+
+  const highLimitBody = await postExpectValidationError(request, { event_limit: 201 });
+  expect(highLimitBody.data.errors[0].type).toBe("less_than_equal");
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
+
+  const requestExtraBody = await postExpectValidationError(request, {
+    event_limit: 1,
+    unexpected: "drop-me",
+    intent: {
+      type: "params.patch",
+      patches: [{ op: "set", path: "counter.increment", value: 8 }],
     },
   });
-  expect(requestExtraResponse.status()).toBe(422);
-  const requestExtraBody = (await requestExtraResponse.json()) as ApiEnvelope<{ errors: Array<{ type: string }> }>;
-  expect(requestExtraBody.code).toBe(30);
   expect(requestExtraBody.data.errors[0].type).toBe("extra_forbidden");
-  expect(await getWorldParams(request)).toEqual(paramsBefore);
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
 
-  const patchExtraResponse = await request.post(`${API_BASE_URL}/world/agent/loop/step`, {
-    data: {
-      intent: {
-        type: "params.patch",
-        patches: [
-          {
-            op: "set",
-            path: "counter.increment",
-            value: 8,
-            unexpected_patch_field: true,
-          },
-        ],
-      },
+  const patchExtraBody = await postExpectValidationError(request, {
+    intent: {
+      type: "params.patch",
+      patches: [
+        {
+          op: "set",
+          path: "counter.increment",
+          value: 8,
+          unexpected_patch_field: true,
+        },
+      ],
     },
   });
-  expect(patchExtraResponse.status()).toBe(422);
-  const patchExtraBody = (await patchExtraResponse.json()) as ApiEnvelope<{ errors: Array<{ type: string }> }>;
-  expect(patchExtraBody.code).toBe(30);
   expect(patchExtraBody.data.errors[0].type).toBe("extra_forbidden");
-  expect(await getWorldParams(request)).toEqual(paramsBefore);
+  await expectNoParamsMutationOrAppliedEvent(request, paramsBefore, appliedBefore);
 });

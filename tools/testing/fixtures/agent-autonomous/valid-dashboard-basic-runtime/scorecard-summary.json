@@ -1,0 +1,7 @@
+{
+  "scenario": "autonomous-dashboard-basic-runtime",
+  "status": "pass",
+  "verdict_source": "scorecard_checker",
+  "passed_items": 3,
+  "failed_items": 0
+}

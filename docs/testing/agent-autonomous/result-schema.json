@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://worldengine.local/schemas/agent-autonomous-result.schema.json",
+  "title": "WorldEngine Agent Autonomous Result",
+  "type": "object",
+  "required": [
+    "scenario",
+    "goal",
+    "mode",
+    "status",
+    "verdict_source",
+    "score_items",
+    "required_artifacts",
+    "artifacts",
+    "operation_log",
+    "unverified_items",
+    "failures"
+  ],
+  "properties": {
+    "scenario": {
+      "enum": [
+        "autonomous-dashboard-basic-runtime",
+        "autonomous-dashboard-params-flow",
+        "autonomous-dashboard-invalid-param",
+        "autonomous-dashboard-agent-autotune",
+        "autonomous-dashboard-timeline-investigation"
+      ]
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "pass"
+    },
+    "verdict_source": {
+      "enum": ["scorecard_checker", "deterministic_checker"]
+    },
+    "score_items": {
+      "type": "array",
+      "minItems": 1
+    },
+    "required_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "operation_log": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unverified_items": {
+      "type": "array"
+    },
+    "failures": {
+      "type": "array",
+      "maxItems": 0
+    }
+  },
+  "additionalProperties": true
+}

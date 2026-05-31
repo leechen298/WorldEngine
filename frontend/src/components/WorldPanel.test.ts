@@ -138,7 +138,7 @@ describe("WorldPanel agent button", () => {
 
     const wrapper = mount(WorldPanel, { props: { params: {}, loading: false } });
 
-    expect(wrapper.get("[data-test='world-agent-goal-input']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='world-agent-goal-input']").exists()).toBe(true);
     await wrapper.get("[data-test='world-agent-autotune-button']").trigger("click");
     await flushPromises();
 

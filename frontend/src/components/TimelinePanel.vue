@@ -157,6 +157,7 @@ const columns = [
 
 function customRow() {
   return {
+    class: undefined,
     "data-test": "timeline-row",
   };
 }

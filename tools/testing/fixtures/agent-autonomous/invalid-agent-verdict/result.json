@@ -1,0 +1,35 @@
+{
+  "scenario": "autonomous-dashboard-basic-runtime",
+  "goal": "Invalid fixture with agent self verdict.",
+  "mode": "scorecard_autonomous",
+  "status": "pass",
+  "verdict_source": "agent",
+  "score_items": [
+    {
+      "name": "self judged pass",
+      "status": "pass",
+      "evidence": {
+        "source": "agent"
+      }
+    }
+  ],
+  "required_artifacts": [
+    "transcript",
+    "console_log",
+    "scorecard_summary",
+    "operation_log",
+    "screenshots"
+  ],
+  "artifacts": {
+    "transcript": "transcript.md",
+    "console_log": "console.log",
+    "scorecard_summary": "scorecard-summary.json",
+    "operation_log": "operation-log.jsonl",
+    "screenshots": [
+      "screenshots/dashboard-basic-runtime.svg"
+    ]
+  },
+  "operation_log": "operation-log.jsonl",
+  "unverified_items": [],
+  "failures": []
+}
