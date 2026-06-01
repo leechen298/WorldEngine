@@ -158,6 +158,23 @@ reviewed.
 - Prefer focused verification tied to the iteration contract, then broader
   regression commands when the blast radius requires it.
 
+## Natural-Language Iteration Documentation Triggers
+
+When the user says a short iteration-documentation request such as
+`生成 <version> 文档`, `编写 <version> 文档`, `规划 <version> 每个迭代`,
+`生成 <version> 迭代包`, or `创建 <version> iteration docs`, treat it as a
+request to run the Codex Plan-Mode Document Generation Standard in
+`docs/iterations/AGENTS.md`.
+
+This trigger creates or updates reviewable iteration documentation only. It
+does not authorize runtime, schema, API, frontend, test, fixture, migration, or
+external repository implementation.
+
+For a new version such as `v0.7`, first create the parent generation plan,
+version index, version plan, campaign state docs, child package sequence, and
+required package documents with honest status and closed implementation
+authorization until review approval is recorded.
+
 ## Natural-Language Validation Triggers
 
 When the user says a short validation request such as `测试 <version>`,

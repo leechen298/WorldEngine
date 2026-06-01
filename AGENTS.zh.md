@@ -146,6 +146,20 @@ contract/design 更新并通过 review 后，才能继续。
 - 优先运行与 iteration contract 对应的 focused verification；当 blast radius 需要时，再运行
   broader regression commands。
 
+## Natural-Language Iteration Documentation Triggers
+
+当用户说出 `生成 <version> 文档`、`编写 <version> 文档`、
+`规划 <version> 每个迭代`、`生成 <version> 迭代包` 或
+`创建 <version> iteration docs` 这类短 iteration-documentation request 时，把它视为启动
+`docs/iterations/AGENTS.md` 中 Codex Plan-Mode Document Generation Standard 的请求。
+
+这个 trigger 只创建或更新可 review 的 iteration documentation。它不授权 runtime、schema、API、
+frontend、test、fixture、migration 或 external repository implementation。
+
+对于 `v0.7` 这类新版本，先创建 parent generation plan、version index、version plan、campaign
+state docs、child package sequence 和 required package documents；状态必须诚实记录，并且在 review
+approval 被记录前保持 implementation authorization closed。
+
 ## Natural-Language Validation Triggers
 
 当用户说出 `测试 <version>`、`验证 <version>`、`<version> 是否通过`、
