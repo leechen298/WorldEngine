@@ -637,14 +637,209 @@ Closeout evaluator 结论：
   frontend build 通过且仅有 Vite large-chunk warning，以及 E2E `16 passed`。
 - Parent 和 roadmap/root status surfaces 现在为 `final / closeout complete`。
 
+## Post-Closeout Review-Fix 证据（2026-06-01）
+
+状态：review findings 已解决；v0.6 final status 仍为
+`final / closeout complete`。
+
+已处理 findings：
+
+- P1 plan import redacted provenance：`PlanImportSource.metadata` 现在会拒绝
+  prompt、provider trace、secret、credential、token、oracle 和 validation oracle
+  keys，并覆盖 `access_token`、`apiKey`、`providerTrace` 等 alias/camelCase
+  variants，返回带路径的 `sensitive_import_provenance` diagnostics。失败 import
+  不返回 accepted plan/source payloads。
+- P2 template metadata JSON compatibility：template 和 template-cell metadata 会在
+  deterministic generation 前校验，避免非 JSON metadata 被复制进 `WorldSpec`。
+- P2 constraints diagnostics：template、plan 和 request constraints 现在返回
+  constraints-specific diagnostics，不再误报为 `/seed_material` 上的
+  `unsupported_seed_material`。
+- P2 dashboard E2E coverage：`GenerationPanel` 增加稳定
+  `generation-source-kind` hook，browser E2E 现在覆盖 source-kind 和 diagnostics
+  failure-path rendering。
+- P2 implementation docs drift：current/backend/frontend implementation docs
+  及中文镜像已描述 v0.6 World Generation v1 当前状态，并保留 external validation、
+  projection、product、Agent smoke/autonomous、live provider 和 generation-quality
+  readiness 的明确非声明。
+
+Subagent 证据：
+
+- Backend review-fix subagent：确认同一批 root causes，并建议 JSON compatibility 与
+  sensitive provenance diagnostics 修复。
+- Frontend/E2E subagent：确认 source-kind hook 和 diagnostics E2E coverage gap。
+- Documentation/evidence subagent：确认 implementation doc drift 和 updated-doc scope
+  boundaries。
+
+已运行命令：
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_deterministic_world_generation.py app/tests/test_structured_generation_plan_compiler.py app/tests/test_plan_import_boundary.py -q
+```
+
+结果：`40 passed`。
+
+```bash
+cd frontend && pnpm test -- --run src/components/GenerationPanel.test.ts
+```
+
+结果：`7 passed` test files 和 `36 passed` tests。
+
+```bash
+make check-backend
+make check-frontend
+```
+
+结果：两者均 passed，无输出。
+
+```bash
+make test-e2e
+```
+
+首次 sandboxed run 被 `127.0.0.1:8000` 本地 server bind 权限阻挡；同一命令已用
+sandbox escalation 重跑。
+
+结果：`17 passed`。
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests -q
+```
+
+结果：`226 passed in 2.11s`。
+
+```bash
+cd frontend && pnpm build
+```
+
+结果：passed。Vite 仅输出既有 large-chunk warning。
+
+```bash
+git diff --check
+```
+
+结果：passed，无输出。
+
+```bash
+git status --short -- backend/worldengine backend/app/alembic backend/migrations
+```
+
+结果：passed，无输出。
+
+Stale implementation-doc grep 结果：`stale_matches=0`。
+
+Changed-file scope guard 结果：`out_of_scope=0`。
+
+未运行检查：
+
+- Agent smoke、full autonomous runner、external validation readiness、projection
+  readiness、live provider behavior 和 generation-quality evaluation 未运行，因为这些
+  findings 只修复 v0.6 generation contract handling、dashboard E2E coverage 和
+  implementation documentation drift。本轮不声明这些 surfaces pass。
+
+## 0.6.11 Post-Closeout Reliability/Scope Repair 证据（2026-06-01）
+
+状态：review complete；0.6.11 授权 repair scope 为 clean pass。
+
+Repair package：
+
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/`
+- `implementation_authorized: yes`
+
+已处理 findings：
+
+- P1 scope authorization：`0.6.10` 是 documentation-only，因此现在由 `0.6.11`
+  承担 mixed post-closeout repair scope。
+- P2 failed-generation fallback digest：当无关的非 JSON metadata/constraints 触发
+  fallback digest 时，template 和 plan failed results 现在会保留有效 seed material。
+- P2 public preview API coverage：imported-plan preview 已有 focused route coverage，
+  覆盖 sensitive redacted provenance failure 与 redaction。
+- P2 sensitive-key compatibility：允许 `prompt_tokens`、`completion_tokens`、
+  `total_tokens`、`token_count`、`token_usage` 和 `cached_tokens` 等 redacted
+  usage metrics，同时继续拒绝 `access_token`、`apiKey` 和 `providerTrace`。
+
+Subagent/evaluator 证据：
+
+- Scope/contract evaluator 确认需要新的 mixed repair package。
+- `0.6.11` documentation/contract evaluator：implementation authorization PASS，无
+  P0/P1/P2。
+- Implementation-scope evaluator：无 P0/P1/P2，允许 broad verification。
+- Usage-metric 修复后的 backend/API re-review：无 P0/P1/P2/P3，允许 broad
+  verification。
+
+已运行命令：
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_deterministic_world_generation.py app/tests/test_structured_generation_plan_compiler.py app/tests/test_generation_preview_api.py app/tests/test_plan_import_boundary.py -q
+```
+
+结果：初始 red run 为 `2 failed, 56 passed`；最终 green run 为
+`59 passed in 0.45s`。
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_generation_preview_api.py -q
+```
+
+结果：针对过宽 usage-metric matching 的初始 red run 为 `1 failed, 16 passed`。
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_generation_preview_api.py app/tests/test_plan_import_boundary.py -q
+```
+
+结果：`23 passed in 0.43s`。
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests tests -q
+```
+
+结果：`233 passed in 1.96s`。
+
+```bash
+cd frontend && pnpm test
+cd frontend && pnpm build
+make test-e2e
+```
+
+结果：frontend unit `36 passed`；build 通过且仅有既有 Vite large-chunk warning；
+E2E `17 passed (8.3s)`。
+
+```bash
+make validate-agent-smoke-fixtures
+make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest
+make validate-agent-autonomous-fixtures
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260531T122230+0800
+```
+
+结果：saved-result checker validation 通过。这不是新的 live Agent smoke 或 full
+autonomous runner execution。
+
+```bash
+make check-backend
+make check-frontend
+git diff --check
+```
+
+结果：均 passed，无输出。
+
+0.6.11 package scope guard 结果：`out_of_scope=0`。
+
+Forbidden surface sentinel：
+
+```bash
+git status --short -- backend/worldengine backend/app/alembic backend/migrations test-results
+```
+
+结果：passed，无输出。
+
 ## 未解决 Findings
 
-- P1：未发现。
+- P1：0.6.11 post-closeout reliability/scope repair 后未发现。
 - P2：implementation-bearing packages through `0.6.7` 的 final
   implementation-scope、code-review 和 validation-evidence evaluator PASS，以及
   `0.6.8` documentation/evidence evaluator PASS，以及 `0.6.9`
-  release-candidate evaluator PASS 后，未发现。
-- P3：未发现。
+  release-candidate evaluator PASS，以及 0.6.11 fallback-digest、preview API
+  sensitive provenance、usage-metric compatibility、dashboard E2E、
+  implementation-doc 和 evidence repairs 后，未发现。
+- P3：既有 Vite large-chunk warning 仍存在。既有 saved Agent smoke artifacts 包含一个
+  stale extra screenshot，但 deterministic checker 会校验 result 中引用的 artifact 且已通过。
 
 ## 最终评估
 
@@ -658,5 +853,7 @@ Closeout evaluator 结论：
 `0.6.7-dashboard-generation-preview-and-e2e-smoke` 以及
 `0.6.8-v0.6-evidence-and-compatibility-audit` 以及
 `0.6.9-v0.6-release-candidate-bundle` 均已 review complete，且
-`0.6.10-v0.6-final-closeout` 已 `final / closeout complete`。当前 route 为
-`final-closeout-complete`；implementation authorization 保持关闭。
+`0.6.10-v0.6-final-closeout` 已 `final / closeout complete`。
+`0.6.11-post-closeout-reliability-and-scope-repair` 已 review complete，且其授权
+repair scope 已 clean pass。当前 route 为 `final-closeout-complete`；implementation
+authorization 保持关闭。

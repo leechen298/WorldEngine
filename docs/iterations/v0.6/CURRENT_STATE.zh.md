@@ -19,14 +19,15 @@ Implementation authorization：no
 0.6.8-v0.6-evidence-and-compatibility-audit: review complete
 0.6.9-v0.6-release-candidate-bundle: review complete
 0.6.10-v0.6-final-closeout: final / closeout complete
+0.6.11-post-closeout-reliability-and-scope-repair: review complete
 ```
 
 ## 当前路由
 
 Final route：`final-closeout-complete`。
 
-没有剩余 active v0.6 child package。v0.6 final evidence consistency 和 closeout
-review 已通过。
+没有剩余 active v0.6 child package。v0.6 final evidence consistency、closeout
+review，以及 0.6.11 post-closeout reliability/scope repair 已通过。
 
 ## 下一步
 
@@ -86,6 +87,15 @@ iteration package 开始。
   无输出、full backend regression `220 passed`、frontend unit `36 passed`、
   frontend build 通过且仅有 Vite large-chunk warning、E2E `16 passed`，以及
   closeout consistency evaluator PASS。
+- v0.6 post-closeout reliability/scope repair evidence 记录在
+  `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.md`
+  和 `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`。
+  Current-session repair evidence 包括 package scope guard `out_of_scope=0`、
+  forbidden implementation sentinel 无输出、focused backend/API repair suite
+  `59 passed`、full backend regression `233 passed`、frontend unit `36 passed`、
+  frontend build 通过且仅有 Vite large-chunk warning、E2E `17 passed`、saved Agent
+  smoke checker PASS、minimal autonomous saved-result checker PASS，以及无
+  P0/P1/P2/P3 findings 的 backend/API re-review。
 - v0.6 现在拥有 focused dashboard frontend 和 E2E smoke evidence，用于 generation
   preview workflow。它不声明 Agent smoke、autonomous validation、external
   validation、projection readiness、product readiness、Agent smoke、autonomous

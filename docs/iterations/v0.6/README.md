@@ -177,6 +177,15 @@ Forbidden v0.6 scope:
   approval, evidence consistency checks, and unresolved finding
   classification.
 
+### `0.6.11-post-closeout-reliability-and-scope-repair`
+
+- Type: mixed post-closeout repair
+- Status: review complete
+- Purpose: authorize and repair the post-closeout reliability/scope findings
+  from the 2026-06-01 validation run, including failed-generation fallback seed
+  digest reliability, public preview API sensitive provenance coverage, and
+  implementation evidence synchronization.
+
 ## Current State
 
 Active child package:
@@ -217,4 +226,6 @@ complete and hands dashboard preview plus E2E smoke evidence to
 hands evidence/compatibility audit results to
 `0.6.9-v0.6-release-candidate-bundle`. `0.6.9` is review complete and hands
 release-candidate approval to `0.6.10-v0.6-final-closeout`. `0.6.10` is
-`final / closeout complete`; no v0.6 child package remains active.
+`final / closeout complete`. `0.6.11` is a post-closeout reliability/scope
+repair package with clean pass for its authorized repair scope; no v0.6 child
+package remains active.

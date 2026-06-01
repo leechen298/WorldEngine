@@ -257,6 +257,83 @@ def test_invalid_import_preview_returns_failed_result_without_generation() -> No
     ]
 
 
+def test_imported_plan_preview_rejects_sensitive_redacted_provenance() -> None:
+    client = _client()
+    import_request = _import_request("preview-sensitive-provenance")
+    import_request["source"]["metadata"] = {
+        "safe_trace": "trace-alpha",
+        "prompt": "private prompt",
+        "provider_trace": "private trace",
+        "access_token": "private token",
+    }
+
+    response = client.post(
+        "/world/generation/preview",
+        json={
+            "request_id": "preview-sensitive-provenance",
+            "source_kind": "imported_plan",
+            "import_request": import_request,
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["code"] == 0
+    data = body["data"]
+    assert data["validation_status"] == "failed"
+    assert data["worldspec_preview"] is None
+    assert data["metadata"]["import_source"] is None
+    assert [item["code"] for item in data["diagnostics"]] == [
+        "sensitive_import_provenance",
+        "sensitive_import_provenance",
+        "sensitive_import_provenance",
+    ]
+    assert [item["path"] for item in data["diagnostics"]] == [
+        "/source/metadata/prompt",
+        "/source/metadata/provider_trace",
+        "/source/metadata/access_token",
+    ]
+    assert "private prompt" not in str(body)
+    assert "private trace" not in str(body)
+    assert "private token" not in str(body)
+
+
+def test_imported_plan_preview_allows_redacted_usage_metric_provenance() -> None:
+    client = _client()
+    import_request = _import_request("preview-usage-metrics")
+    import_request["source"]["metadata"] = {
+        "usage": {
+            "prompt_tokens": 12,
+            "completion_tokens": 8,
+            "total_tokens": 20,
+            "token_count": 20,
+            "token_usage": {"cached_tokens": 2},
+        }
+    }
+
+    response = client.post(
+        "/world/generation/preview",
+        json={
+            "request_id": "preview-usage-metrics",
+            "source_kind": "imported_plan",
+            "import_request": import_request,
+        },
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["validation_status"] == "passed"
+    assert data["worldspec_preview"] is not None
+    assert data["metadata"]["import_source"] == {
+        "source_kind": "ai_assisted",
+        "source_id": "source.redacted",
+        "provider_label": "provider.redacted",
+        "model_label": "model.redacted",
+        "redacted": True,
+    }
+    assert "prompt_tokens" not in str(data["metadata"]["import_source"])
+
+
 def test_imported_plan_generation_failure_does_not_return_import_source() -> None:
     client = _client()
 

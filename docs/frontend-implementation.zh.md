@@ -1,10 +1,11 @@
 # Frontend Implementation
 
-状态：当前前端地图，覆盖到 v0.5
+状态：当前前端地图，覆盖到 v0.6
 
 英文版本：`frontend-implementation.md`。
 
-本文档描述当前 `frontend/src/` implementation。
+本文档描述 v0.6 final closeout 以及 0.6.11 post-closeout reliability/scope repair
+后的当前 `frontend/src/` implementation。
 
 ## Stack
 
@@ -36,6 +37,7 @@ pnpm build
 - grouped event steps。
 - world params。
 - latest summary。
+- generation preview state。
 
 ## API Client
 
@@ -64,6 +66,9 @@ API client 封装 fetch，并期望 backend envelope：
 - `applyWorldParams()`
 - `proposeAndApplyWorldParams()`
 - `getWorldSummaries()`
+- `previewGeneration()`
+- `checkGenerationRuntimeReadiness()`
+- `regenerateWorld()`
 
 Frontend 当前不调用 snapshot APIs。
 
@@ -81,6 +86,7 @@ Responsibilities：
 - 协调 event pagination。
 - runtime step 后 reload runtime、timeline 和 latest summary。
 - manual 或 agent-applied patch 后更新 local world params。
+- mount generation preview panel。
 
 Data loading functions：
 
@@ -158,6 +164,29 @@ Memory Panel 展示 latest archive summary：
 
 这是 archive-summary display，不是 Agent memory。
 
+## Generation Panel
+
+File: `frontend/src/components/GenerationPanel.vue`
+
+v0.6 dashboard 包含 generic generation preview workflow。该 panel 会：
+
+- 根据 operator 提供的 request、root、child 和 seed fields 构造 generic template
+  preview request。
+- 通过 `previewGeneration()` 调用 `POST /world/generation/preview`。
+- 展示 validation status、generation id、source kind 和 preview summary。
+- 展示 failed previews 的 generation diagnostics。
+- 仅当 passed preview 返回 `worldspec_preview` 后，才调用
+  `POST /world/generation/runtime-readiness`。
+- 展示 runtime-readiness status 和 diagnostics。
+
+该 panel 是 preview 和 readiness surface。它不暴露 live-provider generation、prompt
+execution、subjective generation-quality approval、external validation readiness 或
+projection application readiness。
+
+当前 evidence 包括 frontend unit `36 passed`、production build 通过且仅有既有 Vite
+large-chunk warning，以及 E2E `17 passed`，其中覆盖 generation preview success 和
+diagnostics failure-path rendering。
+
 ## Styling
 
 File: `frontend/src/style.css`
@@ -174,4 +203,6 @@ dashboard 使用 centered max-width layout，并用 responsive grid 布局 panel
 - Agent 和 memory panels 是 placeholders 或 archive displays，不是完整 Agent cognition surfaces。
 - 没有 frontend product behavior 暴露 v0.5 memory records 或 memory-context management。
 - Agent Loop 由 E2E API/browser baseline tests 覆盖，不是 dashboard product control。
+- 已有 Generation preview，但没有 live-provider workflow、external validation UI、
+  projection readiness UI、product packaging flow 或 generation-quality approval UI。
 - Production build 当前会输出 chunk-size warning。

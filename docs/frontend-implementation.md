@@ -1,8 +1,9 @@
 # Frontend Implementation
 
-Status: current frontend map through v0.5
+Status: current frontend map through v0.6
 
-This document describes the current `frontend/src/` implementation.
+This document describes the current `frontend/src/` implementation after the
+v0.6 final closeout and 0.6.11 post-closeout reliability/scope repair.
 
 ## Stack
 
@@ -35,6 +36,7 @@ pnpm build
 - grouped event steps.
 - world params.
 - latest summary.
+- generation preview state.
 
 ## API Client
 
@@ -64,6 +66,9 @@ Implemented client functions:
 - `applyWorldParams()`
 - `proposeAndApplyWorldParams()`
 - `getWorldSummaries()`
+- `previewGeneration()`
+- `checkGenerationRuntimeReadiness()`
+- `regenerateWorld()`
 
 The frontend does not currently call snapshot APIs.
 
@@ -82,6 +87,7 @@ Responsibilities:
 - coordinate event pagination.
 - reload runtime, timeline, and latest summary after a runtime step.
 - update local world params after manual or agent-applied patch.
+- mount the generation preview panel.
 
 Data loading functions:
 
@@ -162,6 +168,29 @@ The Memory Panel displays the latest archive summary:
 
 This is archive-summary display, not agent memory.
 
+## Generation Panel
+
+File: `frontend/src/components/GenerationPanel.vue`
+
+The v0.6 dashboard includes a generic generation preview workflow. The panel:
+
+- builds a generic template preview request from operator-provided request,
+  root, child, and seed fields.
+- calls `POST /world/generation/preview` through `previewGeneration()`.
+- renders validation status, generation id, source kind, and preview summary.
+- renders generation diagnostics for failed previews.
+- calls `POST /world/generation/runtime-readiness` only after a passed preview
+  returns a `worldspec_preview`.
+- renders runtime-readiness status and diagnostics.
+
+The panel is a preview and readiness surface. It does not expose live-provider
+generation, prompt execution, subjective generation-quality approval, external
+validation readiness, or projection application readiness.
+
+Current evidence includes frontend unit `36 passed`, production build passed
+with the existing Vite large-chunk warning, and E2E `17 passed` including
+generation preview success and diagnostics failure-path rendering.
+
 ## Styling
 
 File: `frontend/src/style.css`
@@ -181,4 +210,7 @@ panels. Component-specific styles live inside scoped style blocks.
   management.
 - Agent Loop is covered by E2E API/browser baseline tests, not by a dashboard
   product control.
+- Generation preview is available, but no live-provider workflow, external
+  validation UI, projection readiness UI, product packaging flow, or
+  generation-quality approval UI is present.
 - Production build currently emits a chunk-size warning.

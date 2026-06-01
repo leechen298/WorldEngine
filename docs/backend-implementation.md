@@ -1,10 +1,9 @@
 # Backend Implementation
 
-Status: current backend map through v0.5
+Status: current backend map through v0.6
 
 This document describes the active `backend/app/` implementation after the
-v0.5 final closeout. It does not describe planned v0.6 world-generation code
-until a reviewed v0.6 package lands that implementation.
+v0.6 final closeout and 0.6.11 post-closeout reliability/scope repair.
 
 Chinese mirror: `backend-implementation.zh.md`.
 
@@ -42,6 +41,8 @@ The app factory creates these active state/services:
 - runtime engine and archive service.
 - params agent with mock provider.
 - Agent Loop service with perception builder and action adapter.
+- stateless world-generation core helpers exposed through the
+  `/world/generation` router.
 
 ## API Envelope and Errors
 
@@ -137,6 +138,8 @@ Files:
 - `backend/app/schemas/world_cell.py`
 - `backend/app/core/worldspec_loader.py`
 - `backend/app/core/runtime_context.py`
+- `backend/app/schemas/world_generation.py`
+- `backend/app/core/world_generation.py`
 
 `WorldCell` and `WorldSpec` provide additive recursive-world schema contracts.
 The loader accepts mappings, JSON strings, or JSON bytes and returns either a
@@ -144,6 +147,56 @@ validated loaded spec or structured errors.
 
 The runtime-context bridge derives inspectable metadata from a loaded spec and
 keeps raw `WorldSpec` payloads out of runtime step outputs and event payloads.
+
+## World Generation
+
+Files:
+
+- `backend/app/schemas/world_generation.py`
+- `backend/app/core/world_generation.py`
+- `backend/app/api/routes/world_generation.py`
+
+v0.6 adds generic World Generation v1. The implementation is request-scoped and
+does not persist generated worlds or call live providers.
+
+Core schema groups:
+
+- `WorldTemplate`, `TemplateCell`, and `TemplateGenerationRequest`
+- `GenerationPlan`, `PlanCell`, and `PlanGenerationRequest`
+- `PlanImportSource`, `PlanImportRequest`, and `PlanImportResult`
+- `GenerationPreviewRequest` and `GenerationPreviewResponse`
+- `GenerationRegenerationRequest` and `GenerationRegenerationResult`
+- `RuntimeReadinessRequest` and `RuntimeReadinessResult`
+
+Core behavior:
+
+- validate template and plan versions, duplicate cell ids, duplicate entity
+  refs, entity-kind constraints, child-count bounds, JSON-compatible metadata,
+  JSON-compatible constraints, and JSON-compatible seed material.
+- generate deterministic `WorldSpec` payloads from reviewed templates and plans.
+- import AI-assisted plans only as structured `GenerationPlan` data with
+  redacted provenance; prompt, provider trace, secret, credential, token,
+  oracle, and secret-bearing alias keys such as `access_token`, `apiKey`, and
+  `providerTrace` are rejected at the import boundary, while redacted token
+  usage metrics are allowed.
+- preserve valid seed material in failed-generation fallback digests when
+  unrelated non-JSON metadata or constraints make the full payload
+  non-canonical.
+- redact preview metadata before returning public `worldspec_preview` payloads.
+- check loader/runtime-context readiness without mutating runtime state.
+- regenerate by deriving a new preview request, recording lineage, and running
+  runtime-readiness checks on the regenerated preview.
+
+API routes:
+
+- `POST /world/generation/preview`
+- `POST /world/generation/regenerate`
+- `POST /world/generation/runtime-readiness`
+
+Generation output remains generic. It does not add concrete worlds, maps,
+characters, resources, story rules, external validation fixtures, projection
+application behavior, prompt execution, live-provider integration, migrations,
+or durable storage.
 
 ## World Params
 

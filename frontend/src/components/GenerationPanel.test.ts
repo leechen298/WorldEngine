@@ -87,6 +87,7 @@ describe("GenerationPanel", () => {
     });
     expect(wrapper.get("[data-test='generation-validation-status']").text()).toContain("passed");
     expect(wrapper.get("[data-test='generation-id']").text()).toContain("generation-123");
+    expect(wrapper.get("[data-test='generation-source-kind']").text()).toContain("template");
     expect(wrapper.get("[data-test='generation-summary']").text()).toContain("total_cell_count");
     expect(wrapper.get("[data-test='generation-readiness-status']").text()).toContain("passed");
   });

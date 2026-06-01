@@ -37,7 +37,7 @@
           <span data-test="generation-id">{{ preview.metadata.generation_id }}</span>
         </a-descriptions-item>
         <a-descriptions-item label="source_kind">
-          {{ preview.source_kind }}
+          <span data-test="generation-source-kind">{{ preview.source_kind }}</span>
         </a-descriptions-item>
         <a-descriptions-item label="summary">
           <pre data-test="generation-summary" class="generation-pre">{{ formattedSummary }}</pre>

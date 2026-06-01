@@ -159,6 +159,15 @@ v0.6 禁止的范围：
 - 目的：只有在 release-candidate approval、evidence consistency checks 和 unresolved
   finding classification 完成后，才把 v0.6 标记为 final / closeout complete。
 
+### `0.6.11-post-closeout-reliability-and-scope-repair`
+
+- 类型：mixed post-closeout repair
+- 状态：review complete
+- 目的：授权并修复 2026-06-01 validation run 发现的 post-closeout
+  reliability/scope findings，包括 failed-generation fallback seed digest
+  reliability、public preview API sensitive provenance coverage，以及
+  implementation evidence synchronization。
+
 ## 当前状态
 
 Active child package：
@@ -197,5 +206,6 @@ preview/API metadata semantics 交接给
 evidence/compatibility audit results 交接给
 `0.6.9-v0.6-release-candidate-bundle`。`0.6.9` 已 review complete，并把
 release-candidate approval 交接给 `0.6.10-v0.6-final-closeout`。当前 route 为
-`final-closeout-complete`；`0.6.10` 已 `final / closeout complete`，没有剩余 active
-v0.6 child package。
+`final-closeout-complete`；`0.6.10` 已 `final / closeout complete`。`0.6.11`
+是 post-closeout reliability/scope repair package，且其授权 repair scope 已 clean
+pass；没有剩余 active v0.6 child package。

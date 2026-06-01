@@ -113,6 +113,39 @@ def test_plan_import_rejects_unredacted_or_non_json_provenance() -> None:
     assert result.source is None
 
 
+def test_plan_import_rejects_sensitive_fields_inside_redacted_metadata() -> None:
+    request = _request(
+        source=_source(
+            metadata={
+                "safe_trace": "trace-alpha",
+                "prompt": "private prompt",
+                "provider_trace": "private provider trace",
+                "access_token": "private token",
+                "apiKey": "private api key",
+                "providerTrace": "private camel trace",
+            }
+        )
+    )
+
+    diagnostics = validate_plan_import(request)
+
+    assert [(d.code, d.path) for d in diagnostics] == [
+        ("sensitive_import_provenance", "/source/metadata/prompt"),
+        ("sensitive_import_provenance", "/source/metadata/provider_trace"),
+        ("sensitive_import_provenance", "/source/metadata/access_token"),
+        ("sensitive_import_provenance", "/source/metadata/apiKey"),
+        ("sensitive_import_provenance", "/source/metadata/providerTrace"),
+    ]
+
+    result = import_generation_plan(request)
+    assert result.validation_status == "failed"
+    assert result.accepted_plan is None
+    assert result.source is None
+    assert "private prompt" not in str(result.model_dump())
+    assert "private provider trace" not in str(result.model_dump())
+    assert "private token" not in str(result.model_dump())
+
+
 def test_plan_import_rejects_non_json_import_metadata_without_seed_misdiagnosis() -> None:
     request = _request(metadata={"not-json": {"unstable"}})
 

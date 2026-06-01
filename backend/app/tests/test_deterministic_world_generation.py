@@ -117,6 +117,95 @@ def test_request_constraints_participate_in_validation() -> None:
     ]
 
 
+def test_template_generation_reports_non_json_metadata_paths() -> None:
+    template = _template()
+    template.metadata = {"not-json": {"unstable"}}
+    template.root.metadata = {"also-not-json": {"unstable-root"}}
+    template.root.child_cells[0].metadata = {"child-not-json": {"unstable-child"}}
+
+    result = generate_worldspec_from_template(
+        TemplateGenerationRequest(
+            request_id="request-alpha",
+            template=template,
+            seed_material="seed-alpha",
+        )
+    )
+
+    assert result.worldspec is None
+    assert [(d.code, d.path) for d in result.diagnostics] == [
+        ("unsupported_template_metadata", "/metadata"),
+        ("unsupported_template_metadata", "/root/metadata"),
+        ("unsupported_template_metadata", "/root/child_cells/0/metadata"),
+    ]
+
+
+def test_failed_template_generation_preserves_valid_seed_material_in_fallback_digest() -> None:
+    alpha_template = _template()
+    alpha_template.metadata = {"not-json": {"unstable"}}
+    beta_template = _template()
+    beta_template.metadata = {"not-json": {"unstable"}}
+
+    alpha = generate_worldspec_from_template(
+        TemplateGenerationRequest(
+            request_id="request-alpha",
+            template=alpha_template,
+            seed_material="seed-alpha",
+        )
+    )
+    beta = generate_worldspec_from_template(
+        TemplateGenerationRequest(
+            request_id="request-alpha",
+            template=beta_template,
+            seed_material="seed-beta",
+        )
+    )
+
+    assert alpha.worldspec is None
+    assert beta.worldspec is None
+    assert [(d.code, d.path) for d in alpha.diagnostics] == [
+        ("unsupported_template_metadata", "/metadata")
+    ]
+    assert [(d.code, d.path) for d in beta.diagnostics] == [
+        ("unsupported_template_metadata", "/metadata")
+    ]
+    assert alpha.metadata.seed_digest != beta.metadata.seed_digest
+    assert alpha.metadata.generation_id != beta.metadata.generation_id
+
+
+def test_template_generation_reports_non_json_template_constraints() -> None:
+    template = _template()
+    template.constraints = {"not-json": {"unstable"}}
+
+    result = generate_worldspec_from_template(
+        TemplateGenerationRequest(
+            request_id="request-alpha",
+            template=template,
+            seed_material="seed-alpha",
+        )
+    )
+
+    assert result.worldspec is None
+    assert [(d.code, d.path) for d in result.diagnostics] == [
+        ("unsupported_template_constraints", "/constraints")
+    ]
+
+
+def test_template_generation_reports_non_json_request_constraints_without_seed_misdiagnosis() -> None:
+    result = generate_worldspec_from_template(
+        TemplateGenerationRequest(
+            request_id="request-alpha",
+            template=_template(),
+            seed_material="seed-alpha",
+            constraints={"not-json": {"unstable"}},
+        )
+    )
+
+    assert result.worldspec is None
+    assert [(d.code, d.path) for d in result.diagnostics] == [
+        ("unsupported_generation_constraints", "/constraints")
+    ]
+
+
 def test_non_json_seed_material_returns_deterministic_diagnostic() -> None:
     request = _request(seed_material={"unstable"})
 

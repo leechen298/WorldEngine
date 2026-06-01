@@ -19,14 +19,15 @@ Implementation authorization: no
 0.6.8-v0.6-evidence-and-compatibility-audit: review complete
 0.6.9-v0.6-release-candidate-bundle: review complete
 0.6.10-v0.6-final-closeout: final / closeout complete
+0.6.11-post-closeout-reliability-and-scope-repair: review complete
 ```
 
 ## Current Route
 
 Final route: `final-closeout-complete`.
 
-No v0.6 child package remains active. v0.6 final evidence consistency and
-closeout review passed.
+No v0.6 child package remains active. v0.6 final evidence consistency,
+closeout review, and the 0.6.11 post-closeout reliability/scope repair passed.
 
 ## Next Action
 
@@ -90,6 +91,16 @@ start only from its own reviewed iteration package.
   implementation sentinel with no output, full backend regression `220 passed`,
   frontend unit `36 passed`, frontend build passed with a Vite large-chunk
   warning only, E2E `16 passed`, and closeout consistency evaluator PASS.
+- v0.6 post-closeout reliability/scope repair evidence is recorded in
+  `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.md`
+  and `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`.
+  Current-session repair evidence includes package scope guard
+  `out_of_scope=0`, forbidden implementation sentinel with no output, focused
+  backend/API repair suite `59 passed`, full backend regression `233 passed`,
+  frontend unit `36 passed`, frontend build passed with a Vite large-chunk
+  warning only, E2E `17 passed`, saved Agent smoke checker PASS, minimal
+  autonomous saved-result checker PASS, and backend/API re-review with no
+  P0/P1/P2/P3 findings.
 - v0.6 now has focused dashboard frontend and E2E smoke evidence for the
   generation preview workflow. It does not claim Agent smoke, autonomous
   validation, external validation, projection readiness, product readiness,

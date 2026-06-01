@@ -48,6 +48,14 @@ SENSITIVE_PREVIEW_METADATA_KEYS = {
     "token",
     "validation_oracle",
 }
+SAFE_PREVIEW_METADATA_USAGE_KEYS = {
+    "cached_tokens",
+    "completion_tokens",
+    "prompt_tokens",
+    "total_tokens",
+    "token_count",
+    "token_usage",
+}
 PREVIEW_SUMMARY_TEXT_LIMIT = 120
 
 
@@ -57,6 +65,28 @@ def validate_template(
     diagnostics: List[GenerationDiagnostic] = []
     seen_cell_ids: Set[str] = set()
     seen_entity_refs: Set[str] = set()
+    _append_json_compatibility_diagnostic(
+        diagnostics,
+        "unsupported_template_metadata",
+        "template metadata must be JSON-compatible",
+        "/metadata",
+        template.metadata,
+    )
+    _append_json_compatibility_diagnostic(
+        diagnostics,
+        "unsupported_template_constraints",
+        "template constraints must be JSON-compatible",
+        "/constraints",
+        template.constraints,
+    )
+    if request_constraints is not None:
+        _append_json_compatibility_diagnostic(
+            diagnostics,
+            "unsupported_generation_constraints",
+            "generation constraints must be JSON-compatible",
+            "/constraints",
+            request_constraints,
+        )
     constraints = _merge_constraints(template.constraints, request_constraints or {})
     allowed_entity_kinds = _allowed_entity_kinds(constraints)
     max_child_cells = _optional_int_constraint(constraints, "max_child_cells")
@@ -73,6 +103,13 @@ def validate_template(
         )
 
     def visit(cell: TemplateCell, path: str) -> None:
+        _append_json_compatibility_diagnostic(
+            diagnostics,
+            "unsupported_template_metadata",
+            "template cell metadata must be JSON-compatible",
+            f"{path}/metadata",
+            cell.metadata,
+        )
         if cell.id in seen_cell_ids:
             diagnostics.append(
                 _diagnostic(
@@ -151,9 +188,7 @@ def generate_worldspec_from_template(
     try:
         seed_digest = _seed_digest(seed_payload)
     except (TypeError, ValueError):
-        if not _is_json_compatible(request.seed_material) or not _is_json_compatible(
-            request.constraints
-        ):
+        if not _is_json_compatible(request.seed_material):
             diagnostics.append(
                 _diagnostic(
                     "unsupported_seed_material",
@@ -168,7 +203,7 @@ def generate_worldspec_from_template(
                 "template_id": template.id,
                 "template_version": template.version,
                 "request_constraints": _json_compatible_or_none(request.constraints),
-                "seed_material": None,
+                "seed_material": _json_compatible_or_none(request.seed_material),
             }
         )
     generation_id = f"generation-{seed_digest[:16]}"
@@ -217,6 +252,14 @@ def validate_generation_plan(
     diagnostics: List[GenerationDiagnostic] = []
     seen_cell_ids: Set[str] = set()
     seen_entity_refs: Set[str] = set()
+    if request_constraints is not None:
+        _append_json_compatibility_diagnostic(
+            diagnostics,
+            "unsupported_generation_constraints",
+            "generation constraints must be JSON-compatible",
+            "/constraints",
+            request_constraints,
+        )
     constraints = _merge_constraints(plan.constraints, request_constraints or {})
     allowed_entity_kinds = _allowed_entity_kinds(constraints)
     max_child_cells = _optional_int_constraint(constraints, "max_child_cells")
@@ -242,6 +285,13 @@ def validate_generation_plan(
                 {"type": type(plan.metadata).__name__},
             )
         )
+    _append_json_compatibility_diagnostic(
+        diagnostics,
+        "unsupported_plan_constraints",
+        "plan constraints must be JSON-compatible",
+        "/constraints",
+        plan.constraints,
+    )
 
     def visit(cell: PlanCell, path: str) -> None:
         if cell.id in seen_cell_ids:
@@ -333,9 +383,7 @@ def generate_worldspec_from_plan(
     try:
         seed_digest = _seed_digest(seed_payload)
     except (TypeError, ValueError):
-        if not _is_json_compatible(request.seed_material) or not _is_json_compatible(
-            request.constraints
-        ):
+        if not _is_json_compatible(request.seed_material):
             diagnostics.append(
                 _diagnostic(
                     "unsupported_seed_material",
@@ -350,7 +398,7 @@ def generate_worldspec_from_plan(
                 "plan_id": plan.id,
                 "plan_version": plan.version,
                 "request_constraints": _json_compatible_or_none(request.constraints),
-                "seed_material": None,
+                "seed_material": _json_compatible_or_none(request.seed_material),
             }
         )
     generation_id = f"generation-{seed_digest[:16]}"
@@ -418,6 +466,14 @@ def validate_plan_import(request: PlanImportRequest) -> List[GenerationDiagnosti
                 {"type": type(request.source.metadata).__name__},
             )
         )
+    diagnostics.extend(
+        _sensitive_metadata_diagnostics(
+            request.source.metadata,
+            "/source/metadata",
+            "sensitive_import_provenance",
+            "import source metadata must not contain prompts, provider traces, secrets, or validation oracles",
+        )
+    )
     try:
         _canonical_json_value(request.metadata)
     except (TypeError, ValueError):
@@ -779,7 +835,7 @@ def _redacted_preview_metadata(value: Any) -> Any:
         return {
             key: _redacted_preview_metadata(item)
             for key, item in value.items()
-            if key.lower() not in SENSITIVE_PREVIEW_METADATA_KEYS
+            if not _is_sensitive_metadata_key(key)
         }
     if isinstance(value, list):
         return [_redacted_preview_metadata(item) for item in value]
@@ -814,6 +870,82 @@ def _diagnostic(
         path=path,
         source_context=source_context,
     )
+
+
+def _append_json_compatibility_diagnostic(
+    diagnostics: List[GenerationDiagnostic],
+    code: str,
+    message: str,
+    path: str,
+    value: Any,
+) -> None:
+    try:
+        _canonical_json_value(value)
+    except (TypeError, ValueError):
+        diagnostics.append(
+            _diagnostic(
+                code,
+                message,
+                path,
+                {"type": type(value).__name__},
+            )
+        )
+
+
+def _is_sensitive_metadata_key(key: str) -> bool:
+    normalized = "".join(character for character in key.lower() if character.isalnum())
+    safe_usage_keys = {
+        "".join(character for character in safe_key.lower() if character.isalnum())
+        for safe_key in SAFE_PREVIEW_METADATA_USAGE_KEYS
+    }
+    if normalized in safe_usage_keys:
+        return False
+    sensitive_exact = {
+        "".join(character for character in sensitive_key.lower() if character.isalnum())
+        for sensitive_key in SENSITIVE_PREVIEW_METADATA_KEYS
+    }
+    if normalized in sensitive_exact:
+        return True
+    return any(
+        token in normalized
+        for token in (
+            "apikey",
+            "credential",
+            "oracle",
+            "prompt",
+            "providertrace",
+            "secret",
+            "token",
+        )
+    )
+
+
+def _sensitive_metadata_diagnostics(
+    value: Any,
+    path: str,
+    code: str,
+    message: str,
+) -> List[GenerationDiagnostic]:
+    diagnostics: List[GenerationDiagnostic] = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            next_path = f"{path}/{key}"
+            if isinstance(key, str) and _is_sensitive_metadata_key(key):
+                diagnostics.append(
+                    _diagnostic(
+                        code,
+                        message,
+                        next_path,
+                        {"key": key},
+                    )
+                )
+            diagnostics.extend(_sensitive_metadata_diagnostics(item, next_path, code, message))
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            diagnostics.extend(
+                _sensitive_metadata_diagnostics(item, f"{path}/{index}", code, message)
+            )
+    return diagnostics
 
 
 def _seed_digest(value: Any) -> str:

@@ -1,11 +1,11 @@
 # 后端实现
 
-状态：当前后端地图，覆盖到 v0.5
+状态：当前后端地图，覆盖到 v0.6
 
 英文版本：`backend-implementation.md`。
 
-本文描述 v0.5 最终收口后的 active `backend/app/` implementation。在已评审 v0.6
-package 落地 world-generation code 前，本文不描述 planned v0.6 implementation。
+本文描述 v0.6 最终收口以及 0.6.11 post-closeout reliability/scope repair 后的 active
+`backend/app/` implementation。
 
 ## 应用组装
 
@@ -41,6 +41,7 @@ App factory 会创建这些 active state/services：
 - runtime engine 和 archive service。
 - 带 mock provider 的 params agent。
 - 包含 perception builder 与 action adapter 的 Agent Loop service。
+- 通过 `/world/generation` router 暴露的 stateless world-generation core helpers。
 
 ## API Envelope 和 Errors
 
@@ -134,6 +135,8 @@ Files：
 - `backend/app/schemas/world_cell.py`
 - `backend/app/core/worldspec_loader.py`
 - `backend/app/core/runtime_context.py`
+- `backend/app/schemas/world_generation.py`
+- `backend/app/core/world_generation.py`
 
 `WorldCell` 和 `WorldSpec` 提供 additive recursive-world schema contracts。Loader
 接受 mappings、JSON strings 或 JSON bytes，并返回 validated loaded spec 或
@@ -141,6 +144,53 @@ structured errors。
 
 Runtime-context bridge 从 loaded spec 派生可审查 metadata，并让 raw `WorldSpec`
 payloads 不出现在 runtime step outputs 或 event payloads 中。
+
+## World Generation
+
+Files：
+
+- `backend/app/schemas/world_generation.py`
+- `backend/app/core/world_generation.py`
+- `backend/app/api/routes/world_generation.py`
+
+v0.6 新增 generic World Generation v1。实现是 request-scoped，不持久化 generated
+worlds，也不调用 live providers。
+
+Core schema groups：
+
+- `WorldTemplate`、`TemplateCell` 和 `TemplateGenerationRequest`
+- `GenerationPlan`、`PlanCell` 和 `PlanGenerationRequest`
+- `PlanImportSource`、`PlanImportRequest` 和 `PlanImportResult`
+- `GenerationPreviewRequest` 和 `GenerationPreviewResponse`
+- `GenerationRegenerationRequest` 和 `GenerationRegenerationResult`
+- `RuntimeReadinessRequest` 和 `RuntimeReadinessResult`
+
+Core behavior：
+
+- 校验 template/plan versions、duplicate cell ids、duplicate entity refs、
+  entity-kind constraints、child-count bounds、JSON-compatible metadata、
+  JSON-compatible constraints 和 JSON-compatible seed material。
+- 从已评审 templates 和 plans 生成 deterministic `WorldSpec` payloads。
+- 只以 structured `GenerationPlan` data 和 redacted provenance 导入 AI-assisted
+  plans；prompt、provider trace、secret、credential、token、oracle 以及
+  `access_token`、`apiKey`、`providerTrace` 等 secret-bearing alias keys 会在
+  import boundary 被拒绝，同时允许 redacted token usage metrics。
+- 当无关的非 JSON metadata 或 constraints 让完整 payload 不可 canonical 时，在
+  failed-generation fallback digests 中保留有效 seed material。
+- 返回 public `worldspec_preview` payloads 前会 redact preview metadata。
+- 检查 loader/runtime-context readiness，且不 mutate runtime state。
+- Regenerate 会派生新的 preview request、记录 lineage，并对 regenerated preview
+  运行 runtime-readiness checks。
+
+API routes：
+
+- `POST /world/generation/preview`
+- `POST /world/generation/regenerate`
+- `POST /world/generation/runtime-readiness`
+
+Generation output 仍保持 generic。它不添加 concrete worlds、maps、characters、
+resources、story rules、external validation fixtures、projection application behavior、
+prompt execution、live-provider integration、migrations 或 durable storage。
 
 ## World Params
 

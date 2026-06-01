@@ -148,6 +148,17 @@ def test_plan_validation_reports_non_json_metadata() -> None:
     ]
 
 
+def test_plan_validation_reports_non_json_constraints() -> None:
+    plan = _plan()
+    plan.constraints = {"not-json": {"unstable"}}
+
+    diagnostics = validate_generation_plan(plan)
+
+    assert [(d.code, d.path) for d in diagnostics] == [
+        ("unsupported_plan_constraints", "/constraints")
+    ]
+
+
 def test_plan_validation_reports_non_json_cell_metadata_paths() -> None:
     plan = GenerationPlan(
         id="generic-plan",
@@ -191,6 +202,39 @@ def test_plan_generation_reports_cell_metadata_instead_of_seed_material() -> Non
     ]
 
 
+def test_failed_plan_generation_preserves_valid_seed_material_in_fallback_digest() -> None:
+    alpha_plan = _plan()
+    alpha_plan.metadata = {"not-json": {"unstable"}}
+    beta_plan = _plan()
+    beta_plan.metadata = {"not-json": {"unstable"}}
+
+    alpha = generate_worldspec_from_plan(
+        PlanGenerationRequest(
+            request_id="request-alpha",
+            plan=alpha_plan,
+            seed_material="seed-alpha",
+        )
+    )
+    beta = generate_worldspec_from_plan(
+        PlanGenerationRequest(
+            request_id="request-alpha",
+            plan=beta_plan,
+            seed_material="seed-beta",
+        )
+    )
+
+    assert alpha.worldspec is None
+    assert beta.worldspec is None
+    assert [(d.code, d.path) for d in alpha.diagnostics] == [
+        ("unsupported_plan_metadata", "/metadata")
+    ]
+    assert [(d.code, d.path) for d in beta.diagnostics] == [
+        ("unsupported_plan_metadata", "/metadata")
+    ]
+    assert alpha.metadata.seed_digest != beta.metadata.seed_digest
+    assert alpha.metadata.generation_id != beta.metadata.generation_id
+
+
 def test_plan_request_constraints_participate_in_validation() -> None:
     request = PlanGenerationRequest(
         request_id="request-alpha",
@@ -204,6 +248,22 @@ def test_plan_request_constraints_participate_in_validation() -> None:
     assert result.worldspec is None
     assert [(d.code, d.path) for d in result.diagnostics] == [
         ("entity_kind_not_allowed", "/root/entity_refs/0/kind")
+    ]
+
+
+def test_plan_generation_reports_non_json_request_constraints_without_seed_misdiagnosis() -> None:
+    result = generate_worldspec_from_plan(
+        PlanGenerationRequest(
+            request_id="request-alpha",
+            plan=_plan(),
+            seed_material="seed-alpha",
+            constraints={"not-json": {"unstable"}},
+        )
+    )
+
+    assert result.worldspec is None
+    assert [(d.code, d.path) for d in result.diagnostics] == [
+        ("unsupported_generation_constraints", "/constraints")
     ]
 
 

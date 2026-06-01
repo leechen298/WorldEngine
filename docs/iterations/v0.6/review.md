@@ -656,14 +656,217 @@ Additional `0.6.2` implementation and validation evidence was recorded on
 - Parent and roadmap/root status surfaces now carry
   `final / closeout complete`.
 
+## Post-Closeout Review-Fix Evidence (2026-06-01)
+
+Status: review findings resolved; v0.6 final status remains
+`final / closeout complete`.
+
+Findings addressed:
+
+- P1 plan import redacted provenance: `PlanImportSource.metadata` now rejects
+  prompt, provider trace, secret, credential, token, oracle, and validation
+  oracle keys, including alias and camelCase variants such as `access_token`,
+  `apiKey`, and `providerTrace`, with pathful
+  `sensitive_import_provenance` diagnostics. Failed imports do not return
+  accepted plan/source payloads.
+- P2 template metadata JSON compatibility: template and template-cell metadata
+  are validated before deterministic generation and before any metadata can be
+  copied into `WorldSpec`.
+- P2 constraints diagnostics: template, plan, and request constraints now report
+  constraints-specific diagnostics instead of being misclassified as
+  `unsupported_seed_material` at `/seed_material`.
+- P2 dashboard E2E coverage: `GenerationPanel` exposes a stable
+  `generation-source-kind` hook, and browser E2E now covers source-kind and
+  diagnostics failure-path rendering.
+- P2 implementation docs drift: current/backend/frontend implementation docs
+  and Chinese mirrors now describe the v0.6 World Generation v1 state and
+  preserve explicit non-claims for external validation, projection, product,
+  Agent smoke/autonomous, live provider, and generation-quality readiness.
+
+Subagent evidence:
+
+- Backend review-fix subagent: confirmed the same root causes and recommended
+  JSON compatibility and sensitive provenance diagnostics.
+- Frontend/E2E subagent: confirmed the source-kind hook and diagnostics E2E
+  coverage gap.
+- Documentation/evidence subagent: confirmed implementation doc drift and
+  updated-doc scope boundaries.
+
+Commands run:
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_deterministic_world_generation.py app/tests/test_structured_generation_plan_compiler.py app/tests/test_plan_import_boundary.py -q
+```
+
+Result: `40 passed`.
+
+```bash
+cd frontend && pnpm test -- --run src/components/GenerationPanel.test.ts
+```
+
+Result: `7 passed` test files and `36 passed` tests.
+
+```bash
+make check-backend
+make check-frontend
+```
+
+Result: both passed with no output.
+
+```bash
+make test-e2e
+```
+
+First sandboxed run was blocked by local server bind permission on
+`127.0.0.1:8000`. The same command was rerun with sandbox escalation.
+
+Result: `17 passed`.
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests -q
+```
+
+Result: `226 passed in 2.11s`.
+
+```bash
+cd frontend && pnpm build
+```
+
+Result: passed. Vite emitted the existing large-chunk warning only.
+
+```bash
+git diff --check
+```
+
+Result: passed with no output.
+
+```bash
+git status --short -- backend/worldengine backend/app/alembic backend/migrations
+```
+
+Result: passed with no output.
+
+Stale implementation-doc grep result: `stale_matches=0`.
+
+Changed-file scope guard result: `out_of_scope=0`.
+
+Checks not run:
+
+- Agent smoke, full autonomous runner, external validation readiness, projection
+  readiness, live provider behavior, and generation-quality evaluation were not
+  run because these findings only repair v0.6 generation contract handling,
+  dashboard E2E coverage, and implementation documentation drift. No pass claim
+  is made for those surfaces.
+
+## 0.6.11 Post-Closeout Reliability/Scope Repair Evidence (2026-06-01)
+
+Status: review complete; clean pass for the 0.6.11 authorized repair scope.
+
+Repair package:
+
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/`
+- `implementation_authorized: yes`
+
+Findings addressed:
+
+- P1 scope authorization: `0.6.10` is documentation-only, so `0.6.11` now owns
+  the mixed post-closeout repair scope.
+- P2 failed-generation fallback digest: template and plan failed results now
+  preserve valid seed material when an unrelated non-JSON metadata/constraints
+  value triggers fallback digesting.
+- P2 public preview API coverage: imported-plan preview now has focused route
+  coverage for sensitive redacted provenance failure and redaction.
+- P2 sensitive-key compatibility: redacted usage metrics such as
+  `prompt_tokens`, `completion_tokens`, `total_tokens`, `token_count`,
+  `token_usage`, and `cached_tokens` are allowed, while `access_token`,
+  `apiKey`, and `providerTrace` remain rejected.
+
+Subagent/evaluator evidence:
+
+- Scope/contract evaluator confirmed a new mixed repair package was required.
+- Documentation/contract evaluator for `0.6.11`: PASS for implementation
+  authorization, no P0/P1/P2.
+- Implementation-scope evaluator: no P0/P1/P2; broad verification allowed.
+- Backend/API re-review after the usage-metric fix: no P0/P1/P2/P3; broad
+  verification allowed.
+
+Commands run:
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_deterministic_world_generation.py app/tests/test_structured_generation_plan_compiler.py app/tests/test_generation_preview_api.py app/tests/test_plan_import_boundary.py -q
+```
+
+Result: initial red run `2 failed, 56 passed`; final green run
+`59 passed in 0.45s`.
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_generation_preview_api.py -q
+```
+
+Result: initial red run `1 failed, 16 passed` for overbroad usage-metric
+matching.
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests/test_generation_preview_api.py app/tests/test_plan_import_boundary.py -q
+```
+
+Result: `23 passed in 0.43s`.
+
+```bash
+cd backend && PYTHONPATH=. .venv/bin/pytest app/tests tests -q
+```
+
+Result: `233 passed in 1.96s`.
+
+```bash
+cd frontend && pnpm test
+cd frontend && pnpm build
+make test-e2e
+```
+
+Result: frontend unit `36 passed`; build passed with the existing Vite
+large-chunk warning; E2E `17 passed (8.3s)`.
+
+```bash
+make validate-agent-smoke-fixtures
+make validate-agent-smoke-result RESULT_DIR=test-results/agent-smoke/latest
+make validate-agent-autonomous-fixtures
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260531T122230+0800
+```
+
+Result: saved-result checker validation passed. This is not a new live Agent
+smoke or full autonomous runner execution.
+
+```bash
+make check-backend
+make check-frontend
+git diff --check
+```
+
+Result: all passed with no output.
+
+0.6.11 package scope guard result: `out_of_scope=0`.
+
+Forbidden surface sentinel:
+
+```bash
+git status --short -- backend/worldengine backend/app/alembic backend/migrations test-results
+```
+
+Result: passed with no output.
+
 ## Unresolved Findings
 
-- P1: none known.
+- P1: none known after the 0.6.11 post-closeout reliability/scope repair.
 - P2: none known after final implementation-scope, code-review, and
   validation-evidence evaluator PASS for implementation-bearing packages
-  through `0.6.7`, documentation/evidence evaluator PASS for `0.6.8`, and
-  release-candidate evaluator PASS for `0.6.9`.
-- P3: none known.
+  through `0.6.7`, documentation/evidence evaluator PASS for `0.6.8`,
+  release-candidate evaluator PASS for `0.6.9`, and the 0.6.11
+  fallback-digest, preview API sensitive provenance, usage-metric compatibility,
+  dashboard E2E, implementation-doc, and evidence repairs.
+- P3: existing Vite large-chunk warning remains. Existing saved Agent smoke
+  artifacts include an extra stale screenshot, but the deterministic checker
+  validates the referenced result artifact and passes.
 
 ## Final Assessment
 
@@ -677,5 +880,7 @@ Additional `0.6.2` implementation and validation evidence was recorded on
 `0.6.7-dashboard-generation-preview-and-e2e-smoke`, and
 `0.6.8-v0.6-evidence-and-compatibility-audit`, and
 `0.6.9-v0.6-release-candidate-bundle` are review complete, and
-`0.6.10-v0.6-final-closeout` is `final / closeout complete`. The active route
-is `final-closeout-complete`; implementation authorization is closed.
+`0.6.10-v0.6-final-closeout` is `final / closeout complete`. The
+`0.6.11-post-closeout-reliability-and-scope-repair` package is review complete
+with clean pass for its authorized repair scope. The active route is
+`final-closeout-complete`; implementation authorization is closed.
