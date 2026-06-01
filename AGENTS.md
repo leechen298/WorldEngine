@@ -170,10 +170,17 @@ This trigger creates or updates reviewable iteration documentation only. It
 does not authorize runtime, schema, API, frontend, test, fixture, migration, or
 external repository implementation.
 
-For a new version such as `v0.7`, first create the parent generation plan,
-version index, version plan, campaign state docs, child package sequence, and
-required package documents with honest status and closed implementation
-authorization until review approval is recorded.
+For a new version, a short version-documentation request defaults to the
+version-level package only: parent generation plan, version index, version
+plan, campaign state docs, child package sequence, and planned-package
+specifications inside the version plan. It must not create full documentation
+directories for every planned child iteration by default.
+
+Planned child packages in the version plan are route-map specifications, not
+approved execution contracts and not implementation authorization. Create a
+concrete child package document set only when the user explicitly names that
+child package, asks to create or complete a child package, or a reviewed active
+package explicitly authorizes creating the next child package documents.
 
 ## Natural-Language Validation Triggers
 

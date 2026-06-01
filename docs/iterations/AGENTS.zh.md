@@ -52,9 +52,15 @@ Handoff to next package
 
 - `README.md` 可以是 package index 或 summary。
 - `vX.Y-plan.md` 必须是详细执行规格。
+- `vX.Y-plan.md` 中的 planned-package specifications 本身不创建具体 child package
+  directories、package files，也不代表 implementation authorization。
 - 只写一行 package summary 不够。
 - 后续 agent 不应该再靠猜测补 scope、allowed files、forbidden files、
   verification、compatibility constraints 或 handoff state。
+- 宽范围的生成或规划版本请求，默认不得为每个 planned child iteration 创建完整 document
+  set。只有当用户明确请求某个 child package、要求创建或完成某个 child package，或已
+  review 的 active package 明确授权下一个 child package documentation 时，才创建具体
+  child package document set。
 - 如果缺少任一 required planned-package 字段，review 至少必须记录 P2。
 - 如果缺少 `Forbidden changes`、`Compatibility constraints` 或 `Scope guardrails`
   可能导致 runtime、API 或 schema 越界，review 必须记录 P1。
@@ -144,6 +150,10 @@ Handoff after plan approval
 - 如果用户只要求 `/plan`，除非用户明确授权 drafting 或 execution，否则产出 plan 后停止。
 - 如果用户用 `/goal` 要求完成 package，goal 可以在同一个 goal 内执行选中的 plan-mode
   gates，但 plan 和 gates 仍必须在 package docs 或 review evidence 中可见。
+- 对宽范围 version-level documentation request，应先创建或更新 version root 和 version
+  plan。除非用户或已 review 的 active package 明确授权具体 child package documents，否则不得
+  预先创建每个 planned child package 的 `README.md`、`intent.md`、`contract.md`、
+  `technical-design.md`、`test-plan.md`、`plan.md` 或 `review.md`。
 - plan 必须绑定 active package。除非 parent plan 明确拥有该 scope，不要包含 adjacent
   future versions 或 convenient follow-on work。
 

@@ -156,9 +156,15 @@ contract/design 更新并通过 review 后，才能继续。
 这个 trigger 只创建或更新可 review 的 iteration documentation。它不授权 runtime、schema、API、
 frontend、test、fixture、migration 或 external repository implementation。
 
-对于 `v0.7` 这类新版本，先创建 parent generation plan、version index、version plan、campaign
-state docs、child package sequence 和 required package documents；状态必须诚实记录，并且在 review
-approval 被记录前保持 implementation authorization closed。
+对于新版本，短 version-documentation request 默认只创建 version-level package：parent
+generation plan、version index、version plan、campaign state docs、child package
+sequence，以及写在 version plan 内的 planned-package specifications。默认不得为每个 planned
+child iteration 创建完整文档目录。
+
+Version plan 中的 planned child packages 是路线图规格，不是已批准的执行合同，也不是
+implementation authorization。只有当用户明确点名某个 child package、要求创建或完成某个
+child package，或已 review 的 active package 明确授权创建下一个 child package documents 时，
+才创建具体 child package document set。
 
 ## Natural-Language Validation Triggers
 

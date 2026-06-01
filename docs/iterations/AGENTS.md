@@ -53,9 +53,17 @@ Hard rules:
 
 - `README.md` may be a package index or summary.
 - `vX.Y-plan.md` must be the detailed execution specification.
+- Planned-package specifications in `vX.Y-plan.md` do not by themselves create
+  concrete child package directories, package files, or implementation
+  authorization.
 - A one-line package summary is not enough.
 - Later agents must not have to guess scope, allowed files, forbidden files,
   verification, compatibility constraints, or handoff state.
+- A broad request to generate or plan a version must not create full document
+  sets for every planned child iteration by default. Create a concrete child
+  package document set only when the user explicitly requests that child
+  package, asks to create or complete a child package, or a reviewed active
+  package explicitly authorizes the next child package documentation.
 - If any required planned-package field is missing, review must record at
   least a P2 finding.
 - If missing `Forbidden changes`, `Compatibility constraints`, or
@@ -153,6 +161,11 @@ Hard rules:
 - If the user asks `/goal` to complete a package, the goal may execute the
   selected plan-mode gates inside the same goal, but the plan and gates must
   still be visible in package docs or review evidence.
+- For broad version-level documentation requests, create or update the version
+  root and version plan first. Do not pre-create every planned child package's
+  `README.md`, `intent.md`, `contract.md`, `technical-design.md`,
+  `test-plan.md`, `plan.md`, or `review.md` unless the user or reviewed active
+  package explicitly authorizes those concrete child package documents.
 - Keep the plan tied to the active package. Do not include adjacent future
   versions or convenient follow-on work unless the parent plan explicitly owns
   that scope.
