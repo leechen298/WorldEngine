@@ -55,8 +55,11 @@ required by the iteration rules before implementation-bearing child packages
 can close out. Detailed subagent and learning-report rules for iteration work
 live in `docs/iterations/AGENTS.md`.
 
-When the user says `完成 <iteration-package>` or `complete
-<iteration-package>`, first locate the matching package under
+When the user says `完成 <iteration-package>`, `complete
+<iteration-package>`, `实现 <iteration-package>`, `开发
+<iteration-package>`, `implement <iteration-package>`, `develop
+<iteration-package>`, or an equivalent request to implement or develop a named
+iteration package, first locate the matching package under
 `docs/iterations/**/<iteration-package>/`. If that package contains
 `README.md`, `GOAL_RUNNER.md`, `CURRENT_STATE.md`, or `CAMPAIGN_PLAN.md`, read
 those files before planning or executing. Do not infer package workflow from

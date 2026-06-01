@@ -50,10 +50,13 @@ rules，并服从 main agent；main agent 负责 synthesis、verification 和 fi
 packages close out 前必须经过 subagent / evaluator checkpoints。Iteration work 的详细
 subagent 和 learning-report 规则见 `docs/iterations/AGENTS.zh.md`。
 
-当用户说 `完成 <iteration-package>` 或 `complete <iteration-package>` 时，先在
-`docs/iterations/**/<iteration-package>/` 下定位匹配 package。如果该 package 包含
-`README.md`、`GOAL_RUNNER.md`、`CURRENT_STATE.md` 或 `CAMPAIGN_PLAN.md`，必须先读取
-这些文件再 planning 或 execution。不要根据 memory 或相邻 package 推断 workflow。
+当用户说 `完成 <iteration-package>`、`complete <iteration-package>`、
+`实现 <iteration-package>`、`开发 <iteration-package>`、`implement
+<iteration-package>`、`develop <iteration-package>`，或等价地要求实现/开发某个已命名
+iteration package 时，先在 `docs/iterations/**/<iteration-package>/` 下定位匹配
+package。如果该 package 包含 `README.md`、`GOAL_RUNNER.md`、`CURRENT_STATE.md` 或
+`CAMPAIGN_PLAN.md`，必须先读取这些文件再 planning 或 execution。不要根据 memory 或相邻
+package 推断 workflow。
 
 代码或混合型 iteration 在实现前必须先有 iteration package：
 
