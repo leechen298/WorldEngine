@@ -14,11 +14,11 @@ import boundaries、validation metadata、preview/regeneration/runtime-readiness
 semantics 保持兼容。
 
 WorldEngine 仍不是完整的递归世界引擎实现。External validation readiness、
-projection application readiness、full product readiness、Agent smoke/autonomous
-runner coverage、live provider integration、subjective generation-quality approval、
-durable memory persistence、public memory APIs、automatic reflection、self-summary
-generation、relationship behavior、personality drift action modifiers 和 concrete
-world/demo content 仍属于后续版本范围。
+projection application readiness、full product readiness、new live Agent smoke
+execution、full autonomous runner/full-suite coverage、live provider integration、
+subjective generation-quality approval、durable memory persistence、public memory
+APIs、automatic reflection、self-summary generation、relationship behavior、
+personality drift action modifiers 和 concrete world/demo content 仍属于后续版本范围。
 
 优先阅读：
 
@@ -26,9 +26,11 @@ world/demo content 仍属于后续版本范围。
 - `docs/product-model.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
-- `docs/api-reference-v0.5.md`，作为 generation 之前的 API baseline
+- `docs/api-reference-v0.6.zh.md`
+- `docs/releases/v0.6.zh.md`
 - `docs/iterations/v0.6/README.zh.md`
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.zh.md`
 - `docs/iterations/v0.6/review.zh.md`
 - `docs/iterations/README.md`
 
@@ -83,8 +85,8 @@ v0.6 仍不能：
 - 把递归 `WorldCell` 结构作为活跃运行时状态运行。
 - 把已加载的 `WorldSpec` 数据作为活跃递归世界状态运行。
 - 声明 external validation-world readiness 或 projection application readiness。
-- 声明 full product readiness、Agent smoke、autonomous runner、live provider 或
-  generation-quality validation。
+- 声明 full product readiness、new live Agent smoke、full autonomous runner、
+  live provider 或 generation-quality validation。
 - 持久化保存 memory 或暴露 public memory APIs。
 - 运行 automatic reflection、self-summary generation、relationship behavior 或
   personality drift action modifiers。
@@ -127,14 +129,26 @@ pnpm dev
 
 ## 验证
 
-当前 v0.6 closeout evidence 汇总在
-`docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md` 和
-`docs/iterations/v0.6/review.zh.md`。
+当前 v0.6 closeout 和 post-closeout repair evidence 汇总在：
+
+- `docs/releases/v0.6.zh.md`
+- `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.zh.md`
+- `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`
+- `docs/iterations/v0.6/review.zh.md`
 
 早期 v0.1/v0.3 closeout evidence 仍是兼容性基线材料，不是当前 API 或实现地图。
 
 关键已记录证据包括：
 
+- v0.6 0.6.11 reliability repair evidence 见
+  `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`：focused
+  backend/API repair suite `59 passed`、full backend regression `233 passed`、
+  frontend unit `36 passed`、frontend build 通过且仅有既有 Vite large-chunk
+  warning、full E2E `17 passed`、saved Agent smoke checker PASS、minimal
+  autonomous saved-result checker PASS、0.6.11 scope guard `out_of_scope=0`，
+  以及 forbidden implementation sentinel 对 `backend/worldengine`、
+  `backend/app/alembic`、`backend/migrations` 和 `test-results` 无输出。
 - v0.6 final closeout evidence 见 `docs/iterations/v0.6/review.md` 和
   `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`：
   full backend regression `220 passed`、frontend unit `36 passed`、frontend build
@@ -142,7 +156,8 @@ pnpm dev
   `missing=0`、changed-file scope guard `out_of_scope=0`，以及 closeout
   consistency evaluator PASS。
 - v0.6 明确不声明 external validation readiness、projection readiness、product
-  readiness、Agent smoke、autonomous runner、live provider 或 generation-quality pass。
+  readiness、new live Agent smoke、full autonomous runner、live provider 或
+  generation-quality pass。
 
 - v0.5 final closeout evidence 见 `docs/iterations/v0.5/review.md` 和
   `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`：
@@ -168,12 +183,15 @@ pnpm dev
 
 - `docs/iterations/v0.6/README.zh.md`
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.zh.md`
+- `docs/releases/v0.6.zh.md`
 - `docs/iterations/v0.5/README.zh.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.zh.md`
 - `docs/releases/v0.5.zh.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/frontend-implementation.md`
-- `docs/api-reference-v0.5.md`
+- `docs/api-reference-v0.6.zh.md`
+- `docs/api-reference-v0.5.md`，作为 v0.5 compatibility API baseline
 - `docs/api-reference-v0.1.md`，作为 legacy v0.1 API reference
 - `docs/testing/v0.1-test-map.md`

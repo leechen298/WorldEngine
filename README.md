@@ -16,11 +16,11 @@ compatible.
 
 WorldEngine is still not a complete recursive world engine implementation.
 External validation readiness, projection application readiness, full product
-readiness, Agent smoke/autonomous runner coverage, live provider integration,
-subjective generation-quality approval, durable memory persistence, public
-memory APIs, automatic reflection, self-summary generation, relationship
-behavior, personality drift action modifiers, and concrete world/demo content
-remain future version scope.
+readiness, new live Agent smoke execution, full autonomous runner/full-suite
+coverage, live provider integration, subjective generation-quality approval,
+durable memory persistence, public memory APIs, automatic reflection,
+self-summary generation, relationship behavior, personality drift action
+modifiers, and concrete world/demo content remain future version scope.
 
 Read first:
 
@@ -28,9 +28,11 @@ Read first:
 - `docs/product-model.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
-- `docs/api-reference-v0.5.md` for the pre-generation API baseline
+- `docs/api-reference-v0.6.md`
+- `docs/releases/v0.6.md`
 - `docs/iterations/v0.6/README.md`
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.md`
 - `docs/iterations/v0.6/review.md`
 - `docs/iterations/README.md`
 
@@ -96,8 +98,8 @@ v0.6 still cannot:
 - run loaded `WorldSpec` data as active recursive world state.
 - claim external validation-world readiness or projection application
   readiness.
-- claim full product readiness, Agent smoke, autonomous runner, live provider,
-  or generation-quality validation.
+- claim full product readiness, new live Agent smoke, full autonomous runner,
+  live provider, or generation-quality validation.
 - persist memory durably or expose public memory APIs.
 - run automatic reflection, self-summary generation, relationship behavior, or
   personality drift action modifiers.
@@ -140,15 +142,28 @@ Default frontend API target is `http://localhost:8000` (configure via `VITE_API_
 
 ## Verification
 
-Current v0.6 closeout evidence is summarized in
-`docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md` and
-`docs/iterations/v0.6/review.md`.
+Current v0.6 closeout and post-closeout repair evidence is summarized in:
+
+- `docs/releases/v0.6.md`
+- `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.md`
+- `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`
+- `docs/iterations/v0.6/review.md`
 
 Earlier v0.1/v0.3 closeout evidence remains compatibility baseline material,
 not the current API or implementation map.
 
 Key recorded evidence includes:
 
+- v0.6 0.6.11 reliability repair evidence in
+  `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`: focused
+  backend/API repair suite `59 passed`, full backend regression `233 passed`,
+  frontend unit `36 passed`, frontend build passed with the existing Vite
+  large-chunk warning, full E2E `17 passed`, saved Agent smoke checker PASS,
+  minimal autonomous saved-result checker PASS, 0.6.11 scope guard
+  `out_of_scope=0`, and forbidden implementation sentinel with no output for
+  `backend/worldengine`, `backend/app/alembic`, `backend/migrations`, and
+  `test-results`.
 - v0.6 final closeout evidence in `docs/iterations/v0.6/review.md` and
   `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`:
   full backend regression `220 passed`, frontend unit `36 passed`, frontend
@@ -156,8 +171,8 @@ Key recorded evidence includes:
   docs/mirrors `missing=0`, changed-file scope guard `out_of_scope=0`, and
   closeout consistency evaluator PASS.
 - v0.6 deliberately does not claim external validation readiness, projection
-  readiness, product readiness, Agent smoke, autonomous runner, live provider,
-  or generation-quality pass.
+  readiness, product readiness, new live Agent smoke, full autonomous runner,
+  live provider, or generation-quality pass.
 
 - v0.5 final closeout evidence in `docs/iterations/v0.5/review.md` and
   `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`:
@@ -184,12 +199,15 @@ Implementation docs:
 
 - `docs/iterations/v0.6/README.md`
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
+- `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.md`
+- `docs/releases/v0.6.md`
 - `docs/iterations/v0.5/README.md`
 - `docs/iterations/v0.5/0.5.7-v0.5-final-closeout/final-closeout.md`
 - `docs/releases/v0.5.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/frontend-implementation.md`
-- `docs/api-reference-v0.5.md`
+- `docs/api-reference-v0.6.md`
+- `docs/api-reference-v0.5.md` for the v0.5 compatibility API baseline
 - `docs/api-reference-v0.1.md` for the legacy v0.1 API reference
 - `docs/testing/v0.1-test-map.md`
