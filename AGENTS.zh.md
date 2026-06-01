@@ -184,6 +184,36 @@ test-documentation request 时，把它视为启动
 如果请求同时要求编写测试文档和执行验证，先编写或更新测试文档，再使用
 `docs/testing/product-capability-validation-playbook.zh.md` 进入执行和 verdict 阶段。
 
+## Natural-Language Code Review Triggers
+
+当用户说出 `审核 <version> 代码`、`/goal 审核 <version> 代码`、
+`review <version> code`、`审核 <iteration-package> 代码` 或
+`代码审核 <feature-or-package>` 这类短 code-review request 时，把它视为启动
+`docs/testing/code-review-playbook.zh.md` 中可复用代码审核流程的请求。
+
+这个 trigger 与 final closeout、validation 和 test-documentation trigger 分开。它审查
+implementation 是否可靠、是否符合 active contracts；它本身不声明产品已经通过 validation，
+也不声明 tests 已运行。
+
+报告结果前必须：
+
+- 读取 active version 或 package state，包括 `CURRENT_STATE.md`、`GOAL_RUNNER.md`、
+  `CAMPAIGN_PLAN.md`、version plan，以及存在的 implementation-bearing child package docs。
+- 从 package `review.md`、contracts、test plans 和当前 git state 映射 implementation
+  files；不要把 final-closeout status 当成 code review 的替代品。
+- 审查本次 version 或 package 范围内的 code、schemas、API routes、frontend surfaces、
+  tests 和 compatibility boundaries。
+- 在工具可用且授权时使用 code-review subagent/evaluator，包括适用的 Superpowers
+  code-review workflow。
+- 只有在需要验证某个 finding 或 claim 时运行 focused commands；否则明确说明哪些 tests
+  没有运行。
+- 先报告 findings，按 P0/P1/P2/P3 排序，并附 file/line references、scope assessment、
+  evidence gaps 和 residual risk。
+
+如果 code review 发现需要 implementation changes 的问题，不要在 review-only request 中
+静默修复。修改 runtime、schema、API、frontend、test、fixture、migration 或 durable
+evidence behavior 前，必须先创建或使用所需 iteration package。
+
 ## Git Safety
 
 - 不要 revert 或覆盖 working tree 中已经存在的用户修改。

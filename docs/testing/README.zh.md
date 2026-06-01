@@ -44,6 +44,13 @@ playbook，但 PASS 仍然必须来自当前会话命令或 checker evidence。
 `docs/testing/test-documentation-playbook.zh.md`。一句话请求可以触发 playbook，但产物是
 test-documentation artifact，不是 PASS verdict。
 
+## Code Review
+
+当用户要求审核某个 version、iteration package、feature 或当前 implementation surface 的
+代码时，使用 `docs/testing/code-review-playbook.zh.md`。一句话请求可以触发 playbook，
+但产物是 findings-first code review，不是 final-closeout status check，也不是产品 PASS
+verdict。
+
 版本级测试方案文档：
 
 - `docs/testing/v0.4-overall-test-plan.zh.md`

@@ -204,6 +204,41 @@ write or update the test documentation first, then use
 `docs/testing/product-capability-validation-playbook.md` for the execution and
 verdict phase.
 
+## Natural-Language Code Review Triggers
+
+When the user says a short code-review request such as
+`审核 <version> 代码`, `/goal 审核 <version> 代码`,
+`review <version> code`, `审核 <iteration-package> 代码`, or
+`代码审核 <feature-or-package>`, treat it as a request to run the reusable code
+review flow in `docs/testing/code-review-playbook.md`.
+
+This trigger is separate from final closeout, validation, and test-documentation
+triggers. It reviews implementation reliability against the active contracts; it
+does not by itself claim that the product has passed validation or that tests
+ran.
+
+Before reporting the result:
+
+- read the active version or package state, including `CURRENT_STATE.md`,
+  `GOAL_RUNNER.md`, `CAMPAIGN_PLAN.md`, version plan, and code-bearing child
+  package documents when they exist.
+- map implementation files from package `review.md`, contracts, test plans, and
+  current git state; do not treat final-closeout status as a substitute for code
+  review.
+- inspect code, schemas, API routes, frontend surfaces, tests, and compatibility
+  boundaries that are in scope for the reviewed version or package.
+- use a code-review subagent/evaluator when available and authorized,
+  including Superpowers code-review workflows where applicable.
+- run focused commands only when needed to verify a finding or claim; otherwise
+  state which tests were not run.
+- report findings first, ordered by P0/P1/P2/P3 severity, with file/line
+  references, scope assessment, evidence gaps, and residual risk.
+
+If the code review discovers issues that require implementation changes, do not
+silently repair them inside a review-only request. Create or use the required
+iteration package before changing runtime, schema, API, frontend, test,
+fixture, migration, or durable evidence behavior.
+
 ## Git Safety
 
 - Do not revert or overwrite user changes that are already present in the

@@ -47,6 +47,13 @@ supplement, organize, or review test documentation, test plans, scenarios, or
 test cases. A one-line request may trigger the playbook, but the output is a
 test-documentation artifact, not a PASS verdict.
 
+## Code Review
+
+Use `docs/testing/code-review-playbook.md` when a user asks to review code for a
+version, iteration package, feature, or current implementation surface. A
+one-line request may trigger the playbook, but the output is a findings-first
+code review, not a final-closeout status check or product PASS verdict.
+
 Version-level test-plan artifacts:
 
 - `docs/testing/v0.4-overall-test-plan.zh.md`
