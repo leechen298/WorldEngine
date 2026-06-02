@@ -58,4 +58,5 @@ v0.2 must not:
 - v0.5 may add memory and self-continuity.
 - v0.6 may add world generation v1.
 - v0.7 may prepare external validation and projection consumer readiness.
-- v0.8 may prepare the first external projection application.
+- v0.8 may prepare the core-side minimum working-state boundary and public
+  surfaces needed by an external validation function.

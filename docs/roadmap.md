@@ -147,8 +147,16 @@ Goal: make WorldEngine ready for external validation suites and projection
 consumers through public contracts, redacted reports, and compatibility
 evidence.
 
-## v0.8 - First External Projection Application Readiness
+## v0.8 - Minimum Proved Working WorldEngine / External Validation Readiness
 
-Goal: prepare the engine interfaces, evidence, and projection contracts needed
-for a first external product application to consume WorldEngine without moving
-application-specific behavior into the core repository.
+Goal: prepare WorldEngine's core runtime, generation, Agent loop, memory
+context, and projection/read-model surfaces so an external validation function
+can verify that the engine reaches a minimum normally working state without
+moving validation logic, external application code, app-specific behavior, or
+concrete world content into the core repository.
+
+v0.8 is not the external validation implementation and is not the first
+external product application. It defines the core-side readiness boundary,
+observable public surfaces, evidence expectations, and stop rules needed for a
+separate external validator or projection application to judge whether
+WorldEngine works.
