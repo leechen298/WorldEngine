@@ -211,3 +211,10 @@ Implementation docs:
 - `docs/api-reference-v0.5.md` for the v0.5 compatibility API baseline
 - `docs/api-reference-v0.1.md` for the legacy v0.1 API reference
 - `docs/testing/v0.1-test-map.md`
+
+## License
+
+Copyright 2025 leechen298.
+
+WorldEngine is licensed under the Apache License, Version 2.0. See `LICENSE`
+and `NOTICE`.

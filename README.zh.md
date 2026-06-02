@@ -195,3 +195,9 @@ pnpm dev
 - `docs/api-reference-v0.5.md`，作为 v0.5 compatibility API baseline
 - `docs/api-reference-v0.1.md`，作为 legacy v0.1 API reference
 - `docs/testing/v0.1-test-map.md`
+
+## 许可证
+
+Copyright 2025 leechen298。
+
+WorldEngine 采用 Apache License, Version 2.0。详见 `LICENSE` 和 `NOTICE`。

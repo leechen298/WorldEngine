@@ -3,6 +3,7 @@ name = "worldengine"
 version = "0.1.0"
 description = "World Engine - A dynamic world simulation engine"
 readme = "README.md"
+license = { text = "Apache-2.0" }
 requires-python = ">=3.8"
 dependencies = []
 
