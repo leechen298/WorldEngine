@@ -12,6 +12,7 @@ trigger examples、required outputs、review gates 和执行细节写在这些 g
 | Request class | Guide | Primary workflow |
 | --- | --- | --- |
 | Iteration documentation | `natural-language-iteration-documentation-triggers.zh.md` | `docs/iterations/AGENTS.zh.md` |
+| Iteration implementation | `natural-language-implementation-triggers.zh.md` | `docs/iterations/AGENTS.zh.md` |
 | Product validation | `natural-language-validation-triggers.zh.md` | `docs/testing/product-capability-validation-playbook.zh.md` |
 | Test documentation | `natural-language-test-documentation-triggers.zh.md` | `docs/testing/test-documentation-playbook.zh.md` |
 | Code review | `natural-language-code-review-triggers.zh.md` | `docs/testing/code-review-playbook.zh.md` |

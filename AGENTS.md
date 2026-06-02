@@ -170,9 +170,10 @@ guide and its primary workflow document.
 | User request | Route | Primary workflow |
 | --- | --- | --- |
 | `生成 <version> 文档`, `编写 <version> 文档`, `规划 <version> 每个迭代`, `生成 <version> 迭代包` | `docs/agent-guides/natural-language-iteration-documentation-triggers.md` | `docs/iterations/AGENTS.md` |
+| `完成 <iteration-package>`, `实现 <iteration-package>`, `开发 <iteration-package>`, `complete <iteration-package>`, `implement <iteration-package>`, `develop <iteration-package>` | `docs/agent-guides/natural-language-implementation-triggers.md` | `docs/iterations/AGENTS.md` |
 | `测试 <version>`, `验证 <version>`, `<version> 是否通过`, `验证当前产品`, `clean pass` | `docs/agent-guides/natural-language-validation-triggers.md` | `docs/testing/product-capability-validation-playbook.md` |
 | `编写 <version> 测试方案`, `补充 <iteration-package> 测试文档`, `设计 <feature> 测试用例`, `生成测试矩阵` | `docs/agent-guides/natural-language-test-documentation-triggers.md` | `docs/testing/test-documentation-playbook.md` |
-| `审核 <version> 代码`, `/goal 审核 <version> 代码`, `review <version> code`, `代码审核 <feature-or-package>` | `docs/agent-guides/natural-language-code-review-triggers.md` | `docs/testing/code-review-playbook.md` |
+| `审核 <version> 代码`, `review <version> code`, `代码审核 <feature-or-package>` | `docs/agent-guides/natural-language-code-review-triggers.md` | `docs/testing/code-review-playbook.md` |
 
 A trigger phrase is only routing. It does not by itself authorize runtime,
 schema, API, frontend, test, fixture, migration, or external repository

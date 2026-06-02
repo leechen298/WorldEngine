@@ -14,6 +14,7 @@ Chinese mirror: `README.zh.md`.
 | Request class | Guide | Primary workflow |
 | --- | --- | --- |
 | Iteration documentation | `natural-language-iteration-documentation-triggers.md` | `docs/iterations/AGENTS.md` |
+| Iteration implementation | `natural-language-implementation-triggers.md` | `docs/iterations/AGENTS.md` |
 | Product validation | `natural-language-validation-triggers.md` | `docs/testing/product-capability-validation-playbook.md` |
 | Test documentation | `natural-language-test-documentation-triggers.md` | `docs/testing/test-documentation-playbook.md` |
 | Code review | `natural-language-code-review-triggers.md` | `docs/testing/code-review-playbook.md` |

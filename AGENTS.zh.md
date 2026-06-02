@@ -157,9 +157,10 @@ contract/design 更新并通过 review 后，才能继续。
 | 用户请求 | 路由文档 | 主工作流 |
 | --- | --- | --- |
 | `生成 <version> 文档`、`编写 <version> 文档`、`规划 <version> 每个迭代`、`生成 <version> 迭代包` | `docs/agent-guides/natural-language-iteration-documentation-triggers.zh.md` | `docs/iterations/AGENTS.zh.md` |
+| `完成 <iteration-package>`、`实现 <iteration-package>`、`开发 <iteration-package>`、`complete <iteration-package>`、`implement <iteration-package>`、`develop <iteration-package>` | `docs/agent-guides/natural-language-implementation-triggers.zh.md` | `docs/iterations/AGENTS.zh.md` |
 | `测试 <version>`、`验证 <version>`、`<version> 是否通过`、`验证当前产品`、`clean pass` | `docs/agent-guides/natural-language-validation-triggers.zh.md` | `docs/testing/product-capability-validation-playbook.zh.md` |
 | `编写 <version> 测试方案`、`补充 <iteration-package> 测试文档`、`设计 <feature> 测试用例`、`生成测试矩阵` | `docs/agent-guides/natural-language-test-documentation-triggers.zh.md` | `docs/testing/test-documentation-playbook.zh.md` |
-| `审核 <version> 代码`、`/goal 审核 <version> 代码`、`review <version> code`、`代码审核 <feature-or-package>` | `docs/agent-guides/natural-language-code-review-triggers.zh.md` | `docs/testing/code-review-playbook.zh.md` |
+| `审核 <version> 代码`、`review <version> code`、`代码审核 <feature-or-package>` | `docs/agent-guides/natural-language-code-review-triggers.zh.md` | `docs/testing/code-review-playbook.zh.md` |
 
 Trigger phrase 只是路由，不会自动授权 runtime、schema、API、frontend、test、fixture、
 migration 或 external repository implementation，也不能证明 PASS 或 closeout。如果一个请求

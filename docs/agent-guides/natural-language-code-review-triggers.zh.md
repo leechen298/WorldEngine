@@ -8,7 +8,6 @@ Status: reusable agent routing guide
 
 ```text
 审核 <version> 代码
-/goal 审核 <version> 代码
 review <version> code
 审核 <iteration-package> 代码
 代码审核 <feature-or-package>

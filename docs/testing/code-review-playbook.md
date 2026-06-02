@@ -22,7 +22,6 @@ or assess whether implementation is reliable.
 Examples:
 
 ```text
-/goal 审核 <version> 代码
 审核 <version> 代码
 review <version> code
 审核 <iteration-package> 代码

@@ -8,7 +8,6 @@ Use this guide when a user makes a short code-review request such as:
 
 ```text
 审核 <version> 代码
-/goal 审核 <version> 代码
 review <version> code
 审核 <iteration-package> 代码
 代码审核 <feature-or-package>
