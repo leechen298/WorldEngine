@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: final / closeout complete; post-closeout code-review blockers recorded
+Status: final / closeout complete; 0.7.9 checker/docs clean pass recorded
 
 ## Objective
 
@@ -47,19 +47,24 @@ product, or application-specific backend.
 - `0.7.6-v0.7-evidence-and-compatibility-audit` is review complete.
 - `0.7.7-v0.7-release-candidate-bundle` is review complete.
 - `0.7.8-v0.7-final-closeout` is review complete and final closeout complete.
+- `0.7.9-v07-cr-checker-schema-repair` is review complete and records clean
+  pass for the current v0.7 checker/docs validation scope.
 - No v0.7 child package remains active.
 - The planned `0.7.x` entries in `v0.7-plan.md` are roadmap-level planned
   package specs. They do not authorize implementation and are not immutable
   execution scripts.
-- Any post-closeout work requires a new reviewed package or the next version's
-  reviewed iteration package.
 - Post-closeout code review in
   `docs/testing/results/2026-06-02-v0.7-code-review.md` recorded 3 P1 and 2 P2
-  blockers. They block clean pass, external suite PASS, projection readiness
-  PASS, and product readiness PASS until repaired or recorded as blockers in
-  the active validation result.
-- Known post-closeout code-review blockers route to a narrow v0.7 repair
-  package before any renewed clean-pass validation attempt.
+  blockers against the historical `0.7.8` closeout. Those P1/P2 checker/docs
+  blockers were repaired and revalidated through
+  `0.7.9-v07-cr-checker-schema-repair`.
+- The active overall validation result records clean pass for the current v0.7
+  checker/docs validation scope only. Do not report it as external suite PASS,
+  projection readiness PASS, product readiness PASS, runtime/API/frontend/E2E
+  PASS, live Agent smoke PASS, full autonomous runner/full-suite PASS, or v0.8
+  readiness.
+- Future post-closeout work requires a new reviewed package or the next
+  version's reviewed iteration package.
 - Implementation authorization starts as no for every child.
 - Mixed/code packages must complete documentation review before
   implementation.
@@ -86,6 +91,10 @@ product, or application-specific backend.
 8. `0.7.7-v0.7-release-candidate-bundle`
 9. `0.7.8-v0.7-final-closeout`
 
+Post-closeout repair package completed after the planned sequence:
+
+10. `0.7.9-v07-cr-checker-schema-repair`
+
 This sequence is a route proposal. It may be revised by reviewed child package
 documents. It must not be used to skip the active child package review, and it
 must not be followed mechanically if implementation or evidence uncovers a
@@ -107,6 +116,8 @@ design problem.
 - `0.7.7` handed off release-candidate findings to final closeout.
 - `0.7.8` marked final status after evidence consistency and review gates
   passed.
+- `0.7.9` repaired the V07-CR checker/docs blockers and recorded clean pass
+  for the current checker/docs validation scope.
 
 ## Campaign Exit Criteria
 
@@ -120,12 +131,15 @@ v0.7 may be marked `final / closeout complete` only when:
   additively changed by reviewed contracts.
 - scope review confirms no concrete validation world, external oracle
   internal, UI selector, hidden reset API, application-specific backend
-  behavior, migration, first projection app, live provider dependency, or
-  `backend/worldengine/` work slipped in.
+  behavior, migration, v0.8 minimum working-state or external-validation
+  handoff readiness, live provider dependency, or `backend/worldengine/` work
+  slipped in.
 - redacted report and projection consumer claims are backed by current-session
   schema/checker/API/test evidence where those claims are in scope.
 - unresolved findings are classified and no P1/P2 remains without explicit
   accepted rationale.
+- the `0.7.9` clean-pass state remains limited to current checker/docs
+  validation scope unless a later reviewed package supplies broader evidence.
 
 ## Stop Conditions
 
@@ -141,7 +155,7 @@ Stop before implementation or closeout if:
   evidence.
 - external validation examples require concrete external world content inside
   this repo.
-- projection readiness text turns into v0.8 external projection application
-  implementation.
+- projection readiness text turns into v0.8 minimum working-state or
+  external-validation handoff readiness.
 - status surfaces drift between README, current state, plan, review, and
   closeout docs.

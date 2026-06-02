@@ -43,7 +43,8 @@
     },
     "generated_from": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "allOf": [{ "$ref": "#/$defs/noForbiddenText" }]
     },
     "contract_surfaces": {
       "type": "array",
@@ -93,8 +94,18 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "type": "string",
-        "minLength": 1
+        "enum": [
+          "contract ready",
+          "report format ready",
+          "core-side compatibility ready",
+          "external suite pass",
+          "blocked",
+          "skipped",
+          "out of scope",
+          "projection consumer contract ready",
+          "projection report format ready",
+          "external consumer pass"
+        ]
       }
     },
     "evidence_references": {
@@ -109,16 +120,25 @@
             "minLength": 1
           },
           "status": {
-            "type": "string",
-            "minLength": 1
+            "enum": [
+              "contract ready",
+              "report format ready",
+              "blocked",
+              "skipped",
+              "out of scope"
+            ]
           },
           "path": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+"
           },
           "command": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "not": {
+              "pattern": "(/Users/|/home/|file://|data-testid\\s*=|querySelector\\s*\\(|(^|\\s)(#[A-Za-z][A-Za-z0-9_-]*|\\.[A-Za-z][A-Za-z0-9_-]*|[A-Za-z][A-Za-z0-9_-]*\\[[^\\]]+\\])|hidden[-_ ]?reset|/internal/reset|private[-_ ]?(runner|suite|fixture)|validation\\s+oracle|private\\s+transcript|seed[-_ ]?data|event[-_ ]?payload)"
+            }
           },
           "summary": {
             "type": "string",
@@ -136,7 +156,8 @@
       "minItems": 1,
       "items": {
         "type": "string",
-        "minLength": 1
+        "minLength": 1,
+        "allOf": [{ "$ref": "#/$defs/noForbiddenText" }]
       }
     },
     "redaction_rules": {
@@ -144,11 +165,22 @@
       "minItems": 1,
       "items": {
         "type": "string",
-        "minLength": 1
+        "minLength": 1,
+        "allOf": [{ "$ref": "#/$defs/noConcreteLeakText" }]
       }
     }
   },
   "$defs": {
+    "noForbiddenText": {
+      "not": {
+        "pattern": "(/Users/|/home/|file://|data-testid\\s*=|querySelector\\s*\\(|(^|\\s)(#[A-Za-z][A-Za-z0-9_-]*|\\.[A-Za-z][A-Za-z0-9_-]*|[A-Za-z][A-Za-z0-9_-]*\\[[^\\]]+\\])|hidden[-_ ]?reset|/internal/reset|private[-_ ]?(runner|suite|fixture)|validation\\s+oracle|private\\s+transcript|seed[-_ ]?data|event[-_ ]?payload)"
+      }
+    },
+    "noConcreteLeakText": {
+      "not": {
+        "pattern": "(/Users/|/home/|file://|data-testid\\s*=|querySelector\\s*\\(|(^|\\s)(#[A-Za-z][A-Za-z0-9_-]*|\\.[A-Za-z][A-Za-z0-9_-]*|[A-Za-z][A-Za-z0-9_-]*\\[[^\\]]+\\]))"
+      }
+    },
     "surface": {
       "type": "object",
       "required": ["id", "path", "status", "capability_area"],
@@ -159,18 +191,25 @@
         },
         "path": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+"
         },
         "status": {
-          "type": "string",
-          "minLength": 1
+          "enum": [
+            "contract ready",
+            "report format ready",
+            "blocked",
+            "skipped",
+            "out of scope"
+          ]
         },
         "capability_area": {
           "type": "string",
           "minLength": 1
         },
         "summary": {
-          "type": "string"
+          "type": "string",
+          "allOf": [{ "$ref": "#/$defs/noForbiddenText" }]
         }
       },
       "additionalProperties": true

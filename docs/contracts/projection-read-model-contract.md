@@ -1,6 +1,6 @@
 # Projection Read Model Contract
 
-Status: ready for implementation evidence / v0.7.4
+Status: reviewed contract / v0.7.9 checker repair context
 
 ## Purpose
 
@@ -18,6 +18,10 @@ This contract refines the boundary in
 
 The machine-checkable schema lives in
 `docs/contracts/projection-read-model-schema.json`.
+
+The schema is reviewed as a public contract artifact. It is not projection
+readiness PASS, product readiness PASS, external consumer PASS, or v0.8
+readiness.
 
 ## Required Read Model Families
 

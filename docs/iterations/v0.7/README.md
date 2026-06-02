@@ -1,6 +1,6 @@
 # v0.7 External Validation Readiness / Projection Consumer Readiness
 
-Status: final / closeout complete; post-closeout code-review blockers recorded
+Status: final / closeout complete; 0.7.9 checker/docs clean pass recorded
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
@@ -50,10 +50,15 @@ but it is not a v0.7 clean pass, product PASS, external suite PASS, or
 projection readiness PASS.
 
 `docs/testing/results/2026-06-02-v0.7-code-review.md` was recorded after the
-final closeout and contains blocking findings: 3 P1, 2 P2, and 1 P3. Those
-findings must be fixed through a new reviewed package, or explicitly recorded
-as blockers in any validation report, before v0.7 can claim clean pass,
-external suite PASS, projection readiness PASS, or product readiness PASS.
+final closeout and contained blocking findings: 3 P1, 2 P2, and 1 P3. Those
+P1/P2 checker/docs blockers were routed through the reviewed
+`0.7.9-v07-cr-checker-schema-repair` package.
+
+`docs/testing/results/2026-06-02-v0.7-overall-validation.md` now records clean
+pass for the current v0.7 checker/docs validation scope. That repaired status
+does not claim external suite PASS, projection readiness PASS, product
+readiness PASS, runtime/API/frontend/E2E PASS, live Agent smoke PASS, full
+autonomous runner/full-suite PASS, or v0.8 readiness.
 
 ## Scope
 
@@ -110,6 +115,8 @@ Forbidden v0.7 scope:
   mirrors.
 - Reviewed `0.7.7` release-candidate bundle package, with Chinese mirrors.
 - Reviewed `0.7.8` final closeout package, with Chinese mirrors.
+- Reviewed `0.7.9` post-closeout checker/schema repair package, with Chinese
+  mirrors.
 - Explicit subagent/evaluator checkpoint rules for `/goal` execution.
 - Documentation-stage review evidence proving this drafting pass does not
   modify runtime, schema, API, frontend, test implementation, fixture,
@@ -197,7 +204,8 @@ a design gap, stop implementation, update the active child's
 ## Current State
 
 Active child package: none; `0.7.8-v0.7-final-closeout` completed final
-closeout.
+closeout, and `0.7.9-v07-cr-checker-schema-repair` completed the
+post-closeout checker/docs repair.
 
 Current route: `complete`.
 
@@ -219,11 +227,14 @@ Evidence execution authorization: closed after final verification.
 
 ## Final Assessment State
 
-Current value: `final / closeout complete`.
+Current value: `final / closeout complete`; current checker/docs validation
+scope clean pass recorded by `0.7.9`.
 
 The parent v0.7 campaign docs passed read-only parent documentation review and
 `0.7.0`, `0.7.1`, `0.7.2`, `0.7.3`, `0.7.4`, `0.7.5`, `0.7.6`, `0.7.7`,
-and `0.7.8` are review complete. Final verification and evaluator review
-passed in `0.7.8`. No runtime, schema, API, frontend, test implementation,
-fixture, migration, external repository, generated result, or legacy
-implementation work is authorized by this final state.
+`0.7.8`, and `0.7.9` are review complete. Final verification and evaluator
+review passed in `0.7.8`; the V07-CR checker/docs repair and current
+checker/docs validation scope clean pass are recorded in `0.7.9`. No runtime,
+schema, API, frontend, test implementation, fixture, migration, external
+repository, generated result, or legacy implementation work is authorized by
+this final state.

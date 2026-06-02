@@ -60,7 +60,7 @@ SCOPE_REVIEW_KEYS = {
     "follow_up_required_in_worldengine_core",
 }
 ALLOWED_FINDING_SEVERITIES = {"P1", "P2", "P3"}
-RESOLVED_FINDING_STATUSES = {"accepted", "resolved"}
+RESOLVED_FINDING_STATUSES = {"resolved"}
 
 REDACTION_RISK_PATTERNS = {
     "SENTINEL_PRIVATE_PATH": "synthetic private path marker",
@@ -72,6 +72,20 @@ REDACTION_RISK_PATTERNS = {
     "SENTINEL_EXTERNAL_EVENT_PAYLOAD": "synthetic external event payload marker",
 }
 PRIVATE_PATH_RE = re.compile(r"(/Users/|/home/|file:///).*(fixture|private|oracle|validation)", re.IGNORECASE)
+GENERIC_REDACTION_RISK_PATTERNS = (
+    (re.compile(r"(?<!\w)(?:/Users/|/home/)[^\s,;]*", re.IGNORECASE), "local absolute path"),
+    (re.compile(r"\bfile://[^\s,;]*", re.IGNORECASE), "file URL"),
+    (re.compile(r"\bdata-testid\s*=", re.IGNORECASE), "UI selector marker"),
+    (re.compile(r"\bquerySelector\s*\(", re.IGNORECASE), "UI selector marker"),
+    (re.compile(r"(?<![\w./-])#[A-Za-z][\w-]*\b"), "UI selector marker"),
+    (re.compile(r"(?<![\w./-])\.[A-Za-z][\w-]*\b"), "UI selector marker"),
+    (re.compile(r"\b[A-Za-z][\w-]*\[[^\]\s]+(?:=[^\]\s]+)?\]"), "UI selector marker"),
+    (re.compile(r"\bhidden[-_ ]?reset\b|/internal/reset\b", re.IGNORECASE), "hidden reset detail"),
+    (re.compile(r"\bvalidation\s+oracle\b|\boracle\s+(?:internal|expected|output|values?)\b", re.IGNORECASE), "validation oracle detail"),
+    (re.compile(r"\bprivate\s+transcript\b|\bunredacted\s+transcript\b", re.IGNORECASE), "private transcript"),
+    (re.compile(r"\bseed[-_ ]?data\b|\bseed data\b", re.IGNORECASE), "seed data"),
+    (re.compile(r"\bevent[-_ ]?payload\b", re.IGNORECASE), "event payload"),
+)
 
 
 def _load_json(path: Path, errors: list[str]) -> Any:
@@ -214,6 +228,9 @@ def _scan_for_redaction_risks(report: dict[str, Any], errors: list[str]) -> None
                 errors.append(f"report contains forbidden leaked detail marker: {description}")
         if PRIVATE_PATH_RE.search(value):
             errors.append("report contains a private path-like leaked detail")
+        for pattern, description in GENERIC_REDACTION_RISK_PATTERNS:
+            if pattern.search(value):
+                errors.append(f"report contains forbidden leaked detail: {description}")
 
 
 def validate_report(report: Any) -> list[str]:

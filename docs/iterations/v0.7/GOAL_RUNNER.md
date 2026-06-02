@@ -1,6 +1,6 @@
 # Goal Runner
 
-Status: final / closeout complete; post-closeout code-review blockers recorded
+Status: final / closeout complete; 0.7.9 checker/docs clean pass recorded
 
 ## Goal Entry
 
@@ -12,18 +12,20 @@ Natural-language goals covered by this campaign include:
 编写 v0.7 文档
 ```
 
-Current v0.7 route is complete for the historical `0.7.8` closeout.
-Post-closeout work must start from a new reviewed package or the next
-version's reviewed iteration package.
+Current v0.7 route is complete for the historical `0.7.8` closeout and the
+post-closeout `0.7.9` checker/schema repair.
+Future work must start from a new reviewed package or the next version's
+reviewed iteration package.
 
 Post-closeout code review recorded blocking findings in
-`docs/testing/results/2026-06-02-v0.7-code-review.md`. The complete route must
-not be reported as clean pass, product PASS, external suite PASS, or projection
-readiness PASS until those P1/P2 findings are repaired or recorded as blockers
-in the active validation result.
+`docs/testing/results/2026-06-02-v0.7-code-review.md`. Those P1/P2
+checker/docs findings were repaired by
+`0.7.9-v07-cr-checker-schema-repair`, and the active overall validation result
+records clean pass for the current v0.7 checker/docs validation scope only.
 
-Known post-closeout code-review blockers should route to a narrow v0.7 repair
-package before any new clean-pass validation attempt.
+Do not report that narrow clean pass as product PASS, external suite PASS,
+projection readiness PASS, runtime/API/frontend/E2E PASS, live Agent smoke
+PASS, full autonomous runner/full-suite PASS, or v0.8 readiness.
 
 ## Route Selection
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -65,6 +66,21 @@ FORBIDDEN_MARKERS = {
     "SENTINEL_PRIVATE_TRANSCRIPT": "synthetic private transcript marker",
     "SENTINEL_EXTERNAL_EVENT_PAYLOAD": "synthetic external event payload marker",
 }
+GENERIC_PRIVATE_DETAIL_PATTERNS = (
+    (re.compile(r"(?<!\w)(?:/Users/|/home/)[^\s,;]*", re.IGNORECASE), "local absolute path", True),
+    (re.compile(r"\bfile://[^\s,;]*", re.IGNORECASE), "file URL", True),
+    (re.compile(r"\bdata-testid\s*=", re.IGNORECASE), "UI selector marker", True),
+    (re.compile(r"\bquerySelector\s*\(", re.IGNORECASE), "UI selector marker", True),
+    (re.compile(r"(?<![\w./-])#[A-Za-z][\w-]*\b"), "UI selector marker", True),
+    (re.compile(r"(?<![\w./-])\.[A-Za-z][\w-]*\b"), "UI selector marker", True),
+    (re.compile(r"\b[A-Za-z][\w-]*\[[^\]\s]+(?:=[^\]\s]+)?\]"), "UI selector marker", True),
+    (re.compile(r"\bhidden[-_ ]?reset\b|/internal/reset\b", re.IGNORECASE), "hidden reset detail", False),
+    (re.compile(r"\bprivate[-_ ]?(?:runner|suite|fixture)\b", re.IGNORECASE), "private runner detail", False),
+    (re.compile(r"\bvalidation\s+oracle\b|\boracle\s+(?:internal|expected|output|values?)\b", re.IGNORECASE), "validation oracle detail", False),
+    (re.compile(r"\bprivate\s+transcript\b|\bunredacted\s+transcript\b", re.IGNORECASE), "private transcript", False),
+    (re.compile(r"\bseed[-_ ]?data\b|\bseed data\b", re.IGNORECASE), "seed data", False),
+    (re.compile(r"\bevent[-_ ]?payload\b", re.IGNORECASE), "event payload", False),
+)
 
 
 def _load_json(path: Path, errors: list[str]) -> Any:
@@ -197,8 +213,16 @@ def _validate_evidence_references(manifest: dict[str, Any], all_paths: set[str],
             _validate_public_path(path, f"evidence_references[{index}].path", errors)
             if isinstance(path, str):
                 all_paths.add(path)
-        if command is not None and not _is_non_empty_string(command):
-            errors.append(f"evidence_references[{index}].command must be a non-empty string")
+        if command is not None:
+            if not _is_non_empty_string(command):
+                errors.append(f"evidence_references[{index}].command must be a non-empty string")
+            elif isinstance(command, str):
+                _scan_text_for_private_details(
+                    command,
+                    f"evidence_references[{index}].command",
+                    errors,
+                    allow_policy_statement=False,
+                )
 
     missing_paths = sorted(REQUIRED_PUBLIC_PATHS - all_paths)
     if missing_paths:
@@ -220,6 +244,33 @@ def _scan_for_forbidden_markers(manifest: dict[str, Any], errors: list[str]) -> 
         for marker, description in FORBIDDEN_MARKERS.items():
             if marker in value:
                 errors.append(f"manifest contains forbidden private-detail marker: {description}")
+        _scan_text_for_private_details(value, "manifest text", errors)
+
+
+def _is_policy_statement(value: str) -> bool:
+    normalized = value.strip().lower()
+    return normalized.startswith(
+        (
+            "do not include ",
+            "do not expose ",
+            "use abstract identifiers",
+        )
+    )
+
+
+def _scan_text_for_private_details(
+    value: str,
+    field_name: str,
+    errors: list[str],
+    *,
+    allow_policy_statement: bool = True,
+) -> None:
+    policy_statement = allow_policy_statement and _is_policy_statement(value)
+    for pattern, description, scan_policy_statement in GENERIC_PRIVATE_DETAIL_PATTERNS:
+        if policy_statement and not scan_policy_statement:
+            continue
+        if pattern.search(value):
+            errors.append(f"{field_name} contains forbidden private detail: {description}")
 
 
 def validate_manifest(manifest: Any) -> list[str]:

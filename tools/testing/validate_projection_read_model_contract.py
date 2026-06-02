@@ -55,6 +55,9 @@ ALLOWED_FIELD_SUFFIXES = (
 )
 ALLOWED_LITERAL_FIELDS = {"status", "summary", "summarized_events", "finding_counts"}
 FORBIDDEN_ALLOWED_FIELD_TERMS = {
+    "private",
+    "application_state",
+    "app_state",
     "write",
     "reset",
     "persist",
@@ -179,7 +182,7 @@ def _validate_allowed_fields(family_id: str, family: dict[str, Any], errors: lis
         matched_terms = sorted(term for term in FORBIDDEN_ALLOWED_FIELD_TERMS if term in normalized)
         if matched_terms:
             errors.append(
-                f"read_model_families.{family_id}.allowed_fields[{index}] exposes forbidden term(s): "
+                f"read_model_families.{family_id}.allowed_fields[{index}] {field_name} exposes forbidden term(s): "
                 + ", ".join(matched_terms)
             )
 

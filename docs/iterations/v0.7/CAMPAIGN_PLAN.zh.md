@@ -1,6 +1,6 @@
 # Campaign Plan 文档
 
-状态：final / closeout complete；已记录 post-closeout code-review blockers
+状态：final / closeout complete；已记录 0.7.9 checker/docs clean pass
 
 ## 目标
 
@@ -45,16 +45,20 @@ product 或 application-specific backend。
 - `0.7.6-v0.7-evidence-and-compatibility-audit` 已 review complete。
 - `0.7.7-v0.7-release-candidate-bundle` 已 review complete。
 - `0.7.8-v0.7-final-closeout` 已 review complete，并且 final closeout complete。
+- `0.7.9-v07-cr-checker-schema-repair` 已 review complete，并记录 current v0.7 checker/docs
+  validation scope clean pass。
 - 当前没有 active v0.7 child package。
 - `v0.7-plan.md` 中 planned `0.7.x` entries 只是 roadmap-level planned package specs，不授权
   implementation，也不是不可变 execution script。
-- Closeout 后的新工作必须创建新的 reviewed package，或从下一版本自己的 reviewed iteration package 开始。
 - `docs/testing/results/2026-06-02-v0.7-code-review.md` 中的 post-closeout code review
-  记录了 3 个 P1 和 2 个 P2 blockers。在这些 findings 被修复，或被 active validation
-  result 明确记录为 blockers 之前，它们阻塞 clean pass、external suite PASS、
-  projection readiness PASS 和 product readiness PASS。
-- 已知 post-closeout code-review blockers 应先路由到窄范围 v0.7 repair package，再尝试新的
-  clean-pass validation。
+  针对历史 `0.7.8` closeout 记录了 3 个 P1 和 2 个 P2 blockers。这些 P1/P2 checker/docs
+  blockers 已通过 `0.7.9-v07-cr-checker-schema-repair` 修复并重新验证。
+- active overall validation result 只记录 current v0.7 checker/docs validation scope clean pass。
+  不得把它报告为 external suite PASS、projection readiness PASS、product readiness PASS、
+  runtime/API/frontend/E2E PASS、live Agent smoke PASS、full autonomous runner/full-suite PASS 或
+  v0.8 readiness。
+- 后续 closeout 后的新工作必须创建新的 reviewed package，或从下一版本自己的 reviewed iteration package
+  开始。
 - 每个 child 的 implementation authorization 初始为 no。
 - mixed/code packages 必须先完成 documentation review，再进入 implementation。
 - 历史 v0.6 evidence 只能作为 handoff context。
@@ -78,6 +82,10 @@ product 或 application-specific backend。
 8. `0.7.7-v0.7-release-candidate-bundle`
 9. `0.7.8-v0.7-final-closeout`
 
+planned sequence 之后已完成的 post-closeout repair package：
+
+10. `0.7.9-v07-cr-checker-schema-repair`
+
 这个顺序只是 route proposal。它可以被 reviewed child package documents 调整。不得用它跳过 active
 child package review；如果 implementation 或 evidence 发现 design problem，也不得机械继续原计划。
 
@@ -95,6 +103,8 @@ child package review；如果 implementation 或 evidence 发现 design problem�
 - `0.7.6` 已把 evidence 和 compatibility review 交给 release candidate。
 - `0.7.7` 已把 release-candidate findings 交给 final closeout。
 - `0.7.8` 已在 evidence consistency 和 review gates 通过后标记 final status。
+- `0.7.9` 已修复 V07-CR checker/docs blockers，并记录 current checker/docs validation scope
+  clean pass。
 
 ## Campaign Exit Criteria 出口标准
 
@@ -105,11 +115,13 @@ child package review；如果 implementation 或 evidence 发现 design problem�
 - compatibility review 确认 v0.6 generation、v0.5 memory、v0.4 Agent loop 和 v0.3 `WorldSpec`
   loader/runtime-context bridge 保持兼容，或仅被 reviewed contracts 以 additive 方式修改。
 - scope review 确认没有 concrete validation world、external oracle internal、UI selector、hidden
-  reset API、application-specific backend behavior、migration、first projection app、live provider
-  dependency 或 `backend/worldengine/` work 混入。
+  reset API、application-specific backend behavior、migration、v0.8 minimum working-state 或
+  external-validation handoff readiness、live provider dependency 或 `backend/worldengine/` work 混入。
 - redacted report 和 projection consumer claims 均由 current-session schema/checker/API/test
   evidence 支撑，前提是这些 claims 属于当前 scope。
 - unresolved findings 已分类，且没有未被明确接受的 P1/P2。
+- `0.7.9` clean-pass state 仍只限 current checker/docs validation scope，除非后续 reviewed package
+  提供更广的证据。
 
 ## Stop Conditions 停止条件
 
@@ -123,5 +135,5 @@ child package review；如果 implementation 或 evidence 发现 design problem�
   review。
 - verification commands 失败，且 package 无法诚实记录 pass evidence。
 - external validation examples 需要把 concrete external world content 放入本 repo。
-- projection readiness 文本变成 v0.8 external projection application implementation。
+- projection readiness 文本变成 v0.8 minimum working-state 或 external-validation handoff readiness。
 - README、current state、plan、review 和 closeout docs 之间的 status surfaces 发生漂移。

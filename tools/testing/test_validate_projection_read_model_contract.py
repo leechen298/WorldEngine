@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from tools.testing.validate_projection_read_model_contract import (
     validate_projection_read_model_contract,
     validate_projection_read_model_contract_file,
@@ -143,6 +145,25 @@ def test_unbounded_allowed_field_fails() -> None:
     errors = validate_projection_read_model_contract(contract)
 
     assert any("not a public bounded field" in error and "payload" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    "field_name",
+    [
+        "private_application_state_summary",
+        "application_state_summary",
+        "private_state_summary",
+    ],
+)
+def test_private_application_state_allowed_field_fails(field_name: str) -> None:
+    contract = _contract()
+    allowed_fields = _family(contract, "readiness_manifest_summary")["allowed_fields"]
+    assert isinstance(allowed_fields, list)
+    allowed_fields.append(field_name)
+
+    errors = validate_projection_read_model_contract(contract)
+
+    assert any("exposes forbidden term" in error and field_name in error for error in errors)
 
 
 def test_missing_required_forbidden_capability_fails() -> None:

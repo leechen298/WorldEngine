@@ -1,6 +1,6 @@
 # v0.7 External Validation Readiness / Projection Consumer Readiness 文档
 
-状态：final / closeout complete；已记录 post-closeout code-review blockers
+状态：final / closeout complete；已记录 0.7.9 checker/docs clean pass
 类型：Codex `/goal` development campaign 与迭代包根目录
 
 ## 目标
@@ -45,9 +45,13 @@ Codex role assignment 都不属于 WorldEngine。
 product PASS、external suite PASS 或 projection readiness PASS。
 
 `docs/testing/results/2026-06-02-v0.7-code-review.md` 在 final closeout 之后记录了
-blocking findings：3 个 P1、2 个 P2、1 个 P3。后续若要声明 v0.7 clean pass、
-external suite PASS、projection readiness PASS 或 product readiness PASS，必须先通过新的
-reviewed package 修复这些 findings，或在 validation report 中把它们明确记录为 blockers。
+blocking findings：3 个 P1、2 个 P2、1 个 P3。这些 P1/P2 checker/docs blocker 已通过 reviewed
+`0.7.9-v07-cr-checker-schema-repair` package 处理。
+
+`docs/testing/results/2026-06-02-v0.7-overall-validation.zh.md` 现在记录 current v0.7
+checker/docs validation scope clean pass。该修复后状态不声明 external suite PASS、
+projection readiness PASS、product readiness PASS、runtime/API/frontend/E2E PASS、live
+Agent smoke PASS、full autonomous runner/full-suite PASS 或 v0.8 readiness。
 
 ## 范围
 
@@ -67,7 +71,7 @@ v0.7 允许：
 
 v0.7 禁止：
 
-- 不实现第一个 external projection application；v0.8 负责该范围。
+- 不实现 first external projection application；该范围属于 v0.8。
 - 不把 external validation repositories、concrete validation worlds、seed data、maps、
   characters、locations、resources、story rules、private transcripts、UI selectors 或 oracle
   internals 放入本仓库。
@@ -89,6 +93,7 @@ v0.7 禁止：
 - Reviewed `0.7.6` evidence and compatibility audit package，以及中文镜像。
 - Reviewed `0.7.7` release-candidate bundle package，以及中文镜像。
 - Reviewed `0.7.8` final closeout package，以及中文镜像。
+- Reviewed `0.7.9` post-closeout checker/schema repair package，以及中文镜像。
 - `/goal` 执行所需的 subagent/evaluator checkpoint rules。
 - documentation-stage review evidence，证明本次 drafting 没有修改 runtime、schema、API、
   frontend、test implementation、fixture、migration、external repository、generated result 或
@@ -168,7 +173,8 @@ package reviewed 后才能继续。
 
 ## 当前状态
 
-Active child package：无；`0.7.8-v0.7-final-closeout` 已完成 final closeout。
+Active child package：无；`0.7.8-v0.7-final-closeout` 已完成 final closeout，且
+`0.7.9-v07-cr-checker-schema-repair` 已完成 closeout 后的 checker/docs repair。
 
 Current route：`complete`。
 
@@ -188,10 +194,12 @@ Evidence execution authorization：final verification 后已关闭。
 
 ## 最终评估状态
 
-Current value：`final / closeout complete`。
+Current value：`final / closeout complete`；current checker/docs validation scope clean pass
+已由 `0.7.9` 记录。
 
 v0.7 parent campaign docs 已通过 read-only parent documentation review，且 `0.7.0`、`0.7.1`
 、`0.7.2`、`0.7.3`、`0.7.4`、`0.7.5`、`0.7.6`、`0.7.7` 与 `0.7.8`
-已 review complete。`0.7.8` final verification 和 evaluator review 已通过。该 final state 不授权
-runtime、schema、API、frontend、test implementation、fixture、migration、external repository、
-generated result 或 legacy implementation work。
+和 `0.7.9` 已 review complete。`0.7.8` final verification 和 evaluator review 已通过；V07-CR
+checker/docs repair 与 current checker/docs validation scope clean pass 已记录在 `0.7.9`。该 final
+state 不授权 runtime、schema、API、frontend、test implementation、fixture、migration、external
+repository、generated result 或 legacy implementation work。

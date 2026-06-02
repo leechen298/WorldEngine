@@ -5,7 +5,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from tools.testing.validate_external_validation_report import validate_report, validate_report_file
+
+
+REPORT_SCHEMA_PATH = Path("docs/testing/external-validation-report-schema.json")
 
 
 def _report(status: str = "pass") -> dict[str, object]:
@@ -105,6 +110,17 @@ def test_pass_report_rejects_deferred_p1_or_p2() -> None:
     errors = validate_report(report)
 
     assert any("pass report cannot contain unresolved P2" in error for error in errors)
+
+
+def test_pass_report_rejects_accepted_p1_or_p2() -> None:
+    report = _report()
+    report["unresolved_findings"] = [
+        {"severity": "P1", "summary": "Accepted blocker cannot support pass.", "status": "accepted"}
+    ]
+
+    errors = validate_report(report)
+
+    assert any("pass report cannot contain unresolved P1" in error for error in errors)
 
 
 def test_blocked_requires_reason() -> None:
@@ -215,6 +231,67 @@ def test_synthetic_event_payload_marker_fails() -> None:
     errors = validate_report(report)
 
     assert any("synthetic external event payload marker" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    ("leaked_text", "expected_error"),
+    [
+        ("Observed local command at /Users/alice/workspace/run.py.", "local absolute path"),
+        ("Saved evidence as file:///tmp/worldengine/private-output.json.", "file URL"),
+        ("Clicked data-testid=submit-button during validation.", "UI selector"),
+        ("Used document.querySelector('#submit-button') in the runner.", "UI selector"),
+        ("Clicked #submit-button in the validation runner.", "UI selector"),
+        ("Clicked .primary-submit in the validation runner.", "UI selector"),
+        ("Clicked button[type=submit] in the validation runner.", "UI selector"),
+        ("Called hidden reset endpoint /internal/reset before retry.", "hidden reset"),
+        ("Compared output against validation oracle expected values.", "validation oracle"),
+        ("Included private transcript excerpt from the session.", "private transcript"),
+        ("Loaded seed data row before executing the check.", "seed data"),
+        ("Captured event payload {'type': 'external'} in the report.", "event payload"),
+    ],
+)
+def test_real_leaked_detail_text_fails(leaked_text: str, expected_error: str) -> None:
+    report = _report()
+    report["redacted_evidence_summary"] = leaked_text
+
+    errors = validate_report(report)
+
+    assert any(expected_error in error for error in errors)
+
+
+def test_checker_authority_rejects_schema_shaped_semantic_leak() -> None:
+    report = _report()
+    report["high_level_goal"] = "Preserved private transcript text in a schema-shaped report."
+
+    errors = validate_report(report)
+
+    assert any("private transcript" in error for error in errors)
+
+
+def test_report_schema_tightens_checker_scanned_text_fields() -> None:
+    schema = json.loads(REPORT_SCHEMA_PATH.read_text())
+    no_forbidden_ref = {"$ref": "#/$defs/noForbiddenText"}
+    for field in [
+        "report_id",
+        "engine_reference",
+        "public_contract_surface",
+        "external_suite_id",
+        "redacted_target_id",
+        "capability_area",
+        "scenario_id",
+        "high_level_goal",
+        "observed_public_behavior",
+        "redacted_evidence_summary",
+        "compatibility_notes",
+    ]:
+        assert no_forbidden_ref in schema["properties"][field]["allOf"]
+
+    finding_summary = schema["properties"]["unresolved_findings"]["items"]["properties"]["summary"]
+    assert no_forbidden_ref in finding_summary["allOf"]
+    pass_finding_status = schema["allOf"][0]["then"]["properties"]["unresolved_findings"]["items"]["then"][
+        "properties"
+    ]["status"]
+    assert pass_finding_status == {"const": "resolved"}
 
 
 def test_validate_report_file_passes(tmp_path: Path) -> None:
