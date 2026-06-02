@@ -161,110 +161,24 @@ reviewed.
 - Prefer focused verification tied to the iteration contract, then broader
   regression commands when the blast radius requires it.
 
-## Natural-Language Iteration Documentation Triggers
+## Natural-Language Request Routing
 
-When the user says a short iteration-documentation request such as
-`生成 <version> 文档`, `编写 <version> 文档`, `规划 <version> 每个迭代`,
-`生成 <version> 迭代包`, or `创建 <version> iteration docs`, treat it as a
-request to run the Codex Plan-Mode Document Generation Standard in
-`docs/iterations/AGENTS.md`.
+Detailed natural-language trigger rules live in `docs/agent-guides/`. Keep this
+file as the short router. Before executing a routed request, open the matching
+guide and its primary workflow document.
 
-This trigger creates or updates reviewable iteration documentation only. It
-does not authorize runtime, schema, API, frontend, test, fixture, migration, or
-external repository implementation.
+| User request | Route | Primary workflow |
+| --- | --- | --- |
+| `生成 <version> 文档`, `编写 <version> 文档`, `规划 <version> 每个迭代`, `生成 <version> 迭代包` | `docs/agent-guides/natural-language-iteration-documentation-triggers.md` | `docs/iterations/AGENTS.md` |
+| `测试 <version>`, `验证 <version>`, `<version> 是否通过`, `验证当前产品`, `clean pass` | `docs/agent-guides/natural-language-validation-triggers.md` | `docs/testing/product-capability-validation-playbook.md` |
+| `编写 <version> 测试方案`, `补充 <iteration-package> 测试文档`, `设计 <feature> 测试用例`, `生成测试矩阵` | `docs/agent-guides/natural-language-test-documentation-triggers.md` | `docs/testing/test-documentation-playbook.md` |
+| `审核 <version> 代码`, `/goal 审核 <version> 代码`, `review <version> code`, `代码审核 <feature-or-package>` | `docs/agent-guides/natural-language-code-review-triggers.md` | `docs/testing/code-review-playbook.md` |
 
-For a new version, a short version-documentation request defaults to the
-version-level package only: parent generation plan, version index, version
-plan, campaign state docs, child package sequence, and planned-package
-specifications inside the version plan. It must not create full documentation
-directories for every planned child iteration by default.
-
-Planned child packages in the version plan are route-map specifications, not
-approved execution contracts and not implementation authorization. Create a
-concrete child package document set only when the user explicitly names that
-child package, asks to create or complete a child package, or a reviewed active
-package explicitly authorizes creating the next child package documents.
-
-## Natural-Language Validation Triggers
-
-When the user says a short validation request such as `测试 <version>`,
-`验证 <version>`, `<version> 是否通过`, `测试 <iteration-package>`,
-`验证当前产品`, or asks for a `clean pass`, treat it as a request to run the
-reusable product capability validation flow in
-`docs/testing/product-capability-validation-playbook.md`.
-
-The phrase is only a trigger. It is not itself a PASS verdict.
-
-Before reporting the result:
-
-- read the active version or package state and determine the in-scope
-  validation surface.
-- create or use the required iteration package when validation will change
-  tests, checkers, fixtures, result schemas, runtime/API/frontend behavior, or
-  durable evidence rules.
-- run or explicitly classify each in-scope command/checker as passed, failed,
-  blocked, skipped, or out of scope.
-- distinguish E2E, Agent smoke, minimal autonomous saved-result validation,
-  full autonomous runner/full suite, and manual observation.
-- record command results, artifact paths, unresolved P1/P2/P3 findings, and
-  final verdict in the relevant `review.md` or `docs/testing/results/`
-  summary.
-
-If current evidence does not cover frontend, E2E, Agent smoke, autonomous,
-external validation, projection readiness, or product readiness, name those
-exclusions instead of implying a broader PASS.
-
-## Natural-Language Test Documentation Triggers
-
-When the user says a short test-documentation request such as
-`编写 <version> 测试方案`, `补充 <iteration-package> 测试文档`,
-`设计 <feature> 测试用例`, `写 E2E 测试场景`, or `生成测试矩阵`, treat it as a
-request to run the reusable test-documentation flow in
-`docs/testing/test-documentation-playbook.md`.
-
-This trigger is separate from validation. It produces or updates test
-documentation, plans, scenarios, and cases. It does not claim that tests ran or
-passed.
-
-If the request combines writing test documentation with executing validation,
-write or update the test documentation first, then use
-`docs/testing/product-capability-validation-playbook.md` for the execution and
-verdict phase.
-
-## Natural-Language Code Review Triggers
-
-When the user says a short code-review request such as
-`审核 <version> 代码`, `/goal 审核 <version> 代码`,
-`review <version> code`, `审核 <iteration-package> 代码`, or
-`代码审核 <feature-or-package>`, treat it as a request to run the reusable code
-review flow in `docs/testing/code-review-playbook.md`.
-
-This trigger is separate from final closeout, validation, and test-documentation
-triggers. It reviews implementation reliability against the active contracts; it
-does not by itself claim that the product has passed validation or that tests
-ran.
-
-Before reporting the result:
-
-- read the active version or package state, including `CURRENT_STATE.md`,
-  `GOAL_RUNNER.md`, `CAMPAIGN_PLAN.md`, version plan, and code-bearing child
-  package documents when they exist.
-- map implementation files from package `review.md`, contracts, test plans, and
-  current git state; do not treat final-closeout status as a substitute for code
-  review.
-- inspect code, schemas, API routes, frontend surfaces, tests, and compatibility
-  boundaries that are in scope for the reviewed version or package.
-- use a code-review subagent/evaluator when available and authorized,
-  including Superpowers code-review workflows where applicable.
-- run focused commands only when needed to verify a finding or claim; otherwise
-  state which tests were not run.
-- report findings first, ordered by P0/P1/P2/P3 severity, with file/line
-  references, scope assessment, evidence gaps, and residual risk.
-
-If the code review discovers issues that require implementation changes, do not
-silently repair them inside a review-only request. Create or use the required
-iteration package before changing runtime, schema, API, frontend, test,
-fixture, migration, or durable evidence behavior.
+A trigger phrase is only routing. It does not by itself authorize runtime,
+schema, API, frontend, test, fixture, migration, or external repository
+implementation, and it does not prove PASS or closeout. If a request combines
+documentation, implementation, validation, or review, run the relevant workflows
+in guide-defined order and keep evidence claims bounded.
 
 ## Git Safety
 
