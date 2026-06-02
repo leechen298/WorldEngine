@@ -1,52 +1,68 @@
 # Current State
 
-Campaign status: planned / ready for review
-Active child package: none
-Current route: parent documentation review
+Campaign status: final / closeout complete
+Active child package: `0.8.8-v0.8-final-closeout`
+Current route: `final / closeout complete`
 Implementation authorization: no
 Evidence execution authorization: no
+Audit execution authorization: no
+Final verification authorization: yes, limited to commands in
+`0.8.8-v0.8-final-closeout/test-plan.md`
+Final closeout authorization: yes, limited to reviewed v0.8 package scope
 
 ## Planned Package Roadmap Status
 
 ```text
-0.8.0-v0.8-planning-and-v0.7-handoff-baseline: planned
-0.8.1-minimum-working-state-contract: planned
-0.8.2-core-observable-surface-boundary: planned
-0.8.3-generation-runtime-agent-loop-readiness: planned
-0.8.4-external-validation-handoff-contract: planned
-0.8.5-core-working-state-smoke-evidence: planned
-0.8.6-v0.8-evidence-and-boundary-audit: planned
-0.8.7-v0.8-release-candidate-bundle: planned
-0.8.8-v0.8-final-closeout: planned
+0.8.0-v0.8-planning-and-v0.7-handoff-baseline: review complete
+0.8.1-minimum-working-state-contract: review complete
+0.8.2-core-observable-surface-boundary: review complete
+0.8.3-generation-runtime-agent-loop-readiness: review complete
+0.8.4-external-validation-handoff-contract: review complete
+0.8.5-core-working-state-smoke-evidence: review complete
+0.8.6-v0.8-evidence-and-boundary-audit: review complete
+0.8.7-v0.8-release-candidate-bundle: review complete
+0.8.8-v0.8-final-closeout: final / closeout complete
 ```
 
-No v0.8 child package is active. The planned package entries in
-`v0.8-plan.md` are route-map specifications only and do not authorize
-implementation.
+No v0.8 child package is currently active for implementation. `0.8.4` is
+review complete and has handed the external-validation handoff contract to the
+next roadmap entry. `0.8.5-core-working-state-smoke-evidence` is review
+complete and hands core-side smoke evidence to the audit package. `0.8.6`
+passed read-only documentation/contract review, and documentation-only audit
+execution is complete with release-candidate recommendation `recommended`.
+`0.8.6` is review complete and hands off to `0.8.7`. `0.8.7` is review
+complete and authorizes only bounded release-candidate bundle approval and
+handoff to final-closeout review. `0.8.8` documentation/contract review has
+passed and authorizes only the final verification commands listed in
+`0.8.8-v0.8-final-closeout/test-plan.md`. Final verification evidence is
+recorded, and closeout evaluator review passed for the reviewed v0.8 package
+scope.
 
 ## Handoff Risk
 
-The v0.7 route is historical `final / closeout complete`, but
+The v0.7 route is historical `final / closeout complete`, and
 `docs/testing/results/2026-06-02-v0.7-code-review.md` recorded post-closeout
-issues. These findings block clean pass, minimum working-state PASS, external
-validation readiness PASS, product PASS, and external consumer PASS until they
-are repaired with current-session evidence or recorded as blockers in the
-active v0.8 package.
+issues. The current v0.7 state records
+`0.7.9-v07-cr-checker-schema-repair` as review complete, and
+`docs/testing/results/2026-06-02-v0.7-overall-validation.md` records clean pass
+for the current v0.7 checker/docs validation scope.
 
-Historical v0.7 and v0.6 evidence is handoff context only. It is not current
-v0.8 PASS evidence.
+The `0.7.9` repair clears the V07-CR checker/docs blocker gate for v0.7. It
+does not claim external suite PASS, projection readiness PASS, product
+readiness PASS, runtime/API/frontend/E2E PASS, live Agent smoke PASS, full
+autonomous runner/full-suite PASS, or v0.8 readiness. Historical v0.7 and v0.6
+evidence remains handoff context only and is not current v0.8 PASS evidence.
 
 ## Current Route
 
-Current route: parent documentation review.
+Current route: `final / closeout complete`.
 
-The v0.8 parent docs and Chinese mirrors are drafted for review. New work after
-this parent state requires either:
-
-- review of the parent docs, then creation or confirmation of
-  `0.8.0-v0.8-planning-and-v0.7-handoff-baseline`, or
-- an explicit user request that names another child package and still follows
-  the child package documentation gate.
+The v0.8 parent docs and `0.8.0` through `0.8.7` child packages are review
+complete for their bounded scopes. `0.8.8` documentation/contract review has
+also passed for its bounded final-closeout package scope. Final verification
+evidence is recorded and closeout consistency evaluator review passed. New
+code work, unrelated evidence execution, audit execution, and external
+validation are not authorized by this state.
 
 ## Current Exclusions
 
@@ -63,7 +79,7 @@ Current v0.8 documentation does not claim:
 - minimum working-state readiness passed.
 - product readiness passed.
 - generation-quality passed.
-- v0.7 blockers repaired.
+- v0.8 readiness passed.
 
 ## External Validation Boundary
 
@@ -74,6 +90,5 @@ outside this repository and are not defined by the current parent state.
 
 ## Next Action
 
-Review the v0.8 parent documentation. After parent review, create or confirm
-the `0.8.0-v0.8-planning-and-v0.7-handoff-baseline` package before any child
-implementation or evidence execution.
+v0.8 is closed for the reviewed package scope. Start a new reviewed package
+for any future work.

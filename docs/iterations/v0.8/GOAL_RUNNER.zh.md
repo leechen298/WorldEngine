@@ -1,6 +1,6 @@
 # Goal Runner
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 ## Goal Entry
 
@@ -13,20 +13,27 @@
 生成 v0.8 文档
 ```
 
-当前 v0.8 route 是 parent documentation review。没有 active child package。
-Implementation authorization 关闭。
+当前 v0.8 route 是 `final / closeout complete`，目标 package 是
+`0.8.8-v0.8-final-closeout`。Implementation authorization、无关 evidence execution
+authorization、audit execution authorization 和 external validation authorization 仍关闭。Final
+closeout 只在 closeout evaluator PASS 后针对 reviewed v0.8 package scope 授权。
 
 v0.7 post-closeout code review 在
-`docs/testing/results/2026-06-02-v0.7-code-review.md` 记录了 blocking findings。
-除非受影响 blockers 已用 current-session evidence 修复，或 active v0.8 package 明确把
-它们记录为 blockers，否则 v0.8 不得报告 clean pass、minimum working-state PASS、
-external validation readiness PASS、product PASS 或 external consumer PASS。
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 记录过 findings。当前
+`0.7.9-v07-cr-checker-schema-repair` package 和
+`docs/testing/results/2026-06-02-v0.7-overall-validation.md` 已清除当前 v0.7
+checker/docs validation scope 的 V07-CR checker/docs blocker gate。该 evidence 只能作为
+handoff evidence。没有 active reviewed package 提供的 current-session v0.8 evidence 时，
+不得把 v0.8 报告为 clean pass、minimum working-state PASS、external validation readiness
+PASS、product PASS、external consumer PASS、runtime/API/frontend/E2E PASS、live Agent
+smoke PASS、full autonomous PASS 或 generation-quality PASS。
 
 ## Route Selection
 
 1. 读取 `CURRENT_STATE.md`。
-2. 如果 `CURRENT_STATE.md` 没有指向 child package，保持在 parent documentation
-   review。`v0.8-plan.md` 只能作为 planned package specs 的 roadmap。
+2. 如果 `CURRENT_STATE.md` 指向某个 `*-documentation-package-needed` route，先创建或确认该
+   child 的 full package document set，然后才能进入任何 implementation 或 evidence
+   execution。
 3. 如果 `CURRENT_STATE.md` 指向 child package，先创建或确认该 child 的 complete
    package document set，然后按顺序读取：
    - `README.md`
@@ -89,12 +96,12 @@ Documentation-only children 如果改变 process rules、package sequencing、ev
 rules、automation-consumption contracts、release status、validation templates、report
 schemas、projection contracts、readiness taxonomy 或 mirror obligations，需要
 read-only documentation evaluator。若 subagent/evaluator tooling 不可用或未授权，
-记录 missing checkpoint，并保持 `planned / ready for review`，不要声明 review
-complete。
+记录 missing checkpoint，并保持适当的 pre-review state，不要声明 review complete。
 
 ## Reporting Rules
 
-- Historical v0.7 和 v0.6 evidence 只能作为 handoff evidence 引用。
+- Historical v0.7/v0.6 evidence 和当前 v0.7 `0.7.9` checker/docs repair evidence 只能作为
+  handoff evidence 引用。
 - 没有 current-session command evidence 时，不得把 v0.8 runtime、API、frontend、
   E2E、build、Agent smoke、autonomous validation、minimum working-state readiness、
   external validation readiness、external consumer validation、product readiness、
@@ -127,8 +134,10 @@ complete。
 - 未经 active child authorization 添加 durable persistence、migrations、live provider
   behavior、generated-world active runtime execution，或 `backend/worldengine/` 下的新
   runtime features。
-- 把 historical v0.7/v0.6 evidence 当成 current v0.8 PASS evidence。
-- 做受影响 readiness claim 时忽略 v0.7 post-closeout P1/P2 blockers。
+- 把 historical v0.7/v0.6 evidence 或当前 v0.7 `0.7.9` checker/docs repair evidence 当成
+  current v0.8 PASS evidence。
+- 做受影响 readiness claim 时忽略 unresolved 或 out-of-scope 的 v0.7/v0.8 blocker
+  surfaces。
 - 绕过 required documentation、implementation authorization、evaluator 或 evidence
   gates。
 - Active child plan 存在问题时，不更新并重新 review 就继续执行。

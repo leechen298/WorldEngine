@@ -3,12 +3,15 @@
 from fastapi import APIRouter
 
 from app.core.world_generation import (
+    check_core_readiness,
     check_runtime_readiness,
     preview_generation,
     regenerate_world,
 )
 from app.schemas.api import ApiResponse
 from app.schemas.world_generation import (
+    GenerationCoreReadinessRequest,
+    GenerationCoreReadinessResult,
     GenerationPreviewRequest,
     GenerationPreviewResponse,
     GenerationRegenerationRequest,
@@ -39,3 +42,10 @@ def check_world_generation_runtime_readiness(
     request_body: RuntimeReadinessRequest,
 ) -> ApiResponse[RuntimeReadinessResult]:
     return ApiResponse(data=check_runtime_readiness(request_body))
+
+
+@router.post("/core-readiness", response_model=ApiResponse[GenerationCoreReadinessResult])
+def check_world_generation_core_readiness(
+    request_body: GenerationCoreReadinessRequest,
+) -> ApiResponse[GenerationCoreReadinessResult]:
+    return ApiResponse(data=check_core_readiness(request_body))

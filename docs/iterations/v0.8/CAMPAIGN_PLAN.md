@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 ## Objective
 
@@ -28,21 +28,32 @@ place for concrete validation worlds.
 - `docs/iterations/v0.7/CAMPAIGN_PLAN.md`
 - `docs/iterations/v0.7/v0.7-plan.md`
 - `docs/testing/results/2026-06-02-v0.7-code-review.md`
+- `docs/iterations/v0.7/0.7.9-v07-cr-checker-schema-repair/review.md`
+- `docs/testing/results/2026-06-02-v0.7-overall-validation.md`
 - `docs/current-implementation.md`
 - `docs/glossary.md`
 
 ## Campaign Rules
 
 - The parent v0.8 package remains the authoritative campaign entrypoint.
-- No v0.8 child package is active.
+- No v0.8 implementation child package is active. `0.8.5` is review complete.
+  `0.8.6` is review complete and recommends release-candidate packaging.
+  `0.8.7` is review complete and authorizes only bounded release-candidate
+  bundle handoff to final-closeout review. `0.8.8` documentation/contract
+  review is complete and the final verification commands in
+  `0.8.8-v0.8-final-closeout/test-plan.md` have passed or returned only
+  allowed scan matches; closeout evaluator review passed and final closeout is
+  authorized only for the reviewed v0.8 package scope.
 - The planned `0.8.x` entries in `v0.8-plan.md` are roadmap-level planned
   package specs. They do not authorize implementation and are not immutable
   execution scripts.
 - Implementation authorization starts as no for every child.
 - Mixed/code packages must complete documentation review before implementation.
 - Historical v0.7 and v0.6 evidence is handoff context only.
-- v0.7 post-closeout P1/P2 blockers must be repaired, routed to a narrow
-  repair, or recorded as blockers before any affected v0.8 readiness claim.
+- The V07-CR checker/docs blocker gate is cleared by current v0.7 `0.7.9`
+  evidence for the checker/docs validation scope only. That evidence must not
+  be promoted to v0.8 readiness or any excluded runtime/product/external-suite
+  claim.
 - Current-session command evidence is required before v0.8 runtime, API,
   frontend, E2E, build, Agent smoke, autonomous validation, minimum
   working-state PASS, external validation readiness, product readiness,
@@ -73,7 +84,7 @@ design problem.
 
 ## Cross-Child Handoff Rules
 
-- `0.8.0` should hand off reviewed campaign structure, v0.7 handoff-risk
+- `0.8.0` hands off reviewed campaign structure, current v0.7 handoff-risk
   handling, minimum working-state boundaries, and external-validation
   boundaries to `0.8.1`.
 - `0.8.1` should hand off readiness claim taxonomy and authorization criteria
@@ -100,8 +111,9 @@ v0.8 may be marked `final / closeout complete` only when:
 - compatibility review confirms v0.7 projection contracts, v0.6 generation,
   v0.5 memory, v0.4 Agent loop, and v0.3 loader/runtime-context bridge remain
   compatible or only additively changed by reviewed contracts.
-- v0.7 post-closeout P1/P2 blockers are repaired with current-session evidence
-  or recorded as blockers in the active v0.8 evidence.
+- v0.7 checker/docs repair evidence is recorded as handoff context only, and
+  any remaining out-of-scope dependency blockers are classified before an
+  affected v0.8 claim is made.
 - scope review confirms no external validation implementation, external
   application implementation, product UI, concrete app data, private external
   repo path, UI selector, hidden reset API, private transcript, validation
@@ -131,7 +143,7 @@ Stop before implementation or closeout if:
 - concrete application data, private app internals, UI selectors, hidden reset
   APIs, external validator connection details, oracle internals, or external
   repository details become required.
-- v0.7 post-closeout blockers are ignored while making affected readiness
-  claims.
+- v0.7 `0.7.9` checker/docs handoff evidence is overclaimed as v0.8 readiness
+  or as an excluded runtime/product/external-suite pass claim.
 - status surfaces drift between README, current state, plan, review, and
   closeout docs.

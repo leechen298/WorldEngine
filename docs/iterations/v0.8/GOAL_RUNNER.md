@@ -1,6 +1,6 @@
 # Goal Runner
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 ## Goal Entry
 
@@ -13,22 +13,29 @@ Natural-language goals covered by this campaign include:
 生成 v0.8 文档
 ```
 
-Current v0.8 route is parent documentation review. No child package is active.
-Implementation authorization is closed.
+Current v0.8 route is `final / closeout complete` for
+`0.8.8-v0.8-final-closeout`. Implementation authorization, unrelated evidence
+execution authorization, audit execution authorization, and external validation
+authorization remain closed. Final closeout is authorized only for the
+reviewed v0.8 package scope after closeout evaluator PASS.
 
-v0.7 post-closeout code review recorded blocking findings in
-`docs/testing/results/2026-06-02-v0.7-code-review.md`. v0.8 must not be
-reported as clean pass, minimum working-state PASS, external validation
-readiness PASS, product PASS, or external consumer PASS until affected blockers
-are repaired with current-session evidence or explicitly recorded as blockers
-in the active v0.8 package.
+v0.7 post-closeout code review recorded findings in
+`docs/testing/results/2026-06-02-v0.7-code-review.md`. The current
+`0.7.9-v07-cr-checker-schema-repair` package and
+`docs/testing/results/2026-06-02-v0.7-overall-validation.md` clear the V07-CR
+checker/docs blocker gate for the current v0.7 checker/docs validation scope.
+That evidence is handoff evidence only. v0.8 must not be reported as clean
+pass, minimum working-state PASS, external validation readiness PASS, product
+PASS, external consumer PASS, runtime/API/frontend/E2E PASS, live Agent smoke
+PASS, full autonomous PASS, or generation-quality PASS without current-session
+v0.8 evidence from an active reviewed package.
 
 ## Route Selection
 
 1. Read `CURRENT_STATE.md`.
-2. If `CURRENT_STATE.md` does not point to a child package, remain in parent
-   documentation review. Use `v0.8-plan.md` only as a roadmap of planned
-   package specs.
+2. If `CURRENT_STATE.md` points to a `*-documentation-package-needed` route,
+   create or confirm that child's full
+   package document set before any implementation or evidence execution.
 3. If `CURRENT_STATE.md` points to a child package, first create or confirm
    that child's complete package document set, then read it in this order:
    - `README.md`
@@ -99,12 +106,13 @@ evidence rules, automation-consumption contracts, release status, validation
 templates, report schemas, projection contracts, readiness taxonomy, or mirror
 obligations require a read-only documentation evaluator. If subagent/evaluator
 tooling is unavailable or not authorized, record the missing checkpoint and
-keep status at `planned / ready for review` rather than claiming review
+keep status at the appropriate pre-review state rather than claiming review
 complete.
 
 ## Reporting Rules
 
-- Historical v0.7 and v0.6 evidence may be cited only as handoff evidence.
+- Historical v0.7/v0.6 evidence and current v0.7 `0.7.9` checker/docs repair
+  evidence may be cited only as handoff evidence.
 - Do not mark v0.8 runtime, API, frontend, E2E, build, Agent smoke,
   autonomous validation, minimum working-state readiness, external validation
   readiness, external consumer validation, product readiness,
@@ -141,9 +149,10 @@ Stop and record a blocker if a task would:
 - add durable persistence, migrations, live provider behavior, generated-world
   active runtime execution, or new runtime features under `backend/worldengine/`
   without active child authorization.
-- treat historical v0.7/v0.6 evidence as current v0.8 PASS evidence.
-- ignore v0.7 post-closeout P1/P2 blockers while making an affected readiness
-  claim.
+- treat historical v0.7/v0.6 evidence or current v0.7 `0.7.9` checker/docs
+  repair evidence as current v0.8 PASS evidence.
+- ignore unresolved or out-of-scope v0.7/v0.8 blocker surfaces while making an
+  affected readiness claim.
 - bypass required documentation, implementation authorization, evaluator, or
   evidence gates.
 - continue a problematic child plan without updating and reviewing that active

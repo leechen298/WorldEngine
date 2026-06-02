@@ -1,6 +1,6 @@
 # v0.8 Minimum Proved Working WorldEngine / External Validation Readiness
 
-Status: planned / ready for review
+Status: final / closeout complete
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
@@ -14,12 +14,13 @@ engine's generation, runtime, Agent loop, memory-context, event, and projection
 surfaces coherent enough that a separate external validator or projection
 application can judge whether WorldEngine works.
 
-v0.8 starts from historical v0.7 closeout evidence, but v0.7 has recorded
-post-closeout code-review blockers. Those blockers are handoff risk, not
-resolved evidence. v0.8 must not claim clean pass, minimum working-state PASS,
-external validation readiness PASS, product readiness, or external consumer
-PASS until current-session evidence proves the affected blockers repaired or
-records them as blockers.
+v0.8 starts from historical v0.7 closeout evidence plus the current `0.7.9`
+checker/docs repair evidence. `0.7.9-v07-cr-checker-schema-repair` clears the
+V07-CR checker/docs blocker gate for the current v0.7 checker/docs validation
+scope, but it is handoff evidence only. It does not prove v0.8 clean pass,
+minimum working-state PASS, external validation readiness PASS, product
+readiness, external consumer PASS, runtime/API/frontend/E2E PASS, live Agent
+smoke PASS, full autonomous PASS, or generation-quality PASS.
 
 ## Goal Entry
 
@@ -68,17 +69,21 @@ evidence expectations that make external validation possible:
 - stop rules that prevent internal tests from being overclaimed as external
   validation PASS.
 
-## Handoff Risk From v0.7
+## Handoff Baseline From v0.7
 
-The v0.7 parent route is historically `final / closeout complete`, but
+The v0.7 parent route is historical `final / closeout complete`, and
 `docs/testing/results/2026-06-02-v0.7-code-review.md` recorded post-closeout
 issues across checker, schema, manifest, and projection read-model semantics.
 
-Those findings block clean pass, minimum working-state PASS, external
-validation readiness PASS, product PASS, and any v0.8 readiness claim that
-depends on the affected v0.7 contracts until they are repaired with
-current-session evidence or explicitly recorded as blockers in the active v0.8
-package.
+The current v0.7 state records `0.7.9-v07-cr-checker-schema-repair` as review
+complete. `docs/testing/results/2026-06-02-v0.7-overall-validation.md` records
+clean pass for the current v0.7 checker/docs validation scope and clears the
+V07-CR checker/docs blocker gate.
+
+That repair evidence remains a bounded handoff baseline. It does not claim
+external suite PASS, projection readiness PASS, product readiness PASS,
+runtime/API/frontend/E2E PASS, live Agent smoke PASS, full autonomous
+runner/full-suite PASS, or v0.8 readiness.
 
 ## Scope
 
@@ -138,7 +143,7 @@ starts, then complete review before implementation.
 ### `0.8.0-v0.8-planning-and-v0.7-handoff-baseline`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: create the v0.8 documentation root, goal-campaign controls, v0.7
   handoff-risk baseline, minimum working-state boundary, external-validation
   boundary, and package sequence.
@@ -146,28 +151,28 @@ starts, then complete review before implementation.
 ### `0.8.1-minimum-working-state-contract`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: define what v0.8 may call a minimum normally working WorldEngine
   state without claiming product readiness or external validation PASS.
 
 ### `0.8.2-core-observable-surface-boundary`
 
-- Type: documentation-only or mixed
-- Status: planned
+- Type: documentation-only
+- Status: review complete
 - Purpose: define the public runtime, event, generation, Agent loop,
   memory-context, and read-model surfaces an external validator may observe.
 
 ### `0.8.3-generation-runtime-agent-loop-readiness`
 
 - Type: mixed or code
-- Status: planned
+- Status: review complete
 - Purpose: harden the core-side minimum generation -> runtime -> Agent loop
   readiness slices if a reviewed child package authorizes implementation.
 
 ### `0.8.4-external-validation-handoff-contract`
 
-- Type: documentation-only or mixed
-- Status: planned
+- Type: documentation-only
+- Status: review complete
 - Purpose: define what WorldEngine exposes or records for an external
   validation function, without defining how the external validator connects or
   operates.
@@ -175,51 +180,58 @@ starts, then complete review before implementation.
 ### `0.8.5-core-working-state-smoke-evidence`
 
 - Type: mixed validation package
-- Status: planned
+- Status: review complete
 - Purpose: run core-side smoke and compatibility evidence for in-scope public
   engine surfaces without running or implementing the external validator.
 
 ### `0.8.6-v0.8-evidence-and-boundary-audit`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: audit evidence, compatibility surfaces, unresolved findings, and
   external-validation leakage risks before release-candidate packaging.
 
 ### `0.8.7-v0.8-release-candidate-bundle`
 
 - Type: documentation-only
-- Status: planned
+- Status: review complete
 - Purpose: prepare a release-candidate bundle from reviewed evidence without
   declaring final readiness beyond current-session evidence.
 
 ### `0.8.8-v0.8-final-closeout`
 
 - Type: documentation-only
-- Status: planned
+- Status: final / closeout complete
 - Purpose: mark v0.8 final only after reviewed package completion, evidence
   consistency checks, scope review, blocker classification, and evaluator
   approval.
 
 ## Current State
 
-Active child package: none.
+Active child package: `0.8.8-v0.8-final-closeout`.
 
-Current route: parent documentation drafted / ready for review.
+Current route: `final / closeout complete`.
 
 Implementation authorization: no.
 
 Evidence execution authorization: no.
 
-No runtime, schema, API, frontend, test implementation, fixture, migration,
+Audit execution authorization: no.
+
+Final verification commands listed in
+`0.8.8-v0.8-final-closeout/test-plan.md` ran and evidence is recorded.
+Closeout evaluator review passed for the reviewed v0.8 package scope. No
+runtime, schema, API, frontend, test implementation, fixture, migration,
 external repository, generated result, external validation implementation, or
 `backend/worldengine/` implementation work is authorized by this parent state.
 
 ## Handoff Baseline
 
-- v0.7 status: historical `final / closeout complete`, with post-closeout
-  code-review blockers recorded.
-- v0.7 evidence is handoff evidence only, not current v0.8 PASS evidence.
+- v0.7 status: historical `final / closeout complete`, with `0.7.9`
+  checker/docs repair complete for the current v0.7 checker/docs validation
+  scope.
+- v0.7 `0.7.9` repair evidence is handoff evidence only, not current v0.8 PASS
+  evidence.
 - v0.7 does not prove v0.8 minimum working-state readiness, external
   validation readiness, product readiness, or external consumer PASS.
 - v0.8 starts from its own package review gates and does not inherit
@@ -227,9 +239,21 @@ external repository, generated result, external validation implementation, or
 
 ## Final Assessment State
 
-Current value: `planned / ready for review`.
+Current value: `final / closeout complete`.
 
-The parent v0.8 campaign docs are drafted for review. Planned `0.8.x` entries
-remain route-map specifications only. No implementation, external validation
-execution, projection app build, or readiness PASS claim is authorized by this
-state.
+The parent v0.8 campaign docs are reviewed through
+`0.8.8-v0.8-final-closeout` documentation/contract review. Planned `0.8.x`
+entries remain route-map specifications only. `0.8.4` is review complete and
+hands the external-validation handoff contract to `0.8.5`. The
+`0.8.5-core-working-state-smoke-evidence` is review complete and hands
+core-side smoke evidence to the audit package. The
+`0.8.6-v0.8-evidence-and-boundary-audit` is review complete and recommends
+release-candidate packaging. The
+`0.8.7-v0.8-release-candidate-bundle` is review complete and authorizes only
+bounded release-candidate bundle handoff to final-closeout review. The
+`0.8.8-v0.8-final-closeout` documentation/contract review passed, final
+verification commands ran, and results are recorded. Final closeout remains
+authorized for the reviewed v0.8 package scope after closeout evaluator PASS.
+External validation execution,
+projection app build, product readiness, and v0.8 readiness PASS claims remain
+unauthorized.

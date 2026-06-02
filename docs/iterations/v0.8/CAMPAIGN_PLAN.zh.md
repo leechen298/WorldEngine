@@ -1,6 +1,6 @@
 # Campaign Plan
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 ## Objective
 
@@ -26,20 +26,29 @@ application、product-specific backend，或 concrete validation worlds 的存�
 - `docs/iterations/v0.7/CAMPAIGN_PLAN.md`
 - `docs/iterations/v0.7/v0.7-plan.md`
 - `docs/testing/results/2026-06-02-v0.7-code-review.md`
+- `docs/iterations/v0.7/0.7.9-v07-cr-checker-schema-repair/review.md`
+- `docs/testing/results/2026-06-02-v0.7-overall-validation.md`
 - `docs/current-implementation.md`
 - `docs/glossary.md`
 
 ## Campaign Rules
 
 - Parent v0.8 package 保持 authoritative campaign entrypoint。
-- 当前没有 active v0.8 child package。
+- 当前没有 active v0.8 implementation child package。`0.8.5` 已 review complete。
+  `0.8.6` 已 review complete，并推荐 release-candidate packaging。`0.8.7` 已 review
+  complete，并且只授权 bounded release-candidate bundle handoff to final-closeout review。
+  `0.8.8` documentation/contract review 已完成，且
+  `0.8.8-v0.8-final-closeout/test-plan.md` 中的 final verification commands 已通过或只返回
+  allowed scan matches；closeout evaluator review 已通过，final closeout 只针对 reviewed
+  v0.8 package scope 授权。
 - `v0.8-plan.md` 中的 planned `0.8.x` entries 是 roadmap-level planned package
   specs，不授权 implementation，也不是 immutable execution scripts。
 - 每个 child 的 implementation authorization 初始为 no。
 - Mixed/code packages 必须先完成 documentation review，才能 implementation。
 - Historical v0.7 和 v0.6 evidence 只能作为 handoff context。
-- v0.7 post-closeout P1/P2 blockers 必须被 repaired、route 到 narrow repair，或在
-  affected v0.8 readiness claim 前记录为 blockers。
+- V07-CR checker/docs blocker gate 已由当前 v0.7 `0.7.9` evidence 在 checker/docs
+  validation scope 内清除。该 evidence 不得提升为 v0.8 readiness，也不得提升为任何被排除的
+  runtime/product/external-suite claim。
 - 声明 v0.8 runtime、API、frontend、E2E、build、Agent smoke、autonomous validation、
   minimum working-state PASS、external validation readiness、product readiness、
   generation-quality 或 release claims 前，必须有 current-session command evidence。
@@ -66,7 +75,7 @@ active child package review；若 implementation 或 evidence 暴露 design prob
 
 ## Cross-Child Handoff Rules
 
-- `0.8.0` hand off reviewed campaign structure、v0.7 handoff-risk handling、
+- `0.8.0` hand off reviewed campaign structure、当前 v0.7 handoff-risk handling、
   minimum working-state boundaries 和 external-validation boundaries 给 `0.8.1`。
 - `0.8.1` hand off readiness claim taxonomy 和 authorization criteria 给 `0.8.2`。
 - `0.8.2` hand off generic core observable surface semantics 给 `0.8.3`。
@@ -88,8 +97,8 @@ v0.8 只有在以下条件满足时，才可标记 `final / closeout complete`�
 - compatibility review 确认 v0.7 projection contracts、v0.6 generation、v0.5 memory、
   v0.4 Agent loop 和 v0.3 loader/runtime-context bridge 仍兼容，或只通过 reviewed
   contracts 做 additive changes。
-- v0.7 post-closeout P1/P2 blockers 已用 current-session evidence 修复，或在 active
-  v0.8 evidence 中记录为 blockers。
+- v0.7 checker/docs repair evidence 仅作为 handoff context 记录；任何剩余 out-of-scope
+  dependency blockers 都要在相关 v0.8 claim 前完成分类。
 - scope review 确认没有 external validation implementation、external application
   implementation、product UI、concrete app data、private external repo path、UI
   selector、hidden reset API、private transcript、validation oracle internal、
@@ -115,5 +124,6 @@ v0.8 只有在以下条件满足时，才可标记 `final / closeout complete`�
 - concrete application data、private app internals、UI selectors、hidden reset APIs、
   external validator connection details、oracle internals 或 external repository details
   变成 required。
-- 做 affected readiness claims 时忽略 v0.7 post-closeout blockers。
+- 把 v0.7 `0.7.9` checker/docs handoff evidence 过度声明为 v0.8 readiness，或过度声明为被排除的
+  runtime/product/external-suite pass claim。
 - README、current state、plan、review 和 closeout docs 之间 status surfaces drift。

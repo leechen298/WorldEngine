@@ -256,6 +256,61 @@ class RuntimeReadinessResult(BaseModel):
     diagnostics: List[GenerationDiagnostic] = Field(default_factory=list)
 
 
+class GenerationCoreReadinessRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    request_id: str = Field(min_length=1)
+    worldspec: Optional[Dict[str, Any]] = None
+    preview_request: Optional[GenerationPreviewRequest] = None
+    source_label: Optional[str] = Field(default=None, min_length=1)
+    event_limit: int = Field(default=20, ge=1, le=200)
+
+    @model_validator(mode="after")
+    def _exactly_one_candidate_source(self) -> "GenerationCoreReadinessRequest":
+        source_count = sum(
+            1
+            for value in (self.worldspec, self.preview_request)
+            if value is not None
+        )
+        if source_count != 1:
+            raise PydanticCustomError(
+                "invalid_core_readiness_source",
+                "core readiness requires exactly one of worldspec or preview_request",
+            )
+        return self
+
+
+class IsolatedRuntimeStepEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    tick_id: int
+    world_time_seconds: int
+    step_seconds: int
+    updated_at: Optional[str] = None
+
+
+class AgentLoopProbeEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    perception: Dict[str, Any]
+    intent: Dict[str, Any]
+    result: Dict[str, Any]
+
+
+class GenerationCoreReadinessResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    request_id: str = Field(min_length=1)
+    validation_status: Literal["passed", "failed"]
+    preview: Optional[GenerationPreviewResponse] = None
+    runtime_readiness: RuntimeReadinessResult
+    isolated_runtime_step: Optional[IsolatedRuntimeStepEvidence] = None
+    isolated_events: List[Dict[str, Any]] = Field(default_factory=list)
+    agent_loop_probe: Optional[AgentLoopProbeEvidence] = None
+    does_not_mutate_app_runtime: bool = True
+    diagnostics: List[GenerationDiagnostic] = Field(default_factory=list)
+
+
 class GenerationRegenerationRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

@@ -6,10 +6,19 @@ from copy import deepcopy
 from typing import Any, Dict, List, Optional, Set
 
 from app.core.runtime_context import build_runtime_context, summarize_runtime_context
+from app.core.event_bus import InMemoryEventLog
+from app.core.runtime_engine import RuntimeEngine
 from app.core.worldspec_loader import load_worldspec
+from app.agent.action_adapter import ActionResultAdapter
+from app.agent.loop_service import AgentLoopService
+from app.agent.perception import PerceptionBuilder
+from app.schemas.agent_loop import LoopStepRequest
 from app.schemas.world_cell import WorldCell, WorldSpec
 from app.schemas.world_generation import (
+    AgentLoopProbeEvidence,
     GenerationDiagnostic,
+    GenerationCoreReadinessRequest,
+    GenerationCoreReadinessResult,
     GenerationLineage,
     GenerationMetadata,
     GenerationPlan,
@@ -18,6 +27,7 @@ from app.schemas.world_generation import (
     GenerationPreviewResponse,
     GenerationRegenerationRequest,
     GenerationRegenerationResult,
+    IsolatedRuntimeStepEvidence,
     PlanCell,
     PlanGenerationRequest,
     PlanImportRequest,
@@ -29,6 +39,10 @@ from app.schemas.world_generation import (
     TemplateGenerationResult,
     WorldTemplate,
 )
+from app.world.dry_run import ParamDryRunValidator
+from app.world.state import WorldState
+from app.world.validation import ParamRegistry, ParamValidator
+from app.world.validation.policy import WorldValidationPolicy
 
 
 SUPPORTED_TEMPLATE_VERSIONS = {"1"}
@@ -639,6 +653,188 @@ def check_runtime_readiness(request: RuntimeReadinessRequest) -> RuntimeReadines
         runtime_context_passed=True,
         runtime_context_summary=asdict(summary),
     )
+
+
+def check_core_readiness(
+    request: GenerationCoreReadinessRequest,
+) -> GenerationCoreReadinessResult:
+    preview = None
+    worldspec_payload: Optional[Dict[str, Any]] = None
+    source_label = _public_core_readiness_source_label(
+        request.source_label or request.request_id
+    )
+
+    if request.preview_request is not None:
+        preview = preview_generation(request.preview_request)
+        if preview.validation_status == "failed" or preview.worldspec_preview is None:
+            diagnostics = deepcopy(preview.diagnostics)
+            diagnostics.append(
+                _diagnostic(
+                    "preview_failed",
+                    "core readiness was skipped because generation preview failed",
+                    "/preview_request",
+                    {"preview_request_id": preview.request_id},
+                )
+            )
+            return _failed_core_readiness_result(
+                request,
+                preview=preview,
+                diagnostics=diagnostics,
+            )
+        worldspec_payload = preview.worldspec_preview.model_dump(mode="json")
+    else:
+        worldspec_payload = deepcopy(request.worldspec) if request.worldspec is not None else None
+
+    readiness = check_runtime_readiness(
+        RuntimeReadinessRequest(
+            request_id=request.request_id,
+            worldspec=worldspec_payload or {},
+            source_label=source_label,
+        )
+    )
+    if readiness.validation_status == "failed":
+        return GenerationCoreReadinessResult(
+            request_id=request.request_id,
+            validation_status="failed",
+            preview=preview,
+            runtime_readiness=readiness,
+            diagnostics=deepcopy(readiness.diagnostics),
+        )
+
+    loader_result = load_worldspec(
+        deepcopy(worldspec_payload),
+        source_label=source_label,
+    )
+    if not loader_result.success or loader_result.loaded is None:
+        return _failed_core_readiness_result(
+            request,
+            preview=preview,
+            diagnostics=[
+                _diagnostic(
+                    error.code,
+                    error.message,
+                    error.path,
+                    {
+                        "source_type": error.source_type,
+                        "source_label": error.source_label,
+                    },
+                )
+                for error in loader_result.errors
+            ],
+        )
+
+    context_result = build_runtime_context(loader_result.loaded)
+    if not context_result.success or context_result.context is None:
+        return _failed_core_readiness_result(
+            request,
+            preview=preview,
+            diagnostics=[
+                _diagnostic(
+                    error.code,
+                    error.message,
+                    error.path,
+                    {
+                        "source_type": error.source_type,
+                        "source_label": error.source_label,
+                    },
+                )
+                for error in context_result.errors
+            ],
+        )
+
+    isolated_event_log = InMemoryEventLog()
+    isolated_world_state = WorldState()
+    isolated_runtime = RuntimeEngine(
+        event_log=isolated_event_log,
+        params_provider=isolated_world_state.get_params,
+        runtime_context=context_result.context,
+    )
+    runtime_state = isolated_runtime.step()
+    agent_loop = AgentLoopService(
+        perception_builder=PerceptionBuilder(
+            runtime_engine=isolated_runtime,
+            event_log=isolated_event_log,
+            world_state=isolated_world_state,
+        ),
+        action_adapter=ActionResultAdapter(
+            world_state=isolated_world_state,
+            event_log=isolated_event_log,
+            runtime_engine=isolated_runtime,
+            param_validator=ParamValidator(ParamRegistry.default()),
+            param_dry_run_validator=ParamDryRunValidator(
+                default_policy=WorldValidationPolicy(),
+            ),
+        ),
+    )
+    loop_response = agent_loop.step(LoopStepRequest(event_limit=request.event_limit))
+
+    return GenerationCoreReadinessResult(
+        request_id=request.request_id,
+        validation_status="passed",
+        preview=preview,
+        runtime_readiness=readiness,
+        isolated_runtime_step=IsolatedRuntimeStepEvidence(
+            tick_id=runtime_state.tick_id,
+            world_time_seconds=runtime_state.world_time_seconds,
+            step_seconds=runtime_state.step_seconds,
+            updated_at=runtime_state.updated_at,
+        ),
+        isolated_events=[
+            {
+                "id": event.id,
+                "tick_id": event.tick_id,
+                "world_time_seconds": event.world_time_seconds,
+                "type": event.type,
+                "source": event.source,
+            }
+            for event in isolated_event_log.list_page(limit=request.event_limit).items
+        ],
+        agent_loop_probe=AgentLoopProbeEvidence(
+            perception=loop_response.perception.model_dump(mode="json"),
+            intent=loop_response.intent.model_dump(mode="json"),
+            result=loop_response.result.model_dump(mode="json"),
+        ),
+        does_not_mutate_app_runtime=True,
+        diagnostics=[],
+    )
+
+
+def _failed_core_readiness_result(
+    request: GenerationCoreReadinessRequest,
+    *,
+    diagnostics: List[GenerationDiagnostic],
+    preview: Optional[GenerationPreviewResponse] = None,
+) -> GenerationCoreReadinessResult:
+    readiness = RuntimeReadinessResult(
+        request_id=request.request_id,
+        validation_status="failed",
+        loader_passed=False,
+        runtime_context_passed=False,
+        diagnostics=deepcopy(diagnostics),
+    )
+    return GenerationCoreReadinessResult(
+        request_id=request.request_id,
+        validation_status="failed",
+        preview=preview,
+        runtime_readiness=readiness,
+        diagnostics=deepcopy(diagnostics),
+    )
+
+
+def _public_core_readiness_source_label(label: str) -> str:
+    lowered = label.lower()
+    private_markers = (
+        "/",
+        "\\",
+        "private",
+        "secret",
+        "token",
+        "credential",
+        "repo",
+    )
+    if any(marker in lowered for marker in private_markers):
+        return "redacted"
+    return label
 
 
 def _regenerated_preview_request(
