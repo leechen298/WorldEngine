@@ -19,11 +19,12 @@ or private validation oracle internals.
 
 ## Result
 
-- Status: pass / fail / blocked
+- Status: pass / fail / blocked / skipped / out_of_scope
+- Status reason:
 - Observed public behavior:
 - Redacted evidence summary:
 - Compatibility notes:
-- Unresolved issues:
+- Unresolved findings:
 
 ## Forbidden Leaked Details Checklist
 
@@ -34,11 +35,12 @@ The report must not include:
 - location name.
 - story rule.
 - seed data.
+- private transcript.
 - validation oracle internal implementation.
 - UI selector.
-- hidden reset API.
+- hidden reset API detail.
 - private fixture repository path.
-- non-redacted transcript or event payload from the external consumer.
+- non-redacted event payload from the external consumer.
 
 ## Scope Review
 
@@ -46,6 +48,11 @@ The report must not include:
 - Core repository behavior affected:
 - External consumer detail redacted: yes / no
 - Follow-up required in WorldEngine core: yes / no
+- Follow-up summary:
 
 If follow-up is required, describe it as a generic engine capability or
 contract gap. Do not describe it as a consumer-specific feature request.
+
+`pass` requires redaction confirmation, public behavior evidence, redacted
+evidence summary, and no unresolved P1/P2 finding. `blocked`, `skipped`, and
+`out_of_scope` are not pass equivalents and must include a status reason.

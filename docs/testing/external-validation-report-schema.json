@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://worldengine.local/schemas/external-validation-report.schema.json",
+  "title": "WorldEngine External Validation Report",
+  "type": "object",
+  "required": [
+    "report_id",
+    "engine_reference",
+    "public_contract_surface",
+    "external_suite_id",
+    "redacted_target_id",
+    "capability_area",
+    "scenario_id",
+    "high_level_goal",
+    "status",
+    "observed_public_behavior",
+    "redacted_evidence_summary",
+    "compatibility_notes",
+    "unresolved_findings",
+    "redaction_confirmed",
+    "forbidden_detail_review",
+    "scope_review"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "public_contract_surface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "external_suite_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redacted_target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_area": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "high_level_goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": ["pass", "fail", "blocked", "skipped", "out_of_scope"]
+    },
+    "status_reason": {
+      "type": "string"
+    },
+    "observed_public_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redacted_evidence_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "compatibility_notes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unresolved_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "summary", "status"],
+        "properties": {
+          "severity": {
+            "enum": ["P1", "P2", "P3"]
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": ["open", "accepted", "resolved", "deferred"]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "redaction_confirmed": {
+      "type": "boolean"
+    },
+    "forbidden_detail_review": {
+      "type": "object",
+      "required": [
+        "concrete_external_world_name",
+        "character_name",
+        "location_name",
+        "story_rule",
+        "seed_data",
+        "private_transcript",
+        "ui_selector",
+        "hidden_reset_api_detail",
+        "private_fixture_path",
+        "validation_oracle_internal",
+        "non_redacted_external_event_payload"
+      ],
+      "properties": {
+        "concrete_external_world_name": {
+          "type": "boolean"
+        },
+        "character_name": {
+          "type": "boolean"
+        },
+        "location_name": {
+          "type": "boolean"
+        },
+        "story_rule": {
+          "type": "boolean"
+        },
+        "seed_data": {
+          "type": "boolean"
+        },
+        "private_transcript": {
+          "type": "boolean"
+        },
+        "ui_selector": {
+          "type": "boolean"
+        },
+        "hidden_reset_api_detail": {
+          "type": "boolean"
+        },
+        "private_fixture_path": {
+          "type": "boolean"
+        },
+        "validation_oracle_internal": {
+          "type": "boolean"
+        },
+        "non_redacted_external_event_payload": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "scope_review": {
+      "type": "object",
+      "required": [
+        "public_contract_exercised",
+        "core_repository_behavior_affected",
+        "external_consumer_detail_redacted",
+        "follow_up_required_in_worldengine_core"
+      ],
+      "properties": {
+        "public_contract_exercised": {
+          "type": "string",
+          "minLength": 1
+        },
+        "core_repository_behavior_affected": {
+          "type": "boolean"
+        },
+        "external_consumer_detail_redacted": {
+          "type": "boolean"
+        },
+        "follow_up_required_in_worldengine_core": {
+          "type": "boolean"
+        },
+        "follow_up_summary": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

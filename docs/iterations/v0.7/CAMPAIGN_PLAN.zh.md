@@ -1,6 +1,6 @@
 # Campaign Plan 文档
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 ## 目标
 
@@ -35,11 +35,20 @@ product 或 application-specific backend。
 
 ## Campaign 规则
 
-- v0.7 parent package 是当前唯一权威入口。
-- 当前没有 active 或 execution-approved child package。
+- v0.7 parent package 仍是 campaign 的权威入口。
+- `0.7.0-v0.7-planning-and-external-validation-boundary-baseline` 已 review complete。
+- `0.7.1-public-validation-and-projection-contracts` 已 review complete。
+- `0.7.2-validation-report-schema-and-redaction-checker` 已 review complete。
+- `0.7.3-contract-bundle-and-readiness-manifest` 已 review complete。
+- `0.7.4-projection-consumer-read-model-contracts` 已 review complete。
+- `0.7.5-quality-regression-and-compatibility-evidence` 已 review complete。
+- `0.7.6-v0.7-evidence-and-compatibility-audit` 已 review complete。
+- `0.7.7-v0.7-release-candidate-bundle` 已 review complete。
+- `0.7.8-v0.7-final-closeout` 已 review complete，并且 final closeout complete。
+- 当前没有 active v0.7 child package。
 - `v0.7-plan.md` 中 planned `0.7.x` entries 只是 roadmap-level planned package specs，不授权
   implementation，也不是不可变 execution script。
-- 未来 child package 开始前，必须创建或确认该 child 的完整 document set，并完成 review gate。
+- Closeout 后的新工作必须创建新的 reviewed package，或从下一版本自己的 reviewed iteration package 开始。
 - 每个 child 的 implementation authorization 初始为 no。
 - mixed/code packages 必须先完成 documentation review，再进入 implementation。
 - 历史 v0.6 evidence 只能作为 handoff context。
@@ -68,18 +77,18 @@ child package review；如果 implementation 或 evidence 发现 design problem�
 
 ## 跨 Child Handoff 规则
 
-- 未来 `0.7.0` child 可以把 reviewed campaign structure、v0.6 handoff 和 external-consumer boundaries 交给
+- `0.7.0` 已把 reviewed campaign structure、v0.6 handoff 和 external-consumer boundaries 交给
   `0.7.1`。
-- 未来 `0.7.1` child 可以把 public readiness concepts、report semantics、projection consumer boundaries 和
+- `0.7.1` 已把 public readiness concepts、report semantics、projection consumer boundaries 和
   authorization criteria 交给 `0.7.2`。
-- 未来 `0.7.2` child 可以把 report schema/checker 与 redaction evidence 交给 `0.7.3`。
-- 未来 `0.7.3` child 可以把 public contract bundle 和 readiness manifest semantics 交给 `0.7.4`。
-- 未来 `0.7.4` child 可以把 projection consumer read-model contracts 和任何已授权 implementation evidence 交给
+- `0.7.2` 已把 report schema/checker 与 redaction evidence 交给 `0.7.3`。
+- `0.7.3` 已把 public contract bundle 和 readiness manifest semantics 交给 `0.7.4`。
+- `0.7.4` 已把 projection consumer read-model contracts 和已授权 implementation evidence 交给
   `0.7.5`。
-- 未来 `0.7.5` child 可以把 regression 与 compatibility evidence 交给 audit。
-- 未来 `0.7.6` child 可以把 evidence 和 compatibility review 交给 release candidate。
-- 未来 `0.7.7` child 可以把 release-candidate findings 交给 final closeout。
-- 未来 `0.7.8` child 只有在 evidence consistency 和 review gates 通过后，才可以标记 final status。
+- `0.7.5` 已把 regression 与 compatibility evidence 交给 audit。
+- `0.7.6` 已把 evidence 和 compatibility review 交给 release candidate。
+- `0.7.7` 已把 release-candidate findings 交给 final closeout。
+- `0.7.8` 已在 evidence consistency 和 review gates 通过后标记 final status。
 
 ## Campaign Exit Criteria 出口标准
 

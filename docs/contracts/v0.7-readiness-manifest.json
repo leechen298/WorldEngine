@@ -1,0 +1,126 @@
+{
+  "manifest_id": "worldengine-v0.7-readiness-manifest",
+  "manifest_version": "0.7.3",
+  "engine_reference": {
+    "version": "v0.7",
+    "source": "reviewed-v0.7-campaign-working-tree"
+  },
+  "generated_from": "reviewed v0.7 public contracts and redacted report checker evidence",
+  "contract_surfaces": [
+    {
+      "id": "external-fixture-runner-contract",
+      "path": "docs/contracts/external-fixture-runner-contract.md",
+      "status": "contract ready",
+      "capability_area": "external-validation-boundary",
+      "summary": "Defines how external fixture runners consume public WorldEngine contracts."
+    },
+    {
+      "id": "external-validation-readiness-contract",
+      "path": "docs/contracts/external-validation-readiness-contract.md",
+      "status": "contract ready",
+      "capability_area": "external-validation-readiness",
+      "summary": "Defines readiness taxonomy and redacted validation report semantics."
+    },
+    {
+      "id": "projection-consumer-contract",
+      "path": "docs/contracts/projection-consumer-contract.md",
+      "status": "contract ready",
+      "capability_area": "projection-consumer-boundary",
+      "summary": "Defines public read-only projection consumer boundaries."
+    }
+  ],
+  "schema_surfaces": [
+    {
+      "id": "external-validation-report-schema",
+      "path": "docs/testing/external-validation-report-schema.json",
+      "status": "report format ready",
+      "capability_area": "redacted-report-validation",
+      "summary": "Machine-readable redacted external validation report schema."
+    }
+  ],
+  "template_surfaces": [
+    {
+      "id": "validation-report-template",
+      "path": "docs/validation-report-template.md",
+      "status": "report format ready",
+      "capability_area": "redacted-report-validation",
+      "summary": "Human-readable redacted validation report template."
+    }
+  ],
+  "capability_areas": [
+    {
+      "id": "external-validation-boundary",
+      "label": "External validation boundary",
+      "summary": "External suites consume public contracts and return redacted evidence."
+    },
+    {
+      "id": "external-validation-readiness",
+      "label": "External validation readiness",
+      "summary": "Public readiness taxonomy and redacted report semantics."
+    },
+    {
+      "id": "redacted-report-validation",
+      "label": "Redacted report validation",
+      "summary": "Schema and checker support for machine-checkable redacted reports."
+    },
+    {
+      "id": "projection-consumer-boundary",
+      "label": "Projection consumer boundary",
+      "summary": "Read-only public boundary for future projection consumers."
+    }
+  ],
+  "readiness_claim_values": [
+    "contract ready",
+    "report format ready",
+    "core-side compatibility ready",
+    "external suite pass",
+    "blocked",
+    "skipped",
+    "out of scope",
+    "projection consumer contract ready",
+    "projection report format ready",
+    "external consumer pass"
+  ],
+  "evidence_references": [
+    {
+      "id": "v0.7.1-contract-review",
+      "status": "contract ready",
+      "path": "docs/iterations/v0.7/0.7.1-public-validation-and-projection-contracts/review.md",
+      "summary": "Review evidence for public readiness and projection contract surfaces.",
+      "historical": false
+    },
+    {
+      "id": "v0.7.2-report-checker-review",
+      "status": "report format ready",
+      "path": "docs/iterations/v0.7/0.7.2-validation-report-schema-and-redaction-checker/review.md",
+      "summary": "Review evidence for the report schema, checker, tests, and template alignment.",
+      "historical": false
+    },
+    {
+      "id": "external-validation-report-checker",
+      "status": "report format ready",
+      "path": "tools/testing/validate_external_validation_report.py",
+      "summary": "Command-line checker for redacted external validation reports.",
+      "historical": false
+    },
+    {
+      "id": "v0.6-reliability-validation-handoff",
+      "status": "out of scope",
+      "path": "docs/testing/results/2026-06-01-v0.6-reliability-validation.md",
+      "summary": "Historical v0.6 handoff evidence; not current v0.7 PASS evidence.",
+      "historical": true
+    }
+  ],
+  "compatibility_notes": [
+    "Manifest entries are public repository-relative paths.",
+    "Historical v0.6 evidence is handoff context only.",
+    "External suite PASS and external consumer PASS are taxonomy values, not accepted evidence statuses in this manifest.",
+    "Runtime, API, frontend, persistence, migration, and backend/worldengine behavior are unchanged by this manifest."
+  ],
+  "redaction_rules": [
+    "Do not include concrete external world names.",
+    "Do not include character names, location names, story rules, or seed data.",
+    "Do not include UI selectors, hidden reset API details, private fixture paths, validation oracle internals, transcripts, or non-redacted event payloads.",
+    "Use abstract identifiers and public repository-relative paths only."
+  ]
+}

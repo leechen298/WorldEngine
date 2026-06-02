@@ -1,6 +1,6 @@
 # v0.7 External Validation Readiness / Projection Consumer Readiness 文档
 
-状态：planned / ready for review
+状态：final / closeout complete
 类型：Codex `/goal` development campaign 与迭代包根目录
 
 ## 目标
@@ -73,7 +73,12 @@ v0.7 禁止：
 
 - Parent goal-campaign documents：`README.md`、`v0.7-plan.md`、`GOAL_RUNNER.md`、
   `CURRENT_STATE.md`、`CAMPAIGN_PLAN.md`、`review.md`，以及中文镜像。
-- 贯穿 final closeout 的 planned child package roadmap，但只作为 non-authoritative planned package specs。
+- Reviewed `0.7.0` documentation-only child package documents，以及中文镜像，用于 planning and
+  external-validation boundary baseline。
+- Reviewed `0.7.5` quality regression and compatibility evidence package，以及中文镜像。
+- Reviewed `0.7.6` evidence and compatibility audit package，以及中文镜像。
+- Reviewed `0.7.7` release-candidate bundle package，以及中文镜像。
+- Reviewed `0.7.8` final closeout package，以及中文镜像。
 - `/goal` 执行所需的 subagent/evaluator checkpoint rules。
 - documentation-stage review evidence，证明本次 drafting 没有修改 runtime、schema、API、
   frontend、test implementation、fixture、migration、external repository、generated result 或
@@ -91,7 +96,7 @@ package reviewed 后才能继续。
 ### `0.7.0-v0.7-planning-and-external-validation-boundary-baseline`
 
 - 类型：documentation-only
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：创建 v0.7 documentation root、goal-campaign controls、version plan、
   external-validation/projection boundary、compatibility baseline 和 v0.6 handoff mapping，不修改
   implementation files。
@@ -99,65 +104,67 @@ package reviewed 后才能继续。
 ### `0.7.1-public-validation-and-projection-contracts`
 
 - 类型：documentation-only
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：在任何 code 或 checker work 前，定义 public external-validation readiness concepts、
   redacted report semantics、projection consumer boundaries 与 authorization criteria。
 
 ### `0.7.2-validation-report-schema-and-redaction-checker`
 
 - 类型：mixed or code
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：在 `0.7.1` contracts reviewed 后，为 redacted validation evidence 实现通用 report
   schema/checker support。
 
 ### `0.7.3-contract-bundle-and-readiness-manifest`
 
 - 类型：mixed or code
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：暴露 external suites 可消费的 generic contract bundle 和 readiness manifest，不依赖
   private repository knowledge。
 
 ### `0.7.4-projection-consumer-read-model-contracts`
 
 - 类型：mixed or code
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：定义并在授权后暴露 runtime、events、Agent loop、memory context summaries 和 generation
   readiness 的 read-only projection consumer payload，不构建 product application。
 
 ### `0.7.5-quality-regression-and-compatibility-evidence`
 
 - 类型：mixed or code
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：为 v0.7 public engine contracts 运行并记录 generic regression 与 compatibility evidence。
 
 ### `0.7.6-v0.7-evidence-and-compatibility-audit`
 
 - 类型：documentation-only
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：审计 v0.7 implementation evidence、compatibility surfaces、unresolved findings 和
   release-candidate readiness。
 
 ### `0.7.7-v0.7-release-candidate-bundle`
 
 - 类型：documentation-only
-- 状态：roadmap planned / child docs not created
+- 状态：review complete
 - 目的：从 reviewed implementation 和 audit evidence 准备 release-candidate bundle，但不声明
   final release。
 
 ### `0.7.8-v0.7-final-closeout`
 
 - 类型：documentation-only
-- 状态：roadmap planned / child docs not created
+- 状态：review complete / final closeout complete
 - 目的：只有在 release-candidate approval、evidence consistency checks、scope review 和 unresolved
   finding classification 完成后，才标记 v0.7 final / closeout complete。
 
 ## 当前状态
 
-Active child package：none。
+Active child package：无；`0.7.8-v0.7-final-closeout` 已完成 final closeout。
 
-Current route：`parent-documentation-review-needed`。
+Current route：`complete`。
 
 Implementation authorization：no。
+
+Evidence execution authorization：final verification 后已关闭。
 
 ## Handoff 基线
 
@@ -171,8 +178,10 @@ Implementation authorization：no。
 
 ## 最终评估状态
 
-Current value：`planned / ready for review`。
+Current value：`final / closeout complete`。
 
-当前只有 v0.7 parent campaign docs 已经起草，等待 review。没有任何 child package directory 是当前权威
-execution contract。当前状态不授权 runtime、schema、API、frontend、test implementation、fixture、migration、
-external repository、generated result 或 legacy implementation work。
+v0.7 parent campaign docs 已通过 read-only parent documentation review，且 `0.7.0`、`0.7.1`
+、`0.7.2`、`0.7.3`、`0.7.4`、`0.7.5`、`0.7.6`、`0.7.7` 与 `0.7.8`
+已 review complete。`0.7.8` final verification 和 evaluator review 已通过。该 final state 不授权
+runtime、schema、API、frontend、test implementation、fixture、migration、external repository、
+generated result 或 legacy implementation work。

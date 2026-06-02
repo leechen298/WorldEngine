@@ -1,6 +1,6 @@
 # Goal Runner
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 ## Goal Entry
 
@@ -12,13 +12,16 @@ Natural-language goals covered by this campaign include:
 编写 v0.7 文档
 ```
 
+Current v0.7 route is complete. Post-closeout work must start from a new
+reviewed package or the next version's reviewed iteration package.
+
 ## Route Selection
 
 1. Read `CURRENT_STATE.md`.
 2. If `CURRENT_STATE.md` does not point to a child package, remain in parent
    documentation review. Use `v0.7-plan.md` only as a roadmap of planned
    package specs.
-3. If future work selects a planned child package, first create or confirm that
+3. If `CURRENT_STATE.md` points to a child package, first create or confirm that
    child's complete package document set, then read it in this order:
    - `README.md`
    - `intent.md`

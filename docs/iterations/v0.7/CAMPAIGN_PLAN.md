@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: planned / ready for review
+Status: final / closeout complete
 
 ## Objective
 
@@ -36,13 +36,23 @@ product, or application-specific backend.
 
 ## Campaign Rules
 
-- The parent v0.7 package is the only current authoritative entrypoint.
-- No child package is currently active or execution-approved.
+- The parent v0.7 package remains the authoritative campaign entrypoint.
+- `0.7.0-v0.7-planning-and-external-validation-boundary-baseline` is review
+  complete.
+- `0.7.1-public-validation-and-projection-contracts` is review complete.
+- `0.7.2-validation-report-schema-and-redaction-checker` is review complete.
+- `0.7.3-contract-bundle-and-readiness-manifest` is review complete.
+- `0.7.4-projection-consumer-read-model-contracts` is review complete.
+- `0.7.5-quality-regression-and-compatibility-evidence` is review complete.
+- `0.7.6-v0.7-evidence-and-compatibility-audit` is review complete.
+- `0.7.7-v0.7-release-candidate-bundle` is review complete.
+- `0.7.8-v0.7-final-closeout` is review complete and final closeout complete.
+- No v0.7 child package remains active.
 - The planned `0.7.x` entries in `v0.7-plan.md` are roadmap-level planned
   package specs. They do not authorize implementation and are not immutable
   execution scripts.
-- When a future child package starts, create or confirm that child's full
-  document set and complete the review gate before implementation.
+- Any post-closeout work requires a new reviewed package or the next version's
+  reviewed iteration package.
 - Implementation authorization starts as no for every child.
 - Mixed/code packages must complete documentation review before
   implementation.
@@ -76,20 +86,20 @@ design problem.
 
 ## Cross-Child Handoff Rules
 
-- A future `0.7.0` child may hand off reviewed campaign structure, v0.6 handoff, and
+- `0.7.0` handed off reviewed campaign structure, v0.6 handoff, and
   external-consumer boundaries to `0.7.1`.
-- A future `0.7.1` child may hand off public readiness concepts, report semantics, projection
+- `0.7.1` handed off public readiness concepts, report semantics, projection
   consumer boundaries, and authorization criteria to `0.7.2`.
-- A future `0.7.2` child may hand off report schema/checker and redaction evidence to `0.7.3`.
-- A future `0.7.3` child may hand off public contract bundle and readiness manifest semantics to
+- `0.7.2` handed off report schema/checker and redaction evidence to `0.7.3`.
+- `0.7.3` handed off public contract bundle and readiness manifest semantics to
   `0.7.4`.
-- A future `0.7.4` child may hand off projection consumer read-model contracts and any approved
+- `0.7.4` handed off projection consumer read-model contracts and approved
   implementation evidence to `0.7.5`.
-- A future `0.7.5` child may hand off regression and compatibility evidence to audit.
-- A future `0.7.6` child may hand off evidence and compatibility review to release candidate.
-- A future `0.7.7` child may hand off release-candidate findings to final closeout.
-- A future `0.7.8` child may mark final status only after evidence
-  consistency and review gates pass.
+- `0.7.5` handed off regression and compatibility evidence to audit.
+- `0.7.6` handed off evidence and compatibility review to release candidate.
+- `0.7.7` handed off release-candidate findings to final closeout.
+- `0.7.8` marked final status after evidence consistency and review gates
+  passed.
 
 ## Campaign Exit Criteria
 

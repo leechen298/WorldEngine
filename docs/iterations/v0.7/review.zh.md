@@ -1,18 +1,37 @@
 # Review 评审
 
-状态：planned / ready for review
+状态：final / closeout complete
 
-implementation_authorized：no
+parent_implementation_authorized：no
+active_child_package：无
+active_child_implementation_authorized：no
+active_child_evidence_execution_authorized：final verification 后已关闭
 
-## 范围修正
+## Parent Review Completion
 
-本 review 记录修正后的 v0.7 文档范围：
+v0.7 parent documentation review 已完成，可用于 route selection。两个 current-session read-only
+subagents 复核 parent package，未发现 P0/P1/P2/P3 blocker：
 
-- 当前 v0.7 的权威产物只有 version-level package。
-- Planned child packages 只作为 `v0.7-plan.md` 中的路线图规格存在。
-- 当前没有任何具体 child package directory 是权威、active 或 execution-approved。
-- 未来启动 child package 时，必须当时创建或确认该 child 的完整 document set，并通过
-  review 后才能 implementation。
+- Parent campaign evaluator：PASS。Evaluator 确认 parent route/status 一致、implementation
+  authorization 关闭、child packages 仍只是 roadmap specs，并且选择 `0.7.0` 前没有 required fixes。
+- Chinese mirror and file-scope evaluator：PASS。Evaluator 确认 mirror semantics、选择前没有 child
+  package files、没有 pass/final overclaims，并且 parent review completion 没有 mirror blocker。
+
+该 review completion 只授权选择并起草 documentation-only
+`0.7.0-v0.7-planning-and-external-validation-boundary-baseline` child package。
+它不授权 runtime、schema、API、frontend、backend test、checker、fixture、migration、external
+repository、generated result 或 `backend/worldengine/` implementation changes。
+
+## Parent-Only Scope Correction Before Child Selection
+
+本 review 记录 `0.7.0` 被选择之前 parent-only review pass 中修正后的 v0.7 文档范围：
+
+- 在 parent-only review 时，v0.7 的权威产物只有 version-level package。
+- 在 parent-only review 时，planned child packages 只作为 `v0.7-plan.md` 中的路线图规格存在。
+- Campaign 后续已完成 `0.7.0` 到 `0.7.8`。
+- Final closeout 后没有 active v0.7 child package。
+- Closeout 后的新工作必须创建新的 reviewed package，或从下一版本自己的 reviewed
+  iteration package 开始。
 
 ## Changed Files 变更文件
 
@@ -33,13 +52,17 @@ Version-level v0.7 documentation files：
 
 Removed from scope：
 
-- 提前创建的 `0.7.0` child package files 与空目录。
+- earlier parent-only drafting pass 中提前创建的 `0.7.0` child package files 与空目录。当前
+  `0.7.0` child package 是 parent review 完成后重新创建的。
 - 提前创建的 `0.7.1` child package files 与空目录。
 
 本次 drafting 不授权 runtime、schema、API、frontend、backend test、checker implementation、fixture、
 migration、external repository、generated result 或 `backend/worldengine/` implementation files。
 
 ## Commands Run 已运行命令
+
+本 section 中的 command evidence 属于 `0.7.0` 被选择前的 parent-only review pass。当前 `0.7.0`
+child evidence 记录在 child package review 中。
 
 ```bash
 git status --short --branch
@@ -251,8 +274,8 @@ loop、memory、generation、fixture、migration、checker 和 legacy behavior �
 
 ## Scope Review 范围评审
 
-v0.7 parent docs 已明确 child packages 只是路线图规格。`CURRENT_STATE.md` 记录没有 active
-child package，也没有 implementation authorization。
+Parent-only review 确认 child packages 在选择前只是路线图规格。当前 `CURRENT_STATE.md` 已记录
+v0.7 为 final / closeout complete，没有 active child，也没有 implementation authorization。
 
 `v0.7-plan.md` 中的 `0.7.x` sections 只是 roadmap planned package specs，不是 active child
 package documents、implementation authorization 或 immutable execution scripts。未来 implementation 如果发现
@@ -271,14 +294,47 @@ design gap，必须停止实现，直到 active child contract/design/test-plan/
 
 修复后的 verification 确认没有 unresolved P1/P2/P3。
 
+Later child-package review evidence：
+
+- `0.7.0-v0.7-planning-and-external-validation-boundary-baseline`：review complete，
+  documentation-only，implementation authorization closed，并已 hand off to `0.7.1`。
+- `0.7.1-public-validation-and-projection-contracts`：review complete，documentation-only，
+  implementation authorization closed，added reviewed public contracts under `docs/contracts/`，并已
+  hand off to `0.7.2`。
+- `0.7.2-validation-report-schema-and-redaction-checker`：reviewed child
+  package docs 已存在，approved schema/checker/template/test scope 已实现，并且 package 已
+  review complete。
+- `0.7.3-contract-bundle-and-readiness-manifest`：reviewed child package docs
+  已存在，approved manifest schema/json/checker/test scope 已实现，并且 package 已
+  review complete。
+- `0.7.4-projection-consumer-read-model-contracts`：reviewed child package
+  docs 已存在，approved projection read-model contract/checker/test scope 已实现，并且
+  package 已 review complete。
+- `0.7.5-quality-regression-and-compatibility-evidence`：review complete，记录了
+  evidence matrix 和累计 compatibility/scope evidence。
+- `0.7.6-v0.7-evidence-and-compatibility-audit`：review complete，记录了 audit
+  report 与 evidence compatibility findings。
+- `0.7.7-v0.7-release-candidate-bundle`：review complete，记录了 release-candidate
+  summary。
+- `0.7.8-v0.7-final-closeout`：final verification、evaluator PASS 和 parent status
+  updates 后 review complete / final closeout complete。
+- Final parent-status evaluator：parent updates 后 PASS。Parent final status
+  surfaces 已与 `0.7.8` final closeout 对齐，并保留 explicit exclusions。
+- Final Chinese mirror evaluator：parent updates 后 PASS。Parent 和 `0.7.8`
+  Chinese mirrors 对齐，且没有 stale selected-child、package-docs-needed 或
+  pending-evaluator status。
+
 ## Unresolved Findings 未解决问题
 
 - P1：无。
 - P2：无。
-- P3：child package document sets 按设计留到未来处理。每个未来 child 都必须在启动时创建或确认，
-  并完成 review。
+- P3：无。
 
 ## Final Assessment 最终评估
 
-v0.7 version-level documentation 作为 parent package 已 ready for review。当前没有任何具体
-child package directory 是权威、review-complete 或 implementation-authorized。
+v0.7 version-level documentation 和 `0.7.0` 到 `0.7.8` 全部 child packages 均已
+review complete。`0.7.8-v0.7-final-closeout` 已通过 final verification 和 evaluator
+review，parent status surfaces 已更新。v0.7 在 `CURRENT_STATE.md` 和 `0.7.8`
+closeout evidence 记录的 explicit exclusions 下为 final / closeout complete。该 final
+state 不授权 runtime、schema、API、frontend、test implementation、fixture、migration、
+external repository、generated result 或 `backend/worldengine/` implementation work。

@@ -1,6 +1,6 @@
 # v0.7 External Validation Readiness / Projection Consumer Readiness
 
-Status: planned / ready for review
+Status: final / closeout complete
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
@@ -82,8 +82,22 @@ Forbidden v0.7 scope:
 - Parent goal-campaign documents: `README.md`, `v0.7-plan.md`,
   `GOAL_RUNNER.md`, `CURRENT_STATE.md`, `CAMPAIGN_PLAN.md`, and `review.md`,
   with Chinese mirrors.
-- Planned child package roadmap through final closeout, recorded as
-  non-authoritative planned package specs only.
+- Reviewed `0.7.0` documentation-only child package documents, with Chinese
+  mirrors, for the planning and external-validation boundary baseline.
+- Reviewed `0.7.1` documentation-only public readiness and projection
+  contract package, with Chinese mirrors.
+- Reviewed `0.7.2` mixed package documents, with Chinese mirrors, authorizing
+  only the report schema/checker/template/test implementation scope.
+- Reviewed `0.7.3` mixed contract bundle and readiness manifest package, with
+  Chinese mirrors.
+- Reviewed `0.7.4` mixed projection read-model contract package, with Chinese
+  mirrors.
+- Reviewed `0.7.5` quality regression and compatibility evidence package,
+  with Chinese mirrors.
+- Reviewed `0.7.6` evidence and compatibility audit package, with Chinese
+  mirrors.
+- Reviewed `0.7.7` release-candidate bundle package, with Chinese mirrors.
+- Reviewed `0.7.8` final closeout package, with Chinese mirrors.
 - Explicit subagent/evaluator checkpoint rules for `/goal` execution.
 - Documentation-stage review evidence proving this drafting pass does not
   modify runtime, schema, API, frontend, test implementation, fixture,
@@ -104,7 +118,7 @@ a design gap, stop implementation, update the active child's
 ### `0.7.0-v0.7-planning-and-external-validation-boundary-baseline`
 
 - Type: documentation-only
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: create the v0.7 documentation root, goal-campaign controls,
   version plan, external-validation/projection boundary, compatibility
   baseline, and v0.6 handoff mapping without changing implementation files.
@@ -112,7 +126,7 @@ a design gap, stop implementation, update the active child's
 ### `0.7.1-public-validation-and-projection-contracts`
 
 - Type: documentation-only
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: define public external-validation readiness concepts, redacted
   report semantics, projection consumer boundaries, and authorization criteria
   before any code or checker work.
@@ -120,21 +134,21 @@ a design gap, stop implementation, update the active child's
 ### `0.7.2-validation-report-schema-and-redaction-checker`
 
 - Type: mixed or code
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: implement generic report schema/checker support for redacted
   validation evidence after `0.7.1` contracts are reviewed.
 
 ### `0.7.3-contract-bundle-and-readiness-manifest`
 
 - Type: mixed or code
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: expose a generic contract bundle and readiness manifest that
   external suites can consume without private repository knowledge.
 
 ### `0.7.4-projection-consumer-read-model-contracts`
 
 - Type: mixed or code
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: define and, if authorized, expose read-only projection consumer
   payloads for runtime, events, Agent loop, memory context summaries, and
   generation readiness without building a product application.
@@ -142,39 +156,42 @@ a design gap, stop implementation, update the active child's
 ### `0.7.5-quality-regression-and-compatibility-evidence`
 
 - Type: mixed or code
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: run and record generic regression and compatibility evidence for
   public engine contracts touched by v0.7.
 
 ### `0.7.6-v0.7-evidence-and-compatibility-audit`
 
 - Type: documentation-only
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: audit v0.7 implementation evidence, compatibility surfaces,
   unresolved findings, and release-candidate readiness.
 
 ### `0.7.7-v0.7-release-candidate-bundle`
 
 - Type: documentation-only
-- Status: roadmap planned / child docs not created
+- Status: review complete
 - Purpose: prepare a release-candidate bundle from reviewed implementation and
   audit evidence without declaring final release.
 
 ### `0.7.8-v0.7-final-closeout`
 
 - Type: documentation-only
-- Status: roadmap planned / child docs not created
+- Status: review complete / final closeout complete
 - Purpose: mark v0.7 final / closeout complete only after release-candidate
   approval, evidence consistency checks, scope review, and unresolved finding
   classification.
 
 ## Current State
 
-Active child package: none.
+Active child package: none; `0.7.8-v0.7-final-closeout` completed final
+closeout.
 
-Current route: `parent-documentation-review-needed`.
+Current route: `complete`.
 
 Implementation authorization: no.
+
+Evidence execution authorization: closed after final verification.
 
 ## Handoff Baseline
 
@@ -190,10 +207,11 @@ Implementation authorization: no.
 
 ## Final Assessment State
 
-Current value: `planned / ready for review`.
+Current value: `final / closeout complete`.
 
-Only the parent v0.7 campaign docs are drafted for review. No child package
-directory is currently an authoritative execution contract. No runtime,
-schema, API, frontend, test implementation, fixture, migration, external
-repository, generated result, or legacy implementation work is authorized by
-this state.
+The parent v0.7 campaign docs passed read-only parent documentation review and
+`0.7.0`, `0.7.1`, `0.7.2`, `0.7.3`, `0.7.4`, `0.7.5`, `0.7.6`, `0.7.7`,
+and `0.7.8` are review complete. Final verification and evaluator review
+passed in `0.7.8`. No runtime, schema, API, frontend, test implementation,
+fixture, migration, external repository, generated result, or legacy
+implementation work is authorized by this final state.

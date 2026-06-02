@@ -1,0 +1,162 @@
+{
+  "contract_id": "worldengine-v0.7-projection-read-model-contract",
+  "contract_version": "0.7.4",
+  "source_contract": "docs/contracts/projection-consumer-contract.md",
+  "read_model_families": {
+    "runtime_summary": {
+      "id": "runtime_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "runtime_id",
+        "world_ref",
+        "tick_id",
+        "status",
+        "summary",
+        "event_type_counts",
+        "public_contract_refs",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose runtime identifiers and bounded status summaries only.",
+        "Do not expose concrete world content, private fixture paths, or event payloads."
+      ],
+      "no_write_capability": true
+    },
+    "event_timeline_summary": {
+      "id": "event_timeline_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "timeline_id",
+        "tick_range",
+        "event_type_counts",
+        "summarized_events",
+        "redaction_status",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose event type counts and summarized event labels only.",
+        "Do not expose raw external event payloads or private transcripts."
+      ],
+      "no_write_capability": true
+    },
+    "agent_loop_summary": {
+      "id": "agent_loop_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "agent_ref",
+        "loop_step_id",
+        "perception_summary",
+        "action_summary",
+        "result_summary",
+        "status",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose bounded perception, action, and result summaries only.",
+        "Do not expose prompts, private traces, provider secrets, or hidden runner hooks."
+      ],
+      "no_write_capability": true
+    },
+    "memory_context_summary": {
+      "id": "memory_context_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "agent_ref",
+        "memory_context_id",
+        "bounded_memory_summary",
+        "memory_window_ref",
+        "redaction_status",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose bounded memory summaries and public context references only.",
+        "Do not expose raw memory records, private transcripts, or prompt traces."
+      ],
+      "no_write_capability": true
+    },
+    "generation_readiness_summary": {
+      "id": "generation_readiness_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "generation_ref",
+        "readiness_status",
+        "validation_summary",
+        "blocked_reasons",
+        "compatibility_claims",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose readiness status and compatibility summaries only.",
+        "Do not expose seed data, maps, story rules, character names, or location names."
+      ],
+      "no_write_capability": true
+    },
+    "readiness_manifest_summary": {
+      "id": "readiness_manifest_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "manifest_id",
+        "manifest_version",
+        "surface_ids",
+        "readiness_claims",
+        "redaction_status",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose public manifest identifiers and public readiness taxonomy only.",
+        "Do not turn taxonomy values into unverified PASS claims."
+      ],
+      "no_write_capability": true
+    },
+    "redacted_report_summary": {
+      "id": "redacted_report_summary",
+      "version": "0.7.4",
+      "read_only": true,
+      "allowed_fields": [
+        "report_id",
+        "schema_version",
+        "outcome_status",
+        "finding_counts",
+        "redaction_confirmed",
+        "evidence_refs"
+      ],
+      "redaction_notes": [
+        "Expose redacted report identifiers, outcome status, and finding counts only.",
+        "Do not expose concrete fixture data, UI selectors, or oracle internals."
+      ],
+      "no_write_capability": true
+    }
+  },
+  "forbidden_capabilities": [
+    "write_api",
+    "reset_api",
+    "persistence",
+    "migration",
+    "private_runner_hook",
+    "product_ui",
+    "projection_app_behavior",
+    "consumer_specific_backend_behavior",
+    "raw_memory_export",
+    "prompt_trace_export",
+    "private_transcript_export",
+    "event_payload_export"
+  ],
+  "redaction_rules": [
+    "Expose only public identifiers, public references, statuses, counts, ranges, claims, and bounded summaries.",
+    "Do not expose concrete validation worlds, maps, locations, character names, story rules, seed data, or private fixture paths.",
+    "Do not expose UI selectors, provider secrets, prompts, private traces, transcripts, raw memory records, or non-redacted event payloads.",
+    "Do not use this contract to claim projection application readiness, product readiness, external consumer PASS, runtime/API/frontend PASS, or v0.8 readiness."
+  ],
+  "compatibility_notes": [
+    "This contract is additive and read-only.",
+    "Existing runtime, API, frontend, Agent loop, memory, generation, event, persistence, and backend/worldengine behavior are unchanged.",
+    "API-backed projection surfaces require a later reviewed package.",
+    "The readiness manifest from 0.7.3 remains valid without modification."
+  ]
+}

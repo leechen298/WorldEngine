@@ -1,6 +1,6 @@
 # Goal Runner 执行器
 
-状态：planned / ready for review
+状态：final / closeout complete
 
 ## Goal 入口
 
@@ -12,12 +12,15 @@
 编写 v0.7 文档
 ```
 
+当前 v0.7 route 已完成。Closeout 后的新工作必须从新的 reviewed package 或下一版本自己的
+reviewed iteration package 开始。
+
 ## Route Selection 路由选择
 
 1. 读取 `CURRENT_STATE.md`。
 2. 如果 `CURRENT_STATE.md` 不指向 child package，则停留在 parent documentation review。`v0.7-plan.md`
    只作为 planned package specs 的 roadmap 使用。
-3. 如果未来 work 选择某个 planned child package，必须先创建或确认该 child 的完整 package document set，
+3. 如果 `CURRENT_STATE.md` 指向某个 child package，必须先创建或确认该 child 的完整 package document set，
    再按以下顺序读取：
    - `README.md`
    - `intent.md`

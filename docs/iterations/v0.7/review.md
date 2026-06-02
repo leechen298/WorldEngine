@@ -1,21 +1,44 @@
 # Review
 
-Status: planned / ready for review
+Status: final / closeout complete
 
-implementation_authorized: no
+parent_implementation_authorized: no
+active_child_package: none
+active_child_implementation_authorized: no
+active_child_evidence_execution_authorized: closed after final verification
 
-## Scope Correction
+## Parent Review Completion
 
-This review records the corrected v0.7 documentation scope:
+The parent v0.7 documentation review is complete for route-selection purposes.
+Two current-session read-only subagents reviewed the parent package and found
+no P0/P1/P2/P3 blockers:
 
-- The current authoritative v0.7 artifact is the version-level package only.
-- Planned child packages exist only as route-map specifications in
-  `v0.7-plan.md`.
-- No concrete child package directory is currently authoritative, active, or
-  execution-approved.
-- Future child package work must create or confirm that child package's full
-  document set at the time the child starts, then pass review before
-  implementation.
+- Parent campaign evaluator: PASS. The evaluator confirmed consistent parent
+  route/status, closed implementation authorization, child packages treated as
+  roadmap specs only, and no required fixes before selecting `0.7.0`.
+- Chinese mirror and file-scope evaluator: PASS. The evaluator confirmed
+  mirror semantics, no child package files before selection, no pass/final
+  overclaims, and no mirror blocker to parent review completion.
+
+This review completion authorizes selecting and drafting the documentation-only
+`0.7.0-v0.7-planning-and-external-validation-boundary-baseline` child package.
+It does not authorize runtime, schema, API, frontend, backend test, checker,
+fixture, migration, external repository, generated result, or
+`backend/worldengine/` implementation changes.
+
+## Parent-Only Scope Correction Before Child Selection
+
+This review records the corrected v0.7 documentation scope from the
+parent-only review pass before `0.7.0` was selected:
+
+- At parent-only review time, the authoritative v0.7 artifact was the
+  version-level package only.
+- At parent-only review time, planned child packages existed only as route-map
+  specifications in `v0.7-plan.md`.
+- The campaign later completed `0.7.0` through `0.7.8`.
+- No v0.7 child package remains active after final closeout.
+- Post-closeout work must create a new reviewed package or start from the next
+  version's reviewed iteration package.
 
 ## Changed Files
 
@@ -36,7 +59,9 @@ Version-level v0.7 documentation files:
 
 Removed from scope:
 
-- Premature `0.7.0` child package files and empty directory.
+- Premature `0.7.0` child package files and empty directory from the earlier
+  parent-only drafting pass. The current `0.7.0` child package was created
+  later after parent review completed.
 - Premature `0.7.1` child package files and empty directory.
 
 No runtime, schema, API, frontend, backend test, checker implementation,
@@ -45,6 +70,10 @@ fixture, migration, external repository, generated result, or
 pass.
 
 ## Commands Run
+
+The command evidence in this section belongs to the parent-only review pass
+before `0.7.0` was selected. Current `0.7.0` child evidence is recorded in the
+child package review.
 
 ```bash
 git status --short --branch
@@ -261,9 +290,10 @@ current v0.7 PASS evidence.
 
 ## Scope Review
 
-The v0.7 parent docs now explicitly state that child packages are route-map
-specifications only. `CURRENT_STATE.md` records no active child package and no
-implementation authorization.
+The parent-only review confirmed that child packages were route-map
+specifications only before selection. Current `CURRENT_STATE.md` records v0.7
+as final / closeout complete with no active child and no implementation
+authorization.
 
 The `0.7.x` sections in `v0.7-plan.md` are roadmap planned package specs only.
 They are not active child package documents, implementation authorization, or
@@ -285,16 +315,51 @@ Two read-only subagents reviewed the scope repair:
 
 Post-fix verification confirms no unresolved P1/P2/P3 remain.
 
+Later child-package review evidence:
+
+- `0.7.0-v0.7-planning-and-external-validation-boundary-baseline`: review
+  complete, documentation-only, implementation authorization closed, handed off
+  to `0.7.1`.
+- `0.7.1-public-validation-and-projection-contracts`: review complete,
+  documentation-only, implementation authorization closed, added reviewed
+  public contracts under `docs/contracts/`, and handed off to `0.7.2`.
+- `0.7.2-validation-report-schema-and-redaction-checker`: reviewed child
+  package docs exist, implementation is complete in the approved
+  schema/checker/template/test scope, and the package is review complete.
+- `0.7.3-contract-bundle-and-readiness-manifest`: reviewed child package docs
+  exist, implementation is complete in the approved manifest schema/json/checker/test
+  scope, and the package is review complete.
+- `0.7.4-projection-consumer-read-model-contracts`: reviewed child package
+  docs exist, implementation is complete in the approved projection read-model
+  contract/checker/test scope, and the package is review complete.
+- `0.7.5-quality-regression-and-compatibility-evidence`: review complete with
+  evidence matrix and cumulative compatibility/scope evidence.
+- `0.7.6-v0.7-evidence-and-compatibility-audit`: review complete with audit
+  report and evidence compatibility findings.
+- `0.7.7-v0.7-release-candidate-bundle`: review complete with
+  release-candidate summary.
+- `0.7.8-v0.7-final-closeout`: review complete and final closeout complete
+  after final verification, evaluator PASS, and parent status updates.
+- Final parent-status evaluator: PASS after parent updates. Parent final
+  status surfaces are aligned with `0.7.8` final closeout and keep explicit
+  exclusions.
+- Final Chinese mirror evaluator: PASS after parent updates. Parent and
+  `0.7.8` Chinese mirrors are aligned with no stale selected-child,
+  package-docs-needed, or pending-evaluator status.
+
 ## Unresolved Findings
 
 - P1: none.
 - P2: none.
-- P3: child package document sets remain future work by design. Each future
-  child must be created or confirmed and reviewed at the time that child
-  starts.
+- P3: none.
 
 ## Final Assessment
 
-The v0.7 version-level documentation is ready for review as a parent package
-only. No concrete child package directory is currently authoritative,
-review-complete, or implementation-authorized.
+The v0.7 version-level documentation and all `0.7.0` through `0.7.8` child
+packages are review complete. `0.7.8-v0.7-final-closeout` passed final
+verification and evaluator review, and parent status surfaces were updated.
+v0.7 is final / closeout complete with the explicit exclusions recorded in
+`CURRENT_STATE.md` and `0.7.8` closeout evidence. No runtime, schema, API,
+frontend, test implementation, fixture, migration, external repository,
+generated result, or `backend/worldengine/` implementation work is authorized
+by this final state.
