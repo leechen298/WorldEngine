@@ -55,6 +55,10 @@ verdict。
 
 - `docs/testing/v0.4-overall-test-plan.zh.md`
 - `docs/testing/v0.5-overall-test-plan.zh.md`
+- `docs/testing/v0.7-overall-test-plan.zh.md`
+- `docs/testing/v0.7-unit-api-test-cases.zh.md`
+- `docs/testing/v0.7-e2e-test-cases.zh.md`
+- `docs/testing/v0.7-agent-test-cases.zh.md`
 
 ## Agent Smoke
 
@@ -85,6 +89,7 @@ invalid-param raw evidence 通过 durable summaries 和历史提交保留。
 - `dashboard-timeline-navigation`
 - `dashboard-archive-summary`
 - `agent-loop-step`
+- `dashboard-generation-preview-readiness`
 
 E2E PASS 仍必须来自当前会话的 Playwright assertion result。
 

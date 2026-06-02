@@ -58,6 +58,10 @@ Version-level test-plan artifacts:
 
 - `docs/testing/v0.4-overall-test-plan.zh.md`
 - `docs/testing/v0.5-overall-test-plan.zh.md`
+- `docs/testing/v0.7-overall-test-plan.zh.md`
+- `docs/testing/v0.7-unit-api-test-cases.zh.md`
+- `docs/testing/v0.7-e2e-test-cases.zh.md`
+- `docs/testing/v0.7-agent-test-cases.zh.md`
 
 ## Agent Smoke
 
@@ -92,6 +96,7 @@ Implemented current E2E coverage:
 - `dashboard-timeline-navigation`
 - `dashboard-archive-summary`
 - `agent-loop-step`
+- `dashboard-generation-preview-readiness`
 
 E2E PASS still requires a current-session Playwright assertion result.
 

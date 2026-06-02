@@ -2,8 +2,8 @@
 
 Status: current-code scenario contracts
 
-This directory defines dashboard E2E scenario contracts for current v0.1
-behavior. Implemented scenarios map to deterministic Playwright assertions.
+This directory defines dashboard E2E scenario contracts for current WorldEngine
+public behavior. Implemented scenarios map to deterministic Playwright assertions.
 Contract-only scenarios describe future E2E work and must not be reported as
 passed until implemented and run.
 
@@ -26,6 +26,7 @@ evidence. Those API reads are not Agent operations.
 | `dashboard-agent-autotune` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with deterministic params-agent patch assertions. |
 | `dashboard-timeline-navigation` | `implemented` | Implemented in `frontend/e2e/dashboard.spec.ts` with generated events, pagination, and expanded-detail assertions. |
 | `agent-loop-step` | `implemented` | Implemented in `frontend/e2e/agent-loop.spec.ts` with Playwright request assertions for the v0.4 Agent Loop API. |
+| `dashboard-generation-preview-readiness` | `implemented` | Implemented in `frontend/e2e/dashboard-generation.spec.ts` with GenerationPanel valid preview/readiness and duplicate-cell diagnostics assertions. |
 
 ## Execution Rule
 
