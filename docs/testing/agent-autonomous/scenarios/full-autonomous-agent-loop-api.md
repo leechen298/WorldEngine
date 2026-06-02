@@ -74,6 +74,7 @@ Forbidden operations:
 ## Required Artifacts
 
 - `result.json`
+- `operation-log.jsonl` recording the autonomous agent's public API/CLI choices
 - `api-log.jsonl` with request and response summaries
 - `api-summary.json` with before/after params and event ids
 - `transcript.md`
@@ -82,6 +83,9 @@ Forbidden operations:
 
 Screenshots are optional for this API-only scenario unless the future runner
 also opens dashboard evidence.
+`operation-log.jsonl` records the agent's chosen steps; `api-log.jsonl` records
+request/response summaries. A future checker must accept this public API
+evidence shape before the scenario can be reported as PASS.
 
 ## PASS Source
 

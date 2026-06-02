@@ -24,11 +24,12 @@ rejects it without changing world params.
 
 ## Required Artifacts
 
-- operation log.
-- transcript.
-- screenshots.
-- console log or explicit empty-console note.
-- scorecard result.
+- `result.json`
+- `operation-log.jsonl`
+- `transcript.md`
+- `console.log` or explicit empty-console note referenced by `result.json`
+- `scorecard-summary.json`
+- `screenshots/`
 
 ## Scorecard Items
 
@@ -36,7 +37,10 @@ rejects it without changing world params.
 - Find UI error evidence.
 - Prove params are unchanged through checker evidence.
 - Operation log contains no forbidden operation.
-- Checker returns PASS.
+- Saved-result checker validates the protocol, required UI targets, score_items
+  with evidence, artifacts, and unresolved P1 boundary.
+- Invalid-param no-mutation semantics remain recorded scorecard claims unless a
+  future scenario-specific checker verifies them independently.
 
 ## PASS Source
 
@@ -44,6 +48,9 @@ Saved-result autonomous scorecard checker:
 `make validate-agent-autonomous-result RESULT_DIR=<result-dir>`.
 
 This is not a broad autonomous runner verdict; it validates recorded evidence.
+The current checker verifies referenced artifact paths are loadable; strict
+basename enforcement for the protocol filenames above is a future hardening
+item unless implemented in the checker.
 
 ## Unverified Items
 

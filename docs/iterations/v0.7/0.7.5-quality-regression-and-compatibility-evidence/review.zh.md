@@ -68,7 +68,6 @@ checker/schema evidence，且不声明这些 surfaces。
   `PASS: authorize evidence execution`。
 - Aquinas mirror/scope evaluator：
   `PASS: mirrors/scope OK for evidence execution authorization`。
-- Validation-evidence evaluator：pending。
 - Parfit validation-evidence evaluator：
   `PASS: validation evidence OK for 0.7.5 closeout`。
 - Aquinas mirror/closeout consistency evaluator：

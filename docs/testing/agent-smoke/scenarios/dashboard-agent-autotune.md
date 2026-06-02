@@ -11,6 +11,12 @@ patch result.
 This scenario covers the existing dashboard params-agent route. It is not the
 v0.4 Agent Loop API and must not expect `source="agent.loop"`.
 
+## Result Directory
+
+New runs write artifacts under `test-results/agent-smoke/<timestamp>/`. The
+validator command's `<run-dir>` must point to that directory or to an explicitly
+recorded `test-results/agent-smoke/latest/` alias for the same run.
+
 ## Allowed Operations
 
 - CLI operations to start services, collect baseline/checker evidence, and run

@@ -52,6 +52,18 @@ Expected results:
 Backend、frontend、API、E2E、Agent smoke、autonomous、external validation 和 runtime tests are not run
 because this package is documentation-only and must not change implementation files。
 
+## Blocker Recording Rule
+
+任何 documentation check、scope guard、contract guard 或 evaluator review 失败，都必须记录到
+`review.md`，并且在 blocker 被修复或被 active contract 明确接受前，不得标记 package 为
+`review complete`。
+
+## No Unverified Claims Rule
+
+不要声明 runtime、API、frontend、E2E、Agent smoke、autonomous、external validation、
+projection readiness、product readiness 或 release behavior passed。本 package 只能基于实际运行并记录到
+`review.md` 的命令，声明 documentation 与 public contract readiness。
+
 ## Acceptance Criteria
 
 - Documentation checks pass。

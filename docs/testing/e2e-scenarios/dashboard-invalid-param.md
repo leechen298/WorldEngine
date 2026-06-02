@@ -40,6 +40,21 @@ rejected and does not pollute world params.
 
 Playwright assertion.
 
+## Failure-Path Assertions
+
+- Missing UI validation error after submitting `system.secret` is a params
+  validation failure.
+- Params changing after the invalid apply is a no-mutation failure.
+- A reused server with unclear before/after params must be recorded as a blocker
+  instead of PASS.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.
+
 ## Selector / Checker Prerequisites
 
 Current selectors are sufficient:

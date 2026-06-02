@@ -1,6 +1,6 @@
 # v0.7 External Validation Readiness / Projection Consumer Readiness 文档
 
-状态：final / closeout complete
+状态：final / closeout complete；已记录 post-closeout code-review blockers
 类型：Codex `/goal` development campaign 与迭代包根目录
 
 ## 目标
@@ -38,6 +38,16 @@ backend logic。
 这不是 external automation controller、external validation suite 或 projection
 application 的实现。Scheduling、orchestration、retry infrastructure、private fixtures 和
 Codex role assignment 都不属于 WorldEngine。
+
+## Post-Closeout Code Review Boundary
+
+`0.7.8` final closeout 仍是 v0.7 的历史 package closeout 记录，但它不是 v0.7 clean pass、
+product PASS、external suite PASS 或 projection readiness PASS。
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 在 final closeout 之后记录了
+blocking findings：3 个 P1、2 个 P2、1 个 P3。后续若要声明 v0.7 clean pass、
+external suite PASS、projection readiness PASS 或 product readiness PASS，必须先通过新的
+reviewed package 修复这些 findings，或在 validation report 中把它们明确记录为 blockers。
 
 ## 范围
 

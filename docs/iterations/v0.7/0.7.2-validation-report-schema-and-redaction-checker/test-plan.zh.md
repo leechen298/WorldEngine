@@ -55,6 +55,14 @@ python3 tools/testing/validate_external_validation_report.py <invalid-report-jso
   pass。
 - Forbidden detail review flags 设为 true 时会失败。
 - Generic leaked-detail markers 会失败。
+- V07-CR-01 regression cases 会失败：`status=pass` 且 P1 或 P2 findings 的
+  finding status 为 `accepted`、`deferred` 或其他未 closed 状态。
+- V07-CR-02 regression cases 会失败：真实 private paths，如
+  `/Users/alice/private-suite/run.py`、`file://` local paths、
+  `data-testid=submit-button`、CSS selector details、hidden reset hooks、
+  private oracles、transcripts、seed data 和 event payload markers。
+- 必须包含 schema-valid 但 checker-invalid 的 accepted P1/P2 和 redaction leak examples。
+  JSON Schema 形状校验不是 semantic PASS 来源；report checker 是这些 cases 的语义权威。
 - CLI 对 valid reports 返回 `0`，对 invalid reports 返回 `1`。
 
 ## Regression / Scope Checks

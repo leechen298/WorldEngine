@@ -1,6 +1,6 @@
 # Review
 
-Status: review complete / final closeout complete
+Status: review complete / final closeout complete; superseded for clean-pass claims by post-closeout code review
 implementation_authorized: no
 
 ## Changed Files
@@ -44,6 +44,11 @@ Expected package files:
 - changed-file scope guard: `changed_or_untracked=160`,
   `out_of_scope_changed_or_untracked=0`.
 
+These PASS results predate the post-closeout code review. They are insufficient
+for clean pass, external suite PASS, projection readiness PASS, or product PASS
+until the V07-CR P1/P2 blockers are repaired and rerun, or recorded as blockers
+in a validation result.
+
 ## Subagent / Evaluator Evidence
 
 - First closeout evaluator pass found one P2: the draft recorded
@@ -84,16 +89,38 @@ Explicitly not claimed by this review:
 - runtime/API/frontend/E2E/live Agent/full autonomous/generation-quality PASS.
 - v0.8 readiness.
 
+## Post-Closeout Code Review Supersession
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` was recorded after this
+final-closeout review. It reports 3 P1, 2 P2, and 1 P3 issue. Therefore this
+review remains evidence for the historical `0.7.8` package closeout only.
+
+Do not use this review as:
+
+- v0.7 clean pass.
+- external validation suite PASS.
+- projection readiness PASS.
+- product readiness PASS.
+- proof that no v0.7 blockers remain.
+
+Those code-review findings must be repaired through a new reviewed package or
+recorded as blockers in any future validation report.
+
 ## Unresolved Findings
 
-- P1: none found in this final verification.
-- P2: none unresolved. First evaluator reported a scope-guard count mismatch;
-  it was corrected and passed re-review.
-- P3: none found in this final verification.
+- P1: none found in the original final verification; superseded for current
+  clean-pass/readiness claims by the later code-review P1 findings.
+- P2: first evaluator reported a scope-guard count mismatch; it was corrected
+  and passed re-review. The later code review records additional P2 findings
+  that must not be hidden by this historical closeout.
+- P3: none found in the original final verification; later code review records
+  one P3.
 
 ## Final Assessment
 
-Final verification passed for the v0.7 documentation, checker, manifest,
-projection read-model contract, formatting, evidence-reference, and scope
-surfaces. Evaluator re-review passed, parent v0.7 status surfaces were updated,
-and v0.7 is final / closeout complete with the explicit exclusions above.
+Final verification passed for the historical `0.7.8` documentation, checker,
+manifest, projection read-model contract, formatting, evidence-reference, and
+scope surfaces. Evaluator re-review passed, parent v0.7 status surfaces were
+updated, and v0.7 is final / closeout complete with the explicit exclusions
+above. The later code-review findings prevent using this closeout as a clean
+pass, product PASS, external suite PASS, or projection readiness PASS.

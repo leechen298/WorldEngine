@@ -1,6 +1,6 @@
 # v0.7 External Validation Readiness / Projection Consumer Readiness
 
-Status: final / closeout complete
+Status: final / closeout complete; post-closeout code-review blockers recorded
 Type: Codex `/goal` development campaign and iteration package root
 
 ## Goal
@@ -42,6 +42,18 @@ This is not an external automation controller, external validation suite, or
 projection application implementation. Scheduling, orchestration, retry
 infrastructure, private fixtures, and Codex role assignment remain outside
 WorldEngine.
+
+## Post-Closeout Code Review Boundary
+
+The `0.7.8` final closeout remains the historical package closeout for v0.7,
+but it is not a v0.7 clean pass, product PASS, external suite PASS, or
+projection readiness PASS.
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` was recorded after the
+final closeout and contains blocking findings: 3 P1, 2 P2, and 1 P3. Those
+findings must be fixed through a new reviewed package, or explicitly recorded
+as blockers in any validation report, before v0.7 can claim clean pass,
+external suite PASS, projection readiness PASS, or product readiness PASS.
 
 ## Scope
 

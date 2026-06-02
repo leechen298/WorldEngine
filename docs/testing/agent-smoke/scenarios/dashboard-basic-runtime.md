@@ -7,6 +7,12 @@ Status: executable
 Verify that an agent can operate the dashboard while the final verdict remains
 deterministic and evidence-based.
 
+## Result Directory
+
+New runs write artifacts under `test-results/agent-smoke/<timestamp>/`. The
+validator command's `<run-dir>` must point to that directory or to an explicitly
+recorded `test-results/agent-smoke/latest/` alias for the same run.
+
 ## Steps
 
 1. Start the backend and frontend dev services.

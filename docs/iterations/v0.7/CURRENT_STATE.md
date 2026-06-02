@@ -1,11 +1,13 @@
 # Current State
 
-Campaign status: final / closeout complete
+Campaign status: final / closeout complete; post-closeout code-review blockers recorded
 Active child package: none; final closeout completed by
 `0.7.8-v0.7-final-closeout`.
-Current route: `complete`
+Current route: `complete` for historical closeout; blocked for clean pass until
+post-closeout code-review P1/P2 findings are repaired or recorded as blockers.
 Implementation authorization: no
-Evidence execution authorization: closed after final verification
+Evidence execution authorization: closed after final verification; new repair
+or validation work requires a reviewed package or validation result scope.
 
 ## Planned Package Roadmap Status
 
@@ -24,15 +26,37 @@ Evidence execution authorization: closed after final verification
 No v0.7 child package remains active. New work after this closeout requires a
 new reviewed package or the next version's reviewed iteration package.
 
+## Post-Closeout Code Review Blockers
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` was recorded after
+`0.7.8` final closeout. It found 3 P1, 2 P2, and 1 P3 issue across the
+external validation report checker, readiness manifest checker, projection
+read-model checker, and public schema/contract semantics.
+
+These findings supersede any broad "no P1/P2" reading of the `0.7.8` final
+verification. The `0.7.8` closeout remains historical package closeout
+evidence, but it cannot be used as:
+
+- v0.7 clean pass.
+- external validation suite PASS.
+- projection readiness PASS.
+- product readiness PASS.
+- proof that no v0.7 blockers remain.
+
+Any future validation summary must either prove those P1/P2 findings repaired
+with current-session evidence or record them as blockers.
+
 ## Final Route
 
-Current route: `complete`.
+Current route: `complete` for historical closeout only.
 
 The v0.7 parent docs and all child packages are review complete. The final
 closeout package recorded current-session verification, evaluator PASS, and
 parent status updates. No runtime, schema, API, frontend, test implementation,
 fixture, migration, external repository, generated result, or
 `backend/worldengine/` implementation work is authorized by this final state.
+The later code-review blockers above prevent treating this complete route as a
+clean pass or readiness PASS.
 
 ## Final Evidence Snapshot
 
@@ -57,6 +81,11 @@ fixture, migration, external repository, generated result, or
   `missing_0_7_8_docs=0`, `missing_v0_7_final_refs=0`, and changed-file
   scope guard `changed_or_untracked=160`,
   `out_of_scope_changed_or_untracked=0`.
+
+This final evidence snapshot predates the post-closeout code review. Its
+checker/CLI PASS results are insufficient for clean pass or readiness PASS
+until the V07-CR P1/P2 blockers are repaired and rerun, or recorded as blockers
+in a validation result.
 
 ## Current Exclusions
 

@@ -1,11 +1,23 @@
 # Review
 
-Status: final / closeout complete
+Status: final / closeout complete; post-closeout code-review blockers recorded
 
 parent_implementation_authorized: no
 active_child_package: none
 active_child_implementation_authorized: no
 active_child_evidence_execution_authorized: closed after final verification
+
+## Post-Closeout Code Review Status
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` was recorded after the
+historical `0.7.8` closeout and reports 3 P1, 2 P2, and 1 P3 issue. This
+parent review remains historical route/closeout evidence, but it must not be
+used as v0.7 clean pass, product PASS, external suite PASS, projection
+readiness PASS, or proof that no v0.7 blockers remain.
+
+Known post-closeout code-review blockers require a narrow v0.7 repair package
+before renewed clean-pass validation, unless a validation result explicitly
+records them as blockers.
 
 ## Parent Review Completion
 

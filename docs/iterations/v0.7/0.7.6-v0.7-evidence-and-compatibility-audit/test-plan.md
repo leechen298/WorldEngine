@@ -28,14 +28,61 @@ print("\n".join(missing))
 raise SystemExit(1 if missing else 0)'
 ```
 
-Run the changed-file scope guard used by `0.7.5`.
+## Changed-File Scope Guard
+
+Run the full cumulative v0.7 changed-file scope guard:
+
+```bash
+python3 -c 'import subprocess
+allowed_prefixes=(
+    "docs/iterations/v0.7/",
+    "docs/contracts/external-validation-readiness-contract.md",
+    "docs/contracts/projection-consumer-contract.md",
+    "docs/contracts/v0.7-readiness-manifest-schema.json",
+    "docs/contracts/v0.7-readiness-manifest.json",
+    "docs/contracts/projection-read-model-contract.md",
+    "docs/contracts/projection-read-model-schema.json",
+    "docs/testing/external-validation-report-schema.json",
+    "docs/validation-report-template.md",
+    "tools/testing/validate_external_validation_report.py",
+    "tools/testing/test_validate_external_validation_report.py",
+    "tools/testing/validate_readiness_manifest.py",
+    "tools/testing/test_validate_readiness_manifest.py",
+    "tools/testing/validate_projection_read_model_contract.py",
+    "tools/testing/test_validate_projection_read_model_contract.py",
+)
+tracked=subprocess.check_output(["git","diff","--name-only"], text=True).splitlines()
+untracked=subprocess.check_output(["git","ls-files","--others","--exclude-standard"], text=True).splitlines()
+files=tracked+untracked
+bad=[p for p in files if not any(p.startswith(prefix) if prefix.endswith("/") else p == prefix for prefix in allowed_prefixes)]
+print("changed_or_untracked=" + str(len(files)))
+print("out_of_scope_changed_or_untracked=" + str(len(bad)))
+print("\n".join(bad))
+raise SystemExit(1 if bad else 0)'
+```
+
+Expected results:
+
+- `git diff --check` exits `0`.
+- Required `0.7.6` package docs, audit report, and Chinese mirrors exist.
+- Evidence references back to parent and completed child package reviews exist.
+- Changed-file scope guard exits `0` with `out_of_scope_changed_or_untracked=0`.
+- Any failed or missing evidence check is recorded as a blocker before closeout.
 
 ## Commands Not Run
 
 No runtime/API/frontend/E2E/live Agent/full autonomous/external suite/product/
 generation/release checks are run by this documentation-only audit.
 
-## Expected Result
+## Blocker Recording Rule
 
-All documentation, traceability, formatting, and scope checks pass, or the
-audit records blockers before closeout.
+If any documentation, traceability, formatting, evidence-reference, scope-guard,
+or evaluator check fails, record it in `review.md` and `audit-report.md` before
+closeout. Do not claim review complete while a P1 or unresolved P2 remains.
+
+## No Unverified Claims Rule
+
+Do not claim runtime/API/frontend/E2E/live Agent/full autonomous/external
+suite/product/generation/release checks passed. This audit only verifies the
+documentation, traceability, formatting, evidence-reference, and scope surfaces
+that its commands actually run.

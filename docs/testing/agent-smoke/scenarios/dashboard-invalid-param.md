@@ -16,6 +16,12 @@ A live smoke run is recorded under `test-results/agent-smoke/latest/`.
 Do not report a future rerun as passed without a fresh result directory that
 passes `make validate-agent-smoke-result RESULT_DIR=<run-dir>`.
 
+## Result Directory
+
+New runs write artifacts under `test-results/agent-smoke/<timestamp>/`. The
+validator command's `<run-dir>` must point to that directory or to an explicitly
+recorded `test-results/agent-smoke/latest/` alias for the same run.
+
 ## Allowed Operations
 
 - CLI operations to start services and run the validator.

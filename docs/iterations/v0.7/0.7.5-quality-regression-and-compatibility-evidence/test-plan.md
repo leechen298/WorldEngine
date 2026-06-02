@@ -40,6 +40,16 @@ git diff --check
 
 Run the changed-file scope guard from the regression section below.
 
+Expected results:
+
+- `tools/testing` checker regression exits `0`.
+- Readiness manifest CLI exits `0` for the current manifest.
+- Projection read-model CLI exits `0` for the current projection schema.
+- JSON parse commands exit `0`.
+- `git diff --check` exits `0`.
+- Changed-file scope guard exits `0` with `out_of_scope_changed_or_untracked=0`.
+- Any pass claim is limited to these checker/schema/scope surfaces.
+
 ## Regression / Scope Checks
 
 ```bash
@@ -84,3 +94,10 @@ is explicitly widened.
 If any in-scope command fails, record the blocker in `review.md` and
 `evidence-matrix.md` before closeout. Do not repair implementation code inside
 this package.
+
+## No Unverified Claims Rule
+
+Do not infer runtime/API/frontend/E2E/live Agent/full autonomous/external
+suite/projection application/product/generation/release readiness from checker
+or JSON parse output. Record every not-run surface explicitly in `review.md`
+and `evidence-matrix.md`.

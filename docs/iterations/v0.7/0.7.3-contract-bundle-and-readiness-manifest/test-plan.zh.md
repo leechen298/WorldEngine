@@ -58,6 +58,14 @@ Expected results：
 - Unsupported claim values fail。
 - Absolute paths 和 parent traversal 会失败。
 - Forbidden synthetic private-detail markers 会失败。
+- V07-CR-03 regression cases 会失败：`evidence_references[*].command` 中包含
+  `python /Users/alice/private-suite/run.py` 时必须被拒绝。
+- 所有 manifest text surfaces 都必须拒绝 private/local path text、`data-testid`
+  selectors、hidden reset/oracle/transcript/event payload references 和 private runner
+  details。
+- 必须包含 schema-valid 但 checker-invalid 的 manifest examples。除非 schema 被收紧到
+  拒绝同样 cases，否则 JSON Schema 形状校验不是 semantic authority；manifest checker
+  才是语义权威。
 - CLI 对 valid manifests 返回 `0`，对 invalid manifests 返回 `1`。
 
 ## Regression / Scope Checks

@@ -1,11 +1,21 @@
 # Review 评审
 
-状态：final / closeout complete
+状态：final / closeout complete；已记录 post-closeout code-review blockers
 
 parent_implementation_authorized：no
 active_child_package：无
 active_child_implementation_authorized：no
 active_child_evidence_execution_authorized：final verification 后已关闭
+
+## Post-Closeout Code Review Status
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 记录在历史 `0.7.8` closeout
+之后，并报告 3 个 P1、2 个 P2、1 个 P3。本 parent review 仍是历史 route/closeout
+evidence，但不得用作 v0.7 clean pass、product PASS、external suite PASS、
+projection readiness PASS，或 v0.7 已无 blocker 的证明。
+
+已知 post-closeout code-review blockers 需要先通过窄范围 v0.7 repair package 处理，然后再尝试新的
+clean-pass validation；除非 validation result 明确把它们记录为 blockers。
 
 ## Parent Review Completion
 

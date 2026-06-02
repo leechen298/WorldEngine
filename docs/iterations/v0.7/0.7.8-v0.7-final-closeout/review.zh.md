@@ -1,6 +1,6 @@
 # Review
 
-Status: review complete / final closeout complete
+Status: review complete / final closeout complete；clean-pass claims 已被 post-closeout code review 限定
 implementation_authorized: no
 
 ## 变更文件
@@ -44,6 +44,10 @@ implementation_authorized: no
 - changed-file scope guard：`changed_or_untracked=160`，
   `out_of_scope_changed_or_untracked=0`。
 
+这些 PASS results 早于 post-closeout code review。它们不足以支撑 clean pass、external suite
+PASS、projection readiness PASS 或 product PASS；必须先修复并重跑 V07-CR P1/P2 blockers，
+或在 validation result 中把它们记录为 blockers。
+
 ## Subagent / Evaluator Evidence
 
 - 第一轮 closeout evaluator 发现一个 P2：草稿记录的
@@ -81,15 +85,35 @@ migration、generated-result、external repository 或 `backend/worldengine/` �
 - runtime/API/frontend/E2E/live Agent/full autonomous/generation-quality PASS。
 - v0.8 readiness。
 
+## Post-Closeout Code Review Supersession
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 记录在本 final-closeout review 之后，
+并报告 3 个 P1、2 个 P2、1 个 P3。因此本 review 只作为历史 `0.7.8` package closeout
+evidence。
+
+不要把本 review 用作：
+
+- v0.7 clean pass。
+- external validation suite PASS。
+- projection readiness PASS。
+- product readiness PASS。
+- v0.7 已无 blocker 的证明。
+
+这些 code-review findings 必须通过新的 reviewed package 修复，或在后续 validation report
+中记录为 blockers。
+
 ## 未解决发现
 
-- P1：本次 final verification 未发现。
-- P2：无 unresolved。第一轮 evaluator 报告 scope-guard count mismatch；已修正并通过
-  re-review。
-- P3：本次 final verification 未发现。
+- P1：原 final verification 未发现；但当前 clean-pass/readiness claim 已被后续 code-review
+  P1 findings 限定。
+- P2：第一轮 evaluator 报告 scope-guard count mismatch；已修正并通过 re-review。后续 code
+  review 另有 P2 findings，不得被本历史 closeout 隐藏。
+- P3：原 final verification 未发现；后续 code review 记录 1 个 P3。
 
 ## 最终评估
 
-v0.7 documentation、checker、manifest、projection read-model contract、formatting、
+历史 `0.7.8` documentation、checker、manifest、projection read-model contract、formatting、
 evidence-reference 和 scope surfaces 的 final verification 已通过。Evaluator re-review 已通过，
-parent v0.7 status surfaces 已更新；在上述 explicit exclusions 下，v0.7 为 final / closeout complete。
+parent v0.7 status surfaces 已更新；在上述 explicit exclusions 下，v0.7 为 final / closeout
+complete。后续 code-review findings 阻止把该 closeout 当作 clean pass、product PASS、
+external suite PASS 或 projection readiness PASS。

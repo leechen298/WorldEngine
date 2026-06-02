@@ -44,7 +44,7 @@ run by this documentation-only bundle.
 
 ## Compatibility Review
 
-Passed by release-candidate consistency checks, pending evaluator review. This
+Passed by release-candidate consistency checks and evaluator review. This
 package summarizes reviewed evidence only and does not change behavior.
 
 ## Scope Review
@@ -54,9 +54,9 @@ Changed-file scope guard passed with `changed_or_untracked=144` and
 
 ## Unresolved Findings
 
-- P1: none recorded yet.
-- P2: none recorded yet.
-- P3: none recorded yet.
+- P1: none unresolved.
+- P2: none unresolved.
+- P3: none.
 
 ## Final Assessment
 

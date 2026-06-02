@@ -1,6 +1,6 @@
 # v0.7 Final Closeout
 
-Status: final / closeout complete
+Status: final / closeout complete; post-closeout code-review blockers recorded
 
 ## Final Claim Boundary
 
@@ -39,6 +39,11 @@ Current-session final verification:
 - changed-file scope guard -> `changed_or_untracked=160`,
   `out_of_scope_changed_or_untracked=0`.
 
+These results predate the post-closeout code review. They are insufficient for
+clean pass, external suite PASS, projection readiness PASS, or product PASS
+until the V07-CR P1/P2 blockers are repaired and rerun, or recorded as blockers
+in a validation result.
+
 ## Explicit Exclusions
 
 Final closeout does not claim:
@@ -51,15 +56,24 @@ Final closeout does not claim:
 
 ## Findings
 
-- P1: none found in this final verification.
-- P2: none found in this final verification.
-- P3: none found in this final verification.
+- P1: none found in this original final verification; later code review records
+  P1 blockers.
+- P2: none found in this original final verification; later code review records
+  P2 blockers.
+- P3: none found in this original final verification; later code review records
+  one P3.
 
 The first closeout evaluator found a P2 because the draft recorded the
 `git status --short` line count (`35`) instead of the `0.7.5` changed-file
 scope guard file count (`160`). This record now uses the required `0.7.5`
 scope-guard count. Evaluator re-review passed, and parent v0.7 status surfaces
 have been updated.
+
+Post-closeout code review in
+`docs/testing/results/2026-06-02-v0.7-code-review.md` supersedes any broad
+"no P1/P2" reading of this final-closeout record. This record must not be used
+as clean pass, external suite PASS, projection readiness PASS, product PASS, or
+proof that no v0.7 blockers remain.
 
 ## Handoff
 

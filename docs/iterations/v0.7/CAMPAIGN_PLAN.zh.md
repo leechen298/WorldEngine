@@ -1,6 +1,6 @@
 # Campaign Plan 文档
 
-状态：final / closeout complete
+状态：final / closeout complete；已记录 post-closeout code-review blockers
 
 ## 目标
 
@@ -49,6 +49,12 @@ product 或 application-specific backend。
 - `v0.7-plan.md` 中 planned `0.7.x` entries 只是 roadmap-level planned package specs，不授权
   implementation，也不是不可变 execution script。
 - Closeout 后的新工作必须创建新的 reviewed package，或从下一版本自己的 reviewed iteration package 开始。
+- `docs/testing/results/2026-06-02-v0.7-code-review.md` 中的 post-closeout code review
+  记录了 3 个 P1 和 2 个 P2 blockers。在这些 findings 被修复，或被 active validation
+  result 明确记录为 blockers 之前，它们阻塞 clean pass、external suite PASS、
+  projection readiness PASS 和 product readiness PASS。
+- 已知 post-closeout code-review blockers 应先路由到窄范围 v0.7 repair package，再尝试新的
+  clean-pass validation。
 - 每个 child 的 implementation authorization 初始为 no。
 - mixed/code packages 必须先完成 documentation review，再进入 implementation。
 - 历史 v0.6 evidence 只能作为 handoff context。

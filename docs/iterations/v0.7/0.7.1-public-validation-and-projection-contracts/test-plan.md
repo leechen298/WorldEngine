@@ -53,6 +53,20 @@ Backend, frontend, API, E2E, Agent smoke, autonomous, external validation, and
 runtime tests are not run because this package is documentation-only and must
 not change implementation files.
 
+## Blocker Recording Rule
+
+If any documentation check, scope guard, contract guard, or evaluator review
+fails, record the blocker in `review.md` and keep the package out of
+`review complete` until the blocker is fixed or explicitly accepted by the
+active contract.
+
+## No Unverified Claims Rule
+
+Do not claim runtime, API, frontend, E2E, Agent smoke, autonomous, external
+validation, projection readiness, product readiness, or release behavior
+passed. This package can only claim documentation and public contract readiness
+for the commands actually run and recorded in `review.md`.
+
 ## Acceptance Criteria
 
 - Documentation checks pass.

@@ -1,6 +1,6 @@
 # Goal Runner 执行器
 
-状态：final / closeout complete
+状态：final / closeout complete；已记录 post-closeout code-review blockers
 
 ## Goal 入口
 
@@ -12,8 +12,16 @@
 编写 v0.7 文档
 ```
 
-当前 v0.7 route 已完成。Closeout 后的新工作必须从新的 reviewed package 或下一版本自己的
-reviewed iteration package 开始。
+当前 v0.7 route 对历史 `0.7.8` closeout 已完成。Closeout 后的新工作必须从新的 reviewed
+package 或下一版本自己的 reviewed iteration package 开始。
+
+Post-closeout code review 已在
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 记录 blocking findings。在这些 P1/P2
+被修复，或被 active validation result 明确记录为 blockers 之前，不得把 complete route
+报告为 clean pass、product PASS、external suite PASS 或 projection readiness PASS。
+
+已知 post-closeout code-review blockers 应先路由到窄范围 v0.7 repair package，再尝试新的
+clean-pass validation。
 
 ## Route Selection 路由选择
 

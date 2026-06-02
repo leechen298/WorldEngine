@@ -41,6 +41,12 @@ Expected results：
 - Non-read-only families fail。
 - Write capability markers fail。
 - Forbidden private-detail markers fail。
+- V07-CR-04 regression case 会失败：即使字段以 `_summary` 结尾，只要字段名是
+  `private_application_state_summary`，也必须被拒绝。
+- Forbidden field terms 至少包含 `private`、`application_state`、`prompt`、
+  `transcript`、raw memory internals 和 event payload leakage。
+- Schema parse alone 不是 projection readiness。如果 schema shape 接受了违反这些语义规则的
+  case，projection checker 必须拒绝它，或者 schema 必须先收紧后才能 closeout。
 - CLI exits `0` for valid contract and `1` for invalid contract。
 
 ## Regression / Scope Checks

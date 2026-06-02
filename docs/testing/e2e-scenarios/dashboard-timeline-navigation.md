@@ -42,10 +42,28 @@ The implementation asserts:
 - Expanded details show event type, source, and payload/detail evidence.
 - The scenario generates enough runtime events inside the test and does not
   depend on previous test state.
+- The current spec does not read `/world/events` or prove the expanded UI row is
+  identical to a specific API event.
 
 ## PASS Source
 
 Playwright assertion.
+
+## Failure-Path Assertions
+
+- Page-size selection not taking effect is a pagination failure.
+- Prev/next enabled-state mismatch is a pagination state failure.
+- Expanded row missing type, source, or non-empty payload/detail evidence is a
+  detail visibility failure.
+- API/UI event identity mismatch remains untested by this scenario and must not
+  be reported as PASS evidence unless the spec is extended.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.
 
 ## Remaining Prerequisites
 
@@ -60,4 +78,5 @@ Stable selectors exist:
 - `timeline-event-payload`
 - `timeline-event-source`
 
-Remaining blockers: none for current v0.1 E2E coverage.
+Remaining blockers: none for current dashboard E2E coverage; API row identity
+matching is a planned gap unless added to the spec.

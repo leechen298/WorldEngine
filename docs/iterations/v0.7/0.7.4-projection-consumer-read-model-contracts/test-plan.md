@@ -42,6 +42,14 @@ Expected results:
 - Non-read-only families fail.
 - Write capability markers fail.
 - Forbidden private-detail markers fail.
+- V07-CR-04 regression case fails: an otherwise shape-valid field named
+  `private_application_state_summary` is rejected even though it ends with
+  `_summary`.
+- Forbidden field terms include at least `private`, `application_state`,
+  `prompt`, `transcript`, raw memory internals, and event payload leakage.
+- Schema parse alone is not projection readiness. If schema shape accepts a case
+  that violates these semantic rules, the projection checker must reject it or
+  the schema must be tightened before closeout.
 - CLI exits `0` for valid contract and `1` for invalid contract.
 
 ## Regression / Scope Checks

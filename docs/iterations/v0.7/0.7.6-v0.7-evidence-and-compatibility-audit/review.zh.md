@@ -41,7 +41,7 @@ runtime/API/frontend/E2E/live Agent/full autonomous/external suite/product/gener
 
 ## 兼容性评审
 
-Traceability review 已通过，等待 evaluator review。本 audit 只记录 evidence，不改变 behavior。
+Traceability review 与 evaluator review 均已通过。本 audit 只记录 evidence，不改变 behavior。
 
 ## 范围评审
 
@@ -50,9 +50,9 @@ Changed-file scope guard passed：`changed_or_untracked=128`，
 
 ## 未解决发现
 
-- P1：尚未记录。
-- P2：尚未记录。
-- P3：尚未记录。
+- P1：无 unresolved。
+- P2：无 unresolved。
+- P3：none。
 
 ## 最终评估
 

@@ -24,11 +24,12 @@ through the dashboard timeline.
 
 ## Required Artifacts
 
-- operation log.
-- transcript.
-- screenshots.
-- console log or explicit empty-console note.
-- scorecard result.
+- `result.json`
+- `operation-log.jsonl`
+- `transcript.md`
+- `console.log` or explicit empty-console note referenced by `result.json`
+- `scorecard-summary.json`
+- `screenshots/`
 
 ## Scorecard Items
 
@@ -37,7 +38,10 @@ through the dashboard timeline.
 - Expand or inspect event details through UI.
 - Record event type, tick id, and visible evidence.
 - Operation log contains no forbidden operation.
-- Checker returns PASS.
+- Saved-result checker validates the protocol, required UI targets, score_items
+  with evidence, artifacts, and unresolved P1 boundary.
+- Timeline row/detail semantics remain recorded scorecard claims unless a future
+  scenario-specific checker verifies them independently.
 
 ## PASS Source
 
@@ -45,6 +49,9 @@ Saved-result autonomous scorecard checker:
 `make validate-agent-autonomous-result RESULT_DIR=<result-dir>`.
 
 This is not a broad autonomous runner verdict; it validates recorded evidence.
+The current checker verifies referenced artifact paths are loadable; strict
+basename enforcement for the protocol filenames above is a future hardening
+item unless implemented in the checker.
 
 ## Unverified Items
 

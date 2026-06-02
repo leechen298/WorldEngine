@@ -1,6 +1,6 @@
 # v0.7 Final Closeout
 
-Status: final / closeout complete
+Status: final / closeout complete；已记录 post-closeout code-review blockers
 
 ## Final Claim Boundary
 
@@ -38,6 +38,10 @@ claims 超出 recorded evidence。
 - changed-file scope guard -> `changed_or_untracked=160`，
   `out_of_scope_changed_or_untracked=0`。
 
+这些结果早于 post-closeout code review。它们不足以支撑 clean pass、external suite PASS、
+projection readiness PASS 或 product PASS；必须先修复并重跑 V07-CR P1/P2 blockers，或在
+validation result 中把它们记录为 blockers。
+
 ## Explicit Exclusions
 
 Final closeout 不声明：
@@ -50,14 +54,18 @@ Final closeout 不声明：
 
 ## Findings
 
-- P1：本次 final verification 未发现。
-- P2：本次 final verification 未发现。
-- P3：本次 final verification 未发现。
+- P1：原 final verification 未发现；后续 code review 记录 P1 blockers。
+- P2：原 final verification 未发现；后续 code review 记录 P2 blockers。
+- P3：原 final verification 未发现；后续 code review 记录 1 个 P3。
 
 第一轮 closeout evaluator 发现 P2：草稿记录的是 `git status --short`
 行数（`35`），不是 `0.7.5` changed-file scope guard 文件计数（`160`）。
 本记录已改为 required `0.7.5` scope-guard count。Evaluator re-review 已通过，
 parent v0.7 status surfaces 已更新。
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 中的 post-closeout code review
+覆盖了对本 final-closeout record 中“无 P1/P2”的宽泛解读。本记录不得作为 clean pass、
+external suite PASS、projection readiness PASS、product PASS，或 v0.7 已无 blocker 的证明。
 
 ## Handoff
 

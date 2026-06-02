@@ -41,12 +41,29 @@ The implementation asserts:
 - Patch details include a `counter.increment` `set` patch.
 - The test reads the actual patch value and verifies `/world/params` and
   dashboard params JSON reflect that value.
+- The test checks a new `params.applied` event with `source="agent.params"` and
+  a patch path for `counter.increment`; it does not currently assert `reason`.
 - The test does not hardcode the previous params-flow value as the Auto-Tune
   expected result.
 
 ## PASS Source
 
 Playwright assertion.
+
+## Failure-Path Assertions
+
+- UI success without params/API evidence is a failure.
+- A `params.applied` event missing `source="agent.params"` or a
+  `counter.increment` patch path is a failure.
+- A test or result claiming `reason` was asserted is an overclaim unless the
+  spec is extended first.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.
 
 ## Remaining Prerequisites
 
@@ -58,4 +75,4 @@ Stable selectors exist:
 - `world-agent-patches`
 - `world-agent-error`
 
-Remaining blockers: none for current v0.1 E2E coverage.
+Remaining blockers: none for current dashboard E2E coverage.

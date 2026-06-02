@@ -58,6 +58,14 @@ Expected results:
 - Unsupported claim values fail.
 - Absolute paths and parent traversal fail.
 - Forbidden synthetic private-detail markers fail.
+- V07-CR-03 regression cases fail: `evidence_references[*].command` containing
+  `python /Users/alice/private-suite/run.py` is rejected.
+- Every manifest text surface rejects private/local path text, `data-testid`
+  selectors, hidden reset/oracle/transcript/event payload references, and
+  private runner details.
+- Schema-valid but checker-invalid manifest examples are included. JSON Schema
+  shape validation is not the semantic authority unless the schema is tightened
+  to reject the same cases; otherwise the manifest checker is authoritative.
 - CLI exits `0` for valid manifests and `1` for invalid manifests.
 
 ## Regression / Scope Checks

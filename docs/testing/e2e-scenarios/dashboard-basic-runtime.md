@@ -41,6 +41,21 @@ advance through the UI, and timeline evidence exists after the step.
 
 Playwright assertion.
 
+## Failure-Path Assertions
+
+- Backend health not `ok` is a setup/server failure, not runtime PASS.
+- Tick not increasing by one after the UI `Step` click is a runtime/UI sync
+  failure.
+- Tick increases but timeline lacks `tick.advanced` or `module.*` evidence is a
+  UI/event evidence failure.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.
+
 ## Selector / Checker Prerequisites
 
 Current selectors are sufficient:

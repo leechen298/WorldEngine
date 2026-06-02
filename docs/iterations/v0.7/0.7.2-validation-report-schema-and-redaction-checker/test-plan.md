@@ -55,6 +55,15 @@ Expected results:
   not treated as pass.
 - Forbidden detail review flags set to true fail.
 - Generic leaked-detail markers fail.
+- V07-CR-01 regression cases fail: `status=pass` with P1 or P2 findings whose
+  finding status is `accepted`, `deferred`, or otherwise not closed.
+- V07-CR-02 regression cases fail: real private paths such as
+  `/Users/alice/private-suite/run.py`, `file://` local paths,
+  `data-testid=submit-button`, CSS selector details, hidden reset hooks,
+  private oracles, transcripts, seed data, and event payload markers.
+- Schema-valid but checker-invalid examples are included for accepted P1/P2 and
+  redaction leaks. JSON Schema shape validation is not a semantic PASS source;
+  the report checker is the semantic authority for these cases.
 - CLI exits `0` for valid reports and `1` for invalid reports.
 
 ## Regression / Scope Checks

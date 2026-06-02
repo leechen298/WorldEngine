@@ -40,3 +40,19 @@ cd frontend && pnpm exec playwright test e2e/agent-loop.spec.ts
 
 This scenario is not Agent smoke and is not scorecard-based autonomous
 validation.
+
+## Failure-Path Assertions
+
+- Noop mutating params or emitting a new applied event is a no-mutation failure.
+- Accepted patch without params mutation or `source="agent.loop"` event evidence
+  is an Agent Loop event failure.
+- Rejected action, empty patch, noop-with-patch, dry-run duplicate, unsupported
+  action, or schema-invalid request mutating params is a failure.
+- HTTP 422 cases must preserve the existing API envelope `code=30`.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.

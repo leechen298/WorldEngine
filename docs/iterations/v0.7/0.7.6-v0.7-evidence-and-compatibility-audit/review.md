@@ -42,7 +42,7 @@ run by this documentation-only audit.
 
 ## Compatibility Review
 
-Passed by traceability review, pending evaluator review. This audit records
+Passed by traceability review and evaluator review. This audit records
 evidence only and does not change behavior.
 
 ## Scope Review
@@ -52,9 +52,9 @@ Changed-file scope guard passed with `changed_or_untracked=128` and
 
 ## Unresolved Findings
 
-- P1: none recorded yet.
-- P2: none recorded yet.
-- P3: none recorded yet.
+- P1: none unresolved.
+- P2: none unresolved.
+- P3: none.
 
 ## Final Assessment
 

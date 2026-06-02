@@ -47,6 +47,21 @@ The implementation asserts:
 
 Playwright assertion through `make test-e2e`.
 
+## Failure-Path Assertions
+
+- No newer summary within the timeout is an archive interval/setup failure.
+- Summary exists through API but MemoryPanel does not render it is a UI refresh
+  failure.
+- Summary stats lacking event counts or `tick.advanced` evidence is a summary
+  evidence failure.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.
+
 ## Remaining Prerequisites
 
 Stable selectors exist:

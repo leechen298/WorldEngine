@@ -1,6 +1,6 @@
 # Campaign Plan
 
-Status: final / closeout complete
+Status: final / closeout complete; post-closeout code-review blockers recorded
 
 ## Objective
 
@@ -53,6 +53,13 @@ product, or application-specific backend.
   execution scripts.
 - Any post-closeout work requires a new reviewed package or the next version's
   reviewed iteration package.
+- Post-closeout code review in
+  `docs/testing/results/2026-06-02-v0.7-code-review.md` recorded 3 P1 and 2 P2
+  blockers. They block clean pass, external suite PASS, projection readiness
+  PASS, and product readiness PASS until repaired or recorded as blockers in
+  the active validation result.
+- Known post-closeout code-review blockers route to a narrow v0.7 repair
+  package before any renewed clean-pass validation attempt.
 - Implementation authorization starts as no for every child.
 - Mixed/code packages must complete documentation review before
   implementation.

@@ -42,6 +42,21 @@ and affects the next runtime event.
 
 Playwright assertion.
 
+## Failure-Path Assertions
+
+- UI JSON missing `counter.increment` after Apply is a dashboard params failure.
+- `/world/params` evidence not matching the submitted value is an API/UI state
+  mismatch.
+- A runtime step without a matching `module.counter` increment payload is an
+  event evidence failure.
+
+## Artifact Expectations
+
+- HTML report: `test-results/e2e/html-report/index.html`
+- Playwright artifacts: `test-results/e2e/artifacts/`
+- Failure screenshot and trace are retained under the artifact directory when
+  Playwright keeps them.
+
 ## Selector / Checker Prerequisites
 
 Current selectors are sufficient:

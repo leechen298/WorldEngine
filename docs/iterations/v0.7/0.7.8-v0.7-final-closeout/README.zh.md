@@ -1,6 +1,6 @@
 # 0.7.8 v0.7 Final Closeout
 
-Status: review complete / final closeout complete
+Status: review complete / final closeout complete；clean-pass claims 已被 post-closeout code review 限定
 Type: documentation-only final closeout
 implementation_authorized: no
 
@@ -8,6 +8,10 @@ implementation_authorized: no
 
 只有 final evidence consistency、scope review、unresolved finding classification 和 evaluator checks
 通过后，才标记 v0.7 final / closeout complete。
+
+`docs/testing/results/2026-06-02-v0.7-code-review.md` 中的 post-closeout code review
+随后记录了 3 个 P1、2 个 P2、1 个 P3。本 package 只保留为历史 closeout evidence；
+它不是 v0.7 clean pass、product PASS、external suite PASS 或 projection readiness PASS。
 
 ## 范围
 
@@ -45,6 +49,7 @@ implementation_authorized: no
 
 ## 最终评估状态
 
-当前值：`review complete / final closeout complete`。
+当前值：`review complete / final closeout complete`；clean-pass claims 被 post-closeout
+code-review P1/P2 findings 阻塞，直到这些 findings 被修复，或在 validation 中记录为 blockers。
 
 v0.7 parent status surfaces 已在 final evaluator approval 后更新。

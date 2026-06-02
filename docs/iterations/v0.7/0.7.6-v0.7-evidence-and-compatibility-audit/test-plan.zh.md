@@ -28,13 +28,60 @@ print("\n".join(missing))
 raise SystemExit(1 if missing else 0)'
 ```
 
-运行 `0.7.5` 使用的 changed-file scope guard。
+## Changed-File Scope Guard
+
+运行完整的 cumulative v0.7 changed-file scope guard：
+
+```bash
+python3 -c 'import subprocess
+allowed_prefixes=(
+    "docs/iterations/v0.7/",
+    "docs/contracts/external-validation-readiness-contract.md",
+    "docs/contracts/projection-consumer-contract.md",
+    "docs/contracts/v0.7-readiness-manifest-schema.json",
+    "docs/contracts/v0.7-readiness-manifest.json",
+    "docs/contracts/projection-read-model-contract.md",
+    "docs/contracts/projection-read-model-schema.json",
+    "docs/testing/external-validation-report-schema.json",
+    "docs/validation-report-template.md",
+    "tools/testing/validate_external_validation_report.py",
+    "tools/testing/test_validate_external_validation_report.py",
+    "tools/testing/validate_readiness_manifest.py",
+    "tools/testing/test_validate_readiness_manifest.py",
+    "tools/testing/validate_projection_read_model_contract.py",
+    "tools/testing/test_validate_projection_read_model_contract.py",
+)
+tracked=subprocess.check_output(["git","diff","--name-only"], text=True).splitlines()
+untracked=subprocess.check_output(["git","ls-files","--others","--exclude-standard"], text=True).splitlines()
+files=tracked+untracked
+bad=[p for p in files if not any(p.startswith(prefix) if prefix.endswith("/") else p == prefix for prefix in allowed_prefixes)]
+print("changed_or_untracked=" + str(len(files)))
+print("out_of_scope_changed_or_untracked=" + str(len(bad)))
+print("\n".join(bad))
+raise SystemExit(1 if bad else 0)'
+```
+
+Expected results：
+
+- `git diff --check` 退出 `0`。
+- Required `0.7.6` package docs、audit report 和中文镜像存在。
+- 指向 parent 与已完成 child package reviews 的 evidence references 存在。
+- Changed-file scope guard 退出 `0`，且 `out_of_scope_changed_or_untracked=0`。
+- 任何 failed 或 missing evidence check 都在 closeout 前记录为 blocker。
 
 ## Commands Not Run
 
 本 documentation-only audit 不运行 runtime/API/frontend/E2E/live Agent/full autonomous/external
 suite/product/generation/release checks。
 
-## Expected Result
+## Blocker Recording Rule
 
-所有 documentation、traceability、formatting 与 scope checks 通过；否则 audit 在 closeout 前记录 blockers。
+任何 documentation、traceability、formatting、evidence-reference、scope-guard 或 evaluator check
+失败，都必须在 closeout 前记录到 `review.md` 和 `audit-report.md`。存在 P1 或 unresolved P2 时，
+不得声明 review complete。
+
+## No Unverified Claims Rule
+
+不要声明 runtime/API/frontend/E2E/live Agent/full autonomous/external suite/product/generation/release
+checks passed。本 audit 只验证实际命令覆盖的 documentation、traceability、formatting、
+evidence-reference 和 scope surfaces。

@@ -40,6 +40,16 @@ git diff --check
 
 再运行下方 regression section 中的 changed-file scope guard。
 
+Expected results：
+
+- `tools/testing` checker regression 退出 `0`。
+- Readiness manifest CLI 对当前 manifest 退出 `0`。
+- Projection read-model CLI 对当前 projection schema 退出 `0`。
+- JSON parse commands 退出 `0`。
+- `git diff --check` 退出 `0`。
+- Changed-file scope guard 退出 `0`，且 `out_of_scope_changed_or_untracked=0`。
+- 任何 pass claim 仅限这些 checker/schema/scope surfaces。
+
 ## Regression / Scope Checks
 
 ```bash
@@ -82,3 +92,9 @@ scope 明确扩展。
 
 任何 in-scope command 失败，都必须在 closeout 前记录到 `review.md` 和
 `evidence-matrix.md`。不得在本 package 内修复 implementation code。
+
+## No Unverified Claims Rule
+
+不要从 checker 或 JSON parse output 推断 runtime/API/frontend/E2E/live Agent/full autonomous/
+external suite/projection application/product/generation/release readiness。必须在 `review.md` 和
+`evidence-matrix.md` 中明确记录每个 not-run surface。
