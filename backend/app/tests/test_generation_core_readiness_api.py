@@ -168,6 +168,70 @@ def test_core_readiness_endpoint_redacts_private_source_label_paths() -> None:
     assert "private/repo" not in serialized
 
 
+def test_core_readiness_endpoint_redacts_secret_like_source_labels() -> None:
+    client = _client()
+
+    secret_like_labels = [
+        "api-key-abc123",
+        "password=abc123",
+        "bearer abc123",
+        "sk-live-abc123",
+    ]
+
+    for index, source_label in enumerate(secret_like_labels):
+        response = client.post(
+            "/world/generation/core-readiness",
+            json={
+                "request_id": f"core-ready-secret-label-{index}",
+                "worldspec": _worldspec_payload(),
+                "source_label": source_label,
+            },
+        )
+
+        assert response.status_code == 200
+        data = response.json()["data"]
+        serialized = str(data).lower()
+        assert data["runtime_readiness"]["runtime_context_summary"]["source_label"] == "redacted"
+        assert (
+            data["agent_loop_probe"]["perception"]["runtime_context_summary"]["source_label"]
+            == "redacted"
+        )
+        assert source_label.lower() not in serialized
+
+
+def test_core_readiness_endpoint_agent_loop_probe_uses_bounded_perception_summary() -> None:
+    client = _client()
+
+    response = client.post(
+        "/world/generation/core-readiness",
+        json={
+            "request_id": "core-ready-bounded-perception",
+            "worldspec": _worldspec_payload(),
+            "event_limit": 5,
+        },
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    perception = data["agent_loop_probe"]["perception"]
+
+    assert perception["runtime"]["tick_id"] == 1
+    assert perception["runtime_context_summary"]["root_cell_id"] == "cell-root"
+    assert perception["recent_events"] == [
+        {
+            "id": data["isolated_events"][0]["id"],
+            "tick_id": 1,
+            "world_time_seconds": 600,
+            "type": "tick.advanced",
+            "source": data["isolated_events"][0]["source"],
+        }
+    ]
+    assert "payload" not in perception["recent_events"][0]
+    assert "created_at" not in perception["recent_events"][0]
+    assert "params" not in perception
+    assert "memory_context" not in perception
+
+
 def test_core_readiness_endpoint_rejects_extra_fields_with_existing_422_envelope() -> None:
     client = _client()
 

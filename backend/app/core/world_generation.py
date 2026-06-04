@@ -1,8 +1,9 @@
 import hashlib
 import json
 import math
-from dataclasses import asdict
+import re
 from copy import deepcopy
+from dataclasses import asdict
 from typing import Any, Dict, List, Optional, Set
 
 from app.core.runtime_context import build_runtime_context, summarize_runtime_context
@@ -768,6 +769,17 @@ def check_core_readiness(
     )
     loop_response = agent_loop.step(LoopStepRequest(event_limit=request.event_limit))
 
+    isolated_events = [
+        {
+            "id": event.id,
+            "tick_id": event.tick_id,
+            "world_time_seconds": event.world_time_seconds,
+            "type": event.type,
+            "source": event.source,
+        }
+        for event in isolated_event_log.list_page(limit=request.event_limit).items
+    ]
+
     return GenerationCoreReadinessResult(
         request_id=request.request_id,
         validation_status="passed",
@@ -779,18 +791,12 @@ def check_core_readiness(
             step_seconds=runtime_state.step_seconds,
             updated_at=runtime_state.updated_at,
         ),
-        isolated_events=[
-            {
-                "id": event.id,
-                "tick_id": event.tick_id,
-                "world_time_seconds": event.world_time_seconds,
-                "type": event.type,
-                "source": event.source,
-            }
-            for event in isolated_event_log.list_page(limit=request.event_limit).items
-        ],
+        isolated_events=isolated_events,
         agent_loop_probe=AgentLoopProbeEvidence(
-            perception=loop_response.perception.model_dump(mode="json"),
+            perception=_bounded_agent_loop_perception_evidence(
+                loop_response.perception,
+                isolated_events,
+            ),
             intent=loop_response.intent.model_dump(mode="json"),
             result=loop_response.result.model_dump(mode="json"),
         ),
@@ -826,15 +832,51 @@ def _public_core_readiness_source_label(label: str) -> str:
     private_markers = (
         "/",
         "\\",
+        "api_key",
+        "apikey",
+        "api-key",
+        "authorization",
+        "bearer",
+        "password",
         "private",
         "secret",
+        "sk-live-",
+        "sk-test-",
         "token",
         "credential",
         "repo",
     )
+    private_patterns = (
+        r"\bapi[-_ ]?key\b",
+        r"\bpassword\s*[:=]",
+        r"\bbearer\s+\S+",
+        r"\bsk-(live|test)-[a-z0-9]",
+    )
     if any(marker in lowered for marker in private_markers):
         return "redacted"
+    if any(re.search(pattern, lowered) for pattern in private_patterns):
+        return "redacted"
     return label
+
+
+def _bounded_agent_loop_perception_evidence(
+    perception: Any,
+    recent_events: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    evidence: Dict[str, Any] = {
+        "runtime": perception.runtime.model_dump(mode="json"),
+        "recent_events": deepcopy(recent_events),
+    }
+    if perception.runtime_context_summary is not None:
+        evidence["runtime_context_summary"] = (
+            perception.runtime_context_summary.model_dump(mode="json")
+        )
+    if perception.memory_context is not None:
+        evidence["memory_context_summary"] = {
+            "working_memory_count": len(perception.memory_context.working_memory),
+            "episodic_memory_count": len(perception.memory_context.episodic_memory),
+        }
+    return evidence
 
 
 def _regenerated_preview_request(
