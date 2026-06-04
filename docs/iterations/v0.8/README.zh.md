@@ -214,11 +214,22 @@ package documents，然后完成 review 才能 implementation。
   未添加 concrete demo-world content、未暴露 secrets 或 private Agent state，也未声明
   external validation PASS。
 
+### Validation child package: `0.8.9.2-full-world-lifecycle-autonomous-validation-cases`
+
+- 类型：mixed validation package
+- 状态：implementation complete / `AUTONOMOUS_LIFECYCLE_CASE_READY`
+- 目的：新增 checker 支持的 autonomous saved-result scenario，覆盖完整
+  WorldEngine 生命周期：world creation、runtime progression、Agent autonomy
+  evidence、bounded natural-language direction 和 evidence integrity。
+- 边界：该 child package 只新增 validation protocol、checker support、schema enum、
+  generic fixture 和 review evidence。它不修改 runtime behavior、provider calls、
+  Validation Client code、concrete world content，也不声明 live WorldEngine PASS。
+
 ## 当前状态
 
-Active child package：`0.8.8-v0.8-final-closeout`。
+Active child package：none。
 
-Current route：`final / closeout complete`。
+Current route：`final / closeout complete with post-closeout validation case addenda`。
 
 Implementation authorization：no。
 
@@ -228,9 +239,10 @@ Audit execution authorization：no。
 
 `0.8.8-v0.8-final-closeout/test-plan.md` 中列出的 final verification commands 已运行，evidence
 已记录。Closeout evaluator review 已在 reviewed v0.8 package scope 内通过。这个 parent state
-不授权任何 runtime、schema、API、frontend、test implementation、fixture、migration、external
-repository、generated result、external validation implementation 或 `backend/worldengine/`
-implementation work。
+不授权任何 runtime、schema、API、frontend、migration、external repository、generated
+result、external validation implementation 或 `backend/worldengine/` implementation
+work。`0.8.9.2` 已关闭 full lifecycle saved-result validation 所需的 bounded
+checker/fixture addendum。
 
 ## 交接基线
 

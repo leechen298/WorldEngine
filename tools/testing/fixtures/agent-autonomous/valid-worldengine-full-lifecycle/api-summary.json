@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "worldengine_public_calls": [
+    {
+      "method": "GET",
+      "path": "/manifest",
+      "status_code": 200
+    },
+    {
+      "method": "POST",
+      "path": "/worlds",
+      "status_code": 200
+    },
+    {
+      "method": "POST",
+      "path": "/worlds/{world_id}/director-guidance",
+      "status_code": 200
+    }
+  ],
+  "private_trace_included": false
+}

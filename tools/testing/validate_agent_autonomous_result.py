@@ -25,8 +25,23 @@ SUPPORTED_SCENARIOS = {
     "autonomous-dashboard-invalid-param",
     "autonomous-dashboard-agent-autotune",
     "autonomous-dashboard-timeline-investigation",
+    "worldengine-full-lifecycle-autonomous",
 }
 ALLOWED_VERDICT_SOURCES = {"scorecard_checker", "deterministic_checker"}
+FULL_WORLD_LIFECYCLE_SCENARIO = "worldengine-full-lifecycle-autonomous"
+FORBIDDEN_PUBLIC_EVIDENCE_MARKERS = {
+    "api_key",
+    "apikey",
+    "authorization",
+    "credential",
+    "hidden_context",
+    "private_prompt",
+    "provider_secret",
+    "raw_request",
+    "raw_response",
+    "self_state",
+    "source_path",
+}
 REQUIRED_UI_TARGETS = {
     "autonomous-dashboard-basic-runtime": {
         "dashboard",
@@ -61,6 +76,16 @@ REQUIRED_UI_TARGETS = {
         "timeline-panel",
         "timeline-row",
         "timeline-row-expand",
+    },
+    FULL_WORLD_LIFECYCLE_SCENARIO: {
+        "dashboard",
+        "world-create-form",
+        "worldengine-session-create-button",
+        "runtime-run-button",
+        "runtime-tick-counter",
+        "agent-life-log",
+        "director-guidance-input",
+        "evidence-download-button",
     },
 }
 
@@ -260,6 +285,108 @@ def _validate_scorecard_summary(result_dir: Path, result: dict[str, Any], errors
         errors.append("scorecard-summary.json verdict_source is invalid")
 
 
+def _artifact_json(result_dir: Path, artifacts: dict[str, Any], name: str, errors: list[str]) -> Any:
+    relative_path = artifacts.get(name)
+    if not isinstance(relative_path, str) or not relative_path.strip():
+        errors.append(f"artifacts.{name} is required")
+        return None
+    return _load_json(result_dir / relative_path, errors)
+
+
+def _section(summary: dict[str, Any], name: str, errors: list[str]) -> dict[str, Any]:
+    raw_section = summary.get(name)
+    if not isinstance(raw_section, dict):
+        errors.append(f"world-lifecycle-summary.json {name} must be an object")
+        return {}
+    if raw_section.get("status") != "pass":
+        errors.append(f"world-lifecycle-summary.json {name}.status must be pass")
+    return raw_section
+
+
+def _require_true(section: dict[str, Any], section_name: str, field: str, errors: list[str]) -> None:
+    if section.get(field) is not True:
+        errors.append(f"world-lifecycle-summary.json {section_name}.{field} must be true")
+
+
+def _require_false(section: dict[str, Any], section_name: str, field: str, errors: list[str]) -> None:
+    if section.get(field) is not False:
+        errors.append(f"world-lifecycle-summary.json {section_name}.{field} must be false")
+
+
+def _require_positive_int(section: dict[str, Any], section_name: str, field: str, errors: list[str]) -> None:
+    value = section.get(field)
+    if not isinstance(value, int) or value <= 0:
+        errors.append(f"world-lifecycle-summary.json {section_name}.{field} must be a positive integer")
+
+
+def _validate_public_evidence_redaction(payload: Any, artifact_name: str, errors: list[str]) -> None:
+    dumped = json.dumps(payload, sort_keys=True).lower()
+    leaked = sorted(marker for marker in FORBIDDEN_PUBLIC_EVIDENCE_MARKERS if marker in dumped)
+    if leaked:
+        errors.append(f"{artifact_name} contains forbidden public evidence marker(s): {', '.join(leaked)}")
+
+
+def _validate_world_lifecycle_artifacts(result_dir: Path, result: dict[str, Any], errors: list[str]) -> None:
+    if result.get("scenario") != FULL_WORLD_LIFECYCLE_SCENARIO:
+        return
+
+    artifacts = result.get("artifacts")
+    if not isinstance(artifacts, dict):
+        return
+
+    api_summary = _artifact_json(result_dir, artifacts, "api_summary", errors)
+    if isinstance(api_summary, dict):
+        if api_summary.get("status") != "pass":
+            errors.append("api-summary.json status must be pass")
+        if api_summary.get("private_trace_included") is not False:
+            errors.append("api-summary.json private_trace_included must be false")
+        public_calls = api_summary.get("worldengine_public_calls")
+        if not isinstance(public_calls, list) or not public_calls:
+            errors.append("api-summary.json worldengine_public_calls must be a non-empty list")
+        elif not any(call.get("path") == "/worlds" and call.get("method") == "POST" for call in public_calls if isinstance(call, dict)):
+            errors.append("api-summary.json must include POST /worlds public evidence")
+        _validate_public_evidence_redaction(api_summary, "api-summary.json", errors)
+
+    lifecycle = _artifact_json(result_dir, artifacts, "world_lifecycle_summary", errors)
+    if not isinstance(lifecycle, dict):
+        errors.append("world-lifecycle-summary.json must contain an object")
+        return
+    if lifecycle.get("scenario") != FULL_WORLD_LIFECYCLE_SCENARIO:
+        errors.append("world-lifecycle-summary.json scenario must match result.json scenario")
+    _validate_public_evidence_redaction(lifecycle, "world-lifecycle-summary.json", errors)
+
+    world_creation = _section(lifecycle, "world_creation", errors)
+    if not isinstance(world_creation.get("world_id"), str) or not world_creation["world_id"].strip():
+        errors.append("world-lifecycle-summary.json world_creation.world_id must be a non-empty string")
+    _require_true(world_creation, "world_creation", "public_initial_state_observed", errors)
+    _require_true(world_creation, "world_creation", "visualization_observed", errors)
+
+    runtime_progression = _section(lifecycle, "runtime_progression", errors)
+    tick_start = runtime_progression.get("tick_start")
+    tick_end = runtime_progression.get("tick_end")
+    if not isinstance(tick_start, int) or not isinstance(tick_end, int) or tick_end <= tick_start:
+        errors.append("world-lifecycle-summary.json runtime_progression.tick_end must be greater than tick_start")
+    _require_positive_int(runtime_progression, "runtime_progression", "events_observed", errors)
+    _require_positive_int(runtime_progression, "runtime_progression", "snapshots_observed", errors)
+
+    agent_autonomy = _section(lifecycle, "agent_autonomy", errors)
+    _require_positive_int(agent_autonomy, "agent_autonomy", "agent_actions_observed", errors)
+    action_types = agent_autonomy.get("unique_action_types")
+    if not isinstance(action_types, list) or not action_types:
+        errors.append("world-lifecycle-summary.json agent_autonomy.unique_action_types must be a non-empty list")
+    _require_false(agent_autonomy, "agent_autonomy", "client_scripted_actions", errors)
+    _require_true(agent_autonomy, "agent_autonomy", "worldengine_evidence_observed", errors)
+
+    external_direction = _section(lifecycle, "external_direction", errors)
+    _require_true(external_direction, "external_direction", "director_guidance_observed", errors)
+    _require_false(external_direction, "external_direction", "direct_agent_private_state_mutation", errors)
+
+    evidence_integrity = _section(lifecycle, "evidence_integrity", errors)
+    _require_positive_int(evidence_integrity, "evidence_integrity", "operation_log_entries", errors)
+    _require_positive_int(evidence_integrity, "evidence_integrity", "api_trace_entries", errors)
+    _require_true(evidence_integrity, "evidence_integrity", "redaction_scan_passed", errors)
+
+
 def validate_result_dir(result_dir: Path | str) -> list[str]:
     result_dir = Path(result_dir)
     errors: list[str] = []
@@ -303,6 +430,7 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
     _validate_score_items(raw_result, errors)
     _validate_unverified_items(raw_result, errors)
     _validate_scorecard_summary(result_dir, raw_result, errors)
+    _validate_world_lifecycle_artifacts(result_dir, raw_result, errors)
 
     return errors
 

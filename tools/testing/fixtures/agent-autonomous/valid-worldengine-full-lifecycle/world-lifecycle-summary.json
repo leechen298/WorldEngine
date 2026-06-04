@@ -1,0 +1,37 @@
+{
+  "scenario": "worldengine-full-lifecycle-autonomous",
+  "world_creation": {
+    "status": "pass",
+    "world_id": "world-generic-001",
+    "public_initial_state_observed": true,
+    "visualization_observed": true
+  },
+  "runtime_progression": {
+    "status": "pass",
+    "tick_start": 0,
+    "tick_end": 8,
+    "events_observed": 12,
+    "snapshots_observed": 2
+  },
+  "agent_autonomy": {
+    "status": "pass",
+    "agent_actions_observed": 4,
+    "unique_action_types": [
+      "observe",
+      "move"
+    ],
+    "client_scripted_actions": false,
+    "worldengine_evidence_observed": true
+  },
+  "external_direction": {
+    "status": "pass",
+    "director_guidance_observed": true,
+    "direct_agent_private_state_mutation": false
+  },
+  "evidence_integrity": {
+    "status": "pass",
+    "operation_log_entries": 9,
+    "api_trace_entries": 3,
+    "redaction_scan_passed": true
+  }
+}

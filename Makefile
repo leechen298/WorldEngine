@@ -78,6 +78,7 @@ validate-agent-autonomous-result: check-backend
 
 validate-agent-autonomous-fixtures: check-backend
 	@$(BACKEND_PYTHON) tools/testing/validate_agent_autonomous_result.py tools/testing/fixtures/agent-autonomous/valid-dashboard-basic-runtime
+	@$(BACKEND_PYTHON) tools/testing/validate_agent_autonomous_result.py tools/testing/fixtures/agent-autonomous/valid-worldengine-full-lifecycle
 	@for fixture in invalid-agent-verdict invalid-direct-api-operation invalid-cli-nonzero-exit invalid-unverified-p1 invalid-failed-score-item invalid-missing-artifact; do \
 		if $(BACKEND_PYTHON) tools/testing/validate_agent_autonomous_result.py tools/testing/fixtures/agent-autonomous/$$fixture >/tmp/worldengine-invalid-agent-autonomous.out 2>&1; then \
 			cat /tmp/worldengine-invalid-agent-autonomous.out; \

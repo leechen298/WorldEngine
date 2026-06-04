@@ -1,0 +1,5 @@
+{
+  "scenario": "worldengine-full-lifecycle-autonomous",
+  "status": "pass",
+  "verdict_source": "scorecard_checker"
+}

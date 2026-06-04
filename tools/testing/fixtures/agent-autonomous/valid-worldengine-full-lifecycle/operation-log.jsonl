@@ -1,0 +1,9 @@
+{"seq":1,"type":"ui","target":"dashboard","action":"open"}
+{"seq":2,"type":"ui","target":"world-create-form","action":"fill"}
+{"seq":3,"type":"ui","target":"worldengine-session-create-button","action":"click"}
+{"seq":4,"type":"ui","target":"runtime-run-button","action":"click"}
+{"seq":5,"type":"ui","target":"runtime-tick-counter","action":"observe"}
+{"seq":6,"type":"ui","target":"agent-life-log","action":"observe"}
+{"seq":7,"type":"ui","target":"director-guidance-input","action":"fill"}
+{"seq":8,"type":"ui","target":"evidence-download-button","action":"click"}
+{"seq":9,"type":"cli","command":"make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/latest","exit_code":0,"summary":"Ran deterministic autonomous scorecard checker."}

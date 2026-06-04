@@ -23,7 +23,8 @@
         "autonomous-dashboard-params-flow",
         "autonomous-dashboard-invalid-param",
         "autonomous-dashboard-agent-autotune",
-        "autonomous-dashboard-timeline-investigation"
+        "autonomous-dashboard-timeline-investigation",
+        "worldengine-full-lifecycle-autonomous"
       ]
     },
     "goal": {

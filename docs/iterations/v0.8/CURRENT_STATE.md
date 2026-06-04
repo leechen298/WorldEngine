@@ -1,8 +1,8 @@
 # Current State
 
 Campaign status: final / closeout complete
-Active child package: `0.8.8-v0.8-final-closeout`
-Current route: `final / closeout complete`
+Active child package: none
+Current route: `final / closeout complete with post-closeout validation case addenda`
 Implementation authorization: no
 Evidence execution authorization: no
 Audit execution authorization: no
@@ -24,6 +24,7 @@ Final closeout authorization: yes, limited to reviewed v0.8 package scope
 0.8.8-v0.8-final-closeout: final / closeout complete
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
+0.8.9.2-full-world-lifecycle-autonomous-validation-cases: implementation complete / AUTONOMOUS_LIFECYCLE_CASE_READY
 ```
 
 No v0.8 child package is currently active for implementation. `0.8.4` is
@@ -53,6 +54,14 @@ status, provider readiness redaction, focused backend tests, and Validation
 Client compatibility probes. Its closeout conclusion is
 `WORLDENGINE_CONTRACT_READY`.
 
+`0.8.9.2-full-world-lifecycle-autonomous-validation-cases` is a mixed
+validation child package created after the user clarified that validation must
+cover complete WorldEngine behavior, not only Validation Client UI smoke. It
+adds a checker-supported saved-result scenario for world creation, runtime
+progression, Agent autonomy evidence, bounded natural-language direction, and
+evidence integrity. Its closeout conclusion is
+`AUTONOMOUS_LIFECYCLE_CASE_READY`. It does not claim live WorldEngine PASS.
+
 ## Handoff Risk
 
 The v0.7 route is historical `final / closeout complete`, and
@@ -70,14 +79,16 @@ evidence remains handoff context only and is not current v0.8 PASS evidence.
 
 ## Current Route
 
-Current route: `final / closeout complete`.
+Current route: `final / closeout complete with post-closeout validation case addenda`.
 
 The v0.8 parent docs and `0.8.0` through `0.8.7` child packages are review
 complete for their bounded scopes. `0.8.8` documentation/contract review has
 also passed for its bounded final-closeout package scope. Final verification
-evidence is recorded and closeout consistency evaluator review passed. New
-code work, unrelated evidence execution, audit execution, and external
-validation are not authorized by this state.
+evidence is recorded and closeout consistency evaluator review passed.
+`0.8.9.1` and `0.8.9.2` are bounded post-closeout addenda for external
+validation readiness and test-case readiness. New runtime work, unrelated
+evidence execution, audit execution, and live external validation are not
+authorized by this state.
 
 ## Current Exclusions
 
@@ -105,5 +116,12 @@ outside this repository and are not defined by the current parent state.
 
 ## Next Action
 
-v0.8 is closed for the reviewed package scope. Start a new reviewed package
-for any future work.
+Run a live full lifecycle validation using the Validation Client and validate
+the resulting evidence directory with:
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=<worldengine-full-lifecycle-result-dir>
+```
+
+If that live run reveals missing WorldEngine behavior, start a new reviewed
+implementation package for the repair.

@@ -50,3 +50,23 @@ must be separate from the Agent operation log.
 autonomous scorecard result artifacts. `make validate-agent-autonomous-fixtures`
 validates positive and negative checker fixtures. This is minimal checker
 support, not a broad autonomous runner or full-suite live execution.
+
+## Full WorldEngine Lifecycle Scenario
+
+`worldengine-full-lifecycle-autonomous` is checker-supported as a saved-result
+scenario. It is stricter than the historical dashboard cases because PASS
+requires public evidence for:
+
+- world creation through the external client surface.
+- runtime tick progression.
+- observed events and snapshots.
+- in-world Agent actions backed by WorldEngine evidence.
+- no client-scripted Agent actions.
+- natural-language direction accepted only as external/world-environment
+  guidance.
+- no direct Agent private-state mutation.
+- redacted API and lifecycle artifacts.
+
+The checker validates this through `api-summary.json` and
+`world-lifecycle-summary.json`. This still validates recorded evidence only; it
+does not execute a live autonomous run by itself.

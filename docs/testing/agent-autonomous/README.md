@@ -97,3 +97,4 @@ does not prove that every autonomous scenario has been live-run.
 | `AUTO-FULL-V07-004 generation-readiness` | `contract-only / checker-extension-required` | Full ordinary-user scenario for GenerationPanel and public generation API evidence. |
 | `AUTO-FULL-V07-005 v0.7-readiness-contracts` | `contract-only / checker-extension-required` | Full integrator scenario for readiness/report/projection checker surfaces. |
 | `AUTO-FULL-V07-006 product-exploration-regression` | `contract-only / full-runner-required` | Future full-suite scenario that classifies every selected capability layer. |
+| `worldengine-full-lifecycle-autonomous` | `saved-result-checker-supported` | Full WorldEngine lifecycle evidence case covering world creation, runtime progression, Agent autonomy evidence, bounded direction, and evidence integrity. |

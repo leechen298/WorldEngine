@@ -229,11 +229,24 @@ starts, then complete review before implementation.
   modify Validation Client code, add concrete demo-world content, expose
   secrets or private Agent state, or claim external validation PASS.
 
+### Validation child package: `0.8.9.2-full-world-lifecycle-autonomous-validation-cases`
+
+- Type: mixed validation package
+- Status: implementation complete / `AUTONOMOUS_LIFECYCLE_CASE_READY`
+- Purpose: add a checker-supported autonomous saved-result scenario for the
+  complete WorldEngine lifecycle: world creation, runtime progression, Agent
+  autonomy evidence, bounded natural-language direction, and evidence
+  integrity.
+- Boundary: this child package only adds validation protocol, checker support,
+  schema enum, generic fixture, and review evidence. It does not modify
+  runtime behavior, provider calls, Validation Client code, concrete world
+  content, or claim live WorldEngine PASS.
+
 ## Current State
 
-Active child package: `0.8.8-v0.8-final-closeout`.
+Active child package: none.
 
-Current route: `final / closeout complete`.
+Current route: `final / closeout complete with post-closeout validation case addenda`.
 
 Implementation authorization: no.
 
@@ -244,9 +257,11 @@ Audit execution authorization: no.
 Final verification commands listed in
 `0.8.8-v0.8-final-closeout/test-plan.md` ran and evidence is recorded.
 Closeout evaluator review passed for the reviewed v0.8 package scope. No
-runtime, schema, API, frontend, test implementation, fixture, migration,
-external repository, generated result, external validation implementation, or
-`backend/worldengine/` implementation work is authorized by this parent state.
+runtime, schema, API, frontend, migration, external repository, generated
+result, external validation implementation, or `backend/worldengine/`
+implementation work is authorized by this parent state. `0.8.9.2` has closed
+the bounded checker/fixture addendum needed for full lifecycle saved-result
+validation.
 
 ## Handoff Baseline
 
