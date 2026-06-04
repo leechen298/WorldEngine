@@ -22,6 +22,8 @@ Final closeout authorization：yes，仅限 reviewed v0.8 package scope
 0.8.6-v0.8-evidence-and-boundary-audit: review complete
 0.8.7-v0.8-release-candidate-bundle: review complete
 0.8.8-v0.8-final-closeout: final / closeout complete
+0.8.9-external-validation-provider-and-handoff-manifest: planned / ready for review, post-closeout addendum
+0.8.9.1-public-handoff-manifest-and-world-creation-contract: drafted / ready for user review, implementation child package
 ```
 
 当前没有 active v0.8 implementation child package。`0.8.4` 已 review complete，并把
@@ -35,6 +37,15 @@ review。`0.8.8` documentation/contract review 已通过，现在只授权执行
 `0.8.8-v0.8-final-closeout/test-plan.md` 中列出的 final verification commands。
 Final verification evidence 已记录，并且 closeout evaluator review 已在 reviewed v0.8 package
 scope 内通过。
+
+`0.8.9-external-validation-provider-and-handoff-manifest` 是为外部 Validation Client
+自主验证规划新增的 post-closeout documentation addendum。它记录 public manifest、
+provider-readiness 和 world-creation contract gaps。它不重新打开 final closeout，也
+不授权 implementation。
+
+`0.8.9.1-public-handoff-manifest-and-world-creation-contract` 是 0.8.9 handoff gaps
+的具体 mixed implementation child package。当前只 ready for user review，在明确批准前不授权
+runtime、API、schema、test、provider 或 external client implementation。
 
 ## Handoff Risk
 

@@ -206,6 +206,30 @@ starts, then complete review before implementation.
   consistency checks, scope review, blocker classification, and evaluator
   approval.
 
+### Post-closeout addendum: `0.8.9-external-validation-provider-and-handoff-manifest`
+
+- Type: documentation-only planning package
+- Status: planned / ready for review
+- Purpose: capture the WorldEngine-side public manifest, provider-readiness,
+  and Validation Client world-creation contract prerequisites discovered while
+  preparing Codex autonomous validation.
+- Boundary: this addendum does not reopen `0.8.8` final closeout and does not
+  authorize runtime, API, schema, test, provider, or external client
+  implementation.
+
+### Implementation child package: `0.8.9.1-public-handoff-manifest-and-world-creation-contract`
+
+- Type: mixed implementation package
+- Status: drafted / ready for user review
+- Purpose: provide the concrete reviewed gate for implementing `GET
+  /manifest`, OpenAPI-discoverable `POST /worlds`, public world creation
+  response, provider-readiness redaction, and optional public director guidance
+  status.
+- Boundary: this child package is not implementation-authorized until reviewed
+  and explicitly approved. It must not modify Validation Client code, add
+  concrete demo-world content, expose secrets or private Agent state, or claim
+  external validation PASS.
+
 ## Current State
 
 Active child package: `0.8.8-v0.8-final-closeout`.

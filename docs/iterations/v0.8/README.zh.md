@@ -194,6 +194,26 @@ package documents，然后完成 review 才能 implementation。
 - 目的：只有在 reviewed package completion、evidence consistency checks、scope
   review、blocker classification 和 evaluator approval 后，才标记 v0.8 final。
 
+### Post-closeout addendum: `0.8.9-external-validation-provider-and-handoff-manifest`
+
+- 类型：documentation-only planning package
+- 状态：planned / ready for review
+- 目的：记录准备 Codex 自主验证时发现的 WorldEngine 侧 public manifest、
+  provider-readiness 和 Validation Client world-creation contract 前置条件。
+- 边界：该 addendum 不重新打开 `0.8.8` final closeout，也不授权 runtime、API、
+  schema、test、provider 或 external client implementation。
+
+### Implementation child package: `0.8.9.1-public-handoff-manifest-and-world-creation-contract`
+
+- 类型：mixed implementation package
+- 状态：drafted / ready for user review
+- 目的：为实现 `GET /manifest`、OpenAPI 可发现的 `POST /worlds`、public
+  world creation response、provider-readiness redaction，以及可选 public director
+  guidance status 提供具体 reviewed gate。
+- 边界：该 child package 在 review 并明确批准前不授权 implementation。不得修改
+  Validation Client code、添加 concrete demo-world content、暴露 secrets 或 private
+  Agent state，也不得声明 external validation PASS。
+
 ## 当前状态
 
 Active child package：`0.8.8-v0.8-final-closeout`。
