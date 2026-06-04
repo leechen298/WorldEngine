@@ -2,7 +2,7 @@
 
 Campaign status：final / closeout complete
 Active child package：none
-Current route：`final / closeout complete with post-closeout validation case addenda`
+Current route：`final / closeout complete with external validation evidence handoff`
 Implementation authorization：no
 Evidence execution authorization：no
 Audit execution authorization：no
@@ -24,7 +24,6 @@ Final closeout authorization：yes，仅限 reviewed v0.8 package scope
 0.8.8-v0.8-final-closeout: final / closeout complete
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
-0.8.9.2-full-world-lifecycle-autonomous-validation-cases: implementation complete / AUTONOMOUS_LIFECYCLE_CASE_READY
 ```
 
 当前没有 active v0.8 implementation child package。`0.8.4` 已 review complete，并把
@@ -50,12 +49,11 @@ final closeout，也不声明 external validation PASS。
 focused backend tests 和 Validation Client compatibility probes。Closeout 结论为
 `WORLDENGINE_CONTRACT_READY`。
 
-`0.8.9.2-full-world-lifecycle-autonomous-validation-cases` 是用户明确要求验证必须覆盖
-完整 WorldEngine 行为、不能只验证 Validation Client UI smoke 之后新增的 mixed
-validation child package。它新增 checker 支持的 saved-result scenario，覆盖 world
-creation、runtime progression、Agent autonomy evidence、bounded natural-language
-direction 和 evidence integrity。Closeout 结论为
-`AUTONOMOUS_LIFECYCLE_CASE_READY`。它不声明 live WorldEngine PASS。
+Full lifecycle autonomous validation scenario 是 testing asset，不是 v0.8 iteration
+package。它的 scenario、schema、checker support 和 fixture 位于
+`docs/testing/agent-autonomous/` 和 `tools/testing/fixtures/` 下。第一次正式结果记录在
+`docs/testing/results/` 下，raw result directory 位于
+`test-results/agent-autonomous/`。
 
 ## Handoff Risk
 
@@ -73,14 +71,15 @@ evidence。
 
 ## Current Route
 
-Current route：`final / closeout complete with post-closeout validation case addenda`。
+Current route：`final / closeout complete with external validation evidence handoff`。
 
 v0.8 parent docs 以及 `0.8.0` 到 `0.8.7` child packages 已在各自 bounded scope 内 review
 complete。`0.8.8` documentation/contract review 也已在 bounded final-closeout package
 scope 内通过。Final verification evidence 已记录，closeout consistency evaluator review 已通过。
-`0.8.9.1` 和 `0.8.9.2` 是 bounded post-closeout addenda，用于 external validation
-readiness 和 test-case readiness。当前 state 不授权新的 runtime work、无关 evidence
-execution、audit execution 或 live external validation。
+`0.8.9.1` 是当前用于 external validation readiness 的 post-closeout implementation
+addendum。Full lifecycle validation cases 和 results 是 testing assets，不是 product
+iterations。当前 state 不授权新的 runtime work、无关 evidence execution、audit execution
+或 live external validation。
 
 ## Current Exclusions
 
@@ -107,12 +106,9 @@ repository 和 concrete validation content 都在本仓库之外，当前 parent
 
 ## Next Action
 
-使用 Validation Client 运行 live full lifecycle validation，并用以下命令验证生成的
-evidence directory：
+最新 full lifecycle validation result 是 `FAIL`，记录在：
 
-```bash
-make validate-agent-autonomous-result RESULT_DIR=<worldengine-full-lifecycle-result-dir>
-```
+`docs/testing/results/2026-06-04-worldengine-full-lifecycle-validation.md`
 
-如果 live run 暴露 WorldEngine 行为缺口，则为 repair 开始新的 reviewed implementation
-package。
+下一步应为失败修复创建新的 reviewed implementation package。下一个 product iteration
+number 保留给该 repair 使用。
