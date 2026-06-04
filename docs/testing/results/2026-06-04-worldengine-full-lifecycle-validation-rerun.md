@@ -29,6 +29,10 @@ Checker:
 
 Result directory:
 
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/`
+
+Earlier confirmation result directory:
+
 - `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/`
 
 Validation Client artifact source:
@@ -62,13 +66,13 @@ WORLDENGINE_API_BASE=http://127.0.0.1:8000 VALIDATION_CLIENT_API_BASE=http://127
 Result: `1 passed`.
 
 ```bash
-make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle
 ```
 
 Result:
 
 ```text
-PASS: validated agent autonomous result at test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+PASS: validated agent autonomous result at test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle
 ```
 
 ## Covered Evidence
@@ -84,18 +88,20 @@ The rerun covered the required lifecycle surfaces:
   `params.applied`.
 - Director guidance accepted through the public surface.
 - Validation Client evidence bundle exported.
+- Scorecard source: `scorecard_checker`, with six score items all `pass`.
 - Validation Client redaction flags:
   `llm_keys_included=false`, `private_worldengine_internals_included=false`.
 
 Supporting artifacts:
 
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/result.json`
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/world-lifecycle-summary.json`
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/scorecard-summary.json`
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/api-summary.json`
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/validation-client-evidence-bundle.json`
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/worldengine-public-api-probe.json`
-- `test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle/validation-client-agent-run.jsonl`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/result.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/world-lifecycle-summary.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/scorecard-summary.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/api-summary.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/validation-client-evidence-bundle.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/raw/worldengine-events.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/raw/worldengine-snapshots.json`
+- `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle/raw/validation-client-api-summary.json`
 
 ## Boundary
 

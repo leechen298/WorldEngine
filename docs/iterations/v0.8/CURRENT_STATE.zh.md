@@ -125,4 +125,4 @@ repository 和 concrete validation content 都在本仓库之外，当前 parent
 
 Raw local result directory：
 
-`test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle`
+`test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle`

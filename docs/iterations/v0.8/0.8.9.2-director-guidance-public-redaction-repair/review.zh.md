@@ -167,6 +167,12 @@ rg -n "api_key|apikey|authorization|credential|hidden_context|private_prompt|pro
 Fresh result directory：
 
 ```text
+test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle
+```
+
+Earlier confirmation result directory：
+
+```text
 test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
 ```
 
@@ -179,13 +185,13 @@ WORLDENGINE_API_BASE=http://127.0.0.1:8000 VALIDATION_CLIENT_API_BASE=http://127
 结果：`1 passed`。
 
 ```bash
-make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle
 ```
 
 结果：
 
 ```text
-PASS: validated agent autonomous result at test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+PASS: validated agent autonomous result at test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle
 ```
 
 Observed lifecycle evidence：
@@ -195,6 +201,7 @@ Observed lifecycle evidence：
 - events observed：`42`
 - snapshots observed：`1`
 - WorldEngine-backed Agent action events：`1`，action type `params.applied`
+- scorecard source：`scorecard_checker`，6 个 score items 全部 `pass`
 - Validation Client evidence bundle redaction flags：
   `llm_keys_included=false`，
   `private_worldengine_internals_included=false`

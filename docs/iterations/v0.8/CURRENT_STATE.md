@@ -134,4 +134,4 @@ The latest full lifecycle validation rerun is `PASS` and is recorded in:
 
 Raw local result directory:
 
-`test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle`
+`test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle`
