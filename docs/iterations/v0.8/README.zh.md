@@ -214,9 +214,18 @@ package documents，然后完成 review 才能 implementation。
   未添加 concrete demo-world content、未暴露 secrets 或 private Agent state，也未声明
   external validation PASS。
 
+### Repair package: `0.8.9.2-director-guidance-public-redaction-repair`
+
+- 类型：mixed implementation package
+- 状态：implementation complete / focused verification passed
+- 目的：修复 public director guidance wording；第一次 full lifecycle autonomous
+  validation result 因 evidence integrity redaction 失败。
+- 边界：scoped repair 和 focused verification 已完成。live full lifecycle rerun、
+  external repository changes、generated result rewrites 和 PASS claims 仍未授权。
+
 ## 当前状态
 
-Active child package：none。
+Active child package：none for implementation。
 
 Current route：`final / closeout complete with external validation evidence handoff`。
 
@@ -233,7 +242,8 @@ result、external validation implementation 或 `backend/worldengine/` implement
 
 Full lifecycle autonomous validation assets 位于 `docs/testing/` 和 `tools/testing/`，
 不是 v0.8 iteration packages。第一次正式 full lifecycle validation result 已记录在
-`docs/testing/results/` 下。
+`docs/testing/results/` 下，并因 redaction 失败。上面的 repair package 是该失败的
+reviewed-product-iteration 路径。
 
 ## 交接基线
 

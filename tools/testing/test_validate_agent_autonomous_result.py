@@ -277,3 +277,96 @@ def test_full_world_lifecycle_failed_redaction_scan_fails(tmp_path: Path) -> Non
     errors = validate_result_dir(result_dir)
 
     assert any("evidence_integrity.redaction_scan_passed" in error for error in errors)
+
+
+def test_full_world_lifecycle_cli_curl_disguised_direct_api_call_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "cli-disguised-direct-api"
+    _write_valid_full_lifecycle_result(result_dir)
+    operation_log = result_dir / "operation-log.jsonl"
+    operations = [
+        json.loads(line)
+        for line in operation_log.read_text().splitlines()
+        if line.strip()
+    ]
+    operations.append(
+        {
+            "seq": len(operations) + 1,
+            "type": "cli",
+            "command": "curl -s http://127.0.0.1:8000/worlds",
+            "exit_code": 0,
+            "summary": "Direct public API call disguised as CLI evidence.",
+        }
+    )
+    operation_log.write_text("\n".join(json.dumps(operation) for operation in operations) + "\n")
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("direct public API calls must be recorded in api-summary.json" in error for error in errors)
+
+
+def test_full_world_lifecycle_cli_python_disguised_direct_api_call_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "cli-python-disguised-direct-api"
+    _write_valid_full_lifecycle_result(result_dir)
+    operation_log = result_dir / "operation-log.jsonl"
+    operations = [
+        json.loads(line)
+        for line in operation_log.read_text().splitlines()
+        if line.strip()
+    ]
+    operations.append(
+        {
+            "seq": len(operations) + 1,
+            "type": "cli",
+            "command": (
+                "python -c \"import requests; "
+                "requests.get('http://127.0.0.1:8000/runtime/state')\""
+            ),
+            "exit_code": 0,
+            "summary": "Direct runtime API call disguised as CLI evidence.",
+        }
+    )
+    operation_log.write_text("\n".join(json.dumps(operation) for operation in operations) + "\n")
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("direct public API calls must be recorded in api-summary.json" in error for error in errors)
+
+
+def test_full_world_lifecycle_cli_described_direct_api_call_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "cli-described-direct-api"
+    _write_valid_full_lifecycle_result(result_dir)
+    operation_log = result_dir / "operation-log.jsonl"
+    operations = [
+        json.loads(line)
+        for line in operation_log.read_text().splitlines()
+        if line.strip()
+    ]
+    operations.append(
+        {
+            "seq": len(operations) + 1,
+            "type": "cli",
+            "command": "POST /runtime/step repeated through WorldEngine public API",
+            "exit_code": 0,
+            "summary": "Direct runtime API call disguised as CLI evidence.",
+        }
+    )
+    operation_log.write_text("\n".join(json.dumps(operation) for operation in operations) + "\n")
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("direct public API calls must be recorded in api-summary.json" in error for error in errors)
+
+
+def test_full_world_lifecycle_public_evidence_phrase_marker_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "public-evidence-phrase-marker"
+    _write_valid_full_lifecycle_result(result_dir)
+    api_summary_path = result_dir / "api-summary.json"
+    api_summary = json.loads(api_summary_path.read_text())
+    api_summary["worldengine_public_calls"][0]["response_summary"] = {
+        "public_explanation": "no Agent private memory was changed"
+    }
+    api_summary_path.write_text(json.dumps(api_summary, indent=2) + "\n")
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("api-summary.json contains forbidden public evidence marker" in error for error in errors)

@@ -1,6 +1,6 @@
 # Current State
 
-Campaign status：final / closeout complete
+Campaign status：final / closeout complete with post-closeout repair focused verification complete
 Active child package：none
 Current route：`final / closeout complete with external validation evidence handoff`
 Implementation authorization：no
@@ -24,19 +24,21 @@ Final closeout authorization：yes，仅限 reviewed v0.8 package scope
 0.8.8-v0.8-final-closeout: final / closeout complete
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
+0.8.9.2-director-guidance-public-redaction-repair: implementation complete / focused verification passed, evidence_execution_authorized: no
 ```
 
-当前没有 active v0.8 implementation child package。`0.8.4` 已 review complete，并把
-external-validation handoff contract hand off 给下一个 roadmap entry。
-`0.8.5-core-working-state-smoke-evidence` 已 review complete，并把 core-side smoke evidence
-hand off 给 audit package。`0.8.6` 已通过 read-only documentation/contract review，并授权
-documentation-only audit execution 已完成，release-candidate recommendation 为
-`recommended`。`0.8.6` 已 review complete，并 hand off 到 `0.8.7`。`0.8.7` 已 review
-complete，并且只授权 bounded release-candidate bundle approval and handoff to final-closeout
-review。`0.8.8` documentation/contract review 已通过，现在只授权执行
-`0.8.8-v0.8-final-closeout/test-plan.md` 中列出的 final verification commands。
-Final verification evidence 已记录，并且 closeout evaluator review 已在 reviewed v0.8 package
-scope 内通过。
+当前没有 active v0.8 implementation child package。`0.8.9.2` 已完成 scoped repair
+和 focused verification。较早 packages 仍保持 bounded：`0.8.4` 已 review complete，
+并把 external-validation handoff contract hand off 给下一个 roadmap entry。
+`0.8.5-core-working-state-smoke-evidence` 已 review complete，并把 core-side smoke
+evidence hand off 给 audit package。`0.8.6` 已通过 read-only documentation/contract
+review，并授权 documentation-only audit execution 已完成，release-candidate
+recommendation 为 `recommended`。`0.8.6` 已 review complete，并 hand off 到
+`0.8.7`。`0.8.7` 已 review complete，并且只授权 bounded release-candidate bundle
+approval and handoff to final-closeout review。`0.8.8` documentation/contract
+review 已通过，现在只授权执行 `0.8.8-v0.8-final-closeout/test-plan.md` 中列出的
+final verification commands。Final verification evidence 已记录，并且 closeout
+evaluator review 已在 reviewed v0.8 package scope 内通过。
 
 `0.8.9-external-validation-provider-and-handoff-manifest` 是为外部 Validation Client
 自主验证规划新增的 post-closeout documentation addendum。其 child implementation
@@ -48,6 +50,12 @@ final closeout，也不声明 external validation PASS。
 `POST /worlds`、public director guidance status、provider readiness redaction、
 focused backend tests 和 Validation Client compatibility probes。Closeout 结论为
 `WORLDENGINE_CONTRACT_READY`。
+
+`0.8.9.2-director-guidance-public-redaction-repair` 已修复 failed full lifecycle
+redaction result 的 WorldEngine-side public output 和 checker coverage，并通过 focused
+verification。generated-result rewrites、external repository changes、live full
+lifecycle validation 和 PASS claims 仍未授权，因为未记录
+`evidence_execution_authorized: yes`。
 
 Full lifecycle autonomous validation scenario 是 testing asset，不是 v0.8 iteration
 package。它的 scenario、schema、checker support 和 fixture 位于
@@ -76,10 +84,10 @@ Current route：`final / closeout complete with external validation evidence han
 v0.8 parent docs 以及 `0.8.0` 到 `0.8.7` child packages 已在各自 bounded scope 内 review
 complete。`0.8.8` documentation/contract review 也已在 bounded final-closeout package
 scope 内通过。Final verification evidence 已记录，closeout consistency evaluator review 已通过。
-`0.8.9.1` 是当前用于 external validation readiness 的 post-closeout implementation
-addendum。Full lifecycle validation cases 和 results 是 testing assets，不是 product
-iterations。当前 state 不授权新的 runtime work、无关 evidence execution、audit execution
-或 live external validation。
+`0.8.9.1` 是已完成的 external validation readiness post-closeout implementation
+addendum。`0.8.9.2` 已完成 focused repair verification。Full lifecycle validation
+cases 和 results 是 testing assets，不是 product iterations。无关 evidence
+execution、audit execution、live external validation 和 full lifecycle rerun 当前仍未授权。
 
 ## Current Exclusions
 
@@ -110,5 +118,5 @@ repository 和 concrete validation content 都在本仓库之外，当前 parent
 
 `docs/testing/results/2026-06-04-worldengine-full-lifecycle-validation.md`
 
-下一步应为失败修复创建新的 reviewed implementation package。下一个 product iteration
-number 保留给该 repair 使用。
+下一次 live full lifecycle rerun 仍保持 out of scope，除非后续 review 记录
+`evidence_execution_authorized: yes`。

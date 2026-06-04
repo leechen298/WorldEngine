@@ -280,9 +280,9 @@ def submit_director_guidance(
         world_id=world_id,
         status="accepted",
         public_explanation=(
-            "Public director guidance was accepted as an external environment "
-            "direction; no Agent private memory, goal, identity, relationship, "
-            "self_state, or hidden context was mutated."
+            "Public director guidance was accepted as external "
+            "world-environment direction. It was recorded as guidance only, "
+            "with no direct entity-state change applied."
         ),
         applied_event_id=event_id,
     )

@@ -1,6 +1,6 @@
 # Current State
 
-Campaign status: final / closeout complete
+Campaign status: final / closeout complete with post-closeout repair focused verification complete
 Active child package: none
 Current route: `final / closeout complete with external validation evidence handoff`
 Implementation authorization: no
@@ -24,21 +24,23 @@ Final closeout authorization: yes, limited to reviewed v0.8 package scope
 0.8.8-v0.8-final-closeout: final / closeout complete
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
+0.8.9.2-director-guidance-public-redaction-repair: implementation complete / focused verification passed, evidence_execution_authorized: no
 ```
 
-No v0.8 child package is currently active for implementation. `0.8.4` is
-review complete and has handed the external-validation handoff contract to the
-next roadmap entry. `0.8.5-core-working-state-smoke-evidence` is review
-complete and hands core-side smoke evidence to the audit package. `0.8.6`
-passed read-only documentation/contract review, and documentation-only audit
-execution is complete with release-candidate recommendation `recommended`.
-`0.8.6` is review complete and hands off to `0.8.7`. `0.8.7` is review
-complete and authorizes only bounded release-candidate bundle approval and
-handoff to final-closeout review. `0.8.8` documentation/contract review has
-passed and authorizes only the final verification commands listed in
-`0.8.8-v0.8-final-closeout/test-plan.md`. Final verification evidence is
-recorded, and closeout evaluator review passed for the reviewed v0.8 package
-scope.
+No v0.8 child package is currently active for implementation. `0.8.9.2` has
+completed its scoped repair and focused verification. Earlier packages remain
+bounded: `0.8.4` is review complete and has handed the external-validation
+handoff contract to the next roadmap entry. `0.8.5-core-working-state-smoke-
+evidence` is review complete and hands core-side smoke evidence to the audit
+package. `0.8.6` passed read-only documentation/contract review, and
+documentation-only audit execution is complete with release-candidate
+recommendation `recommended`. `0.8.6` is review complete and hands off to
+`0.8.7`. `0.8.7` is review complete and authorizes only bounded
+release-candidate bundle approval and handoff to final-closeout review. `0.8.8`
+documentation/contract review has passed and authorizes only the final
+verification commands listed in `0.8.8-v0.8-final-closeout/test-plan.md`.
+Final verification evidence is recorded, and closeout evaluator review passed
+for the reviewed v0.8 package scope.
 
 `0.8.9-external-validation-provider-and-handoff-manifest` is a post-closeout
 documentation addendum created for external Validation Client autonomous
@@ -52,6 +54,12 @@ mixed implementation child package for the 0.8.9 handoff gaps. It implemented
 status, provider readiness redaction, focused backend tests, and Validation
 Client compatibility probes. Its closeout conclusion is
 `WORLDENGINE_CONTRACT_READY`.
+
+`0.8.9.2-director-guidance-public-redaction-repair` repaired the failed full
+lifecycle redaction result's WorldEngine-side public output and checker
+coverage, then passed focused verification. Generated-result rewrites, external
+repository changes, live full lifecycle validation, and PASS claims remain
+unauthorized because `evidence_execution_authorized: yes` is not recorded.
 
 The full lifecycle autonomous validation scenario is a testing asset, not a
 v0.8 iteration package. Its scenario, schema, checker support, and fixture live
@@ -82,10 +90,11 @@ The v0.8 parent docs and `0.8.0` through `0.8.7` child packages are review
 complete for their bounded scopes. `0.8.8` documentation/contract review has
 also passed for its bounded final-closeout package scope. Final verification
 evidence is recorded and closeout consistency evaluator review passed.
-`0.8.9.1` is the current post-closeout implementation addendum for external
-validation readiness. Full lifecycle validation cases and results are testing
-assets, not product iterations. New runtime work, unrelated evidence execution,
-audit execution, and live external validation are not authorized by this state.
+`0.8.9.1` is the completed post-closeout implementation addendum for external
+validation readiness. `0.8.9.2` is complete for focused repair verification.
+Full lifecycle validation cases and results are testing assets, not product
+iterations. Unrelated evidence execution, audit execution, live external
+validation, and full lifecycle rerun are not authorized by this state.
 
 ## Current Exclusions
 
@@ -117,5 +126,5 @@ The latest full lifecycle validation result is `FAIL` and is recorded in:
 
 `docs/testing/results/2026-06-04-worldengine-full-lifecycle-validation.md`
 
-Start a new reviewed implementation package for the failure repair. The next
-product iteration number remains available for that repair.
+Next live full lifecycle rerun remains out of scope unless a later review
+records `evidence_execution_authorized: yes`.

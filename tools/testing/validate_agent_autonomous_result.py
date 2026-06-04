@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -34,14 +35,25 @@ FORBIDDEN_PUBLIC_EVIDENCE_MARKERS = {
     "apikey",
     "authorization",
     "credential",
+    "hidden context",
     "hidden_context",
+    "private goal",
+    "private memory",
+    "private prompt",
     "private_prompt",
+    "provider secret",
     "provider_secret",
+    "raw request",
     "raw_request",
+    "raw response",
     "raw_response",
+    "relationship internals",
     "self_state",
     "source_path",
 }
+PUBLIC_API_CLI_PATTERN = re.compile(
+    r"\b(get|post|put|patch|delete)\s+/(manifest|openapi\.json|world|worlds|runtime|archive)\b"
+)
 REQUIRED_UI_TARGETS = {
     "autonomous-dashboard-basic-runtime": {
         "dashboard",
@@ -208,8 +220,21 @@ def _validate_operation_log(result_dir: Path, result: dict[str, Any], errors: li
                 errors.append(f"operation-log.jsonl line {index}.action must be a non-empty string")
 
         if operation_type == "cli":
-            if not isinstance(operation.get("command"), str) or not operation["command"].strip():
+            command = operation.get("command")
+            if not isinstance(command, str) or not command.strip():
                 errors.append(f"operation-log.jsonl line {index}.command must be a non-empty string")
+            elif result.get("scenario") == FULL_WORLD_LIFECYCLE_SCENARIO:
+                lowered_command = command.lower()
+                if (
+                    "http://" in lowered_command
+                    or "https://" in lowered_command
+                    or "worldengine public api" in lowered_command
+                    or PUBLIC_API_CLI_PATTERN.search(lowered_command)
+                ):
+                    errors.append(
+                        f"operation-log.jsonl line {index} direct public API calls must be "
+                        "recorded in api-summary.json, not CLI operations"
+                    )
             exit_code = operation.get("exit_code")
             if not isinstance(exit_code, int):
                 errors.append(f"operation-log.jsonl line {index}.exit_code must be an integer")

@@ -109,7 +109,27 @@ def test_director_guidance_endpoint_accepts_public_direction_without_private_mut
     assert payload["world_id"] == "world-1"
     assert payload["status"] == "accepted"
     assert payload["applied_event_id"]
-    assert "private memory" in payload["public_explanation"]
+    forbidden_public_markers = {
+        "api_key",
+        "apikey",
+        "authorization",
+        "credential",
+        "hidden context",
+        "hidden_context",
+        "private goal",
+        "private memory",
+        "private prompt",
+        "private_prompt",
+        "provider_secret",
+        "raw request",
+        "raw_request",
+        "raw response",
+        "raw_response",
+        "relationship internals",
+        "self_state",
+    }
+    public_explanation = payload["public_explanation"].lower()
+    assert not any(marker in public_explanation for marker in forbidden_public_markers)
 
     events = client.get("/world/events").json()["data"]["items"]
     director_events = [event for event in events if event["type"] == "director.guidance.accepted"]
