@@ -2,9 +2,9 @@
 
 Chinese mirror: `review.zh.md`.
 
-Status: implementation complete / focused verification passed
+Status: implementation complete / focused verification passed / full lifecycle rerun passed
 implementation_authorized: yes
-evidence_execution_authorized: no
+evidence_execution_authorized: yes, limited to the 2026-06-04 full lifecycle rerun
 
 ## Changed Files
 
@@ -67,6 +67,11 @@ rg -n "0\.8\.9\.2-director-guidance-public-redaction-repair" docs/iterations/v0.
 Result: parent README and CURRENT_STATE surfaces reference the package as
 implementation complete / focused verification passed, with
 `evidence_execution_authorized: no` in CURRENT_STATE.
+
+Post-focused authorization update on 2026-06-04: the user explicitly requested
+that the encountered issue be fully repaired and then revalidated. The package
+and parent status surfaces now record `evidence_execution_authorized: yes`,
+limited to a fresh full lifecycle rerun for this repair.
 
 ```bash
 PYTHONPATH=backend uv run --with-requirements backend/requirements.txt --no-project pytest backend/app/tests/test_public_handoff_contract_api.py -q
@@ -161,8 +166,49 @@ Results:
   were not rewritten.
 - Autonomous fixture validation: passed.
 - Runtime public response probe: passed.
-- Live full lifecycle rerun: not run; `evidence_execution_authorized: yes` is
-  not recorded.
+- Live full lifecycle rerun: authorized by the 2026-06-04 user instruction
+  after focused closeout and passed the documented saved-result checker.
+
+## Full Lifecycle Rerun
+
+Fresh result directory:
+
+```text
+test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+```
+
+Commands:
+
+```bash
+WORLDENGINE_API_BASE=http://127.0.0.1:8000 VALIDATION_CLIENT_API_BASE=http://127.0.0.1:8765 pnpm --dir apps/web test:e2e
+```
+
+Result: `1 passed`.
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+```
+
+Result:
+
+```text
+PASS: validated agent autonomous result at test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+```
+
+Observed lifecycle evidence:
+
+- world id: `world-16df0fbcaa35`
+- runtime progression: tick `0` to tick `10`
+- events observed: `42`
+- snapshots observed: `1`
+- WorldEngine-backed Agent action events: `1`, action type `params.applied`
+- Validation Client evidence bundle redaction flags:
+  `llm_keys_included=false`,
+  `private_worldengine_internals_included=false`
+
+The earlier failed result remains preserved. This rerun records direct public
+API evidence in `api-summary.json`; no direct public API call is recorded as an
+Agent operation-log CLI step.
 
 ## Compatibility Review
 
@@ -212,7 +258,7 @@ Second documentation/contract evaluator result:
   API test, optional checker coverage if current coverage is insufficient, and
   scoped review/status docs.
 - Live full lifecycle rerun remains gated on `evidence_execution_authorized:
-  yes`, which is not recorded for this implementation stage.
+  yes`, which was later recorded for the 2026-06-04 repair validation rerun.
 
 Implementation-scope evaluator result:
 
@@ -264,11 +310,11 @@ Post-review consistency result:
 
 ## Final Assessment
 
-Focused implementation complete.
+Focused implementation complete. Full lifecycle rerun passed.
 
 The WorldEngine-side public director guidance wording repair and checker
 hardening passed focused, related backend, full backend, fixture, historical
-checker, and runtime probe verification. This does not claim live full
-lifecycle autonomous validation PASS, external validation PASS, human
-validation PASS, product readiness, or v0.8 final recertification because live
-full lifecycle evidence execution remains unauthorized.
+checker, runtime probe, Validation Client E2E, and fresh full lifecycle
+saved-result verification. This does not claim external validation PASS, human
+validation PASS, product readiness, or v0.8 final recertification beyond the
+documented scenario.

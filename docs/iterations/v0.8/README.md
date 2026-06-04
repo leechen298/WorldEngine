@@ -232,13 +232,14 @@ starts, then complete review before implementation.
 ### Repair package: `0.8.9.2-director-guidance-public-redaction-repair`
 
 - Type: mixed implementation package
-- Status: implementation complete / focused verification passed
+- Status: implementation complete / focused verification passed / full lifecycle rerun passed
 - Purpose: repair the public director guidance wording that caused the first
   full lifecycle autonomous validation result to fail evidence integrity
   redaction.
-- Boundary: scoped repair and focused verification are complete. Live full
-  lifecycle rerun, external repository changes, generated result rewrites, and
-  PASS claims remain unauthorized.
+- Boundary: scoped repair and focused verification are complete. The
+  2026-06-04 fresh full lifecycle rerun passed the documented saved-result
+  checker. External repository changes and generated result rewrites remain
+  unauthorized.
 
 ## Current State
 

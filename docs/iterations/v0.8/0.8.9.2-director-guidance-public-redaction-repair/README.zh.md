@@ -2,9 +2,9 @@
 
 英文版本：`README.md`。
 
-Status: implementation complete / focused verification passed
+Status: implementation complete / focused verification passed / full lifecycle rerun passed
 implementation_authorized: yes
-evidence_execution_authorized: no
+evidence_execution_authorized: yes，仅限 2026-06-04 full lifecycle rerun
 Type: mixed implementation package
 
 ## Goal
@@ -69,6 +69,7 @@ tests、focused checker tests、related backend regression、full backend regres
 fixture validation 和 historical failed-result checker behavior 都已在 `review.md`
 记录 current-session evidence。
 
-本 package 不声明 live full lifecycle autonomous validation PASS、external
-validation PASS、human validation PASS、product readiness 或 v0.8 final
+2026-06-04 为本 repair 重跑的 fresh full lifecycle autonomous validation 已通过
+documented saved-result checker。本 package 仍不声明超出该 documented scenario 的
+external validation PASS、human validation PASS、product readiness 或 v0.8 final
 recertification。

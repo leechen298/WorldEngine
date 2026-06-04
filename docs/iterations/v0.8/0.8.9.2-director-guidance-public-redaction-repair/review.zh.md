@@ -2,9 +2,9 @@
 
 英文版本：`review.md`。
 
-Status: implementation complete / focused verification passed
+Status: implementation complete / focused verification passed / full lifecycle rerun passed
 implementation_authorized: yes
-evidence_execution_authorized: no
+evidence_execution_authorized: yes，仅限 2026-06-04 full lifecycle rerun
 
 ## Changed Files
 
@@ -66,6 +66,11 @@ rg -n "0\.8\.9\.2-director-guidance-public-redaction-repair" docs/iterations/v0.
 结果：parent README 和 CURRENT_STATE surfaces 已以 implementation complete /
 focused verification passed 引用该 package，且 CURRENT_STATE 记录
 `evidence_execution_authorized: no`。
+
+2026-06-04 post-focused authorization update：用户明确要求完整修复已遇到的问题并
+重新验证。package 和 parent status surfaces 现已记录
+`evidence_execution_authorized: yes`，仅限为本 repair 生成 fresh full lifecycle
+rerun。
 
 ```bash
 PYTHONPATH=backend uv run --with-requirements backend/requirements.txt --no-project pytest backend/app/tests/test_public_handoff_contract_api.py -q
@@ -154,7 +159,49 @@ rg -n "api_key|apikey|authorization|credential|hidden_context|private_prompt|pro
 - Historical saved-result checker：按预期失败；未改写旧 failed artifacts。
 - Autonomous fixture validation：通过。
 - Runtime public response probe：通过。
-- Live full lifecycle rerun：未运行；未记录 `evidence_execution_authorized: yes`。
+- Live full lifecycle rerun：focused closeout 后，2026-06-04 用户指示已授权，并已通过
+  documented saved-result checker。
+
+## Full Lifecycle Rerun
+
+Fresh result directory：
+
+```text
+test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+```
+
+Commands：
+
+```bash
+WORLDENGINE_API_BASE=http://127.0.0.1:8000 VALIDATION_CLIENT_API_BASE=http://127.0.0.1:8765 pnpm --dir apps/web test:e2e
+```
+
+结果：`1 passed`。
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+```
+
+结果：
+
+```text
+PASS: validated agent autonomous result at test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle
+```
+
+Observed lifecycle evidence：
+
+- world id：`world-16df0fbcaa35`
+- runtime progression：tick `0` 到 tick `10`
+- events observed：`42`
+- snapshots observed：`1`
+- WorldEngine-backed Agent action events：`1`，action type `params.applied`
+- Validation Client evidence bundle redaction flags：
+  `llm_keys_included=false`，
+  `private_worldengine_internals_included=false`
+
+之前的 failed result 保留。本次 rerun 将 direct public API evidence 记录在
+`api-summary.json`；没有 direct public API call 被记录成 Agent operation-log CLI
+step。
 
 ## Compatibility Review
 
@@ -199,7 +246,7 @@ closeout 前必须完成：
 - 授权范围仅限 public director guidance wording、focused API test、当前 coverage
   不足时的 optional checker coverage，以及 scoped review/status docs。
 - live full lifecycle rerun 仍以 `evidence_execution_authorized: yes` 为 gate；
-  当前 implementation stage 未记录该授权。
+  后续已为 2026-06-04 repair validation rerun 记录该授权。
 
 Implementation-scope evaluator result：
 
@@ -248,10 +295,10 @@ Post-review consistency result：
 
 ## Final Assessment
 
-focused implementation complete。
+focused implementation complete。full lifecycle rerun 已通过。
 
 WorldEngine-side public director guidance wording repair 和 checker hardening 已通过
 focused、related backend、full backend、fixture、historical checker 和 runtime probe
-verification。本结论不声明 live full lifecycle autonomous validation PASS、external
-validation PASS、human validation PASS、product readiness 或 v0.8 final
-recertification，因为 live full lifecycle evidence execution 仍未授权。
+verification。本结论包括 Validation Client E2E 和 fresh full lifecycle saved-result
+verification，但不声明超出 documented scenario 的 external validation PASS、human
+validation PASS、product readiness 或 v0.8 final recertification。

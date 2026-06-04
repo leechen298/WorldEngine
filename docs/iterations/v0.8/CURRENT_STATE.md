@@ -1,10 +1,10 @@
 # Current State
 
-Campaign status: final / closeout complete with post-closeout repair focused verification complete
+Campaign status: final / closeout complete with post-closeout repair full lifecycle rerun passed
 Active child package: none
 Current route: `final / closeout complete with external validation evidence handoff`
 Implementation authorization: no
-Evidence execution authorization: no
+Evidence execution authorization: yes, limited to the 0.8.9.2 full lifecycle rerun requested on 2026-06-04
 Audit execution authorization: no
 Final verification authorization: yes, limited to commands in
 `0.8.8-v0.8-final-closeout/test-plan.md`
@@ -24,7 +24,7 @@ Final closeout authorization: yes, limited to reviewed v0.8 package scope
 0.8.8-v0.8-final-closeout: final / closeout complete
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
-0.8.9.2-director-guidance-public-redaction-repair: implementation complete / focused verification passed, evidence_execution_authorized: no
+0.8.9.2-director-guidance-public-redaction-repair: implementation complete / focused verification passed / full lifecycle rerun passed
 ```
 
 No v0.8 child package is currently active for implementation. `0.8.9.2` has
@@ -57,9 +57,10 @@ Client compatibility probes. Its closeout conclusion is
 
 `0.8.9.2-director-guidance-public-redaction-repair` repaired the failed full
 lifecycle redaction result's WorldEngine-side public output and checker
-coverage, then passed focused verification. Generated-result rewrites, external
-repository changes, live full lifecycle validation, and PASS claims remain
-unauthorized because `evidence_execution_authorized: yes` is not recorded.
+coverage, then passed focused verification. A 2026-06-04 user instruction
+authorized the next full lifecycle rerun, and the fresh result directory passed
+the documented saved-result checker. Generated-result rewrites remain
+forbidden; the earlier failed result is preserved.
 
 The full lifecycle autonomous validation scenario is a testing asset, not a
 v0.8 iteration package. Its scenario, schema, checker support, and fixture live
@@ -91,10 +92,11 @@ complete for their bounded scopes. `0.8.8` documentation/contract review has
 also passed for its bounded final-closeout package scope. Final verification
 evidence is recorded and closeout consistency evaluator review passed.
 `0.8.9.1` is the completed post-closeout implementation addendum for external
-validation readiness. `0.8.9.2` is complete for focused repair verification.
-Full lifecycle validation cases and results are testing assets, not product
-iterations. Unrelated evidence execution, audit execution, live external
-validation, and full lifecycle rerun are not authorized by this state.
+validation readiness. `0.8.9.2` is complete for focused repair verification and
+has a fresh full lifecycle rerun PASS for the documented scenario. Full
+lifecycle validation cases and results are testing assets, not product
+iterations. Unrelated evidence execution, audit execution, and live external
+validation remain unauthorized by this state.
 
 ## Current Exclusions
 
@@ -122,9 +124,14 @@ outside this repository and are not defined by the current parent state.
 
 ## Next Action
 
-The latest full lifecycle validation result is `FAIL` and is recorded in:
+The first full lifecycle validation result was `FAIL` and is recorded in:
 
 `docs/testing/results/2026-06-04-worldengine-full-lifecycle-validation.md`
 
-Next live full lifecycle rerun remains out of scope unless a later review
-records `evidence_execution_authorized: yes`.
+The latest full lifecycle validation rerun is `PASS` and is recorded in:
+
+`docs/testing/results/2026-06-04-worldengine-full-lifecycle-validation-rerun.md`
+
+Raw local result directory:
+
+`test-results/agent-autonomous/20260604T191709+0800-worldengine-full-lifecycle`

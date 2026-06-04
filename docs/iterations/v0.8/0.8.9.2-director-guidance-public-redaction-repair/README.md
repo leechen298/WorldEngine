@@ -2,9 +2,9 @@
 
 Chinese mirror: `README.zh.md`.
 
-Status: implementation complete / focused verification passed
+Status: implementation complete / focused verification passed / full lifecycle rerun passed
 implementation_authorized: yes
-evidence_execution_authorized: no
+evidence_execution_authorized: yes, limited to the 2026-06-04 full lifecycle rerun
 Type: mixed implementation package
 
 ## Goal
@@ -71,6 +71,7 @@ tests, focused checker tests, related backend regression, full backend
 regression, fixture validation, and historical failed-result checker behavior
 have current-session evidence in `review.md`.
 
-This package does not claim live full lifecycle autonomous validation PASS,
+The 2026-06-04 fresh full lifecycle autonomous validation rerun for this repair
+passed the documented saved-result checker. This package still does not claim
 external validation PASS, human validation PASS, product readiness, or v0.8
-final recertification.
+final recertification beyond the documented scenario.
