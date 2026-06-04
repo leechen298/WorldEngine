@@ -11,6 +11,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.api.routes import (
     archive_router,
     health_router,
+    public_world_router,
     runtime_router,
     world_agent_router,
     world_generation_router,
@@ -169,6 +170,7 @@ def create_app() -> FastAPI:
         return JSONResponse(status_code=422, content=payload.model_dump())
 
     app.include_router(health_router)
+    app.include_router(public_world_router)
     app.include_router(runtime_router)
     app.include_router(world_router)
     app.include_router(world_params_router)

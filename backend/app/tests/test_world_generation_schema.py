@@ -1,5 +1,11 @@
 from pydantic import ValidationError
 
+from app.schemas.world import (
+    HandoffManifest,
+    PublicProviderReadiness,
+    PublicWorldCreateRequest,
+    PublicWorldCreationResponse,
+)
 from app.schemas.world_generation import (
     GenerationDiagnostic,
     GenerationMetadata,
@@ -95,3 +101,54 @@ def test_generation_result_rejects_worldspec_for_failed_status() -> None:
     except ValidationError:
         return
     raise AssertionError("expected validation error")
+
+
+def test_public_handoff_manifest_schema_forbids_private_extra_fields() -> None:
+    provider = PublicProviderReadiness(
+        provider_class="deepseek_api",
+        provider_readiness="configured",
+        credential_source_class="environment",
+        model_label="deepseek-v4-flash",
+    )
+    manifest = HandoffManifest(provider=provider)
+
+    assert manifest.redaction.secrets_included is False
+    assert manifest.redaction.private_prompts_included is False
+    assert manifest.redaction.provider_raw_traces_included is False
+
+    try:
+        HandoffManifest(
+            provider=provider,
+            api_key="must-not-be-accepted",
+        )
+    except ValidationError:
+        return
+    raise AssertionError("expected validation error")
+
+
+def test_public_world_creation_schema_requires_top_level_public_fields() -> None:
+    request = PublicWorldCreateRequest(world_prompt="a public world")
+    response = PublicWorldCreationResponse(
+        world_id="world-1",
+        public_initial_state={
+            "summary": "created",
+            "public_agents": [
+                {
+                    "agent_id": "agent-1",
+                    "display_name": "Observer",
+                    "location": "origin",
+                    "public_status": "idle",
+                    "visible_action": "observing",
+                }
+            ],
+        },
+        visualization={"tilemap": {"width": 1, "height": 1}, "entities": []},
+    )
+
+    dumped = response.model_dump()
+    assert request.world_prompt == "a public world"
+    assert dumped["world_id"] == "world-1"
+    assert dumped["status"] == "created"
+    assert "public_initial_state" in dumped
+    assert "visualization" in dumped
+    assert "api_key" not in str(dumped).lower()

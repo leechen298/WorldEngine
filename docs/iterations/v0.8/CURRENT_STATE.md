@@ -22,8 +22,8 @@ Final closeout authorization: yes, limited to reviewed v0.8 package scope
 0.8.6-v0.8-evidence-and-boundary-audit: review complete
 0.8.7-v0.8-release-candidate-bundle: review complete
 0.8.8-v0.8-final-closeout: final / closeout complete
-0.8.9-external-validation-provider-and-handoff-manifest: planned / ready for review, post-closeout addendum
-0.8.9.1-public-handoff-manifest-and-world-creation-contract: drafted / ready for user review, implementation child package
+0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
+0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
 ```
 
 No v0.8 child package is currently active for implementation. `0.8.4` is
@@ -42,14 +42,16 @@ scope.
 
 `0.8.9-external-validation-provider-and-handoff-manifest` is a post-closeout
 documentation addendum created for external Validation Client autonomous
-validation planning. It records public manifest, provider-readiness, and
-world-creation contract gaps. It does not reopen final closeout and does not
-authorize implementation.
+validation planning. Its child implementation has now closed WorldEngine Gate
+1 with `WORLDENGINE_CONTRACT_READY`. It does not reopen final closeout and
+does not claim external validation PASS.
 
 `0.8.9.1-public-handoff-manifest-and-world-creation-contract` is a concrete
-mixed implementation child package for the 0.8.9 handoff gaps. It is ready for
-user review only and does not authorize runtime, API, schema, test, provider,
-or external client implementation until explicitly approved.
+mixed implementation child package for the 0.8.9 handoff gaps. It implemented
+`GET /manifest`, OpenAPI-discoverable `POST /worlds`, public director guidance
+status, provider readiness redaction, focused backend tests, and Validation
+Client compatibility probes. Its closeout conclusion is
+`WORLDENGINE_CONTRACT_READY`.
 
 ## Handoff Risk
 

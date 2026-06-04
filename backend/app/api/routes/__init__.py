@@ -3,6 +3,7 @@
 from app.api.routes.archive import router as archive_router
 from app.api.routes.health import router as health_router
 from app.api.routes.runtime import router as runtime_router
+from app.api.routes.world import public_router as public_world_router
 from app.api.routes.world import router as world_router
 from app.api.routes.world_agent import router as world_agent_router
 from app.api.routes.world_generation import router as world_generation_router
@@ -12,6 +13,7 @@ __all__ = [
     "archive_router",
     "health_router",
     "runtime_router",
+    "public_world_router",
     "world_agent_router",
     "world_generation_router",
     "world_router",

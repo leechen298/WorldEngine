@@ -1,9 +1,9 @@
 # 0.8.9.1 Public Handoff Manifest And World Creation Contract
 
-Status: drafted / ready for user review
+Status: implementation complete / WORLDENGINE_CONTRACT_READY
 Type: mixed implementation package
-implementation_authorized: no
-evidence_execution_authorized: no
+implementation_authorized: campaign-authorized by user request on 2026-06-04
+evidence_execution_authorized: yes, bounded to WorldEngine Gate 1
 
 Chinese mirror: `README.zh.md`.
 
@@ -14,10 +14,9 @@ Name: `0.8.9.1-public-handoff-manifest-and-world-creation-contract`
 This package is the concrete implementation child package for
 `0.8.9-external-validation-provider-and-handoff-manifest`.
 
-It exists because the 0.8.9 parent addendum is documentation-only and does not
-authorize runtime, API, schema, test, or evidence changes. This package defines
-the reviewed implementation gate required before adding WorldEngine public
-contract surfaces for external Validation Client consumption.
+It exists because the 0.8.9 parent addendum is documentation-only. This
+package implemented the reviewed WorldEngine public contract surfaces required
+for external Validation Client consumption.
 
 ## Goal
 
@@ -46,18 +45,15 @@ Validation Client handoff:
 
 ## Scope Summary
 
-Allowed once this package is reviewed and implementation is explicitly
-authorized:
+Implemented:
 
-- add public schema models under `backend/app/schemas/`.
-- add public routes under `backend/app/api/routes/`.
-- register routes in the active FastAPI app factory.
-- reuse existing generation/readiness helpers to create a generic public world
-  summary.
-- add focused backend tests proving OpenAPI discoverability, response shape,
-  and redaction.
-- update this package's `review.md` and `review.zh.md` with implementation
-  evidence.
+- public schema models under `backend/app/schemas/`.
+- public routes under `backend/app/api/routes/`.
+- route registration in the active FastAPI app factory.
+- generic public world creation response.
+- focused backend tests proving OpenAPI discoverability, response shape, and
+  redaction.
+- `review.md` and `review.zh.md` implementation evidence.
 
 Forbidden:
 
@@ -73,7 +69,7 @@ Forbidden:
 
 ## Handoff
 
-This package is ready for user review only. Implementation may start only after
-the user approves this implementation package or otherwise explicitly records
-that this package's contract, technical design, test plan, and plan are
-approved for implementation.
+This package closed WorldEngine Gate 1 with `WORLDENGINE_CONTRACT_READY`.
+Validation Client v0.7 may proceed to readiness implementation. This package
+does not authorize or claim Codex autonomous validation PASS, second-Agent
+review PASS, human validation PASS, live provider PASS, or product readiness.

@@ -2,170 +2,148 @@
 
 Chinese mirror: `contract-readiness-checklist.zh.md`.
 
-Use this checklist after 0.8.9 implementation to decide whether WorldEngine
-public contract is ready for Validation Client Codex autonomous validation.
-
-This checklist does not prove Codex autonomous validation passed and does not
-prove human validation passed. It only proves whether WorldEngine-side public
-contract is ready.
+This checklist records WorldEngine Gate 1 public contract readiness for the
+external Validation Client v0.7 campaign. It does not prove Codex autonomous
+validation passed and does not prove human validation passed.
 
 ## 0. Conclusion
 
-Choose exactly one:
-
 ```text
 WORLDENGINE_CONTRACT_READY
-PARTIAL
-BLOCKED
-FAIL
-```
-
-Current conclusion:
-
-```text
-<one allowed conclusion>
 ```
 
 Short reason:
 
 ```text
-<short public reason>
+WorldEngine now exposes /manifest, OpenAPI-discoverable POST /worlds, public
+world creation response, public director guidance status, redacted provider
+readiness, and Validation Client compatibility probes passed.
 ```
 
 ## 1. Implementation Metadata
 
 ```text
-package:
-branch:
-commit:
-working_tree_status:
-implementation_chat:
-review file:
-WorldEngine API base:
-Validation Client API base:
+package: 0.8.9.1-public-handoff-manifest-and-world-creation-contract
+branch: v0.8
+commit: pending commit at checklist write time
+working_tree_status: implementation diff present before commit
+implementation_chat: campaign-authorized by user request on 2026-06-04
+review file: docs/iterations/v0.8/0.8.9.1-public-handoff-manifest-and-world-creation-contract/review.md
+WorldEngine API base: http://127.0.0.1:8000
+Validation Client API base: http://127.0.0.1:8765
 ```
 
 ## 2. Required Reading Confirmed
 
-- [ ] `AGENTS.md`
-- [ ] `docs/project-north-star.md`
-- [ ] `docs/product-model.md`
-- [ ] `docs/scope-boundaries.md`
-- [ ] `docs/roadmap.md`
-- [ ] `docs/iterations/README.md`
-- [ ] `docs/iterations/AGENTS.md`
-- [ ] package `README.zh.md`
-- [ ] package `contract.zh.md`
-- [ ] package `technical-design.zh.md`
-- [ ] package `test-plan.zh.md`
-- [ ] package `validation-client-contract-handoff.zh.md`
-- [ ] package `implementation-task-plan.zh.md`
+- [x] `AGENTS.md`
+- [x] `docs/project-north-star.md`
+- [x] `docs/product-model.md`
+- [x] `docs/scope-boundaries.md`
+- [x] `docs/roadmap.md`
+- [x] `docs/iterations/README.md`
+- [x] `docs/iterations/AGENTS.md`
+- [x] package `README.zh.md`
+- [x] package `contract.zh.md`
+- [x] package `technical-design.zh.md`
+- [x] package `test-plan.zh.md`
+- [x] package `validation-client-contract-handoff.zh.md`
+- [x] package `implementation-task-plan.zh.md`
 
 ## 3. Public Surface Checklist
 
 ### `GET /health`
 
 ```text
-curl result:
-status code:
-public response summary:
+curl result: 200
+public response summary: {"code":0,"data":{"status":"ok","service":"worldengine-backend"},"msg":"ok"}
 ```
 
-- [ ] returns 200.
-- [ ] does not expose secrets or private paths.
+- [x] returns 200.
+- [x] does not expose secrets or private paths.
 
 ### `GET /manifest`
 
 ```text
-curl result:
-status code:
-schema_version:
-worldengine_version:
-provider.provider_class:
-provider.provider_readiness:
-provider.credential_source_class:
-provider.model_label:
-public_surfaces:
-redaction flags:
-blockers:
-warnings:
+curl result: 200
+schema_version: 0.8.9.1
+worldengine_version: v0.8
+provider.provider_class: unconfigured
+provider.provider_readiness: not_configured
+provider.credential_source_class: none
+provider.model_label: unconfigured
+public_surfaces: /health, /openapi.json, /manifest, /worlds, /worlds/{world_id}/director-guidance
+redaction flags: all false
+blockers: []
+warnings: live provider calls outside 0.8.9.1; provider credentials not configured
 ```
 
-- [ ] returns 200.
-- [ ] includes `/health`.
-- [ ] includes `/openapi.json`.
-- [ ] includes world creation surface.
-- [ ] includes redaction flags.
-- [ ] does not expose API key.
-- [ ] does not expose private prompt.
-- [ ] does not expose provider raw trace.
-- [ ] does not expose private Agent state.
+- [x] returns 200.
+- [x] includes `/health`.
+- [x] includes `/openapi.json`.
+- [x] includes world creation surface.
+- [x] includes redaction flags.
+- [x] does not expose API key.
+- [x] does not expose private prompt.
+- [x] does not expose provider raw trace.
+- [x] does not expose private Agent state.
 
 ### `GET /openapi.json`
 
 ```text
-curl result:
-status code:
-world creation path:
-world creation operation id:
-world creation tags:
-director guidance path:
-director guidance operation id:
+curl result: 200
+world creation path: /worlds
+world creation operation id: create_world
+world creation tags: worlds
+director guidance path: /worlds/{world_id}/director-guidance
+director guidance operation id: submit_director_guidance
 ```
 
-- [ ] OpenAPI includes a Validation Client-discoverable world creation endpoint.
-- [ ] Prefer `POST /worlds`.
-- [ ] operation id is `create_world` or `createWorld`, or tags/path satisfy
-      Validation Client discovery.
+- [x] OpenAPI includes a Validation Client-discoverable world creation endpoint.
+- [x] `POST /worlds` is present.
+- [x] operation id is `create_world`.
 
 ### `POST /worlds`
 
 ```text
-request body:
-status code:
-world_id:
-status:
-public_initial_state or initial_state:
-visualization or visualization_payload:
-warnings:
+request body: {"world_prompt":"一个可观察的小型像素世界"}
+status code: 200
+world_id: world-fde588b26c4d
+status: created
+public_initial_state: present
+visualization: present
+warnings: none in response
 ```
 
-- [ ] returns public `world_id`.
-- [ ] returns `status`.
-- [ ] returns public state.
-- [ ] returns visualization payload.
-- [ ] does not include private generation prompt.
-- [ ] does not include provider raw response.
-- [ ] does not include internal helper path.
+- [x] returns public `world_id`.
+- [x] returns `status`.
+- [x] returns public state.
+- [x] returns visualization payload.
+- [x] does not include private generation prompt.
+- [x] does not include provider raw response.
+- [x] does not include internal helper path.
 
 ### `POST /worlds/{world_id}/director-guidance`
 
 ```text
-request body:
-status code:
-status:
-public_explanation:
-applied_event_id:
-error_message:
+request body: {"instruction_text":"让天气逐渐转冷","public_context":{"surface":"validation"}}
+status code: 200
+status: accepted
+public_explanation: public explanation states private Agent state was not mutated
+applied_event_id: present
+error_message: null
 ```
 
-- [ ] endpoint exists and returns public status, or the manifest records a clear
-      public unavailable reason.
-- [ ] request does not allow Agent private memory mutation.
-- [ ] request does not allow private goal, identity, relationship, self_state, or
-      hidden_context mutation.
-
-If director guidance is unavailable, conclusion may be `PARTIAL` but not
-`WORLDENGINE_CONTRACT_READY` for full v0.7 autonomous validation.
+- [x] endpoint exists and returns public status.
+- [x] request does not allow Agent private memory mutation.
+- [x] request does not allow private goal, identity, relationship, self_state,
+      or hidden_context mutation.
 
 ## 4. Provider Readiness Redaction
 
-Check:
-
-- [ ] provider readiness is public summary only.
-- [ ] credential source class is public category only.
-- [ ] missing provider is not reported as fake ready.
-- [ ] no API key, authorization header, account id, raw request, or raw response
+- [x] provider readiness is public summary only.
+- [x] credential source class is public category only.
+- [x] missing provider is not reported as fake ready.
+- [x] no API key, authorization header, account id, raw request, or raw response
       appears in public output.
 
 ## 5. Validation Client Compatibility Probe
@@ -173,75 +151,99 @@ Check:
 Commands:
 
 ```bash
-curl -i http://127.0.0.1:8765/health/worldengine
-curl -i -H 'Content-Type: application/json' \
-  -d '{"session_name":"Codex contract check","world_prompt":"a small observable pixel world"}' \
-  http://127.0.0.1:8765/sessions/worldengine
+curl -s -o /tmp/vc-health-worldengine.json -w '%{http_code}' http://127.0.0.1:8765/health/worldengine
+curl -s -o /tmp/vc-session-worldengine.json -w '%{http_code}' -H 'Content-Type: application/json' -d '{"session_name":"Codex contract check","world_prompt":"一个可观察的小型像素世界"}' http://127.0.0.1:8765/sessions/worldengine
 ```
 
 Results:
 
 ```text
-health/worldengine status:
-reachable:
-openapi_available:
-world_creation:
-session creation status:
-session_id:
-worldengine_world_id:
+health/worldengine status: 200
+reachable: true
+openapi_available: true
+world_creation: available
+session creation status: 201
+session_id: 904c889a-8622-44e8-b8a9-354c7c2ae6c7
+worldengine_world_id: world-fde588b26c4d
 ```
 
-Required:
-
-- [ ] `world_creation: available`.
-- [ ] `POST /sessions/worldengine` succeeds.
-- [ ] Validation Client does not need WorldEngine private paths.
-- [ ] Validation Client does not need provider keys.
+- [x] `world_creation: available`.
+- [x] `POST /sessions/worldengine` succeeded.
+- [x] Validation Client did not need to read WorldEngine private paths.
+- [x] Validation Client did not need provider key.
 
 ## 6. Commands Run
 
-Record only commands run in the current session:
-
 ```text
-cd backend && .venv/bin/python -m pytest app/tests -q:
+focused backend tests:
+20 passed, 1 warning in 0.38s
+
+full backend tests:
+248 passed, 1 warning in 1.21s
+
 git diff --check:
+passed with no output
+
 curl /health:
+200
+
 curl /manifest:
+200
+
 curl /openapi.json:
+200
+
 curl POST /worlds:
+200
+
 curl director guidance:
+200
+
 Validation Client /health/worldengine:
+200
+
 Validation Client POST /sessions/worldengine:
+201
+
 redaction scan:
+allowed hits only in documentation requirements, redaction helpers, tests, and review text;
+saved public response files contained no test secret-like strings
 ```
 
 ## 7. Boundary Findings
 
 ```text
-Finding ID:
-Severity:
-Evidence:
-Impact:
-Required follow-up:
-Blocks WORLDENGINE_CONTRACT_READY: yes/no
+Finding ID: WE-0.8.9.1-P3-001
+Severity: P3
+Evidence: /manifest reports provider_readiness=not_configured.
+Impact: Real provider heartbeat/live calls remain future work.
+Required follow-up: plan provider heartbeat/probe in a later package.
+Blocks WORLDENGINE_CONTRACT_READY: no
+```
+
+```text
+Finding ID: WE-0.8.9.1-P3-002
+Severity: P3
+Evidence: Validation Client manifest summary shows version=null because it reads legacy version while WorldEngine returns schema_version.
+Impact: Does not block world creation, session creation, or Gate 1.
+Required follow-up: adjust Validation Client manifest summary during v0.7 if useful.
+Blocks WORLDENGINE_CONTRACT_READY: no
 ```
 
 ## 8. Final Decision Rules
 
-`WORLDENGINE_CONTRACT_READY` requires:
+- [x] `/manifest` ready.
+- [x] OpenAPI-discoverable world creation ready.
+- [x] `POST /worlds` returns public world creation response.
+- [x] provider readiness is redacted.
+- [x] Validation Client reports `world_creation: available`.
+- [x] Validation Client can create a WorldEngine-backed session.
+- [x] no public leak of secrets, private prompts, provider raw traces, or
+      private Agent state.
+- [x] review.md and review.zh.md record commands and evidence.
 
-- [ ] `/manifest` ready.
-- [ ] OpenAPI-discoverable world creation ready.
-- [ ] `POST /worlds` returns public world creation response.
-- [ ] provider readiness is redacted.
-- [ ] Validation Client reports `world_creation: available`.
-- [ ] Validation Client can create a WorldEngine-backed session.
-- [ ] no public leak of secrets, private prompts, provider raw traces, or private
-      Agent state.
-- [ ] review.md and review.zh.md record commands and evidence.
-
-If any item is missing, do not write `WORLDENGINE_CONTRACT_READY`.
-
-Even when the conclusion is `WORLDENGINE_CONTRACT_READY`, it only means the
-contract can be handed to Validation Client for Codex autonomous validation. Do
-not claim external validation PASS or human validation PASS.
+This `WORLDENGINE_CONTRACT_READY` conclusion only means the contract can be
+handed to Validation Client for v0.7 readiness implementation and later Codex
+autonomous validation. It does not claim external validation PASS, Codex
+autonomous validation PASS, second-Agent review PASS, human validation PASS, or
+product readiness.

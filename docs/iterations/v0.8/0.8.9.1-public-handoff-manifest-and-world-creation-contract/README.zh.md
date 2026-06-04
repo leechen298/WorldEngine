@@ -1,9 +1,9 @@
 # 0.8.9.1 Public Handoff Manifest And World Creation Contract
 
-状态：drafted / ready for user review
+状态：implementation complete / WORLDENGINE_CONTRACT_READY
 类型：mixed implementation package
-implementation_authorized: no
-evidence_execution_authorized: no
+implementation_authorized: campaign-authorized by user request on 2026-06-04
+evidence_execution_authorized: yes, bounded to WorldEngine Gate 1
 
 英文源文件：`README.md`。
 
@@ -13,7 +13,8 @@ evidence_execution_authorized: no
 
 本包是 `0.8.9-external-validation-provider-and-handoff-manifest` 的具体实现子包。
 
-0.8.9 父包是 documentation-only，不授权 runtime、API、schema、test 或 evidence 变更。本包用于定义进入实现前必须 review 的实现门禁。
+0.8.9 父包是 documentation-only。本包已实现外部 Validation Client 消费所需的
+WorldEngine public contract surfaces。
 
 ## 目标
 
@@ -27,12 +28,12 @@ evidence_execution_authorized: no
 
 ## 范围摘要
 
-本包 review 并显式授权实现后，允许：
+已实现：
 
 - 在 `backend/app/schemas/` 增加 public schema。
 - 在 `backend/app/api/routes/` 增加 public route。
 - 在 active FastAPI app factory 注册 route。
-- 复用现有 generation/readiness helper 生成 generic public world summary。
+- 生成 generic public world creation response。
 - 增加 focused backend tests，证明 OpenAPI discoverability、response shape、redaction。
 - 更新本包 `review.md` 和 `review.zh.md` 的实现证据。
 
@@ -47,4 +48,7 @@ evidence_execution_authorized: no
 
 ## Handoff
 
-本包当前只 ready for user review。只有用户批准本实现包，或明确记录本包 contract、technical design、test plan、plan 已获准实现后，才能开始实现。
+本包已用 `WORLDENGINE_CONTRACT_READY` 关闭 WorldEngine Gate 1。Validation Client
+v0.7 可以进入 readiness implementation。本包不授权也不声明 Codex autonomous
+validation PASS、second-Agent review PASS、human validation PASS、live provider PASS
+或 product readiness。
