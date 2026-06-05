@@ -224,15 +224,28 @@ package documents，然后完成 review 才能 implementation。
   lifecycle rerun 已通过 documented saved-result checker。external repository
   changes 和 generated result rewrites 仍未授权。
 
+### Completed repair package: `0.8.9.3-archive-summary-e2e-regression-repair`
+
+- 类型：mixed repair package
+- 状态：implementation complete / PASS
+- 目的：诊断并修复 current-product validation 中发现的
+  `dashboard-archive-summary` E2E regression；该轮 `make test-e2e` 结果为
+  `16 passed / 1 failed`。
+- 边界：本 package 只是 basic dashboard E2E baseline repair。它不实现或验证
+  DeepSeek/provider live smoke、LLM-backed world creation、LLM-assisted world
+  evolution、Validation Client behavior 或 external validation PASS。本 package
+  scope 内的 current-session focused E2E、dashboard E2E、`make test-e2e`、
+  saved-result checker 和 diff checks 已通过。
+
 ## 当前状态
 
-Active child package：none for implementation。
+Active child package：none。
 
-Current route：`final / closeout complete with external validation evidence handoff`。
+Current route：`final / closeout complete with archive-summary E2E baseline repaired`。
 
 Implementation authorization：no。
 
-Evidence execution authorization：no。
+Evidence execution authorization：本 package 不再授权 further execution。
 
 Audit execution authorization：no。
 

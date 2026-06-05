@@ -1,6 +1,6 @@
 import { expect, type APIRequestContext, type Page, test } from "@playwright/test";
 
-const API_BASE_URL = process.env.E2E_API_BASE_URL ?? "http://127.0.0.1:8000";
+const API_BASE_URL = process.env.E2E_API_BASE_URL ?? "http://127.0.0.1:18000";
 
 type RuntimeState = {
   tick_id: number;

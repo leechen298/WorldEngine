@@ -1,10 +1,10 @@
 # Current State
 
-Campaign status：final / closeout complete with post-closeout repair full lifecycle rerun passed
+Campaign status：final / closeout complete with archive-summary E2E baseline repaired
 Active child package：none
-Current route：`final / closeout complete with external validation evidence handoff`
+Current route：`final / closeout complete with archive-summary E2E baseline repaired`
 Implementation authorization：no
-Evidence execution authorization：yes，仅限 2026-06-04 用户要求的 0.8.9.2 full lifecycle rerun
+Evidence execution authorization：`0.8.9.3` 不再授权 further execution
 Audit execution authorization：no
 Final verification authorization：yes，仅限
 `0.8.8-v0.8-final-closeout/test-plan.md` 中列出的 commands
@@ -25,11 +25,16 @@ Final closeout authorization：yes，仅限 reviewed v0.8 package scope
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
 0.8.9.2-director-guidance-public-redaction-repair: implementation complete / focused verification passed / full lifecycle rerun passed
+0.8.9.3-archive-summary-e2e-regression-repair: implementation complete / focused E2E passed / make test-e2e passed / saved-result checker passed
 ```
 
-当前没有 active v0.8 implementation child package。`0.8.9.2` 已完成 scoped repair
-和 focused verification。较早 packages 仍保持 bounded：`0.8.4` 已 review complete，
-并把 external-validation handoff contract hand off 给下一个 roadmap entry。
+当前没有 active v0.8 implementation child package。`0.8.9.3` 是 post-closeout
+repair package，用于诊断并修复 current-product validation 报告的
+`dashboard-archive-summary` E2E regression。它已用 current-session focused E2E、
+dashboard E2E、`make test-e2e`、saved-result checker 和 diff-check evidence 关闭。
+`0.8.9.2` 已完成 scoped repair 和 focused verification。
+较早 packages 仍保持 bounded：`0.8.4` 已 review complete，并把 external-validation
+handoff contract hand off 给下一个 roadmap entry。
 `0.8.5-core-working-state-smoke-evidence` 已 review complete，并把 core-side smoke
 evidence hand off 给 audit package。`0.8.6` 已通过 read-only documentation/contract
 review，并授权 documentation-only audit execution 已完成，release-candidate
@@ -57,6 +62,22 @@ verification。2026-06-04 用户指示已授权下一次 full lifecycle rerun，
 directory 已通过 documented saved-result checker。generated-result rewrites 仍然
 禁止；之前的 failed result 保留。
 
+`0.8.9.3-archive-summary-e2e-regression-repair` 是已完成的 mixed repair package，
+对应 E2E regression：
+
+```text
+make test-e2e
+16 passed / 1 failed
+frontend/e2e/dashboard.spec.ts:292
+dashboard-archive-summary creates and renders a newer archive summary
+```
+
+它的范围是复现、诊断、修复、验证和 review archive summary generation、summary API
+visibility、MemoryPanel refresh、E2E environment setup 或 E2E wait/state isolation 中
+被证明的最小根因。它不覆盖 DeepSeek/provider live smoke、LLM-backed lifecycle
+validation、Validation Client changes、generated-result rewrites 或 product-readiness
+claims。
+
 Full lifecycle autonomous validation scenario 是 testing asset，不是 v0.8 iteration
 package。它的 scenario、schema、checker support 和 fixture 位于
 `docs/testing/agent-autonomous/` 和 `tools/testing/fixtures/` 下。第一次正式结果记录在
@@ -79,7 +100,7 @@ evidence。
 
 ## Current Route
 
-Current route：`final / closeout complete with external validation evidence handoff`。
+Current route：`final / closeout complete with archive-summary E2E baseline repaired`。
 
 v0.8 parent docs 以及 `0.8.0` 到 `0.8.7` child packages 已在各自 bounded scope 内 review
 complete。`0.8.8` documentation/contract review 也已在 bounded final-closeout package
@@ -87,8 +108,9 @@ scope 内通过。Final verification evidence 已记录，closeout consistency e
 `0.8.9.1` 是已完成的 external validation readiness post-closeout implementation
 addendum。`0.8.9.2` 已完成 focused repair verification，并且 documented scenario 的
 fresh full lifecycle rerun 已 PASS。Full lifecycle validation cases 和 results 是
-testing assets，不是 product iterations。无关 evidence execution、audit execution 和
-live external validation 当前仍未授权。
+testing assets，不是 product iterations。`0.8.9.3` 仅完成 archive-summary E2E
+regression repair contract。无关 evidence execution、audit execution 和 live
+external validation 当前仍未授权。
 
 ## Current Exclusions
 
@@ -97,7 +119,8 @@ live external validation 当前仍未授权。
 - runtime behavior passed。
 - API behavior passed。
 - frontend behavior passed。
-- E2E passed。
+- 超出 `0.8.9.3` scoped archive-summary E2E baseline repair evidence 的
+  product-wide 或 general E2E readiness passed。
 - Agent smoke passed。
 - autonomous runner 或 autonomous suite passed。
 - external validation PASS。
@@ -106,6 +129,10 @@ live external validation 当前仍未授权。
 - product readiness passed。
 - generation-quality passed。
 - v0.8 readiness passed。
+
+这些 exclusions 不否定 `0.8.9.3` package-scoped evidence：focused
+archive-summary E2E、dashboard E2E spec 和 `make test-e2e` 已在当前 session 为
+repaired baseline 通过。
 
 ## External Validation Boundary
 
@@ -126,3 +153,9 @@ repository 和 concrete validation content 都在本仓库之外，当前 parent
 Raw local result directory：
 
 `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle`
+
+最新 completed implementation target：
+
+```text
+0.8.9.3-archive-summary-e2e-regression-repair
+```

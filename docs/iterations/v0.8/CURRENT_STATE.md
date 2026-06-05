@@ -1,10 +1,10 @@
 # Current State
 
-Campaign status: final / closeout complete with post-closeout repair full lifecycle rerun passed
+Campaign status: final / closeout complete with archive-summary E2E baseline repaired
 Active child package: none
-Current route: `final / closeout complete with external validation evidence handoff`
+Current route: `final / closeout complete with archive-summary E2E baseline repaired`
 Implementation authorization: no
-Evidence execution authorization: yes, limited to the 0.8.9.2 full lifecycle rerun requested on 2026-06-04
+Evidence execution authorization: no further execution authorized by `0.8.9.3`
 Audit execution authorization: no
 Final verification authorization: yes, limited to commands in
 `0.8.8-v0.8-final-closeout/test-plan.md`
@@ -25,11 +25,16 @@ Final closeout authorization: yes, limited to reviewed v0.8 package scope
 0.8.9-external-validation-provider-and-handoff-manifest: implemented / WORLDENGINE_CONTRACT_READY, post-closeout addendum
 0.8.9.1-public-handoff-manifest-and-world-creation-contract: implementation complete / WORLDENGINE_CONTRACT_READY
 0.8.9.2-director-guidance-public-redaction-repair: implementation complete / focused verification passed / full lifecycle rerun passed
+0.8.9.3-archive-summary-e2e-regression-repair: implementation complete / focused E2E passed / make test-e2e passed / saved-result checker passed
 ```
 
-No v0.8 child package is currently active for implementation. `0.8.9.2` has
-completed its scoped repair and focused verification. Earlier packages remain
-bounded: `0.8.4` is review complete and has handed the external-validation
+No v0.8 child package is currently active for implementation. `0.8.9.3` was a
+post-closeout repair package created to diagnose and repair the current
+`dashboard-archive-summary` E2E regression reported by current-product
+validation. It closed with current-session focused E2E, dashboard E2E,
+`make test-e2e`, saved-result checker, and diff-check evidence. `0.8.9.2` has
+completed its scoped repair and focused verification.
+Earlier packages remain bounded: `0.8.4` is review complete and has handed the external-validation
 handoff contract to the next roadmap entry. `0.8.5-core-working-state-smoke-
 evidence` is review complete and hands core-side smoke evidence to the audit
 package. `0.8.6` passed read-only documentation/contract review, and
@@ -62,6 +67,23 @@ authorized the next full lifecycle rerun, and the fresh result directory passed
 the documented saved-result checker. Generated-result rewrites remain
 forbidden; the earlier failed result is preserved.
 
+`0.8.9.3-archive-summary-e2e-regression-repair` is a completed mixed repair
+package for the E2E regression:
+
+```text
+make test-e2e
+16 passed / 1 failed
+frontend/e2e/dashboard.spec.ts:292
+dashboard-archive-summary creates and renders a newer archive summary
+```
+
+Its scope is to reproduce, diagnose, repair, verify, and review the smallest
+proven root cause in archive summary generation, summary API visibility,
+MemoryPanel refresh, E2E environment setup, or E2E wait/state isolation. It
+does not cover DeepSeek/provider live smoke, LLM-backed lifecycle validation,
+Validation Client changes, generated-result rewrites, or product-readiness
+claims.
+
 The full lifecycle autonomous validation scenario is a testing asset, not a
 v0.8 iteration package. Its scenario, schema, checker support, and fixture live
 under `docs/testing/agent-autonomous/` and `tools/testing/fixtures/`. The first
@@ -85,7 +107,7 @@ evidence remains handoff context only and is not current v0.8 PASS evidence.
 
 ## Current Route
 
-Current route: `final / closeout complete with external validation evidence handoff`.
+Current route: `final / closeout complete with archive-summary E2E baseline repaired`.
 
 The v0.8 parent docs and `0.8.0` through `0.8.7` child packages are review
 complete for their bounded scopes. `0.8.8` documentation/contract review has
@@ -95,8 +117,9 @@ evidence is recorded and closeout consistency evaluator review passed.
 validation readiness. `0.8.9.2` is complete for focused repair verification and
 has a fresh full lifecycle rerun PASS for the documented scenario. Full
 lifecycle validation cases and results are testing assets, not product
-iterations. Unrelated evidence execution, audit execution, and live external
-validation remain unauthorized by this state.
+iterations. `0.8.9.3` is complete only for the archive-summary E2E regression
+repair contract. Unrelated evidence execution, audit execution, and live
+external validation remain unauthorized by this state.
 
 ## Current Exclusions
 
@@ -105,7 +128,8 @@ Current v0.8 documentation does not claim:
 - runtime behavior passed.
 - API behavior passed.
 - frontend behavior passed.
-- E2E passed.
+- product-wide or general E2E readiness passed beyond the scoped
+  `0.8.9.3` archive-summary E2E baseline repair evidence.
 - Agent smoke passed.
 - autonomous runner or autonomous suite passed.
 - external validation PASS.
@@ -114,6 +138,10 @@ Current v0.8 documentation does not claim:
 - product readiness passed.
 - generation-quality passed.
 - v0.8 readiness passed.
+
+These exclusions do not negate the package-scoped `0.8.9.3` evidence that the
+focused archive-summary E2E, dashboard E2E spec, and `make test-e2e` passed in
+the current session for the repaired baseline.
 
 ## External Validation Boundary
 
@@ -135,3 +163,9 @@ The latest full lifecycle validation rerun is `PASS` and is recorded in:
 Raw local result directory:
 
 `test-results/agent-autonomous/20260604T193039+0800-worldengine-full-lifecycle`
+
+Latest completed implementation target:
+
+```text
+0.8.9.3-archive-summary-e2e-regression-repair
+```

@@ -241,16 +241,31 @@ starts, then complete review before implementation.
   checker. External repository changes and generated result rewrites remain
   unauthorized.
 
+### Completed repair package: `0.8.9.3-archive-summary-e2e-regression-repair`
+
+- Type: mixed repair package
+- Status: implementation complete / PASS
+- Purpose: diagnose and repair the current `dashboard-archive-summary` E2E
+  regression discovered during current-product validation, where `make
+  test-e2e` reported `16 passed / 1 failed`.
+- Boundary: this package is a basic dashboard E2E baseline repair. It does not
+  implement or validate DeepSeek/provider live smoke, LLM-backed world
+  creation, LLM-assisted world evolution, Validation Client behavior, or
+  external validation PASS. Current-session focused E2E, dashboard E2E,
+  `make test-e2e`, saved-result checker, and diff checks passed for the
+  package scope.
+
 ## Current State
 
 Active child package:
-none for implementation.
+none.
 
-Current route: `final / closeout complete with external validation evidence handoff`.
+Current route: `final / closeout complete with archive-summary E2E baseline repaired`.
 
 Implementation authorization: no.
 
-Evidence execution authorization: no.
+Evidence execution authorization: no further execution authorized by this
+package.
 
 Audit execution authorization: no.
 
