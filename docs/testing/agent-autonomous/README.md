@@ -98,3 +98,26 @@ does not prove that every autonomous scenario has been live-run.
 | `AUTO-FULL-V07-005 v0.7-readiness-contracts` | `contract-only / checker-extension-required` | Full integrator scenario for readiness/report/projection checker surfaces. |
 | `AUTO-FULL-V07-006 product-exploration-regression` | `contract-only / full-runner-required` | Future full-suite scenario that classifies every selected capability layer. |
 | `worldengine-full-lifecycle-autonomous` | `saved-result-checker-supported` | Full WorldEngine lifecycle evidence case covering world creation, runtime progression, Agent autonomy evidence, bounded direction, and evidence integrity. |
+| `provider-live-smoke-deepseek` | `planned / checker-extension-required` | Future LLM-backed provider smoke scenario. |
+| `llm-backed-world-creation` | `planned / checker-extension-required` | Future LLM-backed premise-specific world creation scenario. |
+| `world-rule-parameter-evolution` | `planned / checker-extension-required` | Future rule-linked world parameter evolution scenario. |
+| `rule-compliant-event-generation` | `planned / checker-extension-required` | Future rule-constrained external event and user guidance scenario. |
+| `agent-persistent-autonomy-evidence` | `planned / checker-extension-required` | Future multi-round public Agent autonomy evidence scenario. |
+| `llm-backed-full-lifecycle-autonomous` | `planned / checker-extension-required` | Future full LLM-backed lifecycle scenario requiring checker/scorecard PASS and second-Agent review. |
+
+## LLM-backed Lifecycle Planning
+
+The LLM-backed lifecycle suite is planned but not checker-supported yet. Its
+documentation contracts live in:
+
+- `docs/testing/llm-backed-lifecycle-validation-plan.md`
+- `docs/testing/agent-autonomous/llm-backed-suite-execution.md`
+- `docs/testing/agent-autonomous/llm-backed-scorecard.md`
+- `docs/testing/agent-autonomous/llm-backed-artifact-contract.md`
+- `docs/testing/agent-autonomous/llm-backed-result-template.md`
+- `docs/testing/agent-autonomous/second-agent-review-protocol.md`
+
+These documents do not update `result-schema.json` and do not authorize a PASS
+claim. A future checker/schema implementation package must explicitly add
+support for these scenario names before they can be validated by
+`make validate-agent-autonomous-result`.

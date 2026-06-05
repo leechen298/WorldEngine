@@ -51,6 +51,9 @@ FORBIDDEN_PUBLIC_EVIDENCE_MARKERS = {
     "self_state",
     "source_path",
 }
+SAFE_PUBLIC_EVIDENCE_FIELD_NAMES = {
+    "credential_source_class",
+}
 PUBLIC_API_CLI_PATTERN = re.compile(
     r"\b(get|post|put|patch|delete)\s+/(manifest|openapi\.json|world|worlds|runtime|archive)\b"
 )
@@ -344,9 +347,34 @@ def _require_positive_int(section: dict[str, Any], section_name: str, field: str
         errors.append(f"world-lifecycle-summary.json {section_name}.{field} must be a positive integer")
 
 
+def _collect_forbidden_public_evidence_markers(payload: Any) -> set[str]:
+    leaked: set[str] = set()
+
+    def scan_text(value: str) -> None:
+        lowered = value.lower()
+        leaked.update(marker for marker in FORBIDDEN_PUBLIC_EVIDENCE_MARKERS if marker in lowered)
+
+    def scan_node(node: Any) -> None:
+        if isinstance(node, dict):
+            for key, value in node.items():
+                key_text = str(key)
+                if key_text.lower() not in SAFE_PUBLIC_EVIDENCE_FIELD_NAMES:
+                    scan_text(key_text)
+                scan_node(value)
+            return
+        if isinstance(node, list):
+            for item in node:
+                scan_node(item)
+            return
+        if isinstance(node, str):
+            scan_text(node)
+
+    scan_node(payload)
+    return leaked
+
+
 def _validate_public_evidence_redaction(payload: Any, artifact_name: str, errors: list[str]) -> None:
-    dumped = json.dumps(payload, sort_keys=True).lower()
-    leaked = sorted(marker for marker in FORBIDDEN_PUBLIC_EVIDENCE_MARKERS if marker in dumped)
+    leaked = sorted(_collect_forbidden_public_evidence_markers(payload))
     if leaked:
         errors.append(f"{artifact_name} contains forbidden public evidence marker(s): {', '.join(leaked)}")
 

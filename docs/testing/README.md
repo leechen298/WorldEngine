@@ -47,6 +47,12 @@ supplement, organize, or review test documentation, test plans, scenarios, or
 test cases. A one-line request may trigger the playbook, but the output is a
 test-documentation artifact, not a PASS verdict.
 
+Complete product validation documentation lives under
+`docs/testing/complete-product-validation/`. It is the product-wide suite for
+coverage maps, validation rules, scenario matrices, runbooks, evidence
+contracts, result templates, and gap routing. It composes the existing testing
+playbooks and scenario directories; it does not by itself claim product PASS.
+
 ## Code Review
 
 Use `docs/testing/code-review-playbook.md` when a user asks to review code for a
@@ -119,6 +125,11 @@ make validate-agent-autonomous-fixtures
 This checker can validate recorded Codex/test-runner autonomous evidence. It
 is not a broad autonomous runner, scheduler, or proof that every autonomous
 scenario has been live-run.
+
+LLM-backed lifecycle autonomous contracts are currently planned under
+`docs/testing/agent-autonomous/` and
+`docs/testing/llm-backed-lifecycle-validation-plan.md`. They require future
+checker/schema implementation before they can produce automated PASS.
 
 ## Future Implementation Prerequisites
 

@@ -44,6 +44,11 @@ playbook，但 PASS 仍然必须来自当前会话命令或 checker evidence。
 `docs/testing/test-documentation-playbook.zh.md`。一句话请求可以触发 playbook，但产物是
 test-documentation artifact，不是 PASS verdict。
 
+完整产品验证文档位于 `docs/testing/complete-product-validation/`。它是产品级套件，
+包含 coverage maps、validation rules、scenario matrices、runbooks、evidence
+contracts、result templates 和 gap routing。它组合现有 testing playbooks 和 scenario
+directories；它本身不声明 product PASS。
+
 ## Code Review
 
 当用户要求审核某个 version、iteration package、feature 或当前 implementation surface 的
@@ -110,6 +115,10 @@ make validate-agent-autonomous-fixtures
 
 该 checker 可以验证已记录的 Codex/test-runner autonomous evidence。它不是 broad
 autonomous runner、调度器，也不代表每个 autonomous scenario 都已经 live-run。
+
+LLM-backed lifecycle autonomous contracts 当前在 `docs/testing/agent-autonomous/` 和
+`docs/testing/llm-backed-lifecycle-validation-plan.md` 下处于 planned 状态。它们需要后续
+checker/schema implementation，才能产生 automated PASS。
 
 ## Future Implementation Prerequisites
 

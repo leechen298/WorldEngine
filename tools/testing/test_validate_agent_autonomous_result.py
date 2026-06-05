@@ -370,3 +370,38 @@ def test_full_world_lifecycle_public_evidence_phrase_marker_fails(tmp_path: Path
     errors = validate_result_dir(result_dir)
 
     assert any("api-summary.json contains forbidden public evidence marker" in error for error in errors)
+
+
+def test_full_world_lifecycle_public_provider_metadata_passes(tmp_path: Path) -> None:
+    result_dir = tmp_path / "public-provider-metadata"
+    _write_valid_full_lifecycle_result(result_dir)
+    api_summary_path = result_dir / "api-summary.json"
+    api_summary = json.loads(api_summary_path.read_text())
+    api_summary["worldengine_public_calls"][0]["public_summary"] = {
+        "provider": {
+            "provider_class": "unconfigured",
+            "provider_readiness": "not_configured",
+            "credential_source_class": "none",
+            "model_label": "unconfigured",
+        }
+    }
+    api_summary_path.write_text(json.dumps(api_summary, indent=2) + "\n")
+
+    assert validate_result_dir(result_dir) == []
+
+
+def test_full_world_lifecycle_public_credential_field_still_fails(tmp_path: Path) -> None:
+    result_dir = tmp_path / "public-credential-field"
+    _write_valid_full_lifecycle_result(result_dir)
+    api_summary_path = result_dir / "api-summary.json"
+    api_summary = json.loads(api_summary_path.read_text())
+    api_summary["worldengine_public_calls"][0]["public_summary"] = {
+        "provider": {
+            "credential": "none",
+        }
+    }
+    api_summary_path.write_text(json.dumps(api_summary, indent=2) + "\n")
+
+    errors = validate_result_dir(result_dir)
+
+    assert any("api-summary.json contains forbidden public evidence marker" in error for error in errors)
