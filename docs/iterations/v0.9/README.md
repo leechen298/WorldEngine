@@ -2,7 +2,7 @@
 
 Chinese mirror: `README.zh.md`.
 
-Status: reviewed / 0.9.9 implementation complete / verification passed
+Status: reviewed / ready for child package development
 Type: Codex `/goal` development campaign and iteration package root
 implementation_authorized: no
 evidence_execution_authorized: no
@@ -120,14 +120,12 @@ Planned sequence:
 
 ## Current State
 
-Active child package:
-`0.9.10-llm-backed-autonomous-checker-and-fixtures` selected /
-documentation package needed.
+Active child package: none.
 
 Current route:
 
 ```text
-0.9.10-llm-backed-autonomous-checker-and-fixtures-documentation-package-needed
+0.9.0-v0.9-planning-and-v0.8-handoff-baseline-documentation-package-needed
 ```
 
 Implementation authorization: no.
@@ -136,9 +134,9 @@ Evidence execution authorization: no.
 
 Audit execution authorization: no.
 
-Implementation must wait until the concrete `0.9.10` child package records
-positive implementation authorization after documentation/contract/design/test
-plan review.
+Implementation must wait until a concrete child package records positive
+implementation authorization after documentation/contract/design/test-plan
+review.
 
 ## Goal Entries
 
@@ -166,43 +164,13 @@ verified object and owns LLM behavior.
 
 ## Final Assessment State
 
-Current value: `reviewed / 0.9.9 implementation complete / verification passed`.
+Current value: `reviewed / ready for child package development`.
 
 This parent documentation package defines the v0.9 direction and planned
-package sequence. It has completed the concrete `0.9.0` documentation
-baseline and the `0.9.1-provider-live-smoke-and-redaction-boundary`
-documentation, contract review, and non-live implementation scope. Focused
-backend verification and the backend regression suite passed for `0.9.1`.
-The `0.9.2` package passed documentation/contract review and completed the
-reviewed non-live implementation scope. The `0.9.3` package passed
-documentation/contract/design/test-plan review and completed the reviewed
-non-live implementation scope. The `0.9.4` package passed
-documentation/contract/design/test-plan review and completed the reviewed
-non-live implementation scope. The `0.9.5` package passed
-documentation/contract/design/test-plan review and completed the reviewed
-active-backend in-memory bounded runtime-control implementation scope. The
-`0.9.6` package passed documentation/contract/design/test-plan review and
-completed the reviewed active-backend natural-language world direction
-boundary implementation scope. Focused, related public-surface, and backend
-regression verification passed, and implementation-scope evaluator re-review
-passed with no P0/P1/P2/P3 findings. The `0.9.7` package passed
-documentation/contract/design/test-plan review and completed the reviewed
-active-backend rule-linked evolution and event-legality implementation scope.
-Focused, related public-surface, and backend regression verification passed,
-and implementation-scope evaluator re-review passed with no P0/P1/P2
-findings. The `0.9.8` package passed documentation/contract/design/test-plan
-review and completed the reviewed active-backend public Agent continuity and
-consolidation evidence implementation scope. Focused, related public-surface,
-and backend regression verification passed, and implementation-scope
-evaluator re-review found no code-level P0/P1/P2/P3 findings after repairs.
-The `0.9.9-external-narrative-and-diagnostic-dialogue-boundary` package
-passed documentation/contract/design/test-plan review and completed the
-reviewed active-backend public narrative projection and out-of-world
-diagnostic dialogue boundary implementation scope. Focused, related
-public-surface, and backend regression verification passed, and
-implementation-scope evaluator re-review passed with no P0/P1/P2/P3 findings
-after repairs. The next route is creating or reviewing the concrete
-`0.9.10-llm-backed-autonomous-checker-and-fixtures` documentation package.
-Live provider calls, generated result changes, checker execution or fixture
-changes, external validation, Validation Client implementation, frontend UI,
-durable scheduling, and `backend/worldengine/` changes remain unauthorized.
+package sequence. It does not itself authorize any runtime, schema, API,
+checker, fixture, frontend, evidence, provider, Validation Client, or
+`backend/worldengine/` implementation work.
+
+The next valid route is to create or review the concrete `0.9.0` child package
+documents. Later `0.9.x` package completion must be claimed only by the
+corresponding reviewed child package and current-session evidence.

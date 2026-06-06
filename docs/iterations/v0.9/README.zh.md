@@ -2,7 +2,7 @@
 
 英文镜像：`README.md`。
 
-Status：reviewed / 0.9.9 implementation complete / verification passed
+Status：reviewed / ready for child package development
 Type：Codex `/goal` development campaign and iteration package root
 implementation_authorized：no
 evidence_execution_authorized：no
@@ -104,14 +104,12 @@ route-map specs，不是 active implementation authorization，也不是完整 c
 
 ## 当前状态
 
-Active child package：
-`0.9.10-llm-backed-autonomous-checker-and-fixtures` selected /
-documentation package needed。
+Active child package：none。
 
 Current route：
 
 ```text
-0.9.10-llm-backed-autonomous-checker-and-fixtures-documentation-package-needed
+0.9.0-v0.9-planning-and-v0.8-handoff-baseline-documentation-package-needed
 ```
 
 Implementation authorization：no。
@@ -120,8 +118,8 @@ Evidence execution authorization：no。
 
 Audit execution authorization：no。
 
-Implementation 必须等 concrete `0.9.10` child package 在 documentation/contract/design/test-plan
-review 后记录 positive implementation authorization。
+Implementation 必须等 concrete child package 在 documentation/contract/design/test-plan review 后
+记录 positive implementation authorization。
 
 ## Goal Entries
 
@@ -148,36 +146,11 @@ WorldEngine 拥有。
 
 ## Final Assessment State
 
-当前值：`reviewed / 0.9.9 implementation complete / verification passed`。
+当前值：`reviewed / ready for child package development`。
 
-这个 parent documentation package 定义 v0.9 方向和 planned package sequence。它已完成具体
-`0.9.0` documentation baseline，以及
-`0.9.1-provider-live-smoke-and-redaction-boundary` documentation、contract review 和
-non-live implementation scope。`0.9.1` 的 focused backend verification 和 backend
-regression suite 已通过。`0.9.2` package 已通过 documentation/contract review，并完成
-reviewed non-live implementation scope。`0.9.3` package 已通过
-documentation/contract/design/test-plan review，并完成 reviewed non-live implementation scope。
-`0.9.4` package 已通过 documentation/contract/design/test-plan review，并完成 reviewed
-non-live implementation scope。`0.9.5` package 已通过
-documentation/contract/design/test-plan review，并完成 reviewed active-backend in-memory
-bounded runtime-control implementation scope。`0.9.6` package 已通过
-documentation/contract/design/test-plan review，并完成 reviewed active-backend
-natural-language world direction boundary implementation scope。Focused、related
-public-surface 和 backend regression verification 已通过，implementation-scope evaluator
-re-review 已通过，且无 P0/P1/P2/P3 findings。`0.9.7` package 已通过
-documentation/contract/design/test-plan review，并完成 reviewed active-backend
-rule-linked evolution and event-legality implementation scope。Focused、related
-public-surface 和 backend regression verification 已通过，implementation-scope evaluator
-re-review 已通过且无 P0/P1/P2 findings。`0.9.8` package 已通过
-documentation/contract/design/test-plan review，并完成 reviewed active-backend public Agent
-continuity and consolidation evidence implementation scope。
-Focused、related public-surface 和 backend regression verification 已通过，implementation-scope
-evaluator re-review 在修复后未发现 code-level P0/P1/P2/P3 findings。`0.9.9-external-narrative-and-diagnostic-dialogue-boundary`
-package 已通过 documentation/contract/design/test-plan review，并完成 reviewed active-backend
-public narrative projection 和 out-of-world diagnostic dialogue boundary implementation scope。
-Focused、related public-surface 和 backend regression verification 已通过，implementation-scope
-evaluator re-review 在修复后没有 P0/P1/P2/P3 findings。下一条 route 是创建或 review concrete
-`0.9.10-llm-backed-autonomous-checker-and-fixtures` documentation package。Live provider
-calls、generated result changes、checker execution 或 fixture changes、external validation、
-Validation Client implementation、frontend UI、durable scheduling 和 `backend/worldengine/`
-changes 仍未授权。
+这个 parent documentation package 定义 v0.9 方向和 planned package sequence。它本身不授权任何
+runtime、schema、API、checker、fixture、frontend、evidence、provider、Validation Client 或
+`backend/worldengine/` implementation work。
+
+下一条合法 route 是创建或 review concrete `0.9.0` child package documents。后续 `0.9.x`
+package completion 必须只由对应 reviewed child package 和 current-session evidence 声明。

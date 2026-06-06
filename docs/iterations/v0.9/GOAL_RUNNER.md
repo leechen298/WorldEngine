@@ -2,7 +2,7 @@
 
 Chinese mirror: `GOAL_RUNNER.zh.md`.
 
-Status: reviewed / 0.9.9 implementation complete / verification passed
+Status: reviewed / ready for child package development
 
 ## Goal Entry
 

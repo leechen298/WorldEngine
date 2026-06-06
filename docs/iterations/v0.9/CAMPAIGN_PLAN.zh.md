@@ -2,7 +2,7 @@
 
 英文镜像：`CAMPAIGN_PLAN.md`。
 
-Status：reviewed / 0.9.9 implementation complete / verification passed
+Status：reviewed / ready for child package development
 
 ## 目标
 
