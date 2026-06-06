@@ -1,6 +1,6 @@
 # LLM-backed Lifecycle Suite Execution
 
-状态：planned runbook / checker-extension-required
+状态：planned runbook / saved-result-checker-supported / execution not run
 
 父计划：`docs/testing/llm-backed-lifecycle-validation-plan.zh.md`。
 

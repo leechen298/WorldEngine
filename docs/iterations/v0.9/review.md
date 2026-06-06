@@ -2,10 +2,10 @@
 
 Chinese mirror: `review.zh.md`.
 
-Status: documentation reviewed / ready for child package development
+Status: final / blocked closeout complete
 
 parent_implementation_authorized: no
-active_child_package: none
+active_child_package: `0.9.13-v0.9-release-candidate-and-closeout`
 active_child_implementation_authorized: no
 provider_live_call_authorized: no
 evidence_execution_authorized: no
@@ -35,11 +35,25 @@ blocking P2. Its only P3 finding was that the recorded authorization scan
 command should match both ASCII `:` and full-width Chinese `：`; that command
 has been repaired in this review record.
 
-Post-push read-only commit review found a P1: the pushed parent v0.9 docs had
-advanced status and routing beyond the committed parent-documentation scope.
-This follow-up repair restores the parent package to `reviewed / ready for
-child package development`, clears the active child package, and routes the
-next step back to the concrete `0.9.0` child documentation package.
+Current routing update: `0.9.1` through `0.9.10` have completed their reviewed
+scopes with current-session verification recorded in child and parent review
+docs. The `0.9.10-llm-backed-autonomous-checker-and-fixtures` implementation
+completed saved-result checker, schema, fixture, redaction, scorecard, and
+LLM-backed testing doc support. The concrete
+`0.9.11-validation-client-evidence-handoff-contract` documentation package
+passed documentation/contract review without implementation authorization. The
+`0.9.12-llm-backed-full-lifecycle-validation-execution` package completed
+evidence execution with a checker-valid BLOCKED saved result at provider
+live-smoke preflight. `0.9.13-v0.9-release-candidate-and-closeout` completed
+closeout and the current route is `v0.9-final-blocked-closeout-complete`.
+
+0.9.12 evidence result:
+
+```text
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.md
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.zh.md
+test-results/agent-autonomous/20260606T142210+0800-llm-backed-full-lifecycle
+```
 
 ## Changed Files
 
@@ -70,6 +84,27 @@ docs/product-model.zh.md
 docs/roadmap.md
 docs/scope-boundaries.md
 docs/scope-boundaries.zh.md
+```
+
+0.9.12 evidence execution and route update:
+
+```text
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.md
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.zh.md
+docs/iterations/v0.9/0.9.12-llm-backed-full-lifecycle-validation-execution/review.md
+docs/iterations/v0.9/0.9.12-llm-backed-full-lifecycle-validation-execution/review.zh.md
+docs/iterations/v0.9/README.md
+docs/iterations/v0.9/README.zh.md
+docs/iterations/v0.9/CURRENT_STATE.md
+docs/iterations/v0.9/CURRENT_STATE.zh.md
+docs/iterations/v0.9/GOAL_RUNNER.md
+docs/iterations/v0.9/GOAL_RUNNER.zh.md
+docs/iterations/v0.9/CAMPAIGN_PLAN.md
+docs/iterations/v0.9/CAMPAIGN_PLAN.zh.md
+docs/iterations/v0.9/v0.9-plan.md
+docs/iterations/v0.9/v0.9-plan.zh.md
+docs/iterations/v0.9/review.md
+docs/iterations/v0.9/review.zh.md
 ```
 
 ## Commands Run
@@ -183,11 +218,34 @@ rg -n "^(implementation_authorized|evidence_execution_authorized|provider_live_c
 Result: all active parent-document authorization status fields are `no`. The
 command covers both ASCII `:` and full-width Chinese `：` status separators.
 
+```bash
+python3 -c "import os; names=['DEEPSEEK_API_KEY','WORLDENGINE_DEEPSEEK_API_KEY','WORLDENGINE_LLM_PROVIDER','OPENAI_API_KEY']; print({name: bool(os.environ.get(name)) for name in names})"
+```
+
+Result: exit 0;
+`{'DEEPSEEK_API_KEY': False, 'WORLDENGINE_DEEPSEEK_API_KEY': False, 'WORLDENGINE_LLM_PROVIDER': False, 'OPENAI_API_KEY': False}`.
+
+```bash
+make validate-agent-autonomous-fixtures
+```
+
+Result: exit 0. Valid fixtures passed, invalid fixtures failed as expected,
+and pytest reported `38 passed in 0.08s`.
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260606T142210+0800-llm-backed-full-lifecycle
+```
+
+Initial result: exit 2 due a forbidden public evidence marker in
+`provider-live-summary.json`. Final result after public-text repair: exit 0;
+`PASS: validated agent autonomous result at test-results/agent-autonomous/20260606T142210+0800-llm-backed-full-lifecycle`.
+
 ## Product Tests
 
-Not run. This is a documentation-only parent planning pass and follow-up
-documentation repair. It does not modify runtime, API, schema, frontend,
-checker, fixture, provider, or Validation Client implementation.
+Provider live call, full LLM-backed lifecycle execution, Validation Client
+export, external validation, runtime smoke, UI smoke, and product readiness
+tests were not run. The 0.9.12 saved BLOCKED result and fixture regression
+were validated by the commands above.
 
 ## Scope Review
 
@@ -198,6 +256,8 @@ Expected scope:
 - roadmap planning text.
 - Chinese mirrors.
 - parent-status repair after post-push review.
+- durable 0.9.12 BLOCKED evidence summary.
+- parent route update to final BLOCKED closeout.
 
 Explicitly out of scope:
 
@@ -208,9 +268,10 @@ Explicitly out of scope:
 - checker implementation.
 - fixtures.
 - migrations.
-- generated result directories.
+- generated result rewrites to force PASS.
 - Validation Client repository changes.
 - live provider calls.
+- product readiness claim.
 - `backend/worldengine/` work.
 
 ## Compatibility Review
@@ -223,13 +284,13 @@ reviewed child package explicitly authorizes a breaking change.
 
 ## Findings
 
-Current documentation-stage findings:
+Current parent findings:
 
 - P0: none recorded.
-- P1: fixed. Post-push review found parent routing/status had advanced beyond
-  the committed documentation scope; this repair restores parent routing to
-  `0.9.0-v0.9-planning-and-v0.8-handoff-baseline-documentation-package-needed`.
-- Blocking P2: none recorded.
+- P1: open / classified. Provider live-smoke preflight blocked because the
+  required provider environment variables were not present.
+- Blocking P2: open / classified. No broad staged LLM-backed lifecycle runner
+  command was found; saved-result checker support exists.
 - P3: fixed. Authorization status scan now matches both ASCII `:` and
   full-width Chinese `：`.
 
@@ -244,9 +305,9 @@ evidence_execution_authorized: no
 
 ## Final Assessment
 
-Reviewed and ready for child package development. The next valid route is
-creating or reviewing the concrete `0.9.0` child package documents.
+Reviewed through `0.9.13` release-candidate closeout. The current valid route
+is `v0.9-final-blocked-closeout-complete`.
 
-v0.9 parent documentation does not claim implementation, provider live call,
-evidence execution, checker execution, product test PASS, external validation
-PASS, or full v0.9 closeout.
+0.9.12 produced a checker-valid BLOCKED result, not provider live PASS. No
+LLM-backed full lifecycle PASS, Validation Client export PASS, external
+validation PASS, product readiness, or PASS closeout is claimed.

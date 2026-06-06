@@ -1,6 +1,6 @@
 # LLM-backed Lifecycle Suite Execution
 
-Status: planned runbook / checker-extension-required
+Status: planned runbook / saved-result-checker-supported / execution not run
 
 Parent plan: `docs/testing/llm-backed-lifecycle-validation-plan.md`.
 

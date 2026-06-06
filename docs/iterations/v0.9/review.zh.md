@@ -2,10 +2,10 @@
 
 英文镜像：`review.md`。
 
-Status：documentation reviewed / ready for child package development
+Status：final / blocked closeout complete
 
 parent_implementation_authorized：no
-active_child_package：none
+active_child_package：`0.9.13-v0.9-release-candidate-and-closeout`
 active_child_implementation_authorized：no
 provider_live_call_authorized：no
 evidence_execution_authorized：no
@@ -31,10 +31,22 @@ diagnostic dialogue boundaries，同时没有把 v0.9 child package details 复�
 中记录的 authorization scan command 应同时匹配 ASCII `:` 和中文全角 `：`；该命令已在本
 review record 中修复。
 
-Post-push 只读 commit review 发现一个 P1：已 push 的 parent v0.9 docs 把 status 和 routing
-推进到了超出本次 committed parent-documentation scope 的位置。本 follow-up repair 把 parent
-package 恢复为 `reviewed / ready for child package development`，清空 active child package，并把
-下一步 route 恢复到 concrete `0.9.0` child documentation package。
+Current routing update：`0.9.1` 到 `0.9.10` 已完成各自 reviewed scopes，current-session
+verification 已记录在 child 和 parent review docs。`0.9.10-llm-backed-autonomous-checker-and-fixtures`
+implementation 已完成 saved-result checker、schema、fixture、redaction、scorecard 和 LLM-backed
+testing doc support。Concrete `0.9.11-validation-client-evidence-handoff-contract`
+documentation package 已通过 documentation/contract review，且未授权 implementation。`0.9.12-llm-backed-full-lifecycle-validation-execution`
+package 已完成 evidence execution，并在 provider live-smoke preflight 处生成 checker-valid
+BLOCKED saved result。`0.9.13-v0.9-release-candidate-and-closeout` 已完成 closeout，当前
+route 是 `v0.9-final-blocked-closeout-complete`。
+
+0.9.12 evidence result：
+
+```text
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.md
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.zh.md
+test-results/agent-autonomous/20260606T142210+0800-llm-backed-full-lifecycle
+```
 
 ## Changed Files
 
@@ -65,6 +77,27 @@ docs/product-model.zh.md
 docs/roadmap.md
 docs/scope-boundaries.md
 docs/scope-boundaries.zh.md
+```
+
+0.9.12 evidence execution and route update：
+
+```text
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.md
+docs/testing/results/2026-06-06-llm-backed-lifecycle-validation.zh.md
+docs/iterations/v0.9/0.9.12-llm-backed-full-lifecycle-validation-execution/review.md
+docs/iterations/v0.9/0.9.12-llm-backed-full-lifecycle-validation-execution/review.zh.md
+docs/iterations/v0.9/README.md
+docs/iterations/v0.9/README.zh.md
+docs/iterations/v0.9/CURRENT_STATE.md
+docs/iterations/v0.9/CURRENT_STATE.zh.md
+docs/iterations/v0.9/GOAL_RUNNER.md
+docs/iterations/v0.9/GOAL_RUNNER.zh.md
+docs/iterations/v0.9/CAMPAIGN_PLAN.md
+docs/iterations/v0.9/CAMPAIGN_PLAN.zh.md
+docs/iterations/v0.9/v0.9-plan.md
+docs/iterations/v0.9/v0.9-plan.zh.md
+docs/iterations/v0.9/review.md
+docs/iterations/v0.9/review.zh.md
 ```
 
 ## Commands Run
@@ -175,10 +208,33 @@ rg -n "^(implementation_authorized|evidence_execution_authorized|provider_live_c
 结果：所有 active parent-document authorization status fields 都是 `no`。该命令同时覆盖 ASCII
 `:` 和中文全角 `：` status separators。
 
+```bash
+python3 -c "import os; names=['DEEPSEEK_API_KEY','WORLDENGINE_DEEPSEEK_API_KEY','WORLDENGINE_LLM_PROVIDER','OPENAI_API_KEY']; print({name: bool(os.environ.get(name)) for name in names})"
+```
+
+Result：exit 0；
+`{'DEEPSEEK_API_KEY': False, 'WORLDENGINE_DEEPSEEK_API_KEY': False, 'WORLDENGINE_LLM_PROVIDER': False, 'OPENAI_API_KEY': False}`。
+
+```bash
+make validate-agent-autonomous-fixtures
+```
+
+Result：exit 0。valid fixtures 通过，invalid fixtures 按预期失败，pytest 报告
+`38 passed in 0.08s`。
+
+```bash
+make validate-agent-autonomous-result RESULT_DIR=test-results/agent-autonomous/20260606T142210+0800-llm-backed-full-lifecycle
+```
+
+Initial result：exit 2，因为 `provider-live-summary.json` 中有 forbidden public evidence
+marker。公开文本修复后 final result：exit 0；
+`PASS: validated agent autonomous result at test-results/agent-autonomous/20260606T142210+0800-llm-backed-full-lifecycle`。
+
 ## Product Tests
 
-未运行。这是 documentation-only parent planning pass 和 follow-up documentation repair。它不修改
-runtime、API、schema、frontend、checker、fixture、provider 或 Validation Client implementation。
+Provider live call、full LLM-backed lifecycle execution、Validation Client export、external
+validation、runtime smoke、UI smoke 和 product readiness tests 未运行。0.9.12 saved BLOCKED
+result 和 fixture regression 已由上面的命令验证。
 
 ## Scope Review
 
@@ -189,6 +245,8 @@ runtime、API、schema、frontend、checker、fixture、provider 或 Validation 
 - roadmap planning text。
 - Chinese mirrors。
 - post-push review 后的 parent-status repair。
+- durable 0.9.12 BLOCKED evidence summary。
+- parent route update to final BLOCKED closeout。
 
 明确 out of scope：
 
@@ -199,9 +257,10 @@ runtime、API、schema、frontend、checker、fixture、provider 或 Validation 
 - checker implementation。
 - fixtures。
 - migrations。
-- generated result directories。
+- generated result rewrites to force PASS。
 - Validation Client repository changes。
 - live provider calls。
+- product readiness claim。
 - `backend/worldengine/` work。
 
 ## Compatibility Review
@@ -213,13 +272,13 @@ v0.9 planned packages 要求 schema/API changes 保持 additive，除非未来 r
 
 ## Findings
 
-当前 documentation-stage findings：
+Current parent findings：
 
 - P0：none recorded。
-- P1：fixed。Post-push review 发现 parent routing/status 已推进到超出 committed
-  documentation scope 的位置；本次 repair 已把 parent route 恢复到
-  `0.9.0-v0.9-planning-and-v0.8-handoff-baseline-documentation-package-needed`。
-- Blocking P2：none recorded。
+- P1：open / classified。Provider live-smoke preflight blocked，因为 required provider
+  environment variables 不存在。
+- Blocking P2：open / classified。未找到 broad staged LLM-backed lifecycle runner command；
+  saved-result checker support 已存在。
 - P3：fixed。Authorization status scan 现在同时匹配 ASCII `:` 和中文全角 `：`。
 
 ## Authorization State
@@ -233,8 +292,9 @@ evidence_execution_authorized: no
 
 ## Final Assessment
 
-Reviewed and ready for child package development。下一条合法 route 是创建或 review concrete
-`0.9.0` child package documents。
+Reviewed through `0.9.13` release-candidate closeout。当前合法 route 是
+`v0.9-final-blocked-closeout-complete`。
 
-v0.9 parent documentation 不声明 implementation、provider live call、evidence execution、
-checker execution、product test PASS、external validation PASS 或 full v0.9 closeout。
+0.9.12 产出 checker-valid BLOCKED result，不是 provider live PASS。不声明 LLM-backed full
+lifecycle PASS、Validation Client export PASS、external validation PASS、product readiness 或
+PASS closeout。

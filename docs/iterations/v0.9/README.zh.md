@@ -2,7 +2,7 @@
 
 英文镜像：`README.md`。
 
-Status：reviewed / ready for child package development
+Status：final / blocked closeout complete
 Type：Codex `/goal` development campaign and iteration package root
 implementation_authorized：no
 evidence_execution_authorized：no
@@ -104,12 +104,14 @@ route-map specs，不是 active implementation authorization，也不是完整 c
 
 ## 当前状态
 
-Active child package：none。
+Active child package：
+`0.9.13-v0.9-release-candidate-and-closeout` selected /
+closeout complete / blocked。
 
 Current route：
 
 ```text
-0.9.0-v0.9-planning-and-v0.8-handoff-baseline-documentation-package-needed
+v0.9-final-blocked-closeout-complete
 ```
 
 Implementation authorization：no。
@@ -118,8 +120,7 @@ Evidence execution authorization：no。
 
 Audit execution authorization：no。
 
-Implementation 必须等 concrete child package 在 documentation/contract/design/test-plan review 后
-记录 positive implementation authorization。
+Evidence execution 当前未授权。Implementation 仍未授权。
 
 ## Goal Entries
 
@@ -146,11 +147,16 @@ WorldEngine 拥有。
 
 ## Final Assessment State
 
-当前值：`reviewed / ready for child package development`。
+当前值：`final / blocked closeout complete`。
 
-这个 parent documentation package 定义 v0.9 方向和 planned package sequence。它本身不授权任何
-runtime、schema、API、checker、fixture、frontend、evidence、provider、Validation Client 或
-`backend/worldengine/` implementation work。
-
-下一条合法 route 是创建或 review concrete `0.9.0` child package documents。后续 `0.9.x`
-package completion 必须只由对应 reviewed child package 和 current-session evidence 声明。
+这个 parent documentation package 定义 v0.9 方向和 planned package sequence。`0.9.1` 到
+`0.9.10` 已完成各自 reviewed scope，current-session verification 已记录在 child 和 parent
+review docs。`0.9.10-llm-backed-autonomous-checker-and-fixtures` 已完成 saved-result checker、
+schema、fixture、redaction、scorecard 和 LLM-backed testing doc support。`0.9.11-validation-client-evidence-handoff-contract`
+package 已通过 documentation/contract review，且未授权 implementation。
+`0.9.12-llm-backed-full-lifecycle-validation-execution` 已完成 evidence execution，并在
+provider live-smoke preflight 处生成 checker-valid BLOCKED saved result。
+`0.9.13-v0.9-release-candidate-and-closeout` 已完成 v0.9 boundary review，并将 v0.9
+按 BLOCKED close；code implementation、provider live calls、evidence execution、external
+validation、frontend、Validation Client implementation、`backend/app/**` 和
+`backend/worldengine/**` 仍未授权，除非未来 reviewed package 明确授权更窄 scope。

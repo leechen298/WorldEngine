@@ -1,0 +1,19 @@
+{
+  "scenario": "provider-live-smoke-deepseek",
+  "status": "pass",
+  "redaction": {
+    "api_keys_included": false,
+    "authorization_headers_included": false,
+    "raw_prompts_included": true,
+    "raw_provider_requests_included": false,
+    "raw_provider_responses_included": true,
+    "provider_traces_included": true,
+    "private_agent_memory_included": true,
+    "private_agent_goals_included": false,
+    "raw_thought_included": true,
+    "hidden_context_included": true,
+    "private_evaluator_data_included": true,
+    "external_world_seed_included": true,
+    "external_world_oracle_included": true
+  }
+}

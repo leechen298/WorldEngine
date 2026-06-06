@@ -2,6 +2,8 @@
 
 from fastapi import APIRouter
 
+from app.agent.provider_config import provider_readiness_from_env
+from app.agent.worldview_generation import generate_worldview_response
 from app.core.world_generation import (
     check_core_readiness,
     check_runtime_readiness,
@@ -18,6 +20,8 @@ from app.schemas.world_generation import (
     GenerationRegenerationResult,
     RuntimeReadinessRequest,
     RuntimeReadinessResult,
+    WorldviewGenerationRequest,
+    WorldviewGenerationResponse,
 )
 
 router = APIRouter(prefix="/world/generation", tags=["world-generation"])
@@ -49,3 +53,15 @@ def check_world_generation_core_readiness(
     request_body: GenerationCoreReadinessRequest,
 ) -> ApiResponse[GenerationCoreReadinessResult]:
     return ApiResponse(data=check_core_readiness(request_body))
+
+
+@router.post(
+    "/worldview",
+    response_model=ApiResponse[WorldviewGenerationResponse],
+    operation_id="generate_world_from_worldview",
+)
+def generate_world_from_worldview(
+    request_body: WorldviewGenerationRequest,
+) -> ApiResponse[WorldviewGenerationResponse]:
+    provider = provider_readiness_from_env()
+    return ApiResponse(data=generate_worldview_response(request_body, provider))

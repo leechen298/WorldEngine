@@ -1,0 +1,1 @@
+{"seq": 1, "type": "cli", "command": "make validate-agent-autonomous-result RESULT_DIR=tools/testing/fixtures/agent-autonomous/valid-provider-live-smoke-deepseek", "exit_code": 0}

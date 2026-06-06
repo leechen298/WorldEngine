@@ -9,9 +9,14 @@ from app.schemas.world import (
 from app.schemas.world_generation import (
     GenerationDiagnostic,
     GenerationMetadata,
+    PublicGeneratedWorldModel,
+    PublicWorldCreationSummary,
     TemplateCell,
     TemplateGenerationRequest,
     TemplateGenerationResult,
+    WorldviewGenerationRequest,
+    WorldviewGenerationResponse,
+    WorldviewGenerationValidationMetadata,
     WorldTemplate,
 )
 
@@ -152,3 +157,77 @@ def test_public_world_creation_schema_requires_top_level_public_fields() -> None
     assert "public_initial_state" in dumped
     assert "visualization" in dumped
     assert "api_key" not in str(dumped).lower()
+
+
+def test_worldview_generation_schema_requires_public_structured_model() -> None:
+    request = WorldviewGenerationRequest(
+        request_id="request-1",
+        worldview_premise="A public world with robots and careful weather",
+    )
+    public_model = PublicGeneratedWorldModel(
+        title_label="generated-world-robots",
+        premise_summary="public premise digest abc123; 2 public premise tags extracted",
+        world_parameters_outline={"public_tags": ["robots", "weather"]},
+        locations_outline=[{"location_id": "location.abc.origin"}],
+        agents_outline=[{"agent_id": "agent.abc"}],
+        environment_outline={"environment_id": "environment.abc"},
+        rules_outline=[{"rule_id": "rule.abc.boundary"}],
+        boundary_conditions=["public only"],
+        runtime_readiness_inputs={"can_be_checked_for_structure": True},
+    )
+    summary = PublicWorldCreationSummary(
+        premise_specific="true",
+        system_digestible=True,
+        redacted=True,
+        runtime_ready="true",
+        distinct_from_deterministic_generic_response=True,
+        creation_mode="deterministic_generic_fallback",
+        llm_backed=False,
+        provider_backed=False,
+        deterministic_generic_fallback_detected=True,
+    )
+    metadata = WorldviewGenerationValidationMetadata(
+        premise_specific="true",
+        system_digestible=True,
+        runtime_ready="true",
+        deterministic_generic_response=False,
+        deterministic_generic_fallback_detected=True,
+        redaction_status="passed",
+        provider_generation_status="deterministic_fallback",
+    )
+    response = WorldviewGenerationResponse(
+        world_id="world-abc",
+        generation_id="generation-abc",
+        generation_status="fallback",
+        generation_mode="deterministic_fallback",
+        creation_mode="deterministic_generic_fallback",
+        llm_backed=False,
+        provider_backed=False,
+        deterministic_generic_fallback_detected=True,
+        provider_class="unconfigured",
+        model_label="unconfigured",
+        premise_digest="abc123",
+        public_world_model=public_model,
+        world_creation_summary=summary,
+        validation_metadata=metadata,
+    )
+
+    assert request.request_id == "request-1"
+    assert response.schema_version == "0.9.2"
+    assert response.public_world_model.world_parameters_outline["public_tags"] == [
+        "robots",
+        "weather",
+    ]
+    assert response.world_creation_summary.llm_backed is False
+
+
+def test_worldview_generation_request_rejects_private_markers() -> None:
+    try:
+        WorldviewGenerationRequest(
+            request_id="request-1",
+            worldview_premise="public world",
+            public_constraints={"hidden_context": "private"},
+        )
+    except ValidationError:
+        return
+    raise AssertionError("expected validation error")

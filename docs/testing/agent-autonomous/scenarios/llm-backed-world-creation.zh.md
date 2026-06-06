@@ -1,6 +1,6 @@
 # LLM-backed World Creation
 
-状态：planned / checker-extension-required
+状态：saved-result-checker-supported / live evidence not run
 
 父计划：`docs/testing/llm-backed-lifecycle-validation-plan.zh.md`。
 

@@ -24,7 +24,13 @@
         "autonomous-dashboard-invalid-param",
         "autonomous-dashboard-agent-autotune",
         "autonomous-dashboard-timeline-investigation",
-        "worldengine-full-lifecycle-autonomous"
+        "worldengine-full-lifecycle-autonomous",
+        "provider-live-smoke-deepseek",
+        "llm-backed-world-creation",
+        "world-rule-parameter-evolution",
+        "rule-compliant-event-generation",
+        "agent-persistent-autonomy-evidence",
+        "llm-backed-full-lifecycle-autonomous"
       ]
     },
     "goal": {
@@ -36,7 +42,7 @@
       "minLength": 1
     },
     "status": {
-      "const": "pass"
+      "enum": ["pass", "fail", "blocked", "not_run"]
     },
     "verdict_source": {
       "enum": ["scorecard_checker", "deterministic_checker"]
@@ -64,9 +70,27 @@
       "type": "array"
     },
     "failures": {
-      "type": "array",
-      "maxItems": 0
+      "type": "array"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "pass"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "failures": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
   "additionalProperties": true
 }

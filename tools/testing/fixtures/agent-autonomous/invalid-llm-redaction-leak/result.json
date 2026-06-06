@@ -1,0 +1,38 @@
+{
+  "scenario": "provider-live-smoke-deepseek",
+  "goal": "Validate redaction leak rejection.",
+  "mode": "llm_backed_scorecard",
+  "status": "pass",
+  "verdict_source": "scorecard_checker",
+  "score_items": [
+    {
+      "name": "provider_live_smoke",
+      "status": "pass",
+      "evidence": "provider-live-summary.json"
+    },
+    {
+      "name": "redaction_clean",
+      "status": "pass",
+      "evidence": "redaction-scan.json"
+    }
+  ],
+  "required_artifacts": [
+    "operation_log",
+    "transcript",
+    "console_log",
+    "redaction_scan",
+    "scorecard_summary",
+    "provider_live_summary"
+  ],
+  "artifacts": {
+    "operation_log": "operation-log.jsonl",
+    "transcript": "transcript.md",
+    "console_log": "console.log",
+    "redaction_scan": "redaction-scan.json",
+    "scorecard_summary": "scorecard-summary.json",
+    "provider_live_summary": "provider-live-summary.json"
+  },
+  "operation_log": "operation-log.jsonl",
+  "unverified_items": [],
+  "failures": []
+}

@@ -2,7 +2,7 @@
 
 英文镜像：`CAMPAIGN_PLAN.md`。
 
-Status：reviewed / ready for child package development
+Status：final / blocked closeout complete
 
 ## 目标
 
@@ -92,10 +92,13 @@ implementation 或 evidence 暴露设计问题，不得机械执行。
 - `0.9.7` hand off rule-linked parameter evolution 和 event legality。
 - `0.9.8` hand off brain-inspired public Agent continuity 和 consolidation evidence。
 - `0.9.9` hand off external narrative projection 和 diagnostic dialogue boundaries。
-- `0.9.10` hand off LLM-backed checker、fixtures、schema 和 scorecard。
+- `0.9.10` hand off LLM-backed checker、fixtures、schema 和 scorecard。当前状态：
+  implementation complete / verification passed。
 - `0.9.11` hand off Validation Client 需要的 public evidence artifacts，但不在本仓库实现客户端。
-- `0.9.12` hand off live 或 explicitly blocked full lifecycle validation evidence。
-- `0.9.13` 只在 evidence consistency 和 review gates 通过后关闭 v0.9。
+  当前状态：documentation reviewed / no implementation authorized。
+- `0.9.12` hand off provider live-smoke preflight 的 checker-valid BLOCKED full
+  lifecycle validation evidence。
+- `0.9.13` 在 evidence consistency 和 review gates 通过后，将 v0.9 按 BLOCKED close。
 
 ## Campaign Exit Criteria
 

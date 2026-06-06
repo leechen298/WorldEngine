@@ -1,6 +1,6 @@
 # World Rule Parameter Evolution
 
-Status: planned / checker-extension-required
+Status: saved-result-checker-supported / live evidence not run
 
 Parent plan: `docs/testing/llm-backed-lifecycle-validation-plan.md`.
 

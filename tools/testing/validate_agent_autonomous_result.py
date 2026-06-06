@@ -27,9 +27,66 @@ SUPPORTED_SCENARIOS = {
     "autonomous-dashboard-agent-autotune",
     "autonomous-dashboard-timeline-investigation",
     "worldengine-full-lifecycle-autonomous",
+    "provider-live-smoke-deepseek",
+    "llm-backed-world-creation",
+    "world-rule-parameter-evolution",
+    "rule-compliant-event-generation",
+    "agent-persistent-autonomy-evidence",
+    "llm-backed-full-lifecycle-autonomous",
 }
 ALLOWED_VERDICT_SOURCES = {"scorecard_checker", "deterministic_checker"}
 FULL_WORLD_LIFECYCLE_SCENARIO = "worldengine-full-lifecycle-autonomous"
+LLM_BACKED_SCENARIOS = {
+    "provider-live-smoke-deepseek",
+    "llm-backed-world-creation",
+    "world-rule-parameter-evolution",
+    "rule-compliant-event-generation",
+    "agent-persistent-autonomy-evidence",
+    "llm-backed-full-lifecycle-autonomous",
+}
+LLM_ALLOWED_STATUSES = {"pass", "fail", "blocked", "not_run"}
+LLM_REQUIRED_ARTIFACTS = {
+    "provider-live-smoke-deepseek": {"provider_live_summary", "redaction_scan", "scorecard_summary"},
+    "llm-backed-world-creation": {
+        "world_creation_summary",
+        "world_rule_summary",
+        "redaction_scan",
+        "scorecard_summary",
+    },
+    "world-rule-parameter-evolution": {
+        "rule_parameter_summary",
+        "diff_replay_summary",
+        "redaction_scan",
+        "scorecard_summary",
+    },
+    "rule-compliant-event-generation": {"event_legality_summary", "redaction_scan", "scorecard_summary"},
+    "agent-persistent-autonomy-evidence": {"agent_autonomy_summary", "redaction_scan", "scorecard_summary"},
+    "llm-backed-full-lifecycle-autonomous": {
+        "provider_live_summary",
+        "world_creation_summary",
+        "world_rule_summary",
+        "rule_parameter_summary",
+        "event_legality_summary",
+        "agent_autonomy_summary",
+        "diff_replay_summary",
+        "world_lifecycle_summary",
+        "redaction_scan",
+        "scorecard_summary",
+        "second_agent_review",
+    },
+}
+LLM_FULL_LIFECYCLE_CRITICAL_ITEMS = {
+    "provider_live_smoke",
+    "world_creation_llm_backed",
+    "world_rules_generated",
+    "parameter_evolution_rule_linked",
+    "event_legality_enforced",
+    "agent_persistent_autonomy",
+    "diff_replay_available",
+    "redaction_clean",
+    "client_evidence_complete",
+    "second_agent_review_clean",
+}
 FORBIDDEN_PUBLIC_EVIDENCE_MARKERS = {
     "api_key",
     "apikey",
@@ -37,22 +94,55 @@ FORBIDDEN_PUBLIC_EVIDENCE_MARKERS = {
     "credential",
     "hidden context",
     "hidden_context",
+    "external world seed",
+    "external-world seed",
+    "external_world_seed",
+    "oracle content",
+    "oracle_content",
+    "authorization header",
     "private goal",
     "private memory",
+    "private evaluator",
+    "private_evaluator",
+    "evaluator data",
+    "evaluator_data",
     "private prompt",
     "private_prompt",
     "provider secret",
     "provider_secret",
+    "provider trace",
     "raw request",
     "raw_request",
+    "raw prompt",
+    "raw_prompt",
     "raw response",
     "raw_response",
+    "raw provider request",
+    "raw_provider_request",
+    "raw provider response",
+    "raw_provider_response",
+    "raw thought",
+    "raw_thought",
+    "chain-of-thought",
     "relationship internals",
     "self_state",
     "source_path",
 }
 SAFE_PUBLIC_EVIDENCE_FIELD_NAMES = {
+    "api_keys_included",
+    "authorization_headers_included",
     "credential_source_class",
+    "hidden_context_included",
+    "external_world_seed_included",
+    "external_world_oracle_included",
+    "private_agent_goals_included",
+    "private_agent_memory_included",
+    "private_evaluator_data_included",
+    "provider_traces_included",
+    "raw_prompts_included",
+    "raw_provider_requests_included",
+    "raw_provider_responses_included",
+    "raw_thought_included",
 }
 PUBLIC_API_CLI_PATTERN = re.compile(
     r"\b(get|post|put|patch|delete)\s+/(manifest|openapi\.json|world|worlds|runtime|archive)\b"
@@ -262,13 +352,21 @@ def _validate_score_items(result: dict[str, Any], errors: list[str]) -> None:
         errors.append("score_items must contain at least one item")
         return
 
+    scenario = result.get("scenario")
+    result_status = result.get("status")
     for index, item in enumerate(score_items):
         if not isinstance(item, dict):
             errors.append(f"score_items[{index}] must be an object")
             continue
         if not isinstance(item.get("name"), str) or not item["name"].strip():
             errors.append(f"score_items[{index}].name must be a non-empty string")
-        if item.get("status") != "pass":
+        status = item.get("status")
+        if scenario in LLM_BACKED_SCENARIOS:
+            if status not in LLM_ALLOWED_STATUSES:
+                errors.append(f"score_items[{index}].status must be pass, fail, blocked, or not_run")
+            elif result_status == "pass" and status != "pass":
+                errors.append(f"score_items[{index}].status must be pass when result status is pass")
+        elif status != "pass":
             errors.append(f"score_items[{index}].status must be pass")
         evidence = item.get("evidence")
         if evidence is None or evidence == "" or evidence == [] or evidence == {}:
@@ -307,10 +405,158 @@ def _validate_scorecard_summary(result_dir: Path, result: dict[str, Any], errors
         return
     if summary.get("scenario") != result.get("scenario"):
         errors.append("scorecard-summary.json scenario must match result.json scenario")
-    if summary.get("status") != "pass":
+    if result.get("scenario") in LLM_BACKED_SCENARIOS:
+        if summary.get("status") not in LLM_ALLOWED_STATUSES:
+            errors.append("scorecard-summary.json status must be pass, fail, blocked, or not_run")
+        elif result.get("status") == "pass" and summary.get("status") != "pass":
+            errors.append("scorecard-summary.json status must be pass when result status is pass")
+    elif summary.get("status") != "pass":
         errors.append("scorecard-summary.json status must be pass")
     if summary.get("verdict_source") not in ALLOWED_VERDICT_SOURCES:
         errors.append("scorecard-summary.json verdict_source is invalid")
+
+
+def _redaction_flags_are_clean(redaction: Any) -> bool:
+    if not isinstance(redaction, dict):
+        return False
+    return all(value is False for value in redaction.values())
+
+
+def _validate_redaction_scan(result_dir: Path, artifacts: dict[str, Any], errors: list[str]) -> None:
+    scan = _artifact_json(result_dir, artifacts, "redaction_scan", errors)
+    if not isinstance(scan, dict):
+        errors.append("redaction-scan.json must contain an object")
+        return
+    if scan.get("status") != "pass":
+        errors.append("redaction-scan.json status must be pass")
+    redaction = scan.get("redaction")
+    if not _redaction_flags_are_clean(redaction):
+        errors.append("redaction-scan.json redaction flags must all be false for PASS-capable evidence")
+    _validate_public_evidence_redaction(scan, "redaction-scan.json", errors)
+
+
+def _validate_summary_status(summary: dict[str, Any], artifact_name: str, result: dict[str, Any], errors: list[str]) -> None:
+    status = summary.get("status")
+    if status not in LLM_ALLOWED_STATUSES:
+        errors.append(f"{artifact_name} status must be pass, fail, blocked, or not_run")
+    elif result.get("status") == "pass" and status != "pass":
+        errors.append(f"{artifact_name} status must be pass when result status is pass")
+    if "redaction" in summary and not _redaction_flags_are_clean(summary.get("redaction")):
+        errors.append(f"{artifact_name} redaction flags must all be false for PASS-capable evidence")
+    _validate_public_evidence_redaction(summary, artifact_name, errors)
+
+
+def _validate_second_agent_review(result_dir: Path, artifacts: dict[str, Any], errors: list[str]) -> None:
+    review_path = artifacts.get("second_agent_review")
+    if not isinstance(review_path, str) or not review_path.strip():
+        errors.append("artifacts.second_agent_review is required")
+        return
+    path = result_dir / review_path
+    try:
+        review = path.read_text().lower()
+    except FileNotFoundError:
+        return
+    if "final review verdict: pass" not in review and "final verdict: pass" not in review:
+        errors.append("second-agent-review.md must record a PASS final review verdict")
+    if "blocking p1" in review or "blocking p2" in review:
+        errors.append("second-agent-review.md must not contain blocking P1/P2 findings")
+
+
+def _validate_llm_backed_artifacts(result_dir: Path, result: dict[str, Any], errors: list[str]) -> None:
+    scenario = result.get("scenario")
+    if scenario not in LLM_BACKED_SCENARIOS:
+        return
+    artifacts = result.get("artifacts")
+    if not isinstance(artifacts, dict):
+        return
+
+    expected = LLM_REQUIRED_ARTIFACTS[scenario]
+    missing = sorted(name for name in expected if name not in artifacts)
+    if missing:
+        errors.append(f"artifacts missing LLM-backed required artifact(s): {', '.join(missing)}")
+        return
+
+    _validate_redaction_scan(result_dir, artifacts, errors)
+
+    provider = _artifact_json(result_dir, artifacts, "provider_live_summary", errors) if "provider_live_summary" in expected else None
+    if isinstance(provider, dict):
+        _validate_summary_status(provider, "provider-live-summary.json", result, errors)
+        if result.get("status") == "pass":
+            if provider.get("call_attempted") is not True:
+                errors.append("provider-live-summary.json call_attempted must be true for PASS")
+            if provider.get("call_status") != "success":
+                errors.append("provider-live-summary.json call_status must be success for PASS")
+            if provider.get("worldengine_owned_call") is not True:
+                errors.append("provider-live-summary.json worldengine_owned_call must be true for PASS")
+
+    world_creation = _artifact_json(result_dir, artifacts, "world_creation_summary", errors) if "world_creation_summary" in expected else None
+    if isinstance(world_creation, dict):
+        _validate_summary_status(world_creation, "world-creation-summary.json", result, errors)
+        if result.get("status") == "pass":
+            if world_creation.get("llm_backed") is not True:
+                errors.append("world-creation-summary.json llm_backed must be true for PASS")
+            if world_creation.get("deterministic_generic_fallback_detected") is not False:
+                errors.append("world-creation-summary.json deterministic_generic_fallback_detected must be false for PASS")
+
+    world_rule = _artifact_json(result_dir, artifacts, "world_rule_summary", errors) if "world_rule_summary" in expected else None
+    if isinstance(world_rule, dict):
+        _validate_summary_status(world_rule, "world-rule-summary.json", result, errors)
+        if result.get("status") == "pass":
+            for field in ("parameters", "evolution_rules", "event_legality_rules"):
+                if not world_rule.get(field):
+                    errors.append(f"world-rule-summary.json {field} must be non-empty for PASS")
+
+    rule_parameter = _artifact_json(result_dir, artifacts, "rule_parameter_summary", errors) if "rule_parameter_summary" in expected else None
+    if isinstance(rule_parameter, dict):
+        _validate_summary_status(rule_parameter, "rule-parameter-summary.json", result, errors)
+        if result.get("status") == "pass":
+            if not rule_parameter.get("changed_parameters"):
+                errors.append("rule-parameter-summary.json changed_parameters must be non-empty for PASS")
+            if rule_parameter.get("unexplained_changes"):
+                errors.append("rule-parameter-summary.json unexplained_changes must be empty for PASS")
+            if rule_parameter.get("fixed_counter_only_detected") is not False:
+                errors.append("rule-parameter-summary.json fixed_counter_only_detected must be false for PASS")
+
+    event_legality = _artifact_json(result_dir, artifacts, "event_legality_summary", errors) if "event_legality_summary" in expected else None
+    if isinstance(event_legality, dict):
+        _validate_summary_status(event_legality, "event-legality-summary.json", result, errors)
+        if result.get("status") == "pass":
+            if not event_legality.get("rule_adjudications"):
+                errors.append("event-legality-summary.json rule_adjudications must be non-empty for PASS")
+            if event_legality.get("direct_final_state_mutation_detected") is not False:
+                errors.append("event-legality-summary.json direct_final_state_mutation_detected must be false for PASS")
+
+    agent_autonomy = _artifact_json(result_dir, artifacts, "agent_autonomy_summary", errors) if "agent_autonomy_summary" in expected else None
+    if isinstance(agent_autonomy, dict):
+        _validate_summary_status(agent_autonomy, "agent-autonomy-summary.json", result, errors)
+        if result.get("status") == "pass":
+            if not isinstance(agent_autonomy.get("decision_moments"), list) or len(agent_autonomy["decision_moments"]) < 2:
+                errors.append("agent-autonomy-summary.json decision_moments must contain at least two entries for PASS")
+            if agent_autonomy.get("client_scripted_action_detected") is not False:
+                errors.append("agent-autonomy-summary.json client_scripted_action_detected must be false for PASS")
+            if agent_autonomy.get("single_event_only_detected") is not False:
+                errors.append("agent-autonomy-summary.json single_event_only_detected must be false for PASS")
+
+    diff_replay = _artifact_json(result_dir, artifacts, "diff_replay_summary", errors) if "diff_replay_summary" in expected else None
+    if isinstance(diff_replay, dict):
+        _validate_summary_status(diff_replay, "diff-replay-summary.json", result, errors)
+        if result.get("status") == "pass" and diff_replay.get("replay_supported") is not True:
+            errors.append("diff-replay-summary.json replay_supported must be true for PASS")
+
+    lifecycle = _artifact_json(result_dir, artifacts, "world_lifecycle_summary", errors) if "world_lifecycle_summary" in expected else None
+    if isinstance(lifecycle, dict):
+        _validate_summary_status(lifecycle, "world-lifecycle-summary.json", result, errors)
+
+    if scenario == "llm-backed-full-lifecycle-autonomous" and result.get("status") == "pass":
+        score_names = {
+            item.get("name")
+            for item in result.get("score_items", [])
+            if isinstance(item, dict) and item.get("status") == "pass"
+        }
+        missing_items = sorted(LLM_FULL_LIFECYCLE_CRITICAL_ITEMS - score_names)
+        if missing_items:
+            errors.append(f"missing critical LLM-backed score item(s): {', '.join(missing_items)}")
+        _validate_second_agent_review(result_dir, artifacts, errors)
 
 
 def _artifact_json(result_dir: Path, artifacts: dict[str, Any], name: str, errors: list[str]) -> Any:
@@ -460,7 +706,13 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
     if scenario not in SUPPORTED_SCENARIOS:
         supported = ", ".join(sorted(SUPPORTED_SCENARIOS))
         errors.append(f"scenario must be one of supported scenarios: {supported}")
-    if raw_result.get("status") != "pass":
+    if scenario in LLM_BACKED_SCENARIOS:
+        status = raw_result.get("status")
+        if status not in LLM_ALLOWED_STATUSES:
+            errors.append("status must be pass, fail, blocked, or not_run for LLM-backed scenarios")
+        elif status != "pass" and not raw_result.get("failures") and not raw_result.get("unverified_items"):
+            errors.append("non-pass LLM-backed results must include failures or unverified_items")
+    elif raw_result.get("status") != "pass":
         errors.append("status must be pass for a successful autonomous result")
     verdict_source = raw_result.get("verdict_source")
     if verdict_source not in ALLOWED_VERDICT_SOURCES:
@@ -474,7 +726,7 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
         errors.append("mode must be a non-empty string")
     if not isinstance(raw_result.get("failures"), list):
         errors.append("failures must be a list")
-    elif raw_result["failures"]:
+    elif raw_result["failures"] and (scenario not in LLM_BACKED_SCENARIOS or raw_result.get("status") == "pass"):
         errors.append("failures must be empty when status is pass")
 
     _validate_artifacts(result_dir, raw_result, errors)
@@ -484,6 +736,7 @@ def validate_result_dir(result_dir: Path | str) -> list[str]:
     _validate_unverified_items(raw_result, errors)
     _validate_scorecard_summary(result_dir, raw_result, errors)
     _validate_world_lifecycle_artifacts(result_dir, raw_result, errors)
+    _validate_llm_backed_artifacts(result_dir, raw_result, errors)
 
     return errors
 

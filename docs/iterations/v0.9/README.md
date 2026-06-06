@@ -2,7 +2,7 @@
 
 Chinese mirror: `README.zh.md`.
 
-Status: reviewed / ready for child package development
+Status: final / blocked closeout complete
 Type: Codex `/goal` development campaign and iteration package root
 implementation_authorized: no
 evidence_execution_authorized: no
@@ -120,12 +120,14 @@ Planned sequence:
 
 ## Current State
 
-Active child package: none.
+Active child package:
+`0.9.13-v0.9-release-candidate-and-closeout` selected /
+closeout complete / blocked.
 
 Current route:
 
 ```text
-0.9.0-v0.9-planning-and-v0.8-handoff-baseline-documentation-package-needed
+v0.9-final-blocked-closeout-complete
 ```
 
 Implementation authorization: no.
@@ -134,9 +136,8 @@ Evidence execution authorization: no.
 
 Audit execution authorization: no.
 
-Implementation must wait until a concrete child package records positive
-implementation authorization after documentation/contract/design/test-plan
-review.
+Evidence execution is not currently authorized. Implementation remains
+unauthorized.
 
 ## Goal Entries
 
@@ -164,13 +165,21 @@ verified object and owns LLM behavior.
 
 ## Final Assessment State
 
-Current value: `reviewed / ready for child package development`.
+Current value: `final / blocked closeout complete`.
 
 This parent documentation package defines the v0.9 direction and planned
-package sequence. It does not itself authorize any runtime, schema, API,
-checker, fixture, frontend, evidence, provider, Validation Client, or
-`backend/worldengine/` implementation work.
-
-The next valid route is to create or review the concrete `0.9.0` child package
-documents. Later `0.9.x` package completion must be claimed only by the
-corresponding reviewed child package and current-session evidence.
+package sequence. `0.9.1` through `0.9.10` have completed their reviewed scopes
+with current-session verification recorded in child and parent review docs.
+The `0.9.10-llm-backed-autonomous-checker-and-fixtures` package completed
+saved-result checker, schema, fixture, redaction, scorecard, and LLM-backed
+testing doc support. The concrete
+`0.9.11-validation-client-evidence-handoff-contract` package passed
+documentation/contract review without implementation authorization.
+`0.9.12-llm-backed-full-lifecycle-validation-execution` completed evidence
+execution with a checker-valid BLOCKED saved result at provider live-smoke
+preflight. `0.9.13-v0.9-release-candidate-and-closeout` completed the v0.9
+boundary review and closes v0.9 as BLOCKED; code implementation, provider live
+calls, evidence execution, external validation, frontend, Validation Client
+implementation, `backend/app/**`, and `backend/worldengine/**` remain
+unauthorized unless a future reviewed package explicitly authorizes a narrower
+scope.

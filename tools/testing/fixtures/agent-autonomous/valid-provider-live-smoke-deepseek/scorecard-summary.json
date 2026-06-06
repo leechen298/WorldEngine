@@ -1,0 +1,5 @@
+{
+  "scenario": "provider-live-smoke-deepseek",
+  "status": "pass",
+  "verdict_source": "scorecard_checker"
+}

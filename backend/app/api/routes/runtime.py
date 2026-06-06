@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from app.core.runtime_engine import RuntimeEngine, RuntimeState
 from app.schemas.api import ApiResponse
+from app.schemas.runtime import RuntimeControlState, RuntimeRunRequest, RuntimeRunSummary
 
 router = APIRouter(prefix="/runtime", tags=["runtime"])
 
@@ -41,3 +42,25 @@ def step_runtime(
     runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
 ) -> ApiResponse[RuntimeStateResponse]:
     return ApiResponse(data=_to_response(runtime_engine.step()))
+
+
+@router.post("/run", response_model=ApiResponse[RuntimeRunSummary])
+def run_runtime(
+    request_body: RuntimeRunRequest,
+    runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
+) -> ApiResponse[RuntimeRunSummary]:
+    return ApiResponse(data=runtime_engine.run_bounded(request_body))
+
+
+@router.post("/pause", response_model=ApiResponse[RuntimeControlState])
+def pause_runtime(
+    runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
+) -> ApiResponse[RuntimeControlState]:
+    return ApiResponse(data=runtime_engine.pause())
+
+
+@router.post("/resume", response_model=ApiResponse[RuntimeControlState])
+def resume_runtime(
+    runtime_engine: RuntimeEngine = Depends(get_runtime_engine),
+) -> ApiResponse[RuntimeControlState]:
+    return ApiResponse(data=runtime_engine.resume())

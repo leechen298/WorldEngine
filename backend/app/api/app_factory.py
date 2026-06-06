@@ -11,6 +11,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.api.routes import (
     archive_router,
     health_router,
+    provider_router,
     public_world_router,
     runtime_router,
     world_agent_router,
@@ -76,6 +77,68 @@ def _data_from_detail(detail: object) -> object | None:
             result["metrics"] = detail["metrics"]
         return result
     return None
+
+
+_PRIVATE_VALIDATION_MARKERS = (
+    "api_key",
+    "api key",
+    "apikey",
+    "authorization",
+    "bearer",
+    "chain-of-thought",
+    "chain_of_thought",
+    "chain of thought",
+    "credential",
+    "hidden context",
+    "hidden_context",
+    "private goal",
+    "private_goal",
+    "private memory",
+    "private_memory",
+    "private prompt",
+    "private_prompt",
+    "private evaluator data",
+    "private_evaluator_data",
+    "provider secret",
+    "provider_secret",
+    "provider_trace",
+    "provider trace",
+    "raw prompt",
+    "raw_prompt",
+    "raw provider request",
+    "raw_provider_request",
+    "raw provider response",
+    "raw_provider_response",
+    "raw request",
+    "raw_request",
+    "raw response",
+    "raw_response",
+    "raw thought",
+    "raw_thought",
+    "secret",
+    "self_state",
+    "sk-live-",
+    "sk-test-",
+    "token",
+)
+
+
+def _sanitize_validation_error(value: object) -> object:
+    if isinstance(value, dict):
+        return {
+            key: _sanitize_validation_error(item)
+            for key, item in value.items()
+            if key != "input"
+        }
+    if isinstance(value, list):
+        return [_sanitize_validation_error(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_sanitize_validation_error(item) for item in value)
+    if isinstance(value, str):
+        lowered = value.lower()
+        if any(marker in lowered for marker in _PRIVATE_VALIDATION_MARKERS):
+            return "redacted"
+    return value
 
 
 def create_app() -> FastAPI:
@@ -165,11 +228,12 @@ def create_app() -> FastAPI:
         payload = ApiErrorResponse(
             code=_error_code_from_status(422),
             msg=_stringify_detail(exc.errors(), "Validation error"),
-            data={"errors": exc.errors()},
+            data={"errors": _sanitize_validation_error(exc.errors())},
         )
         return JSONResponse(status_code=422, content=payload.model_dump())
 
     app.include_router(health_router)
+    app.include_router(provider_router)
     app.include_router(public_world_router)
     app.include_router(runtime_router)
     app.include_router(world_router)

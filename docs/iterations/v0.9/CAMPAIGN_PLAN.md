@@ -2,7 +2,7 @@
 
 Chinese mirror: `CAMPAIGN_PLAN.zh.md`.
 
-Status: reviewed / ready for child package development
+Status: final / blocked closeout complete
 
 ## Objective
 
@@ -108,11 +108,14 @@ uncovers a design problem.
 - `0.9.9` hands off external narrative projection and diagnostic dialogue
   boundaries.
 - `0.9.10` hands off LLM-backed checker, fixtures, schema, and scorecard.
+  Current state: implementation complete / verification passed.
 - `0.9.11` hands off public evidence artifacts expected by the Validation
   Client without implementing the client in this repository.
-- `0.9.12` hands off live or explicitly blocked full lifecycle validation
-  evidence.
-- `0.9.13` closes v0.9 only after evidence consistency and review gates pass.
+  Current state: documentation reviewed / no implementation authorized.
+- `0.9.12` hands off checker-valid BLOCKED full lifecycle validation evidence
+  from provider live-smoke preflight.
+- `0.9.13` closes v0.9 as BLOCKED after evidence consistency and review gates
+  passed.
 
 ## Campaign Exit Criteria
 

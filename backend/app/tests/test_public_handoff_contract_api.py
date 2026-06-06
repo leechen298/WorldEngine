@@ -153,5 +153,9 @@ def test_public_contract_rejects_extra_private_fields_with_existing_error_envelo
 
     assert response.status_code == 422
     payload = response.json()
+    serialized = str(payload).lower()
     assert payload["code"] == 30
     assert payload["data"]["errors"][0]["type"] == "extra_forbidden"
+    assert "private trace" not in serialized
+    assert "provider_trace" not in serialized
+    assert "input" not in payload["data"]["errors"][0]
