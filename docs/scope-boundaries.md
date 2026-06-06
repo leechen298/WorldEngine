@@ -17,6 +17,20 @@ Status: authoritative boundary guide
 - The core repository must not store external-world seed data, characters,
   locations, story rules, validation oracle internals, or
   application-specific backend logic.
+- WorldEngine owns provider configuration and provider calls when core
+  capabilities require LLM behavior. External clients must not become the
+  authority for provider calls, provider keys, or evaluator decisions.
+- Redacted public summaries are allowed. API keys, authorization headers, raw
+  prompts, raw provider responses, raw provider traces, raw thought, private
+  memory payloads, private goals, and hidden context must not become public
+  evidence.
+- Agent memory, personality, and skill changes must not be assumed to mutate
+  automatically on every tick. Consolidation through sleep, rest, or
+  low-activity phases must be explicit when a package owns that behavior.
+- Narrative projection, replay views, and out-of-world diagnostic
+  conversations are external inspection surfaces by default. They must not
+  mutate canonical world state, world timelines, or Agent memory unless a
+  reviewed package explicitly creates that bridge.
 - Code work must be scoped to one iteration package.
 - Schema changes must be additive unless the current contract allows breaking
   changes.
@@ -60,3 +74,8 @@ v0.2 must not:
 - v0.7 may prepare external validation and projection consumer readiness.
 - v0.8 may prepare the core-side minimum working-state boundary and public
   surfaces needed by an external validation function.
+- v0.9 may prepare the first LLM-backed lifecycle foundation, including
+  WorldEngine-owned provider calls, generated world rules, bounded runtime
+  control, world-level direction, rule-linked event legality, brain-inspired
+  Agent continuity/consolidation evidence, and external narrative/diagnostic
+  projection boundaries.

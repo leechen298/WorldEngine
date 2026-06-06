@@ -22,6 +22,29 @@ WorldEngine exists to support five long-term capabilities:
    self-narrative, relationship history, personality drift, and decision
    patterns shaped by prior experience.
 
+## LLM-backed Execution Direction
+
+AI-assisted generation and reasoning are engine-owned capabilities. External
+clients may provide user input, display projections, and export evidence, but
+WorldEngine owns provider configuration, provider calls, redaction boundaries,
+structured outputs, and the public evidence needed to validate those outputs.
+
+LLM output is not accepted as hidden truth. It must be transformed into public,
+structured, inspectable world models, rules, events, summaries, projections, or
+validation artifacts that the runtime and checker can reason about.
+
+## Agent Continuity Direction
+
+Agent continuity should be designed as a cognition substrate, not as a
+per-tick status updater or chat wrapper. Memory, personality, skill, intent,
+and self-narrative should evolve through explicit state, experience, feedback,
+and consolidation processes.
+
+Longer-term Agent design may use sleep, rest, or low-activity phases where
+working memory, long-term memory, personality summaries, and skill summaries
+settle across multiple ticks. WorldEngine must not assume that meaningful
+memory, personality, or skill changes happen on every tick.
+
 ## What This Does Not Claim
 
 WorldEngine does not claim real consciousness. "Pseudo-self" means an
@@ -41,12 +64,20 @@ They are:
   continuity.
 - places where product-specific UI and application behavior may live outside
   the core repository.
+- narrative, replay, diagnostic, and inspection surfaces that may help humans
+  understand a running world without becoming the world itself.
 
 They are not:
 
 - the purpose of WorldEngine.
 - a reason to make the engine demo-specific.
 - a reason to replace recursive world architecture with application-only state.
+- a place to own provider behavior, Agent private memory, canonical world
+  mutation, or authoritative evaluation.
+
+Narrative projections and out-of-world diagnostic conversations can be useful
+external views. By default, they must read from public world evidence and must
+not mutate canonical world state, world timelines, or Agent memory.
 
 ## Architecture Anchor
 

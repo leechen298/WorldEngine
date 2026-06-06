@@ -16,6 +16,17 @@ Status: authoritative boundary guide
   memory/self-continuity contracts、projection contracts 和 redacted report formats。
 - Core repository 不能保存 external-world seed data、characters、locations、story rules、
   validation oracle internals 或 application-specific backend logic。
+- 当 core capabilities 需要 LLM behavior 时，WorldEngine 拥有 provider configuration 和
+  provider calls。External clients 不得成为 provider calls、provider keys 或 evaluator
+  decisions 的 authority。
+- 允许 redacted public summaries。API keys、authorization headers、raw prompts、raw provider
+  responses、raw provider traces、raw thought、private memory payloads、private goals 和 hidden
+  context 不得成为 public evidence。
+- Agent memory、personality 和 skill changes 不得被假定为每 tick 自动 mutate。Package 拥有该
+  behavior 时，sleep、rest 或 low-activity phases 中的 consolidation 必须 explicit。
+- Narrative projection、replay views 和 out-of-world diagnostic conversations 默认是 external
+  inspection surfaces。除非 reviewed package 明确创建 bridge，否则它们不得修改 canonical world
+  state、world timelines 或 Agent memory。
 - Code work 必须限定在一个 iteration package 内。
 - Schema changes 必须 additive，除非当前 contract 允许 breaking changes。
 - Runtime behavior 必须保留，除非当前 contract 明确改变它。
@@ -55,4 +66,9 @@ v0.2 不能：
 - v0.5 可以加入 memory 和 self-continuity。
 - v0.6 可以加入 world generation v1。
 - v0.7 可以准备 external validation 和 projection consumer readiness。
-- v0.8 可以准备 first external projection application。
+- v0.8 可以准备 core-side minimum working-state boundary，以及 external validation function
+  需要的 public surfaces。
+- v0.9 可以准备 first LLM-backed lifecycle foundation，包括 WorldEngine-owned provider calls、
+  generated world rules、bounded runtime control、world-level direction、rule-linked event
+  legality、brain-inspired Agent continuity/consolidation evidence，以及 external
+  narrative/diagnostic projection boundaries。

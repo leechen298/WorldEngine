@@ -160,3 +160,22 @@ external product application. It defines the core-side readiness boundary,
 observable public surfaces, evidence expectations, and stop rules needed for a
 separate external validator or projection application to judge whether
 WorldEngine works.
+
+## v0.9 - LLM-backed World Lifecycle Foundation
+
+Status: reviewed / planning-ready
+
+Goal: move WorldEngine from a proved basic lifecycle to the first LLM-backed
+lifecycle foundation where the engine owns live provider calls, turns a user's
+basic worldview into a runnable public world model, evaluates generated
+worldview fidelity, controls bounded world execution, accepts natural-language
+world direction as rule-bound environmental guidance, evolves parameters and
+events through explicit legality evidence, exposes brain-inspired public Agent
+continuity and consolidation evidence, keeps narrative projection and
+out-of-world diagnostic conversation outside canonical world mutation, and
+validates the full flow through checker-backed artifacts.
+
+v0.9 is not a product client, game release, concrete demo world, or external
+validator implementation. It must not move provider ownership, evaluation
+authority, concrete world content, or application-specific backend behavior out
+of the generic WorldEngine core boundary.
