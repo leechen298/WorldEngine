@@ -1,9 +1,11 @@
 """API route modules."""
 
 from app.api.routes.archive import router as archive_router
+from app.api.routes.engine_v1 import router as engine_v1_router
 from app.api.routes.health import router as health_router
 from app.api.routes.provider import router as provider_router
 from app.api.routes.runtime import router as runtime_router
+from app.api.routes.session import router as session_router
 from app.api.routes.world import public_router as public_world_router
 from app.api.routes.world import router as world_router
 from app.api.routes.world_agent import router as world_agent_router
@@ -12,9 +14,11 @@ from app.api.routes.world_params import router as world_params_router
 
 __all__ = [
     "archive_router",
+    "engine_v1_router",
     "health_router",
     "provider_router",
     "runtime_router",
+    "session_router",
     "public_world_router",
     "world_agent_router",
     "world_generation_router",

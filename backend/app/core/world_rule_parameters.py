@@ -157,18 +157,24 @@ def build_public_world_rule_summary(
     result: RuleParameterValidationResult,
 ) -> PublicWorldRuleSummary:
     if result.redaction_status == "failed":
+        world_id = "redacted"
+        generation_id = "redacted"
+        premise_digest = "redacted"
         parameter_paths: list[str] = []
         rule_ids: list[str] = []
         boundary_ids: list[str] = []
     else:
+        world_id = rule_set.world_id
+        generation_id = rule_set.generation_id
+        premise_digest = rule_set.premise_digest
         parameter_paths = sorted(parameter.path for parameter in rule_set.parameters)
         rule_ids = sorted(rule.rule_id for rule in rule_set.rules)
         boundary_ids = sorted(boundary.boundary_id for boundary in rule_set.boundaries)
 
     return PublicWorldRuleSummary(
-        world_id=rule_set.world_id,
-        generation_id=rule_set.generation_id,
-        premise_digest=rule_set.premise_digest,
+        world_id=world_id,
+        generation_id=generation_id,
+        premise_digest=premise_digest,
         validation_status=result.validation_status,
         parameter_paths=parameter_paths,
         rule_ids=rule_ids,

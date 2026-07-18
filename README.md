@@ -1,31 +1,36 @@
 # WorldEngine
 
-Status: v0.6 final / closeout complete.
+Status: v0.12 closeout complete / PARTIAL.
 
 Chinese mirror: `README.zh.md`.
 
 WorldEngine is a recursive world generation and runtime engine.
 
-The `v0.6` branch completes World Generation v1. It preserves the v0.5 memory
-substrate and v0.4 Agent-in-World Minimal Loop while adding generic
-world-generation contracts, deterministic template generation, structured plan
-compilation, AI-assisted plan import boundaries, validation metadata,
-preview/regeneration/runtime-readiness APIs, and a dashboard generation preview
-with focused E2E smoke. Existing runtime and action semantics remain
-compatible.
+The current v0.12 closeout completes the WorldEngine-side MVP campaign slice:
+runnable sessions, rule-bound evolution, public Agent continuity, public memory
+and rest consolidation, read-only narrative/diagnostic inspection surfaces,
+Validation Client evidence handoff, and deterministic checker fixture evidence.
+The final MVP classification is PARTIAL because complete MVP PASS still
+requires a current external WorldEngine-Validation-Client export/result
+directory plus checker/scorecard/read-only review evidence.
 
 WorldEngine is still not a complete recursive world engine implementation.
-External validation readiness, projection application readiness, full product
-readiness, new live Agent smoke execution, full autonomous runner/full-suite
-coverage, live provider integration, subjective generation-quality approval,
-durable memory persistence, public memory APIs, automatic reflection,
-self-summary generation, relationship behavior, personality drift action
-modifiers, and concrete world/demo content remain future version scope.
+Provider live behavior, fresh external Validation Client validation, product
+readiness, subjective generation-quality approval, durable persistence, richer
+self-continuity, and concrete world/demo content remain outside the current
+closeout.
 
 Read first:
 
 - `docs/project-north-star.md`
+- `docs/project-plan.md`
 - `docs/product-model.md`
+- `docs/scope-boundaries.md`
+- `docs/roadmap.md`
+- `docs/iterations/README.md`
+- `docs/iterations/v0.12/CURRENT_STATE.md`
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/mvp-closeout-report.md`
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/review.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/api-reference-v0.6.md`
@@ -34,7 +39,6 @@ Read first:
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
 - `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.md`
 - `docs/iterations/v0.6/review.md`
-- `docs/iterations/README.md`
 
 ## Repository Structure
 
@@ -44,7 +48,7 @@ Read first:
 - `backend/app/` - active backend path.
 - `backend/worldengine/` - legacy pre-v0.1 path; do not add new features there.
 
-## Current v0.6 Capability
+## Historical v0.6 Capability Baseline
 
 v0.6 preserves the v0.1 runtime scaffold, v0.3 loader/runtime bridge, v0.4
 request-driven Agent-in-World loop, and v0.5 memory substrate while adding
@@ -142,7 +146,20 @@ Default frontend API target is `http://localhost:8000` (configure via `VITE_API_
 
 ## Verification
 
-Current v0.6 closeout and post-closeout repair evidence is summarized in:
+Current v0.12 closeout evidence is summarized in:
+
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/mvp-closeout-report.md`
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/review.md`
+- `docs/iterations/v0.12/0.12.5-full-lifecycle-checker-and-autonomous-validation/full-lifecycle-validation-result.md`
+- `docs/iterations/v0.12/0.12.5-full-lifecycle-checker-and-autonomous-validation/scorecard-summary.md`
+- `docs/iterations/v0.12/review.md`
+
+v0.12 final classification is PARTIAL. WorldEngine-side Agent continuity,
+memory, inspection, handoff, and deterministic checker evidence are present.
+Complete MVP PASS remains blocked by the missing current v0.12 external
+Validation Client export/result directory.
+
+Historical v0.6 closeout and post-closeout repair evidence is summarized in:
 
 - `docs/releases/v0.6.md`
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.md`
@@ -150,8 +167,8 @@ Current v0.6 closeout and post-closeout repair evidence is summarized in:
 - `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`
 - `docs/iterations/v0.6/review.md`
 
-Earlier v0.1/v0.3 closeout evidence remains compatibility baseline material,
-not the current API or implementation map.
+Earlier v0.1/v0.3/v0.6 closeout evidence remains compatibility baseline
+material, not the current MVP closeout result.
 
 Key recorded evidence includes:
 

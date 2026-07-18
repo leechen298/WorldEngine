@@ -27,6 +27,8 @@ private internals。
 - [x] `test-plan.md`
 - [x] `plan.md`
 - [x] `review.md`
+- [x] `validation-client-v0.8-validation-plan-optimization-handoff.zh.md`
+- [x] `validation-client-v0.8-validation-plan-optimization-codex-prompt.zh.md`
 
 ## Scope Summary
 
@@ -53,3 +55,11 @@ handling、checker implementation、fixtures、generated results、external repo
 
 Implementation 仍未授权。未来 package 或 external repository milestone 可以基于本 contract
 实现 client display/export behavior。
+
+## 外部里程碑交接
+
+本 package 现在也包含 Validation Client v0.8 优化迭代交接文档。这个外部里程碑应更新
+Validation Client 的完整 WorldEngine 测试计划、scenario matrix、evidence bundle
+contract、runbook，以及对 v0.9 验证的客户端支撑。它属于独立的
+`WorldEngine-Validation-Client` 仓库，并且应作为后续 WorldEngine 验证合同变化时可重复使用
+的优化模式。

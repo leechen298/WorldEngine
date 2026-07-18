@@ -220,6 +220,27 @@ def test_bounded_run_fidelity_fails_explicit_runtime_contradictions() -> None:
     )
 
 
+def test_bounded_run_fidelity_fails_when_runtime_evidence_misses_premise() -> None:
+    artifact = evaluate_bounded_run_worldview_fidelity(
+        world_id="world-public-1",
+        generation_id="generation-public-1",
+        premise_digest="abcdef123456",
+        public_premise="A coastal research world with careful robots and changing weather",
+        public_runtime_summary={
+            "status": "pass",
+            "events": ["careful robots observe coastal weather changes"],
+            "contradictions": [],
+        },
+    )
+
+    assert artifact.status == "fail"
+    assert "research" in artifact.missing_indicators
+    assert any(
+        contradiction.category == "missing_premise"
+        for contradiction in artifact.contradictions
+    )
+
+
 def test_bounded_run_fidelity_redaction_failure_does_not_echo_private_summary() -> None:
     artifact = evaluate_bounded_run_worldview_fidelity(
         world_id="world-public-1",
@@ -300,7 +321,7 @@ def test_scorecard_passes_when_immediate_and_bounded_run_fidelity_pass() -> None
         public_premise="A coastal research world with careful robots and changing weather",
         public_runtime_summary={
             "status": "pass",
-            "events": ["careful robots observe coastal weather changes"],
+            "events": ["careful research robots observe coastal weather changes"],
             "contradictions": [],
         },
     )

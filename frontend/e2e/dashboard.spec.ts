@@ -164,6 +164,28 @@ test("dashboard-basic-runtime advances one tick and records timeline evidence", 
   await expect(page.getByTestId("timeline-panel")).toContainText(/tick\.advanced|module\./);
 });
 
+test("dashboard-mvp-session-flow creates runs and shows snapshot evidence", async ({ page, request }) => {
+  const before = await getRuntimeState(request);
+
+  await page.goto("/");
+  await page.getByTestId("session-premise-input").fill("public dashboard workshop world");
+  await page.getByTestId("session-create-button").click();
+
+  await expect(page.getByTestId("session-id")).toContainText("session-");
+  await expect(page.getByTestId("session-status")).toContainText("created");
+  await expect(page.getByTestId("session-generation-mode")).toContainText("deterministic_fallback");
+
+  await page.getByTestId("session-run-ticks-input").fill("2");
+  await page.getByTestId("session-run-button").click();
+
+  await expect.poll(async () => (await getRuntimeState(request)).tick_id).toBe(before.tick_id + 2);
+  await expect(page.getByTestId("session-status")).toContainText("ready");
+  await expect(page.getByTestId("session-run-evidence")).toContainText("ticks_executed");
+  await expect(page.getByTestId("session-snapshot-delta")).toContainText("1");
+  await expect(page.getByTestId("session-snapshot-list")).toContainText("Snapshots:");
+  await expect(page.getByTestId("timeline-panel")).toContainText(/tick\.advanced|module\./);
+});
+
 test("dashboard-params-flow applies counter increment and proves it through API and events", async ({
   page,
   request,

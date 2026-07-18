@@ -456,12 +456,14 @@ def test_manifest_exposes_rule_linked_evolution_endpoint() -> None:
 
     assert response.status_code == 200
     surfaces = response.json()["public_surfaces"]
-    assert {
-        "path": "/worlds/{world_id}/evolution/evaluate-event",
-        "method": "POST",
-        "operation_id": "evaluate_world_event_candidate",
-        "status": "available",
-    } in surfaces
+    surface = next(
+        item
+        for item in surfaces
+        if item["path"] == "/worlds/{world_id}/evolution/evaluate-event"
+        and item["method"] == "POST"
+    )
+    assert surface["operation_id"] == "evaluate_world_event_candidate"
+    assert surface["status"] == "available"
 
 
 def test_rule_set_redaction_failure_is_rejected_without_echo() -> None:

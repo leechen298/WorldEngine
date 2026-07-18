@@ -21,6 +21,12 @@ def test_manifest_returns_public_readiness_without_secrets(monkeypatch) -> None:
     payload = response.json()
     serialized = str(payload).lower()
     assert payload["schema_version"] == "0.8.9.1"
+    assert payload["worldengine_version"] == "v0.10"
+    assert payload["mvp_contract_version"] == "v0.10-debug-handoff"
+    assert payload["manifest_status"] == "blocked"
+    assert payload["validation_client_role"] == "display_export_only"
+    assert payload["provider_owner"] == "worldengine"
+    assert payload["evaluator_role"] == "worldengine_checker_or_second_agent_review"
     assert payload["provider"] == {
         "provider_class": "deepseek_api",
         "provider_readiness": "configured",
@@ -41,6 +47,34 @@ def test_manifest_returns_public_readiness_without_secrets(monkeypatch) -> None:
     assert "raw_response" not in serialized
 
 
+def test_manifest_exposes_status_taxonomy_and_checker_handoff_without_client_authority() -> None:
+    client = _client()
+
+    response = client.get("/manifest")
+
+    assert response.status_code == 200
+    payload = response.json()
+    statuses = {item["status"] for item in payload["status_taxonomy"]}
+    assert statuses == {"pass", "fail", "blocked", "not_run"}
+    assert payload["checker_handoff"]["validation_client_role"] == "display_export_only"
+    assert payload["checker_handoff"]["evaluator_role"] == "worldengine_checker_or_second_agent_review"
+    assert payload["checker_handoff"]["expected_result_statuses"] == [
+        "pass",
+        "fail",
+        "blocked",
+        "not_run",
+    ]
+    artifact_status = {
+        item["name"]: item["status"]
+        for item in payload["checker_handoff"]["artifact_index"]
+    }
+    assert artifact_status["manifest.json"] == "pass"
+    assert artifact_status["operation-log.jsonl"] == "not_run"
+    assert "worldview-to-session creation is planned for 0.10.3" not in payload["checker_handoff"]["unsupported_items"]
+    assert "bounded session runtime and snapshots are planned for 0.10.4" not in payload["checker_handoff"]["unsupported_items"]
+    assert "dashboard MVP session flow is planned for 0.10.5" not in payload["checker_handoff"]["unsupported_items"]
+
+
 def test_manifest_reports_not_configured_provider_without_fake_ready(monkeypatch) -> None:
     monkeypatch.delenv("WORLDENGINE_LLM_PROVIDER", raising=False)
     monkeypatch.delenv("WORLDENGINE_LLM_MODEL", raising=False)
@@ -51,9 +85,63 @@ def test_manifest_reports_not_configured_provider_without_fake_ready(monkeypatch
 
     assert response.status_code == 200
     provider = response.json()["provider"]
+    payload = response.json()
     assert provider["provider_class"] == "unconfigured"
     assert provider["provider_readiness"] == "not_configured"
     assert provider["credential_source_class"] == "none"
+    assert "provider credentials are not configured" in payload["warnings"]
+    assert payload["manifest_status"] == "blocked"
+
+
+def test_manifest_marks_future_session_surfaces_as_not_run_not_available() -> None:
+    client = _client()
+
+    response = client.get("/manifest")
+
+    assert response.status_code == 200
+    payload = response.json()
+    surfaces = {
+        (surface["method"], surface["path"]): surface
+        for surface in payload["public_surfaces"]
+    }
+    assert surfaces[("GET", "/manifest")]["status"] == "available"
+    assert surfaces[("GET", "/manifest")]["validation_status"] == "pass"
+    world_create_notes = " ".join(surfaces[("POST", "/worlds")]["notes"])
+    assert "session creation is future scope" not in world_create_notes
+    assert "separate MVP surfaces" in world_create_notes
+    assert surfaces[("POST", "/sessions")]["status"] == "available"
+    assert surfaces[("POST", "/sessions")]["maturity"] == "implemented"
+    assert surfaces[("POST", "/sessions")]["validation_status"] == "pass"
+    assert surfaces[("POST", "/sessions")]["required_for_mvp"] is True
+    assert surfaces[("POST", "/sessions/from-worldview")]["status"] == "available"
+    assert surfaces[("POST", "/sessions/from-worldview")]["maturity"] == "implemented"
+    assert surfaces[("POST", "/sessions/from-worldview")]["validation_status"] == "pass"
+    assert surfaces[("POST", "/sessions/from-worldview")]["required_for_mvp"] is True
+    assert surfaces[("GET", "/sessions")]["status"] == "available"
+    assert surfaces[("GET", "/sessions/{session_id}/status")]["validation_status"] == "pass"
+    assert surfaces[("POST", "/sessions/{session_id}/run")]["status"] == "available"
+    assert surfaces[("POST", "/sessions/{session_id}/run")]["maturity"] == "implemented"
+    assert surfaces[("POST", "/sessions/{session_id}/run")]["validation_status"] == "pass"
+    assert surfaces[("GET", "/sessions/{session_id}/snapshots")]["status"] == "available"
+    assert surfaces[("GET", "/sessions/{session_id}/snapshots")]["validation_status"] == "pass"
+    assert surfaces[("POST", "/sessions/{session_id}/pause")]["status"] == "available"
+    assert surfaces[("POST", "/sessions/{session_id}/resume")]["status"] == "available"
+    assert "worldview-to-session creation is not implemented until 0.10.3" not in payload["blockers"]
+    assert "session run APIs are not implemented until 0.10.4" not in payload["blockers"]
+    assert "dashboard MVP session flow is not implemented until 0.10.5" not in payload["blockers"]
+
+
+def test_manifest_worldline_branch_semantics_avoid_parent_source_language() -> None:
+    client = _client()
+
+    response = client.get("/manifest")
+
+    assert response.status_code == 200
+    semantics = response.json()["worldline_branch_semantics"].lower()
+    assert "timeline branches" in semantics
+    assert "source world" not in semantics
+    assert "source-world" not in semantics
+    assert "parent/child" not in semantics
 
 
 def test_openapi_exposes_world_creation_with_required_operation_id() -> None:

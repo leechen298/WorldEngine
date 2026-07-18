@@ -658,6 +658,8 @@ class BoundedRunWorldviewFidelityArtifact(BaseModel):
     premise_digest: str = Field(min_length=1)
     status: WorldviewFidelityStatus
     evaluated_indicators: List[str] = Field(default_factory=list)
+    covered_indicators: List[str] = Field(default_factory=list)
+    missing_indicators: List[str] = Field(default_factory=list)
     runtime_summary_present: bool = False
     redaction_status: Literal["passed", "failed"] = "passed"
     contradictions: List[WorldviewContradiction] = Field(default_factory=list)

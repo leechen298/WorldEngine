@@ -164,6 +164,22 @@ def evaluate_bounded_run_worldview_fidelity(
             )
         )
 
+    status_hint = public_runtime_summary.get("status")
+    covered: list[str] = []
+    missing: list[str] = []
+    if redaction_status == "passed" and status_hint not in {"blocked", "not_run"}:
+        evidence_text = _public_text(public_runtime_summary)
+        covered = [indicator for indicator in indicators if indicator in evidence_text]
+        missing = [indicator for indicator in indicators if indicator not in evidence_text]
+        if missing:
+            contradictions.append(
+                _contradiction(
+                    "missing_premise",
+                    "/public_runtime_summary",
+                    "bounded-run public evidence is missing material premise indicators",
+                )
+            )
+
     for index, item in enumerate(public_runtime_summary.get("contradictions", [])):
         if not isinstance(item, dict):
             continue
@@ -198,8 +214,8 @@ def evaluate_bounded_run_worldview_fidelity(
     status = "pass"
     if redaction_status == "failed" or contradictions:
         status = "fail"
-    elif public_runtime_summary.get("status") in {"blocked", "not_run"}:
-        status = public_runtime_summary["status"]
+    elif status_hint in {"blocked", "not_run"}:
+        status = status_hint
 
     return BoundedRunWorldviewFidelityArtifact(
         world_id=world_id,
@@ -207,6 +223,8 @@ def evaluate_bounded_run_worldview_fidelity(
         premise_digest=premise_digest,
         status=status,
         evaluated_indicators=indicators,
+        covered_indicators=covered,
+        missing_indicators=missing,
         runtime_summary_present=True,
         redaction_status=redaction_status,
         contradictions=contradictions,

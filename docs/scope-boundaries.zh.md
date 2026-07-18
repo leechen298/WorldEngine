@@ -27,6 +27,16 @@ Status: authoritative boundary guide
 - Narrative projection、replay views 和 out-of-world diagnostic conversations 默认是 external
   inspection surfaces。除非 reviewed package 明确创建 bridge，否则它们不得修改 canonical world
   state、world timelines 或 Agent memory。
+- 在 MVP track 中，用户或玩家是外部操作者，不是世界内实体。除非后续 reviewed package
+  明确改变该边界，否则 WorldEngine 不应实现玩家投放物品、直接触发细节事件或
+  player-as-world-entity gameplay。
+- 用户引导不得直接指定最终事实。“这个 Agent 现在死亡”不是合法 direction；“这个 Agent 可能面临
+  雷击风险”只能作为外部压力被接受，并由 WorldEngine 根据天气、位置、概率、生命状态和 public
+  rules 判断结果。
+- 分叉世界线和 forks 是用于 replay、comparison 和 validation 的时间线分支，类似代码分支。
+  除非 reviewed recursive-world package 明确引入这类关系，否则不得描述为父子世界、源世界或
+  起源层级。
+- 文档和证据必须区分世界内 Agent 与 Codex、OpenClaw 等外部验证 Agent。
 - Code work 必须限定在一个 iteration package 内。
 - Schema changes 必须 additive，除非当前 contract 允许 breaking changes。
 - Runtime behavior 必须保留，除非当前 contract 明确改变它。
@@ -72,3 +82,14 @@ v0.2 不能：
   generated world rules、bounded runtime control、world-level direction、rule-linked event
   legality、brain-inspired Agent continuity/consolidation evidence，以及 external
   narrative/diagnostic projection boundaries。
+- v0.10 可以启动 MVP track，定义 public debug contract 和第一条 runnable world session，包括
+  bounded runtime controls、events/snapshots、public discovery 和 replay/worldline branch
+  terminology。
+- v0.11 可以让 MVP world 通过 public rules、parameters、direction boundaries、event legality、
+  diffs 和 worldview fidelity evidence 演化。
+- v0.12 可以通过 public Agent continuity、memory/rest consolidation evidence、read-only
+  narrative/diagnostic inspection、external validation-client evidence handoff 和 checker-backed
+  lifecycle classification 完成 MVP。
+- v0.9 之后的 version boundaries 在此摘要，详细治理以 `docs/project-plan.md`、
+  `docs/project-plan.zh.md`、`docs/roadmap.md`、`docs/roadmap.zh.md` 和对应
+  `docs/iterations/v*/` package documents 为准。

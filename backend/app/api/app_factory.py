@@ -10,10 +10,12 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.routes import (
     archive_router,
+    engine_v1_router,
     health_router,
     provider_router,
     public_world_router,
     runtime_router,
+    session_router,
     world_agent_router,
     world_generation_router,
     world_params_router,
@@ -21,6 +23,8 @@ from app.api.routes import (
 )
 from app.core.event_bus import InMemoryEventLog
 from app.core.runtime_engine import RuntimeEngine
+from app.core.world_session import InMemoryWorldSessionStore
+from app.engine import EngineV1Service
 from app.schemas.api import ApiErrorResponse
 from app.world.archive import ArchiveService
 from app.world.dry_run import ParamDryRunValidator
@@ -161,6 +165,7 @@ def create_app() -> FastAPI:
     )
 
     app.state.event_log = InMemoryEventLog()
+    app.state.engine_v1_service = EngineV1Service()
     app.state.world_state = WorldState()
     app.state.world_root_module = get_default_module_tree()
     app.state.param_validator = ParamValidator(ParamRegistry.default())
@@ -175,6 +180,11 @@ def create_app() -> FastAPI:
         event_log=app.state.event_log,
         world_root_module=app.state.world_root_module,
         params_provider=app.state.world_state.get_params,
+    )
+    app.state.world_session_store = InMemoryWorldSessionStore(
+        runtime_engine=app.state.runtime_engine,
+        event_count_provider=lambda: len(app.state.event_log.snapshot()),
+        snapshot_count_provider=lambda: app.state.snapshot_store.list(limit=200)[1],
     )
     app.state.archive_service = ArchiveService(
         snapshot_store=app.state.snapshot_store,
@@ -233,8 +243,10 @@ def create_app() -> FastAPI:
         return JSONResponse(status_code=422, content=payload.model_dump())
 
     app.include_router(health_router)
+    app.include_router(engine_v1_router)
     app.include_router(provider_router)
     app.include_router(public_world_router)
+    app.include_router(session_router)
     app.include_router(runtime_router)
     app.include_router(world_router)
     app.include_router(world_params_router)

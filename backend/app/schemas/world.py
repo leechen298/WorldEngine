@@ -49,15 +49,67 @@ class PublicSurface(BaseModel):
     method: str = Field(min_length=1)
     operation_id: str = Field(min_length=1)
     status: Literal["available", "unavailable"]
+    maturity: Literal["implemented", "planned", "blocked", "deprecated"] = "implemented"
+    validation_status: Literal["pass", "fail", "blocked", "not_run"] = "not_run"
+    required_for_mvp: bool = False
+    notes: List[str] = Field(default_factory=list)
+
+
+class PublicStatusDefinition(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal["pass", "fail", "blocked", "not_run"]
+    meaning: str = Field(min_length=1)
+
+
+class CheckerArtifactRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(min_length=1)
+    required_for_mvp: bool = False
+    status: Literal["pass", "fail", "blocked", "not_run"] = "not_run"
+    redaction_required: bool = True
+
+
+class CheckerHandoff(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    checker_contract: str = Field(default="worldengine-mvp-debug-handoff")
+    validation_client_role: Literal["display_export_only"] = "display_export_only"
+    evaluator_role: Literal["worldengine_checker_or_second_agent_review"] = (
+        "worldengine_checker_or_second_agent_review"
+    )
+    expected_result_statuses: List[Literal["pass", "fail", "blocked", "not_run"]] = Field(
+        default_factory=lambda: ["pass", "fail", "blocked", "not_run"]
+    )
+    artifact_index: List[CheckerArtifactRef] = Field(default_factory=list)
+    unsupported_items: List[str] = Field(default_factory=list)
 
 
 class HandoffManifest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     schema_version: str = Field(default="0.8.9.1")
-    worldengine_version: str = Field(default="v0.8")
+    worldengine_version: str = Field(default="v0.10")
+    mvp_contract_version: str = Field(default="v0.10-debug-handoff")
+    manifest_status: Literal["pass", "fail", "blocked", "not_run"] = "blocked"
     provider: PublicProviderReadiness
+    validation_client_role: Literal["display_export_only"] = "display_export_only"
+    provider_owner: Literal["worldengine"] = "worldengine"
+    evaluator_role: Literal["worldengine_checker_or_second_agent_review"] = (
+        "worldengine_checker_or_second_agent_review"
+    )
+    status_taxonomy: List[PublicStatusDefinition] = Field(default_factory=list)
     public_surfaces: List[PublicSurface] = Field(default_factory=list)
+    checker_handoff: CheckerHandoff = Field(default_factory=CheckerHandoff)
+    worldline_branch_semantics: str = Field(
+        default=(
+            "Worldline branches are comparable timeline branches for replay "
+            "and debugging; they are branch-like alternatives on the same "
+            "timeline model, with no origin hierarchy."
+        ),
+        min_length=1,
+    )
     redaction: PublicRedactionStatus = Field(default_factory=PublicRedactionStatus)
     blockers: List[str] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)

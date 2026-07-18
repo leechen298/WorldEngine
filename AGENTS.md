@@ -12,6 +12,7 @@ feedback, action, and pseudo-self formation.
 Read these documents before proposing or implementing project-direction work:
 
 - `docs/project-north-star.md`
+- `docs/project-plan.md`
 - `docs/product-model.md`
 - `docs/scope-boundaries.md`
 - `docs/roadmap.md`

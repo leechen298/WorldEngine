@@ -22,6 +22,43 @@ export interface RuntimeState {
   updated_at?: string | null;
 }
 
+export interface RuntimeRunRequest {
+  ticks?: number;
+  duration_seconds?: number;
+  max_ticks?: number;
+  max_duration_seconds?: number;
+  max_provider_calls?: number;
+  max_estimated_cost_units?: number;
+}
+
+export interface RuntimeRunSummary {
+  schema_version: string;
+  status: "completed" | "blocked";
+  stop_reason:
+    | "requested_ticks_reached"
+    | "requested_duration_reached"
+    | "max_ticks_reached"
+    | "max_duration_reached"
+    | "paused";
+  start_tick: number;
+  end_tick: number;
+  start_world_time_seconds: number;
+  end_world_time_seconds: number;
+  step_seconds: number;
+  ticks_requested?: number | null;
+  duration_requested_seconds?: number | null;
+  ticks_executed: number;
+  guard_summary: Record<string, number>;
+  provider_calls_used: number;
+  estimated_cost_units_used: number;
+  redaction_status: "passed";
+  control_status: "idle" | "running" | "paused";
+}
+
+export interface RuntimeControlState {
+  status: "idle" | "running" | "paused";
+}
+
 export interface WorldEvent {
   id: string;
   tick_id: number;
@@ -55,6 +92,115 @@ export interface WorldEventStepsPage {
 }
 
 export type WorldParams = Record<string, unknown>;
+
+export interface SessionRuntimeRef {
+  tick_id: number;
+  world_time_seconds: number;
+  step_seconds: number;
+}
+
+export interface SessionEvidenceRefs {
+  event_count_at_create: number;
+  snapshot_count_at_create: number;
+  current_event_count: number;
+  current_snapshot_count: number;
+}
+
+export interface SessionGenerationSummary {
+  request_id: string;
+  generation_id: string;
+  generation_status: string;
+  generation_mode: string;
+  creation_mode: string;
+  provider_class: string;
+  provider_backed: boolean;
+  llm_backed: boolean;
+  deterministic_generic_fallback_detected: boolean;
+  premise_digest: string;
+  runtime_ready: "true" | "false" | "blocked";
+  blockers: string[];
+  warnings: string[];
+  public_world_model_refs: Record<string, unknown>;
+}
+
+export interface WorldSession {
+  session_id: string;
+  world_id: string;
+  public_label: string;
+  status: "created" | "ready" | "paused" | "blocked" | "closed";
+  runtime_ref: SessionRuntimeRef;
+  evidence_refs: SessionEvidenceRefs;
+  generation_summary?: SessionGenerationSummary | null;
+  created_at: string;
+  updated_at: string;
+  persistence: "in_memory";
+}
+
+export interface WorldviewSessionCreateRequest {
+  request_id: string;
+  worldview_premise: string;
+  allow_deterministic_fallback?: boolean;
+  public_constraints?: Record<string, unknown>;
+}
+
+export interface SessionStatusResponse {
+  session_id: string;
+  status: WorldSession["status"];
+  runtime_ref: SessionRuntimeRef;
+  evidence_refs: SessionEvidenceRefs;
+  updated_at: string;
+}
+
+export interface SessionRunEvidenceResponse {
+  session_id: string;
+  world_id: string;
+  run_summary: RuntimeRunSummary;
+  runtime_delta: {
+    start_tick: number;
+    end_tick: number;
+    start_world_time_seconds: number;
+    end_world_time_seconds: number;
+  };
+  event_evidence: {
+    event_count_before: number;
+    event_count_after: number;
+    event_delta_count: number;
+  };
+  snapshot_evidence: {
+    snapshot_count_before: number;
+    snapshot_count_after: number;
+    snapshot_delta_count: number;
+    snapshot_ids: string[];
+  };
+  timeline_label: string;
+  redaction_status: "passed";
+}
+
+export interface RuntimeStateSnapshot {
+  tick_id: number;
+  world_time_seconds: number;
+  step_seconds: number;
+  updated_at?: string | null;
+}
+
+export interface Snapshot {
+  id: string;
+  tick_id: number;
+  world_time_seconds: number;
+  created_at: string;
+  runtime_state: RuntimeStateSnapshot;
+  params: Record<string, unknown>;
+}
+
+export interface SessionSnapshotListResponse {
+  session_id: string;
+  world_id: string;
+  items: Snapshot[];
+  total: number;
+  limit: number;
+  timeline_label: string;
+  redaction_status: "passed";
+}
 
 export interface GenerationDiagnostic {
   code: string;
@@ -299,6 +445,66 @@ export async function stepRuntime(): Promise<RuntimeState> {
   return request<RuntimeState>("/runtime/step", {
     method: "POST",
   });
+}
+
+export async function createSessionFromWorldview(
+  body: WorldviewSessionCreateRequest,
+): Promise<WorldSession> {
+  return postJson<WorldSession>("/sessions/from-worldview", body);
+}
+
+export async function getSessionStatus(sessionId: string): Promise<SessionStatusResponse> {
+  return request<SessionStatusResponse>(`/sessions/${encodeURIComponent(sessionId)}/status`);
+}
+
+export async function runSession(
+  sessionId: string,
+  body: RuntimeRunRequest,
+): Promise<SessionRunEvidenceResponse> {
+  return postJson<SessionRunEvidenceResponse>(
+    `/sessions/${encodeURIComponent(sessionId)}/run`,
+    body,
+  );
+}
+
+export async function pauseSession(sessionId: string): Promise<RuntimeControlState> {
+  return request<RuntimeControlState>(`/sessions/${encodeURIComponent(sessionId)}/pause`, {
+    method: "POST",
+  });
+}
+
+export async function resumeSession(sessionId: string): Promise<WorldSession> {
+  return request<WorldSession>(`/sessions/${encodeURIComponent(sessionId)}/resume`, {
+    method: "POST",
+  });
+}
+
+export async function listSessionSnapshots(
+  sessionId: string,
+  params?: {
+    from_tick?: number;
+    to_tick?: number;
+    limit?: number;
+    order?: "asc" | "desc";
+  },
+): Promise<SessionSnapshotListResponse> {
+  const searchParams = new URLSearchParams();
+  if (params?.from_tick !== undefined) {
+    searchParams.set("from_tick", String(params.from_tick));
+  }
+  if (params?.to_tick !== undefined) {
+    searchParams.set("to_tick", String(params.to_tick));
+  }
+  if (params?.limit !== undefined) {
+    searchParams.set("limit", String(params.limit));
+  }
+  if (params?.order !== undefined) {
+    searchParams.set("order", params.order);
+  }
+  const query = searchParams.toString();
+  return request<SessionSnapshotListResponse>(
+    `/sessions/${encodeURIComponent(sessionId)}/snapshots${query ? `?${query}` : ""}`,
+  );
 }
 
 export async function getWorldEvents(params?: {

@@ -179,3 +179,87 @@ v0.9 is not a product client, game release, concrete demo world, or external
 validator implementation. It must not move provider ownership, evaluation
 authority, concrete world content, or application-specific backend behavior out
 of the generic WorldEngine core boundary.
+
+## v0.10 - MVP Debug Contract And Runnable World Session
+
+Status: PARTIAL / WorldEngine-side MVP slice complete; external Validation Client export blocked
+
+Goal: start the MVP delivery track by aligning the public manifest/debug
+handoff contract for WorldEngine-Validation-Client, then create the first
+runnable world session slice: worldview input, session identity, bounded
+runtime, events, snapshots, dashboard inspection, public client discovery,
+and replay/worldline branch terminology that avoids parent/source semantics.
+
+v0.10 is not a full LLM-quality, Agent-autonomy, or product-readiness claim.
+It should produce a debuggable session baseline that can honestly report
+`pass`, `fail`, `blocked`, or `not_run` evidence.
+
+Handoff: v0.11 may start only after the runnable session and debug handoff are
+evidenced or explicitly blocked.
+
+## v0.11 - MVP Rule-Bound World Evolution
+
+Status: PARTIAL / closeout complete; external Validation Client export blocked
+
+Goal: make the runnable MVP world evolve through public rules, parameters,
+user direction boundaries, legal event candidates, applied public diffs, and
+worldview fidelity evidence.
+
+User direction remains external world-level pressure: it may introduce a risk
+such as a lightning-strike possibility, but WorldEngine must decide the actual
+outcome through rules, state, probability, and legality evidence instead of
+copying user instructions into final facts.
+
+v0.11 is not the Agent pseudo-self or full validation automation version. It
+should make world changes explainable before Agent continuity is layered on.
+
+Handoff: v0.12 may start only after rule-linked event/diff evidence exists or
+the missing handoff is explicitly recorded as a blocker.
+
+## v0.12 - MVP Agent Continuity And Validation Automation
+
+Status: PARTIAL / closeout complete; external Validation Client export blocked
+
+Goal: complete the MVP by adding a minimal public Agent continuity loop,
+memory/rest consolidation evidence, read-only novel-style narrative and
+diagnostic inspection surfaces, explicit in-world-Agent versus external
+validation-agent terminology, and checker-backed full lifecycle validation
+through WorldEngine-Validation-Client evidence.
+
+v0.12 is the first version that may claim complete MVP PASS, but only through
+checker, scorecard, and read-only review evidence. If provider, client, or
+checker capability is missing, closeout should honestly classify the result as
+PARTIAL, BLOCKED, or FAIL.
+
+Closeout result: PARTIAL. WorldEngine-side Agent continuity, memory,
+inspection, handoff, and deterministic checker evidence are present. Complete
+MVP PASS remains blocked by the missing current v0.12 external Validation
+Client export/result directory.
+
+## v0.13 - Minimum Runnable MVP Anchor
+
+Status: planning / documentation package ready for user review
+
+Goal: reset implementation around one deterministic, single-session,
+single-Agent, lockstep vertical slice that proves world generation, canonical
+runtime, Agent action and experience, accepted/rejected operator intervention,
+generic projection, administration-console operation, Godot consumption, and
+independent external classification as one causal run.
+
+v0.13 treats v0.10-v0.12 code and evidence as historical background rather
+than the target design or current proof. Existing work may be reused only when
+it passes the new contract. The version must not delete historical work, put a
+concrete validation world in WorldEngine, or make Godot a core dependency.
+
+Delivery sequence:
+
+1. `0.13.0-worldengine-runnable-anchor`: WorldEngine-side generic protocol,
+   deterministic package/session/runtime/Agent/intervention loop, evidence,
+   and administration console.
+2. `0.13.1-godot-validation-client-anchor`: external Godot executor and
+   isolated checker in `WorldEngine-Validation-Client`.
+3. `0.13.2-anchor-run-validation-and-closeout`: clean cross-client run and
+   evidence-backed `PASS`, `PARTIAL`, `BLOCKED`, or `FAIL`.
+
+Complete v0.13 PASS requires the external Godot/checker run. Passing
+`0.13.0` alone proves only the WorldEngine-side anchor.

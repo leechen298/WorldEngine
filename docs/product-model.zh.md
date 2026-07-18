@@ -45,6 +45,16 @@ Runtime execution 应该 bounded 且 inspectable。Consumers 可以要求 engine
 multiple ticks、run for a world-time duration、pause、resume 或 continue，但 engine 仍负责
 state、rules、event legality、snapshots 和 run evidence。
 
+### Direction And Player Boundary
+
+User direction 是 WorldEngine 的外部输入，不是 canonical world 的直接 mutation。在 MVP track
+中，除非后续 reviewed package 创建这个 bridge，否则用户或玩家不是世界内实体。
+
+Direction 可以影响 world-level pressure、environment trends、candidate events、probabilities
+或 constraints。它不能直接指定 death、injury、inventory changes、private memory changes 或
+direct event outcomes 这类最终事实。WorldEngine 必须通过 public rules、current state、
+probability 和 event legality 自行决定结果。
+
 ### Agent Domain
 
 Agents 不是 generic NPC chat wrappers。它们拥有 identity、state、needs、goals、memory、
@@ -53,6 +63,10 @@ relationships、action intent、feedback、reflection 和随时间发展的 self
 Agent cognition 不是 mandatory per-tick mutation loop。Short-term memory、long-term memory、
 personality、skills、intent 和 self-narrative 应有 explicit public summaries，并且可以通过
 sleep、rest 或 low-activity phases consolidation，这些 phase 可以跨多个 ticks。
+
+除非文档明确写成“external validation agent”，否则 Agent 指世界内 Agent。Codex、OpenClaw
+等 external validation agents 是从世界外操作客户端、review evidence 的工具，不是 canonical
+world entities。
 
 ### Persistence
 
@@ -68,9 +82,18 @@ thought、private memory payloads 或 diagnostic conversations 变成 canonical 
 Projection 把 running world 暴露给不同 consumers。Dashboard、game、API client 或 external
 system 都看到同一个 underlying world model 的 projection。
 
-Narrative output、replay views 和 out-of-world diagnostic Agent conversations 默认是 projection
-或 inspection surfaces。它们可以帮助人类或 validator 理解运行情况，但不会修改 canonical
-world timeline 或 Agent memory，除非未来 reviewed bridge 明确改变该边界。
+小说式 narrative output、replay views 和 out-of-world diagnostic Agent conversations 默认是
+projection 或 inspection surfaces。它们可以帮助人类或 validator 理解运行情况，但不会修改
+canonical world timeline 或 Agent memory，除非未来 reviewed bridge 明确改变该边界。
+
+面向用户的 narrative projection 可以把某个 session、tick range、timeline branch 或以 Agent
+为焦点的 public history 总结成可读 prose。它必须来自 public events、diffs、snapshots、
+Agent public summaries 和 provenance fields。
+
+面向用户的 diagnostic conversation 可以让人询问世界为什么变化、某个 Agent 看起来有什么
+public state，或当前运行是否仍符合 worldview。它是 out-of-world inspection transcript，不得
+变成世界内对话、玩家参与、Agent memory 或 hidden control channel。如果用户想影响后续世界演化，
+必须走 direction queue 和 rule-bound event path。
 
 ## External Product Surfaces
 

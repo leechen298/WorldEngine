@@ -138,3 +138,22 @@ class WorldEventEvaluationResponse(BaseModel):
 
     world_id: str = Field(min_length=1)
     result: WorldEventLegalityResult
+
+
+class SessionEvolutionStepRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    apply: bool = True
+
+
+class SessionEvolutionStepResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    session_id: str = Field(min_length=1)
+    world_id: str = Field(min_length=1)
+    status: WorldEventLegalityStatus
+    candidate: Optional[WorldEventCandidate] = None
+    result: WorldEventLegalityResult
+    replay_event_id: Optional[str] = None
+    direct_state_mutation_applied: bool = False
+    redaction_status: WorldEvolutionRedactionStatus = "passed"

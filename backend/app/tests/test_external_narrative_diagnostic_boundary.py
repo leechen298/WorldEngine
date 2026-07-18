@@ -365,15 +365,18 @@ def test_manifest_exposes_projection_and_diagnostic_endpoints() -> None:
 
     assert response.status_code == 200
     surfaces = response.json()["public_surfaces"]
-    assert {
-        "path": "/worlds/{world_id}/narrative/project",
-        "method": "POST",
-        "operation_id": "project_world_narrative",
-        "status": "available",
-    } in surfaces
-    assert {
-        "path": "/worlds/{world_id}/agents/{agent_id}/diagnostics/dialogue/evaluate",
-        "method": "POST",
-        "operation_id": "evaluate_agent_diagnostic_dialogue",
-        "status": "available",
-    } in surfaces
+    assert any(
+        surface["path"] == "/worlds/{world_id}/narrative/project"
+        and surface["method"] == "POST"
+        and surface["operation_id"] == "project_world_narrative"
+        and surface["status"] == "available"
+        for surface in surfaces
+    )
+    assert any(
+        surface["path"]
+        == "/worlds/{world_id}/agents/{agent_id}/diagnostics/dialogue/evaluate"
+        and surface["method"] == "POST"
+        and surface["operation_id"] == "evaluate_agent_diagnostic_dialogue"
+        and surface["status"] == "available"
+        for surface in surfaces
+    )

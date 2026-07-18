@@ -6,10 +6,16 @@ from typing import Any, Optional
 from fastapi import APIRouter, Request
 
 from app.agent.provider_config import provider_readiness_from_env, public_label
+from app.agent.worldview_generation import generate_worldview_response
 from app.schemas.provider import (
     ProviderLiveSmokeRedaction,
     ProviderLiveSmokeRequest,
     ProviderLiveSmokeResponse,
+)
+from app.schemas.provider_preflight import (
+    ProviderWorldviewGenerationPreflightSummary,
+    ProviderWorldviewPreflightRequest,
+    ProviderWorldviewPreflightResponse,
 )
 
 router = APIRouter(prefix="/provider", tags=["provider"])
@@ -61,6 +67,30 @@ _SAFE_RESULT_KEYS = {
 }
 
 
+def _preflight_status_from_provider(provider_class: str, provider_readiness: str) -> str:
+    if provider_class == "unknown":
+        return "unsupported_provider"
+    if provider_class == "mock":
+        return "safe_mock_available"
+    if provider_readiness == "configured":
+        return "provider_ready_blocked_without_live_authorization"
+    if provider_readiness == "not_configured":
+        return "not_configured"
+    return "unsupported_provider"
+
+
+def _preflight_status_from_worldview(summary: ProviderWorldviewGenerationPreflightSummary) -> str:
+    if summary.generation_mode == "deterministic_fallback":
+        return "deterministic_fallback_available"
+    if summary.generation_mode == "safe_mock":
+        return "safe_mock_available"
+    if summary.generation_mode == "blocked":
+        return "provider_ready_blocked_without_live_authorization"
+    if summary.generation_mode == "not_configured":
+        return "not_configured"
+    return "provider_ready_blocked_without_live_authorization"
+
+
 def _collect_private_text(value: Any, *, scan_keys: bool = True) -> str:
     if isinstance(value, dict):
         parts: list[str] = []
@@ -95,6 +125,64 @@ async def _run_smoke_runner(runner: Any, provider_class: str) -> dict[str, Any]:
     if not isinstance(result, dict):
         return {"call_status": "failure", "public_failure_category": "provider_error"}
     return result
+
+
+@router.post(
+    "/worldview-preflight",
+    response_model=ProviderWorldviewPreflightResponse,
+    operation_id="provider_worldview_preflight",
+)
+def provider_worldview_preflight(
+    request_body: ProviderWorldviewPreflightRequest,
+) -> ProviderWorldviewPreflightResponse:
+    provider = provider_readiness_from_env()
+    worldview_request = request_body.to_worldview_request()
+    warnings: list[str] = []
+    blockers: list[str] = []
+    worldview_summary: ProviderWorldviewGenerationPreflightSummary | None = None
+    status = _preflight_status_from_provider(
+        provider.provider_class,
+        provider.provider_readiness,
+    )
+
+    if worldview_request is None:
+        warnings.append("no worldview premise supplied; provider readiness only")
+        status = "no_worldview_request"
+    else:
+        generation = generate_worldview_response(worldview_request, provider)
+        worldview_summary = ProviderWorldviewGenerationPreflightSummary(
+            generation_status=generation.generation_status,
+            generation_mode=generation.generation_mode,
+            creation_mode=generation.creation_mode,
+            llm_backed=generation.llm_backed,
+            provider_backed=generation.provider_backed,
+            deterministic_generic_fallback_detected=(
+                generation.deterministic_generic_fallback_detected
+            ),
+            validation_metadata=generation.validation_metadata,
+            redaction=generation.redaction,
+            warnings=generation.warnings,
+            blockers=generation.blockers,
+            diagnostics=generation.diagnostics,
+        )
+        status = _preflight_status_from_worldview(worldview_summary)
+        warnings.extend(generation.warnings)
+        blockers.extend(generation.blockers)
+
+    if provider.provider_class == "unknown":
+        blockers.append("unsupported_provider")
+    elif provider.provider_readiness == "configured" and provider.provider_class != "mock":
+        blockers.append("live_provider_call_not_authorized")
+
+    return ProviderWorldviewPreflightResponse(
+        preflight_status=status,
+        provider=provider,
+        live_call_authorized=False,
+        call_attempted=False,
+        worldview=worldview_summary,
+        warnings=warnings,
+        blockers=blockers,
+    )
 
 
 @router.post(

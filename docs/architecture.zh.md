@@ -4,6 +4,19 @@ Status: current architecture overview and v0.2 direction
 
 英文版本：`architecture.md`。
 
+## System Architecture Flowchart
+
+项目级架构流程图维护在 `docs/system-architecture-flowchart.md`。纯 Mermaid 源文件副本是
+`docs/system-architecture-flowchart.mmd`。
+
+它总结 World Generation、World Runtime、Agent Runtime、共享 event/evidence contracts
+以及外部 projection consumers 之间的合理目标关系。它是 architecture planning artifact，不是当前
+代码库已实现每个节点的证明。
+
+如果需要一份适合开发对齐的目标闭环，把产品拆成小总览以及 World Generation、World Runtime、
+Agent Runtime 三张细图，请看 `docs/living-world-development-flow.zh.md`。英文版本是
+`docs/living-world-development-flow.md`。
+
 ## Current v0.1 State
 
 WorldEngine v0.1 是 experimental monorepo scaffold：

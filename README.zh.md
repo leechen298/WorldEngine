@@ -1,29 +1,34 @@
 # WorldEngine
 
-状态：`v0.6 final / closeout complete`
+状态：`v0.12 closeout complete / PARTIAL`
 
 英文版本：`README.md`。
 
 WorldEngine 是递归世界生成与运行时引擎。
 
-当前 `v0.6` 分支已完成 World Generation v1。它保留 v0.5 memory substrate 和
-v0.4 Agent-in-World Minimal Loop，并新增 generic world-generation contracts、
-deterministic template generation、structured plan compilation、AI-assisted plan
-import boundaries、validation metadata、preview/regeneration/runtime-readiness APIs，
-以及带 focused E2E smoke 的 dashboard generation preview。既有 runtime 与 action
-semantics 保持兼容。
+当前 v0.12 closeout 完成 WorldEngine-side MVP campaign slice：runnable sessions、
+rule-bound evolution、public Agent continuity、public memory/rest consolidation、
+read-only narrative/diagnostic inspection surfaces、Validation Client evidence handoff，
+以及 deterministic checker fixture evidence。最终 MVP classification 为 PARTIAL，因为
+complete MVP PASS 仍需要 current external WorldEngine-Validation-Client export/result
+directory，加 checker/scorecard/read-only review evidence。
 
-WorldEngine 仍不是完整的递归世界引擎实现。External validation readiness、
-projection application readiness、full product readiness、new live Agent smoke
-execution、full autonomous runner/full-suite coverage、live provider integration、
-subjective generation-quality approval、durable memory persistence、public memory
-APIs、automatic reflection、self-summary generation、relationship behavior、
-personality drift action modifiers 和 concrete world/demo content 仍属于后续版本范围。
+WorldEngine 仍不是完整的递归世界引擎实现。Provider live behavior、fresh external
+Validation Client validation、product readiness、subjective generation-quality approval、
+durable persistence、更丰富的 self-continuity，以及 concrete world/demo content 均不属于当前
+closeout。
 
 优先阅读：
 
 - `docs/project-north-star.md`
+- `docs/project-plan.zh.md`
 - `docs/product-model.md`
+- `docs/scope-boundaries.zh.md`
+- `docs/roadmap.zh.md`
+- `docs/iterations/README.md`
+- `docs/iterations/v0.12/CURRENT_STATE.zh.md`
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/mvp-closeout-report.zh.md`
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/review.zh.md`
 - `docs/current-implementation.md`
 - `docs/backend-implementation.md`
 - `docs/api-reference-v0.6.zh.md`
@@ -32,7 +37,6 @@ personality drift action modifiers 和 concrete world/demo content 仍属于后�
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
 - `docs/iterations/v0.6/0.6.11-post-closeout-reliability-and-scope-repair/review.zh.md`
 - `docs/iterations/v0.6/review.zh.md`
-- `docs/iterations/README.md`
 
 ## 仓库结构
 
@@ -42,7 +46,7 @@ personality drift action modifiers 和 concrete world/demo content 仍属于后�
 - `backend/app/` - active backend path。
 - `backend/worldengine/` - legacy pre-v0.1 path；不要在那里新增 feature。
 
-## 当前 v0.6 能力
+## 历史 v0.6 能力基线
 
 v0.6 保留 v0.1 运行时脚手架、v0.3 loader/runtime bridge、v0.4 request-driven
 Agent-in-World loop 和 v0.5 memory substrate，同时新增 World Generation v1。它可以：
@@ -129,7 +133,19 @@ pnpm dev
 
 ## 验证
 
-当前 v0.6 closeout 和 post-closeout repair evidence 汇总在：
+当前 v0.12 closeout evidence 汇总在：
+
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/mvp-closeout-report.zh.md`
+- `docs/iterations/v0.12/0.12.6-mvp-release-candidate-and-closeout/review.zh.md`
+- `docs/iterations/v0.12/0.12.5-full-lifecycle-checker-and-autonomous-validation/full-lifecycle-validation-result.zh.md`
+- `docs/iterations/v0.12/0.12.5-full-lifecycle-checker-and-autonomous-validation/scorecard-summary.zh.md`
+- `docs/iterations/v0.12/review.zh.md`
+
+v0.12 final classification 为 PARTIAL。WorldEngine-side Agent continuity、memory、
+inspection、handoff 和 deterministic checker evidence 已存在。Complete MVP PASS 仍被缺失的
+current v0.12 external Validation Client export/result directory 阻断。
+
+历史 v0.6 closeout 和 post-closeout repair evidence 汇总在：
 
 - `docs/releases/v0.6.zh.md`
 - `docs/iterations/v0.6/0.6.10-v0.6-final-closeout/final-closeout.zh.md`
@@ -137,7 +153,7 @@ pnpm dev
 - `docs/testing/results/2026-06-01-v0.6-reliability-validation.md`
 - `docs/iterations/v0.6/review.zh.md`
 
-早期 v0.1/v0.3 closeout evidence 仍是兼容性基线材料，不是当前 API 或实现地图。
+早期 v0.1/v0.3/v0.6 closeout evidence 仍是兼容性基线材料，不是当前 MVP closeout result。
 
 关键已记录证据包括：
 

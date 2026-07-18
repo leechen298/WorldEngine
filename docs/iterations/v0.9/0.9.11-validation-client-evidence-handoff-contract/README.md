@@ -28,6 +28,8 @@ WorldEngine internals.
 - [x] `test-plan.md`
 - [x] `plan.md`
 - [x] `review.md`
+- [x] `validation-client-v0.8-validation-plan-optimization-handoff.md`
+- [x] `validation-client-v0.8-validation-plan-optimization-codex-prompt.md`
 
 ## Scope Summary
 
@@ -56,3 +58,12 @@ generated results, external repositories, or `backend/worldengine/`.
 
 Implementation remains unauthorized. A future package or external repository
 milestone may implement client display/export behavior against this contract.
+
+## External Milestone Handoff
+
+The package now also contains a Validation Client v0.8 optimization handoff.
+That external milestone should update the Validation Client's complete
+WorldEngine test plan, scenario matrix, evidence bundle contract, runbook, and
+client support for v0.9 validation. It belongs in the separate
+`WorldEngine-Validation-Client` repository and should be repeatable for future
+WorldEngine validation-contract changes.

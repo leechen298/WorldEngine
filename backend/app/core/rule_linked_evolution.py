@@ -333,6 +333,131 @@ def evaluate_world_event_candidate(
     )
 
 
+def build_rule_bound_session_event_candidate(
+    *,
+    world_id: str,
+    rule_set: GeneratedRuleParameterSet,
+    current_params: Mapping[str, Any],
+    runtime_tick: int,
+    runtime_world_time_seconds: int,
+    direction_queue: Iterable[WorldDirectionQueueItem] = (),
+) -> WorldEventCandidate | None:
+    rule_by_priority = sorted(
+        rule_set.rules,
+        key=lambda item: (-item.priority, item.rule_id),
+    )
+    parameter_by_id = {parameter.parameter_id: parameter for parameter in rule_set.parameters}
+    directions = _applicable_direction_ids(
+        world_id=world_id,
+        direction_queue=direction_queue,
+        runtime_tick=runtime_tick,
+    )
+
+    for rule in rule_by_priority:
+        for effect in rule.effects:
+            parameter = parameter_by_id.get(effect.parameter_ref)
+            if parameter is None or parameter.visibility != "public":
+                continue
+            if _is_agent_private_parameter_path(parameter.path):
+                continue
+            if rule.target_parameter_refs and parameter.parameter_id not in rule.target_parameter_refs:
+                continue
+            if rule.allowed_ops and effect.op not in rule.allowed_ops:
+                continue
+            old_value = _get_public_param_value(
+                current_params,
+                parameter.path,
+                parameter.initial_value,
+            )
+            new_value = _next_public_value(
+                old_value=old_value,
+                parameter=parameter,
+                effect_value_expression=effect.value_expression,
+            )
+            return WorldEventCandidate(
+                candidate_id=f"candidate-session-{runtime_tick}-{rule.rule_id}",
+                world_id=world_id,
+                event_type=f"world.rule.{rule.rule_kind}",
+                source="world_rule",
+                proposed_tick=runtime_tick,
+                proposed_world_time_seconds=runtime_world_time_seconds,
+                rule_refs=[rule.rule_id],
+                parameter_patches=[
+                    WorldParameterPatch(
+                        parameter_ref=parameter.parameter_id,
+                        op=effect.op,
+                        value=new_value,
+                        rule_ref=rule.rule_id,
+                        public_explanation=(
+                            "Public rule-bound session evolution selected this parameter change."
+                        ),
+                    )
+                ],
+                direction_refs=directions[:1],
+                cause_refs=[f"runtime.tick.{runtime_tick}"],
+                probability_evidence={
+                    "source": "public_rule_bound_session_step",
+                    "selection": "deterministic",
+                    "direction_ref_count": len(directions),
+                },
+                causality_evidence={
+                    "rule_id": rule.rule_id,
+                    "parameter_ref": parameter.parameter_id,
+                    "cause": "public rule and current session state",
+                },
+                public_summary="Rule-bound public session evolution candidate.",
+            )
+    return None
+
+
+def _applicable_direction_ids(
+    *,
+    world_id: str,
+    direction_queue: Iterable[WorldDirectionQueueItem],
+    runtime_tick: int,
+) -> list[str]:
+    direction_ids: list[str] = []
+    for item in direction_queue:
+        if item.world_id != world_id or item.status != "queued" or not item.classification.allowed:
+            continue
+        if item.apply_after_tick is not None and runtime_tick < item.apply_after_tick:
+            continue
+        if item.expires_after_tick is not None and runtime_tick > item.expires_after_tick:
+            continue
+        direction_ids.append(item.direction_id)
+    return sorted(direction_ids)
+
+
+def _next_public_value(
+    *,
+    old_value: Any,
+    parameter: WorldParameterDefinition,
+    effect_value_expression: Mapping[str, Any],
+) -> Any:
+    expression_type = effect_value_expression.get("type")
+    minimum = effect_value_expression.get("min", parameter.constraints.get("min"))
+    maximum = effect_value_expression.get("max", parameter.constraints.get("max"))
+
+    if expression_type == "bounded_value" or minimum is not None or maximum is not None:
+        lower = minimum if isinstance(minimum, (int, float)) else None
+        upper = maximum if isinstance(maximum, (int, float)) else None
+        if isinstance(old_value, (int, float)) and not isinstance(old_value, bool):
+            next_value: Any = old_value + 1
+        elif lower is not None:
+            next_value = lower
+        else:
+            next_value = parameter.initial_value
+        if upper is not None and isinstance(next_value, (int, float)):
+            next_value = min(next_value, upper)
+        if lower is not None and isinstance(next_value, (int, float)):
+            next_value = max(next_value, lower)
+        return next_value
+
+    if "value" in effect_value_expression:
+        return deepcopy(effect_value_expression["value"])
+    return deepcopy(parameter.initial_value)
+
+
 def _is_agent_private_parameter_path(path: str) -> bool:
     normalized = path.casefold().replace("/", ".").replace("-", "_")
     if normalized.startswith(_AGENT_PUBLIC_PARAMETER_PREFIXES):

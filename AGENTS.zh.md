@@ -14,6 +14,7 @@ formation 形成持续变化的主体表现。
 在提出或实现会影响项目方向的工作前，先阅读：
 
 - `docs/project-north-star.md`
+- `docs/project-plan.md`
 - `docs/product-model.md`
 - `docs/scope-boundaries.md`
 - `docs/roadmap.md`

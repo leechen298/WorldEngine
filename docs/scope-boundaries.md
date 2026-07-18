@@ -31,6 +31,20 @@ Status: authoritative boundary guide
   conversations are external inspection surfaces by default. They must not
   mutate canonical world state, world timelines, or Agent memory unless a
   reviewed package explicitly creates that bridge.
+- In the MVP track, the user or player is an external operator, not an
+  in-world entity. WorldEngine must not implement player item drops, direct
+  detailed event triggering, or player-as-world-entity gameplay unless a
+  later reviewed package explicitly changes that boundary.
+- User guidance must not directly assign final facts. "This Agent dies now" is
+  not valid direction; "this Agent may face a lightning-strike risk" may be
+  accepted only as external pressure that WorldEngine evaluates through
+  weather, location, probability, life state, and public rules.
+- Worldline branches and forks are timeline branches for replay, comparison,
+  and validation, similar to code branches. They must not be described as
+  parent/child worlds, source worlds, or origin hierarchies unless a reviewed
+  recursive-world package explicitly introduces that relationship.
+- Documents and evidence must distinguish in-world Agents from external
+  validation agents such as Codex or OpenClaw.
 - Code work must be scoped to one iteration package.
 - Schema changes must be additive unless the current contract allows breaking
   changes.
@@ -79,3 +93,15 @@ v0.2 must not:
   control, world-level direction, rule-linked event legality, brain-inspired
   Agent continuity/consolidation evidence, and external narrative/diagnostic
   projection boundaries.
+- v0.10 may start the MVP track by defining the public debug contract and
+  first runnable world session, including bounded runtime controls,
+  events/snapshots, public discovery, and replay/worldline branch terminology.
+- v0.11 may make the MVP world evolve through public rules, parameters,
+  direction boundaries, event legality, diffs, and worldview fidelity evidence.
+- v0.12 may complete the MVP through public Agent continuity, memory/rest
+  consolidation evidence, read-only narrative/diagnostic inspection, external
+  validation-client evidence handoff, and checker-backed lifecycle
+  classification.
+- Post-v0.9 version boundaries are summarized here and governed in detail by
+  `docs/project-plan.md`, `docs/roadmap.md`, and the matching
+  `docs/iterations/v*/` package documents.

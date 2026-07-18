@@ -2,6 +2,22 @@
 
 Status: current architecture overview and v0.2 direction
 
+## System Architecture Flowchart
+
+The project-level architecture flowchart is maintained in
+`docs/system-architecture-flowchart.md`. The source-only Mermaid copy is
+`docs/system-architecture-flowchart.mmd`.
+
+It summarizes the reasoned target relationship between World Generation, World
+Runtime, Agent Runtime, shared event/evidence contracts, and external
+projection consumers. It is an architecture planning artifact, not proof that
+every node is implemented in the current codebase.
+
+For a development-readable target loop that breaks the product into a small
+overview plus detailed World Generation, World Runtime, and Agent Runtime
+flows, see `docs/living-world-development-flow.md`. Chinese mirror:
+`docs/living-world-development-flow.zh.md`.
+
 ## Current v0.1 State
 
 WorldEngine v0.1 is an experimental monorepo scaffold:
