@@ -141,6 +141,9 @@ const variableEntries = computed(() => Object.entries(props.projection?.variable
 
 <style scoped>
 .projection-panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
   padding: 20px;
   border: 1px solid #d9dee5;

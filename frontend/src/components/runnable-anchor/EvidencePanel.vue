@@ -9,17 +9,23 @@
         <a-tag
           v-if="evidence"
           data-test="evidence-status"
-          :color="evidence.completeness.status === 'complete' ? 'green' : 'orange'"
+          :color="evidenceStatusColor"
         >
-          {{ evidence.completeness.status }}
+          完整性 {{ evidence.completeness.integrity.status }} · 场景
+          {{ evidence.completeness.scenario_coverage.status }}
         </a-tag>
-        <a-button data-test="refresh-evidence" :loading="loading" @click="$emit('refresh')">
+        <a-button
+          data-test="refresh-evidence"
+          :disabled="!canRefresh || loading"
+          :loading="loading"
+          @click="$emit('refresh')"
+        >
           刷新证据
         </a-button>
         <a-button
           data-test="download-evidence"
           type="primary"
-          :disabled="!evidence"
+          :disabled="!canRefresh || !evidence"
           :loading="loading"
           @click="$emit('download')"
         >
@@ -143,9 +149,9 @@
               <thead>
                 <tr>
                   <th>状态</th>
+                  <th>应用状态</th>
                   <th>window_id</th>
                   <th>reason_code</th>
-                  <th>排队</th>
                   <th>event_ref</th>
                   <th>Diff</th>
                 </tr>
@@ -153,9 +159,14 @@
               <tbody>
                 <tr v-for="decision in evidence.direction_decisions" :key="decision.request_id">
                   <td><StatusTag :status="decision.status" /></td>
+                  <td>
+                    <code>{{ decision.application_status }}</code>
+                    <small v-if="decision.application_reason_code">
+                      {{ decision.application_reason_code }}
+                    </small>
+                  </td>
                   <td><code>{{ decision.window_id }}</code></td>
                   <td><code>{{ decision.reason_code }}</code></td>
-                  <td>{{ decision.queued ? "是" : "否" }}</td>
                   <td><code>{{ decision.event_ref }}</code></td>
                   <td>{{ decision.applied_diff_refs.length }}</td>
                 </tr>
@@ -189,13 +200,34 @@ const props = defineProps<{
   eventPage: EventPage | null;
   evidence: EvidenceBundle | null;
   loading: boolean;
+  canRefresh: boolean;
 }>();
 
 const simpleImage = AEmpty.PRESENTED_IMAGE_SIMPLE;
 const activeTab = ref("events");
 
 const displayEvents = computed(() => props.eventPage?.items ?? props.evidence?.events ?? []);
-const completenessChecks = computed(() => Object.entries(props.evidence?.completeness.checks ?? {}));
+const completenessChecks = computed(() => {
+  const completeness = props.evidence?.completeness;
+  if (!completeness) {
+    return [];
+  }
+  return [
+    ...Object.entries(completeness.integrity.checks).map(
+      ([name, passed]) => [`完整性/${name}`, passed] as const,
+    ),
+    ...Object.entries(completeness.scenario_coverage.checks).map(
+      ([name, passed]) => [`场景/${name}`, passed] as const,
+    ),
+  ];
+});
+const evidenceStatusColor = computed(() => {
+  const completeness = props.evidence?.completeness;
+  if (!completeness || completeness.integrity.status === "invalid") {
+    return "red";
+  }
+  return completeness.scenario_coverage.status === "covered" ? "green" : "orange";
+});
 const latestAgentCycle = computed(() => {
   const cycles = props.evidence?.agent_cycles ?? [];
   return cycles.length > 0 ? cycles[cycles.length - 1] : null;
@@ -227,6 +259,9 @@ function formatValue(value: unknown): string {
 
 <style scoped>
 .evidence-panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
   padding: 20px;
   border: 1px solid #d9dee5;
@@ -245,6 +280,11 @@ function formatValue(value: unknown): string {
 
 .panel-heading {
   margin-bottom: 16px;
+}
+
+.panel-heading > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .section-kicker {
@@ -334,7 +374,12 @@ h3 {
 }
 
 .evidence-tabs {
+  min-width: 0;
   margin-top: 6px;
+}
+
+.evidence-tabs :deep(.ant-tabs-nav-wrap) {
+  max-width: 100%;
 }
 
 .table-scroll {

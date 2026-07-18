@@ -8,10 +8,11 @@ from uuid import uuid4
 
 from pydantic import BaseModel
 
-from app.engine.agent_runtime import plan_agent_cycle
+from app.engine.agent_runtime import AgentPerception, plan_agent_cycle
 from app.engine.evidence import (
     capture_snapshot,
     evidence_integrity_checks,
+    evidence_scenario_coverage_checks,
     next_diff_id,
     next_event_id,
     state_hash,
@@ -35,6 +36,8 @@ from app.schemas.engine_v1 import (
     EventRecord,
     EvidenceBundle,
     EvidenceCompleteness,
+    EvidenceIntegrity,
+    EvidenceScenarioCoverage,
     FeedbackRequest,
     FeedbackResult,
     InterventionWindow,
@@ -338,6 +341,11 @@ class EngineV1Service:
                 request.request_id,
                 "completed",
                 result.event_refs,
+                [
+                    diff_ref
+                    for event in record.events[start_event_count:]
+                    for diff_ref in event.diff_refs
+                ],
             )
             return result.model_copy(deep=True)
 
@@ -392,6 +400,7 @@ class EngineV1Service:
                     reason_code=judgment.reason_code,
                     public_reason=judgment.public_reason,
                     queued=True,
+                    application_status="queued",
                     rule_refs=judgment.rule_refs,
                     event_ref=event.event_id,
                     tick=record.tick,
@@ -425,6 +434,7 @@ class EngineV1Service:
                     reason_code=judgment.reason_code,
                     public_reason=judgment.public_reason,
                     queued=False,
+                    application_status="not_applicable",
                     rule_refs=judgment.rule_refs,
                     event_ref=event.event_id,
                     tick=record.tick,
@@ -441,6 +451,8 @@ class EngineV1Service:
                 request.request_id,
                 decision.status,
                 [decision.event_ref],
+                [],
+                application_status=decision.application_status,
             )
             return decision.model_copy(deep=True)
 
@@ -506,6 +518,7 @@ class EngineV1Service:
                 request.request_id,
                 status,
                 [event.event_id],
+                diff_refs,
             )
             return result.model_copy(deep=True)
 
@@ -583,6 +596,7 @@ class EngineV1Service:
                 request.request_id,
                 status,
                 [event.event_id],
+                diff_refs,
             )
             return result.model_copy(deep=True)
 
@@ -608,8 +622,20 @@ class EngineV1Service:
     def get_evidence(self, session_id: str) -> EvidenceBundle:
         with self._lock:
             record = self._require_session(session_id)
-            checks = self._completeness_checks(record)
-            missing = [name for name, passed in checks.items() if not passed]
+            integrity_checks = self._integrity_checks(record)
+            integrity_failures = [
+                name for name, passed in integrity_checks.items() if not passed
+            ]
+            coverage_checks = evidence_scenario_coverage_checks(record)
+            missing_coverage = [
+                name for name, covered in coverage_checks.items() if not covered
+            ]
+            if not missing_coverage:
+                coverage_status = "covered"
+            elif any(coverage_checks.values()):
+                coverage_status = "partial"
+            else:
+                coverage_status = "not_covered"
             return EvidenceBundle(
                 package=record.package.model_copy(deep=True),
                 projection=self._projection(record),
@@ -622,9 +648,16 @@ class EngineV1Service:
                 ],
                 request_correlations=deepcopy(record.request_correlations),
                 completeness=EvidenceCompleteness(
-                    status="complete" if not missing else "incomplete",
-                    checks=checks,
-                    missing=missing,
+                    integrity=EvidenceIntegrity(
+                        status="valid" if not integrity_failures else "invalid",
+                        checks=integrity_checks,
+                        failures=integrity_failures,
+                    ),
+                    scenario_coverage=EvidenceScenarioCoverage(
+                        status=coverage_status,
+                        checks=coverage_checks,
+                        missing=missing_coverage,
+                    ),
                 ),
             )
 
@@ -688,7 +721,7 @@ class EngineV1Service:
         )
         next_value = current + magnitude
         if not variable["minimum"] <= next_value <= variable["maximum"]:
-            self._record_event_only(
+            event = self._record_event_only(
                 record,
                 event_type="direction.application_rejected",
                 source="worldengine.rules",
@@ -698,8 +731,19 @@ class EngineV1Service:
                 payload={
                     "accepted_event_ref": queued.decision.event_ref,
                     "reason_code": "direction_target_range_violation",
+                    "application_status": "application_rejected",
                 },
             )
+            queued.decision.queued = False
+            queued.decision.application_status = "application_rejected"
+            queued.decision.application_reason_code = (
+                "direction_target_range_violation"
+            )
+            queued.decision.application_event_refs.append(event.event_id)
+            queued.decision.tick = record.tick
+            queued.decision.revision = record.revision
+            queued.decision.state_hash_after = state_hash(record)
+            self._update_direction_correlation(record, queued.decision)
             return
         event, diff = self._apply_operations(
             record,
@@ -713,17 +757,44 @@ class EngineV1Service:
                 "window_id": request.window_id,
                 "target_ref": request.target_ref,
                 "magnitude": magnitude,
+                "application_status": "applied",
             },
         )
+        queued.decision.queued = False
+        queued.decision.application_status = "applied"
+        queued.decision.application_reason_code = "direction_applied"
         queued.decision.application_event_refs.append(event.event_id)
         queued.decision.applied_diff_refs.append(diff.diff_id)
         queued.decision.tick = record.tick
         queued.decision.revision = record.revision
         queued.decision.state_hash_after = diff.state_hash_after
+        self._update_direction_correlation(record, queued.decision)
 
     def _run_agent_cycle(self, record: EngineSessionRecord, tick_request_id: str) -> None:
-        plan = plan_agent_cycle(record)
-        agent = record.agents[plan.agent_id]
+        agent_id = sorted(record.agents)[0]
+        agent = record.agents[agent_id]
+        perception = AgentPerception(
+            agent_id=agent_id,
+            state_hash=state_hash(record),
+            visible_variables=deepcopy(record.variables),
+            variable_specs={
+                item["key"]: {
+                    "minimum": item["minimum"],
+                    "maximum": item["maximum"],
+                    "step": item["step"],
+                }
+                for item in record.package.world_spec["state_variables"]
+            },
+            available_actions=[
+                item["action_id"] for item in record.package.action_catalog
+            ],
+            feedback_count=record.feedback_count,
+            experience_refs=[
+                ref.model_copy(deep=True) for ref in agent.experience_refs[-5:]
+            ],
+            recent_event_refs=[event.event_id for event in record.events[-5:]],
+        )
+        plan = plan_agent_cycle(perception)
         action_request = ActionRequest(
             request_id=f"{tick_request_id}:agent:{plan.agent_id}",
             expected_revision=record.revision,
@@ -736,16 +807,16 @@ class EngineV1Service:
             action_request,
             record.variables[plan.target_ref],
         )
-        perception = {
-            "state_hash": state_hash(record),
-            "visible_variables": deepcopy(record.variables),
-            "available_actions": [item["action_id"] for item in record.package.action_catalog],
-            "recent_event_refs": [event.event_id for event in record.events[-5:]],
-        }
+        public_perception = perception.public_payload()
         decision = {
             "intent": plan.intent,
             "decision_mode": plan.decision_mode,
             "experience_ref_ids": [ref.ref_id for ref in plan.experience_refs_used],
+            "target_ref": plan.target_ref,
+            "visible_value": plan.visible_value,
+            "selected_amount": plan.amount,
+            "feedback_count": plan.feedback_count_used,
+            "influence_factors": list(plan.influence_factors),
         }
 
         if not judgment.accepted:
@@ -756,14 +827,19 @@ class EngineV1Service:
                 status="rejected",
                 request_id=action_request.request_id,
                 rule_refs=judgment.rule_refs,
-                payload={"reason_code": judgment.reason_code},
+                payload={
+                    "reason_code": judgment.reason_code,
+                    "decision_mode": plan.decision_mode,
+                    "feedback_count": plan.feedback_count_used,
+                    "influence_factors": list(plan.influence_factors),
+                },
             )
             record.agent_cycles.append(
                 AgentCycleEvidence(
                     cycle_id=f"cycle-{plan.agent_id}-{agent.cycle_count + 1}",
                     agent_id=plan.agent_id,
                     tick=record.tick,
-                    perception=perception,
+                    perception=public_perception,
                     decision=decision,
                     action_request=action_request.model_dump(mode="json"),
                     rule_judgment={
@@ -785,6 +861,8 @@ class EngineV1Service:
             ref_type="action_result",
             source_tick=record.tick,
             public_effect=f"{plan.target_ref}:{plan.amount:+d}",
+            target_ref=plan.target_ref,
+            amount=plan.amount,
         )
         next_refs = [*agent.experience_refs, new_experience][-5:]
         event, diff = self._apply_operations(
@@ -810,6 +888,9 @@ class EngineV1Service:
                 "amount": plan.amount,
                 "decision_mode": plan.decision_mode,
                 "experience_ref_ids": [ref.ref_id for ref in plan.experience_refs_used],
+                "visible_value": plan.visible_value,
+                "feedback_count": plan.feedback_count_used,
+                "influence_factors": list(plan.influence_factors),
             },
         )
         record.agent_cycles.append(
@@ -817,7 +898,7 @@ class EngineV1Service:
                 cycle_id=f"cycle-{plan.agent_id}-{agent.cycle_count}",
                 agent_id=plan.agent_id,
                 tick=record.tick,
-                perception=perception,
+                perception=public_perception,
                 decision=decision,
                 action_request=action_request.model_dump(mode="json"),
                 rule_judgment={
@@ -970,12 +1051,11 @@ class EngineV1Service:
             projection=self._projection(record),
         )
 
-    def _completeness_checks(self, record: EngineSessionRecord) -> Dict[str, bool]:
+    def _integrity_checks(self, record: EngineSessionRecord) -> Dict[str, bool]:
         checks = {
             "package_ready": record.package.readiness.status == "ready",
             "initial_snapshot": bool(record.snapshots)
             and record.snapshots[0].revision == 0,
-            "agent_cycle": bool(record.agent_cycles),
         }
         checks.update(evidence_integrity_checks(record))
         return checks
@@ -1086,18 +1166,50 @@ class EngineV1Service:
         request_id: str,
         status: str,
         event_refs: List[str],
+        diff_refs: Optional[List[str]] = None,
+        *,
+        application_status: Optional[str] = None,
     ) -> None:
-        record.request_correlations.append(
-            {
-                "operation_id": operation,
-                "request_id": request_id,
-                "status": status,
-                "event_refs": list(event_refs),
-                "tick": record.tick,
-                "revision": record.revision,
-                "state_hash": state_hash(record),
-            }
-        )
+        correlation = {
+            "operation_id": operation,
+            "request_id": request_id,
+            "status": status,
+            "event_refs": list(event_refs),
+            "diff_refs": list(diff_refs or []),
+            "tick": record.tick,
+            "revision": record.revision,
+            "state_hash": state_hash(record),
+        }
+        if application_status is not None:
+            correlation["application_status"] = application_status
+        record.request_correlations.append(correlation)
+
+    @staticmethod
+    def _update_direction_correlation(
+        record: EngineSessionRecord,
+        decision: DirectionDecision,
+    ) -> None:
+        for correlation in reversed(record.request_correlations):
+            if (
+                correlation["operation_id"] == "directions.submit"
+                and correlation["request_id"] == decision.request_id
+            ):
+                correlation.update(
+                    {
+                        "status": decision.status,
+                        "application_status": decision.application_status,
+                        "event_refs": [
+                            decision.event_ref,
+                            *decision.application_event_refs,
+                        ],
+                        "diff_refs": list(decision.applied_diff_refs),
+                        "tick": record.tick,
+                        "revision": record.revision,
+                        "state_hash": state_hash(record),
+                    }
+                )
+                return
+        raise RuntimeError("Direction request correlation is missing")
 
     @staticmethod
     def _get_path(record: EngineSessionRecord, path: str) -> Any:

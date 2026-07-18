@@ -199,9 +199,16 @@ function makeEvidence(
     direction_decisions: options.decisions ?? [],
     request_correlations: [],
     completeness: {
-      status: options.complete ? "complete" : "incomplete",
-      checks: { package_ready: true, experience_linked_decision: options.complete ?? false },
-      missing: options.complete ? [] : ["experience_linked_decision"],
+      integrity: {
+        status: "valid",
+        checks: { event_diff_links: true, request_correlations: true },
+        failures: [],
+      },
+      scenario_coverage: {
+        status: options.complete ? "covered" : "partial",
+        checks: { agent: options.complete ?? false, feedback: false },
+        missing: options.complete ? [] : ["agent", "feedback"],
+      },
     },
   };
 }
@@ -221,13 +228,14 @@ const projectionStub = {
 };
 
 const evidenceStub = {
-  props: ["eventPage", "evidence", "loading"],
+  name: "EvidencePanel",
+  props: ["eventPage", "evidence", "loading", "canRefresh"],
   emits: ["refresh", "download"],
   template: `
     <div data-test="evidence-stub">
-      <span data-test="evidence-status">{{ evidence?.completeness?.status ?? '-' }}</span>
-      <button data-test="refresh-evidence" @click="$emit('refresh')">refresh</button>
-      <button data-test="download-evidence" @click="$emit('download')">download</button>
+      <span data-test="evidence-status">{{ evidence ? '完整性 ' + evidence.completeness.integrity.status + ' · 场景 ' + evidence.completeness.scenario_coverage.status : '-' }}</span>
+      <button data-test="refresh-evidence" :disabled="!canRefresh || loading" @click="$emit('refresh')">refresh</button>
+      <button data-test="download-evidence" :disabled="!canRefresh || !evidence" @click="$emit('download')">download</button>
     </div>
   `,
 };
@@ -284,6 +292,7 @@ describe("RunnableAnchorPage", () => {
           reason_code: accepted ? "bounded_direction_queued" : "direct_final_fact_forbidden",
           public_reason: accepted ? "queued" : "forbidden",
           queued: accepted,
+          application_status: accepted ? "queued" : "not_applicable",
           rule_refs: ["rule.direction.world_signal"],
           event_ref: accepted ? "event-direction-accepted" : "event-direction-rejected",
           application_event_refs: [],
@@ -339,7 +348,18 @@ describe("RunnableAnchorPage", () => {
         });
         canonicalEvidence = makeEvidence(canonicalProjection, {
           cycles: [makeAgentCycle(1, false), makeAgentCycle(2, true)],
-          decisions: canonicalEvidence.direction_decisions,
+          decisions: canonicalEvidence.direction_decisions.map((decision) =>
+            decision.status === "accepted"
+              ? {
+                  ...decision,
+                  queued: false,
+                  application_status: "applied",
+                  application_reason_code: "direction_applied",
+                  application_event_refs: ["event-direction-applied"],
+                  applied_diff_refs: ["diff-direction-applied"],
+                }
+              : decision,
+          ),
           complete: true,
         });
         const result: SessionStepResult = {
@@ -441,22 +461,111 @@ describe("RunnableAnchorPage", () => {
     expect(wrapper.get("[data-test='projection-state-hash']").text()).toBe(INITIAL_STATE_HASH);
   });
 
-  it("uses one server window for both directions, then exact-steps into experience evidence", async () => {
+  it("disables evidence refresh before a session and never reports a false success", async () => {
+    const wrapper = mountPage();
+    await flushPromises();
+    vi.clearAllMocks();
+
+    expect(wrapper.get("[data-test='refresh-evidence']").attributes("disabled")).toBeDefined();
+    wrapper.findComponent({ name: "EvidencePanel" }).vm.$emit("refresh");
+    await flushPromises();
+
+    expect(api.getPublicProjection).not.toHaveBeenCalled();
+    expect(api.exportSessionEvidence).not.toHaveBeenCalled();
+    expect(wrapper.get("[data-test='operation-warning']").text()).toContain("无法刷新证据");
+    expect(wrapper.find("[data-test='operation-message']").exists()).toBe(false);
+  });
+
+  it("validates WorldBrief fields against the backend variable constraints", async () => {
+    const wrapper = mountPage();
+    await flushPromises();
+    vi.clearAllMocks();
+
+    await wrapper.get("[data-test='state-key']").setValue("World-Signal");
+    await flushPromises();
+    expect(wrapper.get("[data-test='state-key-error']").text()).toContain("小写字母");
+    expect(wrapper.get("[data-test='generate-package']").attributes("disabled")).toBeDefined();
+
+    await wrapper.get("[data-test='state-key']").setValue("world_signal");
+    await wrapper.get("[data-test='state-minimum']").setValue("0");
+    await wrapper.get("[data-test='state-maximum']").setValue("10");
+    await wrapper.get("[data-test='state-initial']").setValue("5");
+    await wrapper.get("[data-test='state-step']").setValue("6");
+    await flushPromises();
+    expect(wrapper.get("[data-test='state-step-error']").text()).toContain("至少要能");
+
+    await wrapper.get("[data-test='brief-constraints']").setValue("[]");
+    await flushPromises();
+    expect(wrapper.get("[data-test='brief-constraints-error']").text()).toContain("必须是对象");
+    expect(api.createWorldPackage).not.toHaveBeenCalled();
+  });
+
+  it("invalidates the generated package, session, and evidence as soon as the brief changes", async () => {
+    const wrapper = mountPage();
+    await flushPromises();
+    await generateAndBoot(wrapper);
+
+    const fingerprint = wrapper.get("[data-test='brief-fingerprint']").text();
+    expect(fingerprint).toMatch(/^brief-[a-f0-9]{8}-\d+$/);
+    expect(wrapper.get("[data-test='refresh-evidence']").attributes("disabled")).toBeUndefined();
+
+    await wrapper.get("[data-test='brief-premise']").setValue("修改后的公开世界前提。");
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='package-result']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='session-result']").exists()).toBe(false);
+    expect(wrapper.get("[data-test='projection-tick']").text()).toBe("-");
+    expect(wrapper.get("[data-test='evidence-status']").text()).toBe("-");
+    expect(wrapper.get("[data-test='boot-session']").attributes("disabled")).toBeDefined();
+    expect(wrapper.get("[data-test='refresh-evidence']").attributes("disabled")).toBeDefined();
+    expect(wrapper.get("[data-test='operation-warning']").text()).toContain("请重新生成");
+  });
+
+  it("keeps a successful direction receipt visible when the other command fails", async () => {
     const wrapper = mountPage();
     await flushPromises();
     await generateAndBoot(wrapper);
     vi.clearAllMocks();
 
-    await wrapper.get("[data-test='submit-direction-pair']").trigger("click");
+    await wrapper.get("[data-test='submit-bounded-direction']").trigger("click");
+    await flushPromises();
+    expect(wrapper.get("[data-test='accepted-direction-result']").text()).toContain("accepted");
+
+    api.submitWorldDirection.mockRejectedValueOnce(new Error("final command unavailable"));
+    await wrapper.get("[data-test='submit-final-fact-direction']").trigger("click");
     await flushPromises();
 
-    expect(api.submitWorldDirection).toHaveBeenCalledTimes(2);
+    expect(wrapper.get("[data-test='accepted-direction-result']").text()).toContain("accepted");
+    expect(wrapper.get("[data-test='rejected-direction-result']").text()).toContain("未提交");
+    expect(wrapper.get("[data-test='final-fact-direction-error']").text()).toContain(
+      "final command unavailable",
+    );
+    expect(wrapper.get("[data-test='operation-error']").text()).toContain("最终事实命令提交失败");
+  });
+
+  it("submits the two direction commands independently, then exact-steps into experience evidence", async () => {
+    const wrapper = mountPage();
+    await flushPromises();
+    await generateAndBoot(wrapper);
+    vi.clearAllMocks();
+
+    await wrapper.get("[data-test='submit-bounded-direction']").trigger("click");
+    await flushPromises();
+
+    expect(api.submitWorldDirection).toHaveBeenCalledTimes(1);
     const acceptedRequest = api.submitWorldDirection.mock.calls[0][1];
-    const rejectedRequest = api.submitWorldDirection.mock.calls[1][1];
     expect(acceptedRequest).toMatchObject({
       window_id: "window-session-test-t0",
       kind: "bounded_pressure",
     });
+    expect(wrapper.get("[data-test='accepted-direction-result']").text()).toContain("accepted");
+    expect(wrapper.get("[data-test='rejected-direction-result']").text()).toContain("未提交");
+
+    await wrapper.get("[data-test='submit-final-fact-direction']").trigger("click");
+    await flushPromises();
+
+    expect(api.submitWorldDirection).toHaveBeenCalledTimes(2);
+    const rejectedRequest = api.submitWorldDirection.mock.calls[1][1];
     expect(rejectedRequest).toMatchObject({
       window_id: "window-session-test-t0",
       kind: "direct_final_fact",
@@ -480,7 +589,10 @@ describe("RunnableAnchorPage", () => {
     expect(wrapper.get("[data-test='agent-decision-mode']").text()).toBe(
       "experience_guided_policy",
     );
-    expect(wrapper.get("[data-test='evidence-status']").text()).toBe("complete");
+    expect(wrapper.get("[data-test='evidence-status']").text()).toBe(
+      "完整性 valid · 场景 covered",
+    );
+    expect(wrapper.get("[data-test='accepted-direction-result']").text()).toContain("applied");
     expect(wrapper.text()).not.toContain("999");
   });
 

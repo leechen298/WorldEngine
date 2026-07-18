@@ -1,6 +1,6 @@
 # WorldEngine 可运行 MVP
 
-状态：`开发中`
+状态：`可运行 MVP 已验证`
 
 本文件是当前唯一执行契约。旧版本规划保留为历史资料，但不决定当前工作顺序或完成状态。
 
@@ -46,8 +46,9 @@
 5. 用户在开放窗口提交 `bounded_pressure`，它先排队，在后续 tick 按规则生效。
 6. 用户尝试 `direct_final_fact`，WorldEngine 必须拒绝且不能产生状态 diff。
 7. Godot 提交一个合法客户端 action 和一条 typed feedback。
-8. Godot 轮询增量事件、刷新权威投影并保存画面与原始响应。
-9. 独立 checker 重新读取 evidence bundle，检查所有断言并生成最终 verdict。
+8. Godot 在 feedback 后继续推进 tick，证明 Agent 下一轮决策实际受反馈影响。
+9. Godot 轮询增量事件、刷新权威投影并保存画面与原始响应。
+10. 独立 checker 重新抓取 evidence bundle，检查所有断言并生成最终 verdict。
 
 ## 完成条件
 
@@ -58,11 +59,11 @@
 - [x] 有边界方向可排队并在后续 tick 生效；直接指定最终事实会被拒绝。
 - [x] 客户端 action、typed feedback、event polling 和 evidence export 可用。
 - [x] 项目后台可以手工操作并观察上述 WorldEngine 能力。
-- [ ] 外部 Godot 客户端真实连接公开 API，并显示可运行像素世界。
-- [ ] Godot 保存完整原始执行证据，但不能写最终 verdict。
-- [ ] 独立 checker 对正常场景给出 PASS。
-- [ ] 篡改哈希、缺失证据、重复 run id、跨 Session 证据或预写 verdict 均被 checker 拒绝。
-- [ ] 完整后端、前端、HTTP、Godot headless、视觉和 checker 验证全部通过。
+- [x] 外部 Godot 客户端真实连接公开 API，并显示可运行像素世界。
+- [x] Godot 保存完整原始执行证据，但不能写最终 verdict。
+- [x] 独立 checker 对正常场景给出 PASS。
+- [x] 篡改哈希、缺失证据、重复 run id、跨 Session 证据或预写 verdict 均被 checker 拒绝。
+- [x] 完整后端、前端、HTTP、Godot 合同、真实渲染、视觉和 checker 验证全部通过。
 
 ## 当前允许的简化
 
@@ -81,14 +82,21 @@
 - 公开证据不得包含密钥、provider 原始内容、私有记忆或思维链。
 - executor 和 checker 必须是独立实现边界，不能共享 verdict 逻辑。
 
-## 当前事实基线
+## 已验证事实基线
 
-- Engine V1 聚焦后端测试：`24 passed`。
-- 前端单元测试：`50 passed`。
-- 前端生产构建：通过，有一个现存 large-chunk warning。
-- 完整后端回归：`485 passed`。
-- WorldEngine-side HTTP smoke：`WORLDENGINE_MVP_ANCHOR_PASS`，11 项检查全部通过；它仍不能
-  替代外部 Godot/checker 证明。
+- Engine V1 聚焦后端测试：`30 passed`。
+- 完整后端回归：`491 passed`。
+- 前端单元测试：`56 passed`；生产构建通过，保留一个现存 large-chunk warning。
+- 管理台真实 E2E：`2 passed`，覆盖完整操作流和 320px 无横向溢出。
+- WorldEngine-side HTTP smoke：`WORLDENGINE_MVP_ANCHOR_PASS`，14 项检查全部通过。
+- Godot `4.7.1` 合同测试：`GODOT_MVP_CONTRACT_TEST_PASS`。
+- 外部 checker 正反向测试：`15 passed`，包含跨 run request/package 拼装攻击。
+- 跨仓真实运行：`run-20260718T152937Z-2f79d9c5`，Session
+  `session-d7c3736991604445`，独立 verdict 为 `PASS`，输入封印 SHA-256 为
+  `1c01a7d1b0de8e8d2870aea098fc5ee32b810a1fc9b325eee6ba62e89525659c`。
+- Godot 保存了 13 个公开 API 响应和三张 `960x540` 真实渲染帧；checker 的 17 项显式断言均为
+  `true`。自动闭环使用 macOS 图形显示生成真实帧；headless 只用于合同和脚本检查，因为 Godot
+  的 headless display 使用 dummy renderer。
 
 ## 工作方式
 

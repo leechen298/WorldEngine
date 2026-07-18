@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  ENGINE_V1_REQUEST_TIMEOUT_MS,
   EngineV1ApiError,
   createWorldPackage,
   createWorldSession,
@@ -36,6 +37,7 @@ describe("Engine V1 API client", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
   });
 
@@ -55,7 +57,11 @@ describe("Engine V1 API client", () => {
       `${API_BASE_URL}/api/v1/sessions/session%20%2F%20one/events?after_sequence=7&limit=40`,
       `${API_BASE_URL}/api/v1/sessions/session%20%2F%20one/evidence`,
     ]);
-    expect(fetchMock.mock.calls.every(([, init]) => init === undefined)).toBe(true);
+    expect(
+      fetchMock.mock.calls.every(
+        ([, init]) => init?.method === undefined && init?.signal instanceof AbortSignal,
+      ),
+    ).toBe(true);
   });
 
   it("serializes every mutation as JSON on its versioned route", async () => {
@@ -172,6 +178,48 @@ describe("Engine V1 API client", () => {
       status: 200,
       code: 7,
       message: "not ok",
+    });
+  });
+
+  it("aborts a stalled request at the client timeout with a clear reason", async () => {
+    vi.useFakeTimers();
+    fetchMock.mockImplementationOnce(
+      async (_url, init) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => reject(new DOMException("The operation was aborted", "AbortError")),
+            { once: true },
+          );
+        }),
+    );
+
+    const pendingRequest = getEngineCapabilities();
+    const rejection = expect(pendingRequest).rejects.toMatchObject({
+      name: "EngineV1ApiError",
+      status: 0,
+      code: -2,
+      message: `Engine V1 请求已超时（${ENGINE_V1_REQUEST_TIMEOUT_MS} ms），请确认后端服务可用后重试。`,
+      data: {
+        reason_code: "request_timeout",
+        timeout_ms: ENGINE_V1_REQUEST_TIMEOUT_MS,
+      },
+    });
+
+    await vi.advanceTimersByTimeAsync(ENGINE_V1_REQUEST_TIMEOUT_MS);
+    await rejection;
+    expect(fetchMock.mock.calls[0][1]?.signal?.aborted).toBe(true);
+  });
+
+  it("wraps browser network failures with an actionable API error", async () => {
+    fetchMock.mockRejectedValueOnce(new TypeError("Failed to fetch"));
+
+    await expect(getEngineCapabilities()).rejects.toMatchObject({
+      name: "EngineV1ApiError",
+      status: 0,
+      code: -1,
+      message: "无法连接 Engine V1 后端，请检查 API 地址和服务状态。",
+      data: { reason_code: "network_error" },
     });
   });
 });

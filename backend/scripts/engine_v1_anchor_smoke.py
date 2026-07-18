@@ -166,7 +166,7 @@ def run_smoke(port: int) -> Dict[str, Any]:
                         "expected_revision": projection["revision"],
                         "action_id": action_id,
                         "target_ref": "anchor_signal",
-                        "amount": 1,
+                        "amount": 2,
                     },
                 )
             )
@@ -179,6 +179,16 @@ def run_smoke(port: int) -> Dict[str, Any]:
                         "feedback_type": "local_outcome_observed",
                         "summary": "Client observed the accepted public outcome",
                         "related_event_ref": action["event_ref"],
+                    },
+                )
+            )
+            feedback_step = _data(
+                client.post(
+                    _path(operations, "sessions.step", session_id=session_id),
+                    json={
+                        "request_id": "smoke-step-after-feedback",
+                        "step_count": 1,
+                        "expected_revision": feedback["projection"]["revision"],
                     },
                 )
             )
@@ -204,6 +214,17 @@ def run_smoke(port: int) -> Dict[str, Any]:
                 None,
             )
             agent_cycles = evidence["agent_cycles"]
+            pre_feedback_cycle = agent_cycles[-2] if len(agent_cycles) >= 2 else None
+            feedback_cycle = agent_cycles[-1] if agent_cycles else None
+            direction_correlation = next(
+                (
+                    item
+                    for item in evidence["request_correlations"]
+                    if item["operation_id"] == "directions.submit"
+                    and item["request_id"] == accepted_direction["request_id"]
+                ),
+                None,
+            )
             required_operation_ids = {
                 "world_packages.create",
                 "sessions.create",
@@ -225,8 +246,13 @@ def run_smoke(port: int) -> Dict[str, Any]:
                 ),
                 "same_window_direction_pair": (
                     accepted_direction["status"] == "accepted"
+                    and accepted_direction["queued"] is True
+                    and accepted_direction["application_status"] == "queued"
                     and accepted_direction["window_id"] == window_id
                     and rejected_direction["status"] == "rejected"
+                    and rejected_direction["queued"] is False
+                    and rejected_direction["application_status"]
+                    == "not_applicable"
                     and rejected_direction["reason_code"]
                     == "direct_final_fact_forbidden"
                     and rejected_direction["window_id"] == window_id
@@ -234,24 +260,47 @@ def run_smoke(port: int) -> Dict[str, Any]:
                 ),
                 "direction_applied_later": (
                     direction_evidence is not None
+                    and direction_evidence["queued"] is False
+                    and direction_evidence["application_status"] == "applied"
                     and bool(direction_evidence["application_event_refs"])
                     and bool(direction_evidence["applied_diff_refs"])
+                    and direction_correlation is not None
+                    and direction_correlation["application_status"] == "applied"
+                    and direction_correlation["diff_refs"]
+                    == direction_evidence["applied_diff_refs"]
                 ),
                 "exact_step": (
                     stepped["start_tick"] == 0
                     and stepped["end_tick"] == 2
                     and stepped["step_count"] == 2
                 ),
+                "feedback_step": (
+                    feedback_step["start_tick"] == 2
+                    and feedback_step["end_tick"] == 3
+                    and feedback_step["step_count"] == 1
+                ),
                 "agent_causal_chain": (
                     bool(public_agents)
-                    and public_agents[0]["cycle_count"] >= 2
-                    and len(agent_cycles) >= 2
+                    and public_agents[0]["cycle_count"] >= 3
+                    and len(agent_cycles) >= 3
                     and bool(agent_cycles[-1]["experience_refs_used"])
                     and bool(agent_cycles[-1]["perception"])
                     and bool(agent_cycles[-1]["decision"])
                     and bool(agent_cycles[-1]["action_request"])
                     and bool(agent_cycles[-1]["rule_judgment"])
                     and bool(agent_cycles[-1]["action_result"])
+                ),
+                "feedback_influenced_agent_cycle": (
+                    pre_feedback_cycle is not None
+                    and feedback_cycle is not None
+                    and feedback_cycle["perception"]["feedback_count"] == 1
+                    and feedback_cycle["decision"]["feedback_count"] == 1
+                    and feedback_cycle["decision"]["decision_mode"]
+                    == "feedback_adjusted_experience_policy"
+                    and "feedback_count"
+                    in feedback_cycle["decision"]["influence_factors"]
+                    and feedback_cycle["action_request"]["amount"]
+                    != pre_feedback_cycle["action_request"]["amount"]
                 ),
                 "action_accepted": (
                     action["status"] == "accepted"
@@ -270,9 +319,20 @@ def run_smoke(port: int) -> Dict[str, Any]:
                     and event_page["next_sequence"]
                     == evidence["projection"]["event_cursor"]
                 ),
-                "evidence_complete": (
-                    evidence["completeness"]["status"] == "complete"
-                    and all(evidence["completeness"]["checks"].values())
+                "evidence_integrity_valid": (
+                    evidence["completeness"]["integrity"]["status"] == "valid"
+                    and all(
+                        evidence["completeness"]["integrity"]["checks"].values()
+                    )
+                ),
+                "scenario_coverage": (
+                    evidence["completeness"]["scenario_coverage"]["status"]
+                    == "covered"
+                    and all(
+                        evidence["completeness"]["scenario_coverage"][
+                            "checks"
+                        ].values()
+                    )
                 ),
             }
             classification = (
@@ -306,7 +366,12 @@ def run_smoke(port: int) -> Dict[str, Any]:
                 "tick": evidence["projection"]["tick"],
                 "revision": evidence["projection"]["revision"],
                 "state_hash": evidence["projection"]["state_hash"],
-                "evidence_status": evidence["completeness"]["status"],
+                "evidence_integrity_status": evidence["completeness"]["integrity"][
+                    "status"
+                ],
+                "scenario_coverage_status": evidence["completeness"][
+                    "scenario_coverage"
+                ]["status"],
             }
     finally:
         process.terminate()

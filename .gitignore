@@ -208,6 +208,7 @@ frontend/tsconfig.tsbuildinfo
 # Local test artifacts
 test-results/*
 output/
+.playwright-cli/
 !test-results/agent-smoke/
 test-results/agent-smoke/*
 !test-results/agent-smoke/latest/

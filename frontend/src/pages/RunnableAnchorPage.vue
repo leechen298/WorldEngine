@@ -30,6 +30,14 @@
         :message="operationError"
       />
       <a-alert
+        v-else-if="operationWarning"
+        data-test="operation-warning"
+        class="operation-alert"
+        type="warning"
+        show-icon
+        :message="operationWarning"
+      />
+      <a-alert
         v-else-if="operationMessage"
         data-test="operation-message"
         class="operation-alert"
@@ -67,7 +75,17 @@
             </div>
 
             <label class="field-label" for="anchor-seed">Seed</label>
-            <a-input id="anchor-seed" v-model:value="briefForm.seed" data-test="brief-seed" />
+            <a-input
+              id="anchor-seed"
+              v-model:value="briefForm.seed"
+              data-test="brief-seed"
+              :disabled="isBusy"
+              :maxlength="128"
+              :status="briefFieldErrors.seed ? 'error' : undefined"
+            />
+            <span v-if="briefFieldErrors.seed" class="field-error" data-test="brief-seed-error">
+              {{ briefFieldErrors.seed }}
+            </span>
 
             <label class="field-label" for="anchor-premise">公开前提</label>
             <a-textarea
@@ -75,12 +93,36 @@
               v-model:value="briefForm.premise"
               data-test="brief-premise"
               :auto-size="{ minRows: 2, maxRows: 4 }"
+              :disabled="isBusy"
+              :maxlength="1000"
+              :status="briefFieldErrors.premise ? 'error' : undefined"
             />
+            <span
+              v-if="briefFieldErrors.premise"
+              class="field-error"
+              data-test="brief-premise-error"
+            >
+              {{ briefFieldErrors.premise }}
+            </span>
 
             <div class="two-column-fields">
               <div>
                 <label class="field-label" for="anchor-state-key">状态变量</label>
-                <a-input id="anchor-state-key" v-model:value="briefForm.stateKey" data-test="state-key" />
+                <a-input
+                  id="anchor-state-key"
+                  v-model:value="briefForm.stateKey"
+                  data-test="state-key"
+                  :disabled="isBusy"
+                  :maxlength="64"
+                  :status="briefFieldErrors.stateKey ? 'error' : undefined"
+                />
+                <span
+                  v-if="briefFieldErrors.stateKey"
+                  class="field-error"
+                  data-test="state-key-error"
+                >
+                  {{ briefFieldErrors.stateKey }}
+                </span>
               </div>
               <div>
                 <label class="field-label" for="anchor-initial">初始值</label>
@@ -88,24 +130,76 @@
                   id="anchor-initial"
                   v-model:value="briefForm.initial"
                   data-test="state-initial"
-                  :min="-1000"
-                  :max="1000"
+                  :disabled="isBusy"
+                  :precision="0"
+                  :status="briefFieldErrors.initial ? 'error' : undefined"
                 />
+                <span
+                  v-if="briefFieldErrors.initial"
+                  class="field-error"
+                  data-test="state-initial-error"
+                >
+                  {{ briefFieldErrors.initial }}
+                </span>
               </div>
             </div>
 
             <div class="three-column-fields">
               <div>
                 <label class="field-label" for="anchor-minimum">最小</label>
-                <a-input-number id="anchor-minimum" v-model:value="briefForm.minimum" :min="-1000" :max="1000" />
+                <a-input-number
+                  id="anchor-minimum"
+                  v-model:value="briefForm.minimum"
+                  data-test="state-minimum"
+                  :disabled="isBusy"
+                  :precision="0"
+                  :status="briefFieldErrors.minimum ? 'error' : undefined"
+                />
+                <span
+                  v-if="briefFieldErrors.minimum"
+                  class="field-error"
+                  data-test="state-minimum-error"
+                >
+                  {{ briefFieldErrors.minimum }}
+                </span>
               </div>
               <div>
                 <label class="field-label" for="anchor-maximum">最大</label>
-                <a-input-number id="anchor-maximum" v-model:value="briefForm.maximum" :min="-1000" :max="1000" />
+                <a-input-number
+                  id="anchor-maximum"
+                  v-model:value="briefForm.maximum"
+                  data-test="state-maximum"
+                  :disabled="isBusy"
+                  :precision="0"
+                  :status="briefFieldErrors.maximum ? 'error' : undefined"
+                />
+                <span
+                  v-if="briefFieldErrors.maximum"
+                  class="field-error"
+                  data-test="state-maximum-error"
+                >
+                  {{ briefFieldErrors.maximum }}
+                </span>
               </div>
               <div>
                 <label class="field-label" for="anchor-variable-step">步幅</label>
-                <a-input-number id="anchor-variable-step" v-model:value="briefForm.variableStep" :min="1" :max="100" />
+                <a-input-number
+                  id="anchor-variable-step"
+                  v-model:value="briefForm.variableStep"
+                  data-test="state-step"
+                  :disabled="isBusy"
+                  :min="1"
+                  :max="100"
+                  :precision="0"
+                  :status="briefFieldErrors.variableStep ? 'error' : undefined"
+                />
+                <span
+                  v-if="briefFieldErrors.variableStep"
+                  class="field-error"
+                  data-test="state-step-error"
+                >
+                  {{ briefFieldErrors.variableStep }}
+                </span>
               </div>
             </div>
 
@@ -115,14 +209,36 @@
                 <a-input-number
                   id="anchor-step-seconds"
                   v-model:value="briefForm.stepSeconds"
-                  :min="0.1"
+                  data-test="step-seconds"
+                  :disabled="isBusy"
                   :max="3600"
                   :step="0.1"
+                  :status="briefFieldErrors.stepSeconds ? 'error' : undefined"
                 />
+                <span
+                  v-if="briefFieldErrors.stepSeconds"
+                  class="field-error"
+                  data-test="step-seconds-error"
+                >
+                  {{ briefFieldErrors.stepSeconds }}
+                </span>
               </div>
               <div>
                 <label class="field-label" for="anchor-constraints">约束 JSON</label>
-                <a-input id="anchor-constraints" v-model:value="briefForm.constraintsText" />
+                <a-input
+                  id="anchor-constraints"
+                  v-model:value="briefForm.constraintsText"
+                  data-test="brief-constraints"
+                  :disabled="isBusy"
+                  :status="briefFieldErrors.constraintsText ? 'error' : undefined"
+                />
+                <span
+                  v-if="briefFieldErrors.constraintsText"
+                  class="field-error"
+                  data-test="brief-constraints-error"
+                >
+                  {{ briefFieldErrors.constraintsText }}
+                </span>
               </div>
             </div>
 
@@ -131,7 +247,7 @@
               data-test="generate-package"
               type="primary"
               :loading="busyOperation === 'package'"
-              :disabled="isBusy"
+              :disabled="isBusy || hasBriefErrors"
               @click="handleGeneratePackage"
             >
               生成并校验哈希
@@ -141,6 +257,7 @@
               <div><dt>readiness</dt><dd data-test="package-readiness">{{ worldPackage.readiness.status }}</dd></div>
               <div><dt>package_id</dt><dd>{{ worldPackage.package_id }}</dd></div>
               <div class="result-wide"><dt>package_hash</dt><dd data-test="package-hash">{{ worldPackage.package_hash }}</dd></div>
+              <div class="result-wide"><dt>brief fingerprint</dt><dd data-test="brief-fingerprint">{{ generatedBriefFingerprintLabel }}</dd></div>
               <div class="result-wide"><dt>确定性复算</dt><dd data-test="determinism-status">{{ determinismStatus }}</dd></div>
             </dl>
           </section>
@@ -155,7 +272,7 @@
               block
               data-test="boot-session"
               :loading="busyOperation === 'boot'"
-              :disabled="isBusy || worldPackage?.readiness.status !== 'ready'"
+              :disabled="isBusy || !hasCurrentPackage"
               @click="handleBootSession"
             >
               从当前 Hash 启动会话
@@ -170,13 +287,14 @@
                   data-test="step-count"
                   :min="1"
                   :max="100"
+                  :precision="0"
                 />
               </div>
               <a-button
                 data-test="step-session"
                 type="primary"
                 :loading="busyOperation === 'step'"
-                :disabled="isBusy || !session"
+                :disabled="isBusy || !hasCurrentProjection"
                 @click="handleStepSession"
               >
                 执行 Step N
@@ -199,55 +317,93 @@
           <section class="control-section" data-test="direction-controls">
             <div class="section-heading">
               <span>03</span>
-              <div><h2>同窗口方向判定</h2><small>Accepted + Semantic Rejected</small></div>
+              <div><h2>独立方向命令</h2><small>Bounded Pressure · Direct Final Fact</small></div>
             </div>
 
-            <div class="two-column-fields">
+            <div class="direction-command">
               <div>
                 <label class="field-label" for="anchor-direction-magnitude">有界压力</label>
                 <a-input-number
                   id="anchor-direction-magnitude"
                   v-model:value="directionMagnitude"
                   data-test="direction-magnitude"
-                  :min="-100"
-                  :max="100"
+                  :min="-300"
+                  :max="300"
+                  :precision="0"
                 />
               </div>
+              <a-button
+                block
+                data-test="submit-bounded-direction"
+                :loading="busyOperation === 'bounded-direction'"
+                :disabled="isBusy || !hasCurrentProjection"
+                @click="handleSubmitBoundedDirection"
+              >
+                提交有界压力命令
+              </a-button>
+              <div class="direction-receipt" data-test="accepted-direction-result">
+                <span>有界压力状态</span>
+                <a-tag :color="acceptedDirection?.status === 'accepted' ? 'green' : 'default'">
+                  {{ acceptedDirection?.status ?? "未提交" }}
+                </a-tag>
+                <a-tag v-if="acceptedDirection" color="blue">
+                  {{ acceptedDirection.application_status }}
+                </a-tag>
+                <code v-if="acceptedDirection">{{ acceptedDirection.reason_code }}</code>
+                <code v-if="acceptedDirection?.application_reason_code">
+                  {{ acceptedDirection.application_reason_code }}
+                </code>
+                <small v-if="acceptedDirection">{{ acceptedDirection.window_id }}</small>
+              </div>
+              <span
+                v-if="boundedDirectionError"
+                class="command-error"
+                data-test="bounded-direction-error"
+              >
+                {{ boundedDirectionError }}
+              </span>
+            </div>
+
+            <div class="direction-command">
               <div>
                 <label class="field-label" for="anchor-final-value">直接最终值</label>
                 <a-input-number
                   id="anchor-final-value"
                   v-model:value="directionFinalValue"
                   data-test="direction-final-value"
-                  :min="-1000"
-                  :max="1000"
+                  :precision="0"
                 />
               </div>
-            </div>
-
-            <a-button
-              block
-              data-test="submit-direction-pair"
-              :loading="busyOperation === 'directions'"
-              :disabled="isBusy || !projection"
-              @click="handleDirectionPair"
-            >
-              提交同窗口双判定
-            </a-button>
-
-            <div v-if="acceptedDirection || rejectedDirection" class="decision-grid">
-              <div v-if="acceptedDirection" data-test="accepted-direction-result">
-                <span>有界方向</span>
-                <a-tag color="green">{{ acceptedDirection.status }}</a-tag>
-                <code>{{ acceptedDirection.reason_code }}</code>
-                <small>{{ acceptedDirection.window_id }}</small>
+              <a-button
+                block
+                data-test="submit-final-fact-direction"
+                :loading="busyOperation === 'final-fact-direction'"
+                :disabled="isBusy || !hasCurrentProjection"
+                @click="handleSubmitFinalFactDirection"
+              >
+                提交最终事实命令
+              </a-button>
+              <div class="direction-receipt" data-test="rejected-direction-result">
+                <span>最终事实状态</span>
+                <a-tag :color="rejectedDirection?.status === 'rejected' ? 'red' : 'default'">
+                  {{ rejectedDirection?.status ?? "未提交" }}
+                </a-tag>
+                <a-tag v-if="rejectedDirection" color="blue">
+                  {{ rejectedDirection.application_status }}
+                </a-tag>
+                <code v-if="rejectedDirection">{{ rejectedDirection.reason_code }}</code>
+                <code v-if="rejectedDirection?.application_reason_code">
+                  {{ rejectedDirection.application_reason_code }}
+                </code>
+                <small v-if="rejectedDirection">{{ rejectedDirection.window_id }}</small>
               </div>
-              <div v-if="rejectedDirection" data-test="rejected-direction-result">
-                <span>最终事实</span>
-                <a-tag color="red">{{ rejectedDirection.status }}</a-tag>
-                <code>{{ rejectedDirection.reason_code }}</code>
-                <small>{{ rejectedDirection.window_id }}</small>
-              </div>
+              <span
+                v-if="finalFactDirectionError"
+                class="command-error"
+                data-test="final-fact-direction-error"
+              >
+                {{ finalFactDirectionError }}
+              </span>
             </div>
           </section>
 
@@ -263,7 +419,7 @@
               v-model:value="selectedActionId"
               data-test="action-select"
               :options="actionOptions"
-              :disabled="!projection"
+              :disabled="!hasCurrentProjection"
             />
             <div class="inline-command compact">
               <div>
@@ -272,14 +428,15 @@
                   id="anchor-action-amount"
                   v-model:value="actionAmount"
                   data-test="action-amount"
-                  :min="-100"
-                  :max="100"
+                  :min="-300"
+                  :max="300"
+                  :precision="0"
                 />
               </div>
               <a-button
                 data-test="submit-action"
                 :loading="busyOperation === 'action'"
-                :disabled="isBusy || !projection || !selectedActionId"
+                :disabled="isBusy || !hasCurrentProjection || !selectedActionId"
                 @click="handleSubmitAction"
               >
                 提交 Action
@@ -298,19 +455,20 @@
               v-model:value="selectedFeedbackType"
               data-test="feedback-type"
               :options="feedbackTypeOptions"
-              :disabled="!worldPackage"
+              :disabled="!hasCurrentProjection"
             />
             <label class="field-label" for="anchor-feedback-summary">公开摘要</label>
             <a-input
               id="anchor-feedback-summary"
               v-model:value="feedbackSummary"
               data-test="feedback-summary"
+              :maxlength="500"
             />
             <a-button
               block
               data-test="submit-feedback"
               :loading="busyOperation === 'feedback'"
-              :disabled="isBusy || !projection || !selectedFeedbackType"
+              :disabled="isBusy || !hasCurrentProjection || !selectedFeedbackType"
               @click="handleSubmitFeedback"
             >
               提交 Typed Feedback
@@ -330,6 +488,7 @@
             :event-page="eventPage"
             :evidence="evidence"
             :loading="refreshingCanonical"
+            :can-refresh="hasCurrentSession"
             @refresh="handleRefreshCanonical"
             @download="handleDownloadEvidence"
           />
@@ -340,7 +499,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import {
   Alert as AAlert,
   Button as AButton,
@@ -379,13 +538,36 @@ import {
 import EvidencePanel from "../components/runnable-anchor/EvidencePanel.vue";
 import ProjectionPanel from "../components/runnable-anchor/ProjectionPanel.vue";
 
-type BusyOperation = "package" | "boot" | "step" | "directions" | "action" | "feedback";
+type BusyOperation =
+  | "package"
+  | "boot"
+  | "step"
+  | "bounded-direction"
+  | "final-fact-direction"
+  | "action"
+  | "feedback";
+
+interface BriefFormState {
+  seed: string;
+  premise: string;
+  constraintsText: string;
+  stateKey: string;
+  initial: number | undefined;
+  minimum: number | undefined;
+  maximum: number | undefined;
+  variableStep: number | undefined;
+  stepSeconds: number | undefined;
+}
+
+type BriefFieldErrors = Partial<Record<keyof BriefFormState, string>>;
 
 const capabilities = ref<CapabilityManifest | null>(null);
 const capabilitiesLoading = ref(false);
 const worldPackage = ref<RunnableWorldPackage | null>(null);
+const generatedBriefFingerprint = ref<string | null>(null);
 const determinismStatus = ref("");
 const session = ref<WorldSessionView | null>(null);
+const sessionBriefFingerprint = ref<string | null>(null);
 const projection = ref<PublicProjection | null>(null);
 const eventPage = ref<EventPage | null>(null);
 const evidence = ref<EvidenceBundle | null>(null);
@@ -395,11 +577,14 @@ const rejectedDirection = ref<DirectionDecision | null>(null);
 const latestAction = ref<ActionResult | null>(null);
 const latestFeedback = ref<FeedbackResult | null>(null);
 const operationError = ref("");
+const operationWarning = ref("");
 const operationMessage = ref("");
+const boundedDirectionError = ref("");
+const finalFactDirectionError = ref("");
 const busyOperation = ref<BusyOperation | null>(null);
 const refreshingCanonical = ref(false);
 
-const briefForm = reactive({
+const briefForm = reactive<BriefFormState>({
   seed: "anchor-seed-0130",
   premise: "一个由公开规则驱动、可按固定 tick 推进的通用世界。",
   constraintsText: "{}",
@@ -423,6 +608,32 @@ let requestSequence = 0;
 const canonicalRefreshAttempts = 3;
 
 const isBusy = computed(() => busyOperation.value !== null);
+const briefFieldErrors = computed(validateBriefForm);
+const hasBriefErrors = computed(() => Object.keys(briefFieldErrors.value).length > 0);
+const currentBriefFingerprint = computed(() =>
+  hasBriefErrors.value ? null : fingerprintBrief(buildBrief()),
+);
+const hasCurrentPackage = computed(
+  () =>
+    worldPackage.value?.readiness.status === "ready" &&
+    generatedBriefFingerprint.value !== null &&
+    generatedBriefFingerprint.value === currentBriefFingerprint.value,
+);
+const hasCurrentSession = computed(
+  () =>
+    session.value !== null &&
+    sessionBriefFingerprint.value !== null &&
+    sessionBriefFingerprint.value === currentBriefFingerprint.value,
+);
+const hasCurrentProjection = computed(
+  () =>
+    hasCurrentSession.value &&
+    projection.value !== null &&
+    projection.value.session_id === session.value?.session_id,
+);
+const generatedBriefFingerprintLabel = computed(() =>
+  generatedBriefFingerprint.value ? shortFingerprint(generatedBriefFingerprint.value) : "",
+);
 
 const actionOptions = computed(() => {
   const ids = projection.value?.allowed_actions ?? packageActionIds(worldPackage.value);
@@ -441,30 +652,153 @@ function nextRequestId(operation: string): string {
   return `${operation}-${Date.now().toString(36)}-${requestSequence}`;
 }
 
+function validateInteger(
+  value: number | null | undefined,
+  label: string,
+): string | undefined {
+  if (typeof value !== "number" || !Number.isSafeInteger(value)) {
+    return `${label}必须是整数。`;
+  }
+  return undefined;
+}
+
+function validateBriefForm(): BriefFieldErrors {
+  const errors: BriefFieldErrors = {};
+  const seed = briefForm.seed.trim();
+  const premise = briefForm.premise.trim();
+  const stateKey = briefForm.stateKey.trim();
+
+  if (!seed) {
+    errors.seed = "Seed 不能为空。";
+  } else if (seed.length > 128) {
+    errors.seed = "Seed 不能超过 128 个字符。";
+  }
+  if (!premise) {
+    errors.premise = "公开前提不能为空。";
+  } else if (premise.length > 1000) {
+    errors.premise = "公开前提不能超过 1000 个字符。";
+  }
+  if (!stateKey) {
+    errors.stateKey = "状态变量不能为空。";
+  } else if (!/^[a-z][a-z0-9_]{0,63}$/.test(stateKey)) {
+    errors.stateKey = "须以小写字母开头，且只能包含小写字母、数字和下划线（最多 64 位）。";
+  }
+
+  try {
+    const constraints = JSON.parse(briefForm.constraintsText) as unknown;
+    if (!constraints || typeof constraints !== "object" || Array.isArray(constraints)) {
+      errors.constraintsText = "约束 JSON 必须是对象。";
+    }
+  } catch {
+    errors.constraintsText = "约束 JSON 格式无效。";
+  }
+
+  errors.initial = validateInteger(briefForm.initial, "初始值");
+  errors.minimum = validateInteger(briefForm.minimum, "最小值");
+  errors.maximum = validateInteger(briefForm.maximum, "最大值");
+  errors.variableStep = validateInteger(briefForm.variableStep, "步幅");
+
+  if (!errors.variableStep && (briefForm.variableStep! < 1 || briefForm.variableStep! > 100)) {
+    errors.variableStep = "步幅必须在 1 到 100 之间。";
+  }
+  if (!errors.minimum && !errors.maximum && briefForm.minimum! >= briefForm.maximum!) {
+    errors.minimum = "最小值必须小于最大值。";
+    errors.maximum = "最大值必须大于最小值。";
+  }
+  if (
+    !errors.initial &&
+    !errors.minimum &&
+    !errors.maximum &&
+    (briefForm.initial! < briefForm.minimum! || briefForm.initial! > briefForm.maximum!)
+  ) {
+    errors.initial = "初始值必须位于最小值与最大值之间。";
+  }
+  if (
+    !errors.initial &&
+    !errors.minimum &&
+    !errors.maximum &&
+    !errors.variableStep &&
+    briefForm.initial! + briefForm.variableStep! > briefForm.maximum! &&
+    briefForm.initial! - briefForm.variableStep! < briefForm.minimum!
+  ) {
+    errors.variableStep = "当前初始值至少要能向上或向下执行一次该步幅。";
+  }
+
+  if (
+    typeof briefForm.stepSeconds !== "number" ||
+    !Number.isFinite(briefForm.stepSeconds) ||
+    briefForm.stepSeconds <= 0 ||
+    briefForm.stepSeconds > 3600
+  ) {
+    errors.stepSeconds = "Tick 秒数必须大于 0 且不超过 3600。";
+  }
+
+  for (const key of Object.keys(errors) as Array<keyof BriefFieldErrors>) {
+    if (!errors[key]) {
+      delete errors[key];
+    }
+  }
+  return errors;
+}
+
 function buildBrief(): WorldBrief {
-  const constraints = JSON.parse(briefForm.constraintsText) as unknown;
-  if (!constraints || typeof constraints !== "object" || Array.isArray(constraints)) {
-    throw new Error("约束 JSON 必须是对象。" );
+  const firstError = Object.values(briefFieldErrors.value)[0];
+  if (firstError) {
+    throw new Error(firstError);
   }
-  if (!briefForm.stateKey.trim()) {
-    throw new Error("状态变量不能为空。" );
-  }
+  const constraints = JSON.parse(briefForm.constraintsText) as Record<string, unknown>;
   return {
     seed: briefForm.seed.trim(),
     premise: briefForm.premise.trim(),
-    constraints: constraints as Record<string, unknown>,
+    constraints,
+    scale_bounds: {
+      minimum_locations: 1,
+      maximum_locations: 1,
+      minimum_agents: 1,
+      maximum_agents: 1,
+      minimum_state_variables: 1,
+      maximum_state_variables: 16,
+    },
     state_variables: [
       {
         key: briefForm.stateKey.trim(),
-        initial: briefForm.initial,
-        minimum: briefForm.minimum,
-        maximum: briefForm.maximum,
-        step: briefForm.variableStep,
+        initial: briefForm.initial!,
+        minimum: briefForm.minimum!,
+        maximum: briefForm.maximum!,
+        step: briefForm.variableStep!,
       },
     ],
     agent_count: 1,
-    step_seconds: briefForm.stepSeconds,
+    step_seconds: briefForm.stepSeconds!,
   };
+}
+
+function stableSerialize(value: unknown): string {
+  if (Array.isArray(value)) {
+    return `[${value.map(stableSerialize).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value as Record<string, unknown>)
+      .sort()
+      .map(
+        (key) =>
+          `${JSON.stringify(key)}:${stableSerialize((value as Record<string, unknown>)[key])}`,
+      )
+      .join(",")}}`;
+  }
+  return JSON.stringify(value) ?? "null";
+}
+
+function fingerprintBrief(brief: WorldBrief): string {
+  return stableSerialize(brief);
+}
+
+function shortFingerprint(fingerprint: string): string {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < fingerprint.length; index += 1) {
+    hash = Math.imul(hash ^ fingerprint.charCodeAt(index), 0x01000193);
+  }
+  return `brief-${(hash >>> 0).toString(16).padStart(8, "0")}-${fingerprint.length}`;
 }
 
 function packageActionIds(value: RunnableWorldPackage | null): string[] {
@@ -502,10 +836,51 @@ function syncPackageInputs(value: RunnableWorldPackage): void {
   }
 }
 
+function resetSessionArtifacts(): void {
+  session.value = null;
+  sessionBriefFingerprint.value = null;
+  projection.value = null;
+  eventPage.value = null;
+  evidence.value = null;
+  latestStep.value = null;
+  acceptedDirection.value = null;
+  rejectedDirection.value = null;
+  boundedDirectionError.value = "";
+  finalFactDirectionError.value = "";
+  latestAction.value = null;
+  latestFeedback.value = null;
+}
+
+function resetGeneratedArtifacts(): void {
+  worldPackage.value = null;
+  generatedBriefFingerprint.value = null;
+  determinismStatus.value = "";
+  selectedActionId.value = "";
+  selectedFeedbackType.value = "";
+  resetSessionArtifacts();
+}
+
 function clearNotice(): void {
   operationError.value = "";
+  operationWarning.value = "";
   operationMessage.value = "";
 }
+
+watch(
+  currentBriefFingerprint,
+  (fingerprint) => {
+    if (
+      generatedBriefFingerprint.value !== null &&
+      fingerprint !== generatedBriefFingerprint.value
+    ) {
+      resetGeneratedArtifacts();
+      operationError.value = "";
+      operationMessage.value = "";
+      operationWarning.value = "WorldBrief 已变更，旧生成包和会话已失效，请重新生成。";
+    }
+  },
+  { flush: "sync" },
+);
 
 function readReasonCode(data: unknown): string | null {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
@@ -581,6 +956,21 @@ function canonicalViewsMatch(
   );
 }
 
+function syncDirectionReceipts(serverEvidence: EvidenceBundle): void {
+  if (acceptedDirection.value) {
+    acceptedDirection.value =
+      serverEvidence.direction_decisions.find(
+        (decision) => decision.request_id === acceptedDirection.value?.request_id,
+      ) ?? acceptedDirection.value;
+  }
+  if (rejectedDirection.value) {
+    rejectedDirection.value =
+      serverEvidence.direction_decisions.find(
+        (decision) => decision.request_id === rejectedDirection.value?.request_id,
+      ) ?? rejectedDirection.value;
+  }
+}
+
 async function loadCapabilities(): Promise<void> {
   capabilitiesLoading.value = true;
   try {
@@ -593,9 +983,17 @@ async function loadCapabilities(): Promise<void> {
   }
 }
 
-async function refreshCanonicalData(sessionId = session.value?.session_id): Promise<void> {
-  if (!sessionId) {
-    return;
+function sessionContextMatches(sessionId: string, fingerprint: string): boolean {
+  return (
+    session.value?.session_id === sessionId &&
+    sessionBriefFingerprint.value === fingerprint &&
+    currentBriefFingerprint.value === fingerprint
+  );
+}
+
+async function refreshCanonicalData(sessionId: string, fingerprint: string): Promise<void> {
+  if (!sessionContextMatches(sessionId, fingerprint)) {
+    throw new Error("当前会话已失效，请重新生成世界包并启动会话。" );
   }
   refreshingCanonical.value = true;
   try {
@@ -618,10 +1016,14 @@ async function refreshCanonicalData(sessionId = session.value?.session_id): Prom
       ) {
         continue;
       }
+      if (!sessionContextMatches(sessionId, fingerprint)) {
+        throw new Error("刷新期间 WorldBrief 已变更，旧会话结果未写入页面。" );
+      }
       session.value = serverSession;
       projection.value = headAfter;
       eventPage.value = serverEvents;
       evidence.value = serverEvidence;
+      syncDirectionReceipts(serverEvidence);
       if (!headAfter.allowed_actions.includes(selectedActionId.value)) {
         selectedActionId.value = headAfter.allowed_actions[0] ?? "";
       }
@@ -638,6 +1040,7 @@ async function handleGeneratePackage(): Promise<void> {
   busyOperation.value = "package";
   try {
     const brief = buildBrief();
+    const fingerprint = fingerprintBrief(brief);
     const [first, second] = await Promise.all([
       createWorldPackage({ request_id: nextRequestId("package-primary"), brief }),
       createWorldPackage({ request_id: nextRequestId("package-repeat"), brief }),
@@ -646,18 +1049,16 @@ async function handleGeneratePackage(): Promise<void> {
     if (first.package_hash !== second.package_hash || first.package_hash !== fetched.package_hash) {
       throw new Error("相同 WorldBrief 的 package_hash 不一致。" );
     }
+    if (currentBriefFingerprint.value !== fingerprint) {
+      resetGeneratedArtifacts();
+      operationWarning.value = "生成期间 WorldBrief 已变更，本次返回包未采用，请重新生成。";
+      return;
+    }
+    resetSessionArtifacts();
+    generatedBriefFingerprint.value = fingerprint;
     worldPackage.value = fetched;
     determinismStatus.value = `通过 · ${first.package_hash === second.package_hash ? "2/2 hash 一致" : "不一致"}`;
     syncPackageInputs(fetched);
-    session.value = null;
-    projection.value = null;
-    eventPage.value = null;
-    evidence.value = null;
-    latestStep.value = null;
-    acceptedDirection.value = null;
-    rejectedDirection.value = null;
-    latestAction.value = null;
-    latestFeedback.value = null;
     operationMessage.value = "世界包已生成，并由服务端读取结果完成确定性校验。";
   } catch (error) {
     operationError.value = errorText(error);
@@ -667,7 +1068,11 @@ async function handleGeneratePackage(): Promise<void> {
 }
 
 async function handleBootSession(): Promise<void> {
-  if (!worldPackage.value) {
+  const packageToBoot = worldPackage.value;
+  const fingerprint = generatedBriefFingerprint.value;
+  if (!packageToBoot || !fingerprint || !hasCurrentPackage.value) {
+    clearNotice();
+    operationWarning.value = "当前没有与 WorldBrief 匹配的可启动包，请重新生成。";
     return;
   }
   clearNotice();
@@ -675,12 +1080,28 @@ async function handleBootSession(): Promise<void> {
   try {
     const created = await createWorldSession({
       request_id: nextRequestId("session-boot"),
-      package_id: worldPackage.value.package_id,
-      package_hash: worldPackage.value.package_hash,
+      package_id: packageToBoot.package_id,
+      package_hash: packageToBoot.package_hash,
     });
+    if (
+      currentBriefFingerprint.value !== fingerprint ||
+      worldPackage.value?.package_id !== packageToBoot.package_id
+    ) {
+      operationWarning.value = "会话启动期间 WorldBrief 已变更，旧会话未采用，请重新生成。";
+      return;
+    }
+    if (created.source_package_hash !== packageToBoot.package_hash) {
+      throw new Error("服务端会话 source_package_hash 与当前生成包不一致。" );
+    }
+    resetSessionArtifacts();
     session.value = created;
-    await refreshCanonicalData(created.session_id);
-    operationMessage.value = "会话已从当前 package_hash 启动，权威投影与证据已刷新。";
+    sessionBriefFingerprint.value = fingerprint;
+    try {
+      await refreshCanonicalData(created.session_id, fingerprint);
+      operationMessage.value = "会话已从当前 package_hash 启动，权威投影与证据已刷新。";
+    } catch (error) {
+      operationWarning.value = `会话 ${created.session_id} 已启动，但权威证据刷新失败：${errorText(error)}`;
+    }
   } catch (error) {
     operationError.value = errorText(error);
   } finally {
@@ -689,19 +1110,36 @@ async function handleBootSession(): Promise<void> {
 }
 
 async function handleStepSession(): Promise<void> {
-  if (!session.value || !projection.value) {
+  if (!session.value || !projection.value || !sessionBriefFingerprint.value || !hasCurrentProjection.value) {
     return;
   }
+  if (!Number.isInteger(stepCount.value) || stepCount.value < 1 || stepCount.value > 100) {
+    clearNotice();
+    operationError.value = "精确步数必须是 1 到 100 之间的整数。";
+    return;
+  }
+  const sessionId = session.value.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
+  const expectedRevision = projection.value.revision;
   clearNotice();
   busyOperation.value = "step";
   try {
-    latestStep.value = await stepWorldSession(session.value.session_id, {
+    const result = await stepWorldSession(sessionId, {
       request_id: nextRequestId("session-step"),
       step_count: stepCount.value,
-      expected_revision: projection.value.revision,
+      expected_revision: expectedRevision,
     });
-    await refreshCanonicalData(session.value.session_id);
-    operationMessage.value = `精确推进 ${latestStep.value.step_count} 个 tick，服务端投影与证据已刷新。`;
+    if (!sessionContextMatches(sessionId, fingerprint)) {
+      operationWarning.value = "旧会话的 Step 已返回，但 WorldBrief 已变更，结果未写入页面。";
+      return;
+    }
+    latestStep.value = result;
+    try {
+      await refreshCanonicalData(sessionId, fingerprint);
+      operationMessage.value = `精确推进 ${result.step_count} 个 tick，服务端投影与证据已刷新。`;
+    } catch (error) {
+      operationWarning.value = `Step 已完成，但权威证据刷新失败：${errorText(error)}`;
+    }
   } catch (error) {
     operationError.value = errorText(error);
   } finally {
@@ -709,70 +1147,138 @@ async function handleStepSession(): Promise<void> {
   }
 }
 
-async function handleDirectionPair(): Promise<void> {
-  if (!session.value || !projection.value) {
+async function handleSubmitBoundedDirection(): Promise<void> {
+  if (!session.value || !projection.value || !sessionBriefFingerprint.value || !hasCurrentProjection.value) {
     return;
   }
+  if (!Number.isInteger(directionMagnitude.value) || directionMagnitude.value < -300 || directionMagnitude.value > 300) {
+    boundedDirectionError.value = "有界压力必须是 -300 到 300 之间的整数。";
+    return;
+  }
+  const sessionId = session.value.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
+  const windowId = projection.value.active_intervention_window.window_id;
+  const expectedRevision = projection.value.revision;
+  const targetRef = worldPackage.value?.brief.state_variables[0]?.key ?? briefForm.stateKey;
   clearNotice();
-  busyOperation.value = "directions";
+  boundedDirectionError.value = "";
+  busyOperation.value = "bounded-direction";
   try {
-    const sessionId = session.value.session_id;
-    const windowId = projection.value.active_intervention_window.window_id;
-    const targetRef = worldPackage.value?.brief.state_variables[0]?.key ?? briefForm.stateKey;
-    acceptedDirection.value = await submitWorldDirection(sessionId, {
+    const decision = await submitWorldDirection(sessionId, {
       request_id: nextRequestId("direction-bounded"),
       window_id: windowId,
-      expected_revision: projection.value.revision,
+      expected_revision: expectedRevision,
       kind: "bounded_pressure",
       target_ref: targetRef,
       summary: "对公开状态变量施加有界压力。",
       magnitude: directionMagnitude.value,
     });
-    await refreshCanonicalData(sessionId);
-    if (projection.value?.active_intervention_window.window_id !== windowId) {
-      throw new Error("服务端在同窗口双判定之间切换了干预窗口。" );
+    if (!sessionContextMatches(sessionId, fingerprint)) {
+      operationWarning.value = `旧会话的有界压力命令已返回 ${decision.status}，但 WorldBrief 已变更。`;
+      return;
     }
-    rejectedDirection.value = await submitWorldDirection(sessionId, {
+    acceptedDirection.value = decision;
+    try {
+      await refreshCanonicalData(sessionId, fingerprint);
+      operationMessage.value = `有界压力命令已独立提交，服务端状态：${decision.status}。`;
+    } catch (error) {
+      boundedDirectionError.value = `命令已返回 ${decision.status}，但证据刷新失败：${errorText(error)}`;
+      operationWarning.value = boundedDirectionError.value;
+    }
+  } catch (error) {
+    boundedDirectionError.value = errorText(error);
+    operationError.value = `有界压力命令提交失败：${boundedDirectionError.value}`;
+  } finally {
+    busyOperation.value = null;
+  }
+}
+
+async function handleSubmitFinalFactDirection(): Promise<void> {
+  if (!session.value || !projection.value || !sessionBriefFingerprint.value || !hasCurrentProjection.value) {
+    return;
+  }
+  if (!Number.isInteger(directionFinalValue.value)) {
+    finalFactDirectionError.value = "最终值必须是整数。";
+    return;
+  }
+  const sessionId = session.value.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
+  const windowId = projection.value.active_intervention_window.window_id;
+  const expectedRevision = projection.value.revision;
+  const targetRef = worldPackage.value?.brief.state_variables[0]?.key ?? briefForm.stateKey;
+  clearNotice();
+  finalFactDirectionError.value = "";
+  busyOperation.value = "final-fact-direction";
+  try {
+    const decision = await submitWorldDirection(sessionId, {
       request_id: nextRequestId("direction-final-fact"),
       window_id: windowId,
-      expected_revision: projection.value.revision,
+      expected_revision: expectedRevision,
       kind: "direct_final_fact",
       target_ref: targetRef,
       summary: "直接指定最终世界事实。",
       final_value: directionFinalValue.value,
     });
-    await refreshCanonicalData(sessionId);
-    if (
-      acceptedDirection.value.window_id !== rejectedDirection.value.window_id ||
-      acceptedDirection.value.status !== "accepted" ||
-      rejectedDirection.value.status !== "rejected"
-    ) {
-      throw new Error("同窗口 accepted/rejected 判定不完整。" );
+    if (!sessionContextMatches(sessionId, fingerprint)) {
+      operationWarning.value = `旧会话的最终事实命令已返回 ${decision.status}，但 WorldBrief 已变更。`;
+      return;
     }
-    operationMessage.value = "同一干预窗口已记录有界方向接受与最终事实语义拒绝。";
+    rejectedDirection.value = decision;
+    try {
+      await refreshCanonicalData(sessionId, fingerprint);
+      operationMessage.value = `最终事实命令已独立提交，服务端状态：${decision.status}。`;
+    } catch (error) {
+      finalFactDirectionError.value = `命令已返回 ${decision.status}，但证据刷新失败：${errorText(error)}`;
+      operationWarning.value = finalFactDirectionError.value;
+    }
   } catch (error) {
-    operationError.value = errorText(error);
+    finalFactDirectionError.value = errorText(error);
+    operationError.value = `最终事实命令提交失败：${finalFactDirectionError.value}`;
   } finally {
     busyOperation.value = null;
   }
 }
 
 async function handleSubmitAction(): Promise<void> {
-  if (!session.value || !projection.value || !selectedActionId.value) {
+  if (
+    !session.value ||
+    !projection.value ||
+    !sessionBriefFingerprint.value ||
+    !selectedActionId.value ||
+    !hasCurrentProjection.value
+  ) {
     return;
   }
+  if (!Number.isInteger(actionAmount.value) || actionAmount.value < -300 || actionAmount.value > 300) {
+    clearNotice();
+    operationError.value = "Action amount 必须是 -300 到 300 之间的整数。";
+    return;
+  }
+  const sessionId = session.value.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
+  const expectedRevision = projection.value.revision;
+  const actionId = selectedActionId.value;
   clearNotice();
   busyOperation.value = "action";
   try {
-    latestAction.value = await submitWorldAction(session.value.session_id, {
+    const result = await submitWorldAction(sessionId, {
       request_id: nextRequestId("client-action"),
-      expected_revision: projection.value.revision,
-      action_id: selectedActionId.value,
-      target_ref: actionTarget(selectedActionId.value),
+      expected_revision: expectedRevision,
+      action_id: actionId,
+      target_ref: actionTarget(actionId),
       amount: actionAmount.value,
     });
-    await refreshCanonicalData(session.value.session_id);
-    operationMessage.value = "Action 已由 WorldEngine 规则判定，权威投影与证据已刷新。";
+    if (!sessionContextMatches(sessionId, fingerprint)) {
+      operationWarning.value = `旧会话的 Action 已返回 ${result.status}，但 WorldBrief 已变更。`;
+      return;
+    }
+    latestAction.value = result;
+    try {
+      await refreshCanonicalData(sessionId, fingerprint);
+      operationMessage.value = "Action 已由 WorldEngine 规则判定，权威投影与证据已刷新。";
+    } catch (error) {
+      operationWarning.value = `Action 已返回 ${result.status}，但权威证据刷新失败：${errorText(error)}`;
+    }
   } catch (error) {
     operationError.value = errorText(error);
   } finally {
@@ -781,9 +1287,25 @@ async function handleSubmitAction(): Promise<void> {
 }
 
 async function handleSubmitFeedback(): Promise<void> {
-  if (!session.value || !projection.value || !selectedFeedbackType.value) {
+  if (
+    !session.value ||
+    !projection.value ||
+    !sessionBriefFingerprint.value ||
+    !selectedFeedbackType.value ||
+    !hasCurrentProjection.value
+  ) {
     return;
   }
+  const summary = feedbackSummary.value.trim();
+  if (!summary || summary.length > 500) {
+    clearNotice();
+    operationError.value = "公开摘要不能为空且不能超过 500 个字符。";
+    return;
+  }
+  const sessionId = session.value.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
+  const expectedRevision = projection.value.revision;
+  const feedbackType = selectedFeedbackType.value;
   clearNotice();
   busyOperation.value = "feedback";
   try {
@@ -791,15 +1313,24 @@ async function handleSubmitFeedback(): Promise<void> {
     const relatedEventRef =
       latestAction.value?.event_ref ??
       (evidenceEvents.length > 0 ? evidenceEvents[evidenceEvents.length - 1].event_id : undefined);
-    latestFeedback.value = await submitWorldFeedback(session.value.session_id, {
+    const result = await submitWorldFeedback(sessionId, {
       request_id: nextRequestId("client-feedback"),
-      expected_revision: projection.value.revision,
-      feedback_type: selectedFeedbackType.value,
-      summary: feedbackSummary.value,
+      expected_revision: expectedRevision,
+      feedback_type: feedbackType,
+      summary,
       ...(relatedEventRef ? { related_event_ref: relatedEventRef } : {}),
     });
-    await refreshCanonicalData(session.value.session_id);
-    operationMessage.value = "Typed Feedback 已由 WorldEngine 接受或拒绝，权威证据已刷新。";
+    if (!sessionContextMatches(sessionId, fingerprint)) {
+      operationWarning.value = `旧会话的 Typed Feedback 已返回 ${result.status}，但 WorldBrief 已变更。`;
+      return;
+    }
+    latestFeedback.value = result;
+    try {
+      await refreshCanonicalData(sessionId, fingerprint);
+      operationMessage.value = "Typed Feedback 已由 WorldEngine 接受或拒绝，权威证据已刷新。";
+    } catch (error) {
+      operationWarning.value = `Typed Feedback 已返回 ${result.status}，但权威证据刷新失败：${errorText(error)}`;
+    }
   } catch (error) {
     operationError.value = errorText(error);
   } finally {
@@ -808,9 +1339,15 @@ async function handleSubmitFeedback(): Promise<void> {
 }
 
 async function handleRefreshCanonical(): Promise<void> {
+  const sessionId = session.value?.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
   clearNotice();
+  if (!sessionId || !fingerprint || !hasCurrentSession.value) {
+    operationWarning.value = "尚未启动与当前 WorldBrief 匹配的会话，无法刷新证据。";
+    return;
+  }
   try {
-    await refreshCanonicalData();
+    await refreshCanonicalData(sessionId, fingerprint);
     operationMessage.value = "投影、事件与证据已从服务端刷新。";
   } catch (error) {
     operationError.value = errorText(error);
@@ -818,13 +1355,21 @@ async function handleRefreshCanonical(): Promise<void> {
 }
 
 async function handleDownloadEvidence(): Promise<void> {
-  if (!session.value) {
+  const sessionId = session.value?.session_id;
+  const fingerprint = sessionBriefFingerprint.value;
+  if (!sessionId || !fingerprint || !hasCurrentSession.value) {
+    clearNotice();
+    operationWarning.value = "尚未启动与当前 WorldBrief 匹配的会话，无法导出证据。";
     return;
   }
   clearNotice();
   refreshingCanonical.value = true;
   try {
-    const latestEvidence = await exportSessionEvidence(session.value.session_id);
+    const latestEvidence = await exportSessionEvidence(sessionId);
+    if (!sessionContextMatches(sessionId, fingerprint)) {
+      operationWarning.value = "证据导出期间 WorldBrief 已变更，旧会话证据未下载。";
+      return;
+    }
     evidence.value = latestEvidence;
     const blob = new Blob([JSON.stringify(latestEvidence, null, 2)], {
       type: "application/json;charset=utf-8",
@@ -832,12 +1377,12 @@ async function handleDownloadEvidence(): Promise<void> {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `${session.value.session_id}-evidence.json`;
+    anchor.download = `${sessionId}-evidence.json`;
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(url);
-    operationMessage.value = `证据已导出，完整性为 ${latestEvidence.completeness.status}。`;
+    operationMessage.value = `证据已导出：完整性 ${latestEvidence.completeness.integrity.status}，场景覆盖 ${latestEvidence.completeness.scenario_coverage.status}。`;
   } catch (error) {
     operationError.value = errorText(error);
   } finally {
@@ -853,12 +1398,16 @@ onMounted(() => {
 <style scoped>
 .runnable-anchor-shell {
   min-height: 100vh;
+  overflow-x: hidden;
   color: #17202a;
   background: #f2f4f7;
 }
 
 .workbench {
+  box-sizing: border-box;
   width: min(1600px, 100%);
+  max-width: 100%;
+  min-width: 0;
   margin: 0 auto;
   padding: 20px 24px 40px;
 }
@@ -898,7 +1447,9 @@ h1 {
 .header-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
+  min-width: 0;
 }
 
 .operation-alert {
@@ -1005,6 +1556,7 @@ h1 {
 .control-rail {
   display: grid;
   gap: 12px;
+  min-width: 0;
 }
 
 .control-section {
@@ -1053,6 +1605,16 @@ h1 {
   color: #475467;
   font-size: 11px;
   font-weight: 600;
+}
+
+.field-error,
+.command-error {
+  display: block;
+  margin-top: 4px;
+  color: #b42318;
+  font-size: 10px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .two-column-fields,
@@ -1123,50 +1685,55 @@ h1 {
   white-space: nowrap;
 }
 
-.decision-grid {
+.direction-command {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin-top: 12px;
-}
-
-.decision-grid > div {
   min-width: 0;
-  padding: 9px;
-  border: 1px solid #e4e7ec;
-  border-radius: 4px;
-  background: #f8fafb;
 }
 
-.decision-grid span,
-.decision-grid code,
-.decision-grid small {
-  display: block;
+.direction-command + .direction-command {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #eaecf0;
 }
 
-.decision-grid span {
-  margin-bottom: 5px;
+.direction-command > :deep(.ant-btn-block) {
+  margin-top: 2px;
+}
+
+.direction-receipt {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  margin-top: 2px;
+  color: #667085;
+  font-size: 10px;
+}
+
+.direction-receipt > span {
   color: #475467;
-  font-size: 11px;
   font-weight: 600;
 }
 
-.decision-grid code {
+.direction-receipt code,
+.direction-receipt small {
   overflow: hidden;
-  margin-top: 6px;
-  color: #344054;
-  font-size: 9px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.decision-grid small {
-  overflow: hidden;
-  margin-top: 3px;
+.direction-receipt code {
+  grid-column: 1 / -1;
+  color: #344054;
+  font-size: 9px;
+}
+
+.direction-receipt small {
+  grid-column: 1 / -1;
   color: #98a2b3;
   font-size: 8px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .feedback-label {
@@ -1229,6 +1796,11 @@ h1 {
     flex-direction: column;
   }
 
+  .header-actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
   .capability-metrics,
   .control-rail,
   .operation-grid {
@@ -1246,14 +1818,18 @@ h1 {
   }
 
   .operation-grid div {
-    grid-template-columns: 50px minmax(100px, 0.8fr) minmax(150px, 1.2fr);
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+
+  .operation-grid span {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 440px) {
   .two-column-fields,
   .three-column-fields,
-  .decision-grid {
+  .inline-command {
     grid-template-columns: 1fr;
   }
 

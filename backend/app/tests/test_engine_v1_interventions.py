@@ -5,9 +5,11 @@ from typing import Any
 from app.tests.test_engine_v1_generation import (
     _boot_session,
     _client,
+    _create_package,
     _data,
     _events,
     _evidence,
+    _generic_world_brief,
     _projection,
 )
 
@@ -30,16 +32,21 @@ def _projection_head(projection: dict[str, Any]) -> tuple[Any, ...]:
 
 
 def _bounded_direction(
-    *, request_id: str, revision: int, window_id: str
+    *,
+    request_id: str,
+    revision: int,
+    window_id: str,
+    target_ref: str = "system_signal",
+    magnitude: int = 1,
 ) -> dict[str, Any]:
     return {
         "request_id": request_id,
         "expected_revision": revision,
         "window_id": window_id,
         "kind": "bounded_pressure",
-        "target_ref": "system_signal",
+        "target_ref": target_ref,
         "summary": "Apply one bounded unit of public pressure.",
-        "magnitude": 1,
+        "magnitude": magnitude,
     }
 
 
@@ -79,6 +86,9 @@ def test_ac_06_ac_07_same_window_accepts_bounded_and_rejects_final_fact() -> Non
     assert accepted["status"] == "accepted"
     assert accepted["window_id"] == window["window_id"]
     assert accepted["event_ref"]
+    assert accepted["queued"] is True
+    assert accepted["application_status"] == "queued"
+    assert accepted["application_event_refs"] == []
     assert accepted["applied_diff_refs"] == []
     assert after_accepted["state_hash"] == initial_projection["state_hash"]
 
@@ -97,6 +107,8 @@ def test_ac_06_ac_07_same_window_accepts_bounded_and_rejects_final_fact() -> Non
     assert rejected["status"] == "rejected"
     assert rejected["window_id"] == window["window_id"]
     assert rejected["reason_code"]
+    assert rejected["queued"] is False
+    assert rejected["application_status"] == "not_applicable"
     assert "window" not in rejected["reason_code"]
     assert "revision" not in rejected["reason_code"]
     assert rejected["applied_diff_refs"] == []
@@ -133,6 +145,17 @@ def test_ac_06_ac_07_same_window_accepts_bounded_and_rejects_final_fact() -> Non
         and event["status"] == "accepted"
         and event["diff_refs"]
     )
+    applied_decision = next(
+        item
+        for item in final_evidence["direction_decisions"]
+        if item["request_id"] == accepted["request_id"]
+    )
+    correlation = next(
+        item
+        for item in final_evidence["request_correlations"]
+        if item["operation_id"] == "directions.submit"
+        and item["request_id"] == accepted["request_id"]
+    )
 
     assert applied_event["tick"] > window["open_tick"]
     assert applied_event["rule_refs"]
@@ -141,7 +164,196 @@ def test_ac_06_ac_07_same_window_accepts_bounded_and_rejects_final_fact() -> Non
         diff_by_id[diff_id]["operations"]
         for diff_id in applied_event["diff_refs"]
     )
+    assert applied_decision["queued"] is False
+    assert applied_decision["application_status"] == "applied"
+    assert applied_decision["application_reason_code"] == "direction_applied"
+    assert applied_decision["application_event_refs"] == [applied_event["event_id"]]
+    assert applied_decision["applied_diff_refs"] == applied_event["diff_refs"]
+    assert correlation["status"] == "accepted"
+    assert correlation["application_status"] == "applied"
+    assert correlation["event_refs"] == [
+        accepted["event_ref"],
+        applied_event["event_id"],
+    ]
+    assert correlation["diff_refs"] == applied_decision["applied_diff_refs"]
     assert final_projection["state_hash"] != after_rejected["state_hash"]
+
+
+def test_step_100_catalog_accepts_action_and_direction_at_300() -> None:
+    client = _client()
+    brief = _generic_world_brief()
+    brief["state_variables"] = [
+        {
+            "key": "wide_signal",
+            "initial": 0,
+            "minimum": -1000,
+            "maximum": 1000,
+            "step": 100,
+        }
+    ]
+    package = _create_package(
+        client,
+        brief,
+        request_id="package-step-100-range",
+    )
+    _, session = _boot_session(client, package)
+    session_id = session["session_id"]
+    projection = session["projection"]
+    action_spec = package["action_catalog"][0]
+
+    assert action_spec["minimum_amount"] == -300
+    assert action_spec["maximum_amount"] == 300
+    direction_rule = next(
+        item
+        for item in package["rule_catalog"]
+        if item["rule_id"] == "rule.direction.wide_signal"
+    )
+    assert direction_rule["maximum_magnitude"] == 300
+
+    action = _data(
+        client.post(
+            f"/api/v1/sessions/{session_id}/actions",
+            json={
+                "request_id": "action-positive-300",
+                "expected_revision": projection["revision"],
+                "action_id": action_spec["action_id"],
+                "target_ref": "wide_signal",
+                "amount": 300,
+            },
+        )
+    )
+    assert action["status"] == "accepted"
+    assert action["projection"]["variables"]["wide_signal"] == 300
+
+    direction = _data(
+        client.post(
+            f"/api/v1/sessions/{session_id}/directions",
+            json=_bounded_direction(
+                request_id="direction-negative-300",
+                revision=action["projection"]["revision"],
+                window_id=_open_window(action["projection"])["window_id"],
+                target_ref="wide_signal",
+                magnitude=-300,
+            ),
+        )
+    )
+    assert direction["status"] == "accepted"
+    assert direction["application_status"] == "queued"
+
+    _data(
+        client.post(
+            f"/api/v1/sessions/{session_id}/steps",
+            json={
+                "request_id": "step-apply-negative-300",
+                "step_count": 1,
+                "expected_revision": action["projection"]["revision"],
+            },
+        )
+    )
+    evidence = _evidence(client, session_id)
+    applied = next(
+        item
+        for item in evidence["direction_decisions"]
+        if item["request_id"] == direction["request_id"]
+    )
+    applied_diff = next(
+        item
+        for item in evidence["diffs"]
+        if item["diff_id"] in applied["applied_diff_refs"]
+    )
+
+    assert applied["queued"] is False
+    assert applied["application_status"] == "applied"
+    variable_change = next(
+        operation
+        for operation in applied_diff["operations"]
+        if operation["path"] == "/variables/wide_signal"
+    )
+    assert variable_change == {
+        "path": "/variables/wide_signal",
+        "before": 300,
+        "after": 0,
+    }
+
+
+def test_direction_application_range_rejection_finishes_queue_and_correlates() -> None:
+    client = _client()
+    brief = _generic_world_brief()
+    brief["state_variables"] = [
+        {
+            "key": "wide_signal",
+            "initial": 950,
+            "minimum": -1000,
+            "maximum": 1000,
+            "step": 100,
+        }
+    ]
+    package = _create_package(
+        client,
+        brief,
+        request_id="package-direction-application-rejection",
+    )
+    _, session = _boot_session(client, package)
+    session_id = session["session_id"]
+    projection = session["projection"]
+    direction = _data(
+        client.post(
+            f"/api/v1/sessions/{session_id}/directions",
+            json=_bounded_direction(
+                request_id="direction-application-out-of-range",
+                revision=projection["revision"],
+                window_id=_open_window(projection)["window_id"],
+                target_ref="wide_signal",
+                magnitude=300,
+            ),
+        )
+    )
+
+    _data(
+        client.post(
+            f"/api/v1/sessions/{session_id}/steps",
+            json={
+                "request_id": "step-reject-direction-application",
+                "step_count": 1,
+                "expected_revision": projection["revision"],
+            },
+        )
+    )
+    evidence = _evidence(client, session_id)
+    decision = next(
+        item
+        for item in evidence["direction_decisions"]
+        if item["request_id"] == direction["request_id"]
+    )
+    application_event = next(
+        event
+        for event in evidence["events"]
+        if event["event_id"] in decision["application_event_refs"]
+    )
+    correlation = next(
+        item
+        for item in evidence["request_correlations"]
+        if item["operation_id"] == "directions.submit"
+        and item["request_id"] == direction["request_id"]
+    )
+
+    assert decision["queued"] is False
+    assert decision["application_status"] == "application_rejected"
+    assert (
+        decision["application_reason_code"]
+        == "direction_target_range_violation"
+    )
+    assert decision["applied_diff_refs"] == []
+    assert application_event["event_type"] == "direction.application_rejected"
+    assert application_event["status"] == "rejected"
+    assert application_event["diff_refs"] == []
+    assert correlation["application_status"] == "application_rejected"
+    assert correlation["event_refs"] == [
+        direction["event_ref"],
+        application_event["event_id"],
+    ]
+    assert correlation["diff_refs"] == []
+    assert evidence["completeness"]["integrity"]["status"] == "valid"
 
 
 def test_ac_08_action_and_feedback_duplicates_are_idempotent() -> None:
@@ -389,8 +601,10 @@ def test_completeness_cannot_splice_direction_proof_across_windows() -> None:
     )
 
     evidence = _evidence(client, session_id)
-    checks = evidence["completeness"]["checks"]
+    checks = evidence["completeness"]["scenario_coverage"]["checks"]
     assert checks["accepted_direction_applied"] is True
     assert checks["semantic_direction_rejection"] is True
     assert checks["same_intervention_window"] is False
-    assert evidence["completeness"]["status"] == "incomplete"
+    assert checks["direction"] is False
+    assert evidence["completeness"]["integrity"]["status"] == "valid"
+    assert evidence["completeness"]["scenario_coverage"]["status"] == "partial"

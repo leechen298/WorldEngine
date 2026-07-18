@@ -242,6 +242,8 @@ class AgentExperienceRef(EngineV1Model):
     ref_type: Literal["event", "action_result"]
     source_tick: int = Field(ge=0)
     public_effect: str
+    target_ref: Optional[str] = None
+    amount: Optional[int] = Field(default=None, ge=-300, le=300)
 
 
 class AgentPublicState(EngineV1Model):
@@ -295,7 +297,7 @@ class DirectionRequest(PublicInputModel):
     kind: Literal["bounded_pressure", "direct_final_fact"]
     target_ref: str = Field(min_length=1)
     summary: str = Field(min_length=1, max_length=500)
-    magnitude: Optional[int] = Field(default=None, ge=-100, le=100)
+    magnitude: Optional[int] = Field(default=None, ge=-300, le=300)
     final_value: Optional[int] = None
 
     _summary_is_public = field_validator("summary")(_validate_public_text)
@@ -322,6 +324,13 @@ class DirectionDecision(EngineV1Model):
     reason_code: str
     public_reason: str
     queued: bool
+    application_status: Literal[
+        "queued",
+        "applied",
+        "application_rejected",
+        "not_applicable",
+    ]
+    application_reason_code: Optional[str] = None
     rule_refs: List[str]
     event_ref: str
     application_event_refs: List[str] = Field(default_factory=list)
@@ -337,7 +346,7 @@ class ActionRequest(PublicInputModel):
     expected_revision: Optional[int] = Field(default=None, ge=0)
     action_id: str = Field(min_length=1)
     target_ref: str = Field(min_length=1)
-    amount: int = Field(ge=-100, le=100)
+    amount: int = Field(ge=-300, le=300)
 
 
 class ActionResult(EngineV1Model):
@@ -448,10 +457,21 @@ class EventPage(EngineV1Model):
     has_more: bool
 
 
-class EvidenceCompleteness(EngineV1Model):
-    status: Literal["complete", "incomplete"]
+class EvidenceIntegrity(EngineV1Model):
+    status: Literal["valid", "invalid"]
+    checks: Dict[str, bool]
+    failures: List[str]
+
+
+class EvidenceScenarioCoverage(EngineV1Model):
+    status: Literal["covered", "partial", "not_covered"]
     checks: Dict[str, bool]
     missing: List[str]
+
+
+class EvidenceCompleteness(EngineV1Model):
+    integrity: EvidenceIntegrity
+    scenario_coverage: EvidenceScenarioCoverage
 
 
 class EvidenceBundle(EngineV1Model):

@@ -19,9 +19,12 @@ test("minimum runnable anchor drives the real Engine V1 full flow", async ({ pag
   await expect(page.getByTestId("projection-state-hash")).toHaveText(/^[a-f0-9]{64}$/);
 
   const windowId = await page.getByTestId("active-window-id").innerText();
-  await page.getByTestId("submit-direction-pair").click();
+  await page.getByTestId("submit-bounded-direction").click();
   await expect(page.getByTestId("accepted-direction-result")).toContainText("accepted");
   await expect(page.getByTestId("accepted-direction-result")).toContainText(windowId);
+  await expect(page.getByTestId("rejected-direction-result")).toContainText("未提交");
+
+  await page.getByTestId("submit-final-fact-direction").click();
   await expect(page.getByTestId("rejected-direction-result")).toContainText("rejected");
   await expect(page.getByTestId("rejected-direction-result")).toContainText(
     "direct_final_fact_forbidden",
@@ -37,7 +40,8 @@ test("minimum runnable anchor drives the real Engine V1 full flow", async ({ pag
     "experience_guided_policy",
   );
   await expect(page.getByTestId("agent-experience-count")).toHaveText("2");
-  await expect(page.getByTestId("evidence-status")).toHaveText("complete");
+  await expect(page.getByTestId("evidence-status")).toContainText("完整性 valid");
+  await expect(page.getByTestId("accepted-direction-result")).toContainText("applied");
 
   const revisionAfterStep = Number(await page.getByTestId("projection-revision").innerText());
   await page.getByTestId("submit-action").click();
@@ -51,7 +55,7 @@ test("minimum runnable anchor drives the real Engine V1 full flow", async ({ pag
   await expect(page.getByTestId("feedback-result")).toContainText("accepted");
   await expect(page.getByTestId("feedback-result")).toContainText("feedback_accepted");
   await expect(page.getByTestId("projection-feedback-count")).toHaveText("1");
-  await expect(page.getByTestId("evidence-status")).toHaveText("complete");
+  await expect(page.getByTestId("evidence-status")).toContainText("完整性 valid");
 
   await expect(page.getByTestId("event-count")).not.toHaveText("0");
   await expect(page.getByTestId("diff-count")).not.toHaveText("0");
@@ -79,4 +83,39 @@ test("minimum runnable anchor drives the real Engine V1 full flow", async ({ pag
   await page.getByTestId("download-evidence").click();
   const download = await downloadPromise;
   await expect(download.suggestedFilename()).toMatch(/^session-.*-evidence\.json$/);
+});
+
+test("brief changes invalidate old artifacts without overflowing a 320px viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/admin/runnable-anchor");
+
+  await expect(page.getByTestId("capabilities-ready")).toBeVisible();
+  await expect(page.getByTestId("refresh-evidence")).toBeDisabled();
+  await expect(page.getByTestId("download-evidence")).toBeDisabled();
+
+  await page.getByTestId("state-key").fill("World-Signal");
+  await expect(page.getByTestId("state-key-error")).toContainText("小写字母");
+  await expect(page.getByTestId("generate-package")).toBeDisabled();
+  await page.getByTestId("state-key").fill("world_signal");
+
+  await page.getByTestId("generate-package").click();
+  await expect(page.getByTestId("brief-fingerprint")).toHaveText(/^brief-[a-f0-9]{8}-\d+$/);
+  await page.getByTestId("boot-session").click();
+  await expect(page.getByTestId("session-id")).toHaveText(/^session-/);
+  await expect(page.getByTestId("refresh-evidence")).toBeEnabled();
+
+  await page.getByTestId("brief-premise").fill("移动端修改后的公开世界前提。");
+  await expect(page.getByTestId("operation-warning")).toContainText("请重新生成");
+  await expect(page.getByTestId("package-result")).toHaveCount(0);
+  await expect(page.getByTestId("session-result")).toHaveCount(0);
+  await expect(page.getByTestId("boot-session")).toBeDisabled();
+  await expect(page.getByTestId("refresh-evidence")).toBeDisabled();
+
+  const layout = await page.evaluate(() => ({
+    viewportWidth: document.documentElement.clientWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    bodyWidth: document.body.scrollWidth,
+  }));
+  expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewportWidth);
+  expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth);
 });

@@ -279,17 +279,20 @@ def test_evidence_completeness_replays_diffs_and_event_links() -> None:
         )
     )
     before = _evidence(client, session_id)
-    assert before["completeness"]["checks"]["diff_snapshot_replay"] is True
-    assert before["completeness"]["checks"]["event_diff_links"] is True
+    integrity = before["completeness"]["integrity"]
+    assert integrity["status"] == "valid"
+    assert integrity["checks"]["diff_snapshot_replay"] is True
+    assert integrity["checks"]["event_diff_links"] is True
 
     record = client.app.state.engine_v1_service._sessions[session_id]
     record.diffs[0].operations[0].after = 999
     record.events[1].diff_refs = []
     corrupted = _evidence(client, session_id)
 
-    assert corrupted["completeness"]["status"] == "incomplete"
-    assert corrupted["completeness"]["checks"]["diff_snapshot_replay"] is False
-    assert corrupted["completeness"]["checks"]["event_diff_links"] is False
+    corrupted_integrity = corrupted["completeness"]["integrity"]
+    assert corrupted_integrity["status"] == "invalid"
+    assert corrupted_integrity["checks"]["diff_snapshot_replay"] is False
+    assert corrupted_integrity["checks"]["event_diff_links"] is False
 
 
 def test_evidence_completeness_requires_experience_to_change_decision() -> None:
@@ -307,8 +310,16 @@ def test_evidence_completeness_requires_experience_to_change_decision() -> None:
         )
     )
     before = _evidence(client, session_id)
-    assert before["completeness"]["checks"]["agent_causal_chain"] is True
-    assert before["completeness"]["checks"]["experience_linked_decision"] is True
+    assert (
+        before["completeness"]["integrity"]["checks"]["agent_causal_links"]
+        is True
+    )
+    assert (
+        before["completeness"]["scenario_coverage"]["checks"][
+            "agent_experience"
+        ]
+        is True
+    )
 
     record = client.app.state.engine_v1_service._sessions[session_id]
     later_decision = record.agent_cycles[-1].decision
@@ -316,11 +327,35 @@ def test_evidence_completeness_requires_experience_to_change_decision() -> None:
     later_decision["decision_mode"] = "initial_policy"
     corrupted = _evidence(client, session_id)
 
-    assert corrupted["completeness"]["status"] == "incomplete"
+    assert corrupted["completeness"]["integrity"]["status"] == "invalid"
     assert (
-        corrupted["completeness"]["checks"]["experience_linked_decision"]
+        corrupted["completeness"]["integrity"]["checks"][
+            "agent_causal_links"
+        ]
         is False
     )
+    assert (
+        corrupted["completeness"]["scenario_coverage"]["checks"][
+            "agent_experience"
+        ]
+        is False
+    )
+
+
+def test_evidence_reports_integrity_separately_from_scenario_coverage() -> None:
+    client = _client()
+    _, session = _boot_session(client)
+
+    completeness = _evidence(client, session["session_id"])["completeness"]
+
+    assert completeness["integrity"]["status"] == "valid"
+    assert all(completeness["integrity"]["checks"].values())
+    coverage = completeness["scenario_coverage"]
+    assert coverage["status"] == "not_covered"
+    assert {"action", "feedback", "agent", "direction"}.issubset(
+        coverage["checks"]
+    )
+    assert not any(coverage["checks"].values())
 
 
 def test_step_failure_rolls_back_all_canonical_changes(monkeypatch) -> None:

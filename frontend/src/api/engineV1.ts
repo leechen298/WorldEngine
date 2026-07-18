@@ -1,5 +1,6 @@
 export const ENGINE_V1_CONTRACT_VERSION = "engine-v1-mvp";
 export const ENGINE_V1_SCHEMA_VERSION = "worldengine.engine.v1";
+export const ENGINE_V1_REQUEST_TIMEOUT_MS = 10_000;
 
 interface ApiSuccessResponse<T> {
   code: number;
@@ -160,6 +161,8 @@ export interface DirectionDecision {
   reason_code: string;
   public_reason: string;
   queued: boolean;
+  application_status: "queued" | "applied" | "application_rejected" | "not_applicable";
+  application_reason_code?: string;
   rule_refs: string[];
   event_ref: string;
   application_event_refs: string[];
@@ -269,10 +272,21 @@ export interface EventPage {
   has_more: boolean;
 }
 
-export interface EvidenceCompleteness {
-  status: "complete" | "incomplete";
+export interface EvidenceIntegrity {
+  status: "valid" | "invalid";
+  checks: Record<string, boolean>;
+  failures: string[];
+}
+
+export interface EvidenceScenarioCoverage {
+  status: "covered" | "partial" | "not_covered";
   checks: Record<string, boolean>;
   missing: string[];
+}
+
+export interface EvidenceCompleteness {
+  integrity: EvidenceIntegrity;
+  scenario_coverage: EvidenceScenarioCoverage;
 }
 
 export interface EvidenceBundle {
@@ -328,6 +342,28 @@ export class EngineV1ApiError extends Error {
   }
 }
 
+function requestTimeoutError(): EngineV1ApiError {
+  return new EngineV1ApiError(
+    `Engine V1 请求已超时（${ENGINE_V1_REQUEST_TIMEOUT_MS} ms），请确认后端服务可用后重试。`,
+    {
+      status: 0,
+      code: -2,
+      data: {
+        reason_code: "request_timeout",
+        timeout_ms: ENGINE_V1_REQUEST_TIMEOUT_MS,
+      },
+    },
+  );
+}
+
+function requestCancelledError(): EngineV1ApiError {
+  return new EngineV1ApiError("Engine V1 请求已取消。", {
+    status: 0,
+    code: -3,
+    data: { reason_code: "request_cancelled" },
+  });
+}
+
 async function parseJsonResponse<T>(
   response: Response,
 ): Promise<ApiSuccessResponse<T> | ApiErrorResponse | null> {
@@ -343,30 +379,77 @@ async function parseJsonResponse<T>(
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, init);
-  const payload = await parseJsonResponse<T>(response);
+  const controller = new AbortController();
+  const callerSignal = init?.signal;
+  let timedOut = false;
+  const abortFromCaller = () => controller.abort(callerSignal?.reason);
+  if (callerSignal?.aborted) {
+    abortFromCaller();
+  } else {
+    callerSignal?.addEventListener("abort", abortFromCaller, { once: true });
+  }
+  const timeoutId = globalThis.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, ENGINE_V1_REQUEST_TIMEOUT_MS);
 
-  if (!response.ok) {
-    const errorPayload = payload as ApiErrorResponse | null;
-    throw new EngineV1ApiError(
-      errorPayload?.msg ?? `Engine V1 request failed: ${response.status}`,
-      {
+  try {
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, {
+        ...init,
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (timedOut) {
+        throw requestTimeoutError();
+      }
+      if (callerSignal?.aborted || (error instanceof DOMException && error.name === "AbortError")) {
+        throw requestCancelledError();
+      }
+      throw new EngineV1ApiError(
+        "无法连接 Engine V1 后端，请检查 API 地址和服务状态。",
+        {
+          status: 0,
+          code: -1,
+          data: { reason_code: "network_error" },
+        },
+      );
+    }
+
+    const payload = await parseJsonResponse<T>(response);
+    if (timedOut) {
+      throw requestTimeoutError();
+    }
+    if (callerSignal?.aborted) {
+      throw requestCancelledError();
+    }
+
+    if (!response.ok) {
+      const errorPayload = payload as ApiErrorResponse | null;
+      throw new EngineV1ApiError(
+        errorPayload?.msg ?? `Engine V1 request failed: ${response.status}`,
+        {
+          status: response.status,
+          code: errorPayload?.code ?? response.status,
+          data: errorPayload?.data,
+        },
+      );
+    }
+
+    const successPayload = payload as ApiSuccessResponse<T> | null;
+    if (!successPayload || successPayload.code !== 0) {
+      throw new EngineV1ApiError(successPayload?.msg ?? "Invalid Engine V1 API response", {
         status: response.status,
-        code: errorPayload?.code ?? response.status,
-        data: errorPayload?.data,
-      },
-    );
+        code: successPayload?.code ?? -1,
+        data: successPayload,
+      });
+    }
+    return successPayload.data;
+  } finally {
+    globalThis.clearTimeout(timeoutId);
+    callerSignal?.removeEventListener("abort", abortFromCaller);
   }
-
-  const successPayload = payload as ApiSuccessResponse<T> | null;
-  if (!successPayload || successPayload.code !== 0) {
-    throw new EngineV1ApiError(successPayload?.msg ?? "Invalid Engine V1 API response", {
-      status: response.status,
-      code: successPayload?.code ?? -1,
-      data: successPayload,
-    });
-  }
-  return successPayload.data;
 }
 
 function postJson<T>(path: string, body: unknown): Promise<T> {
