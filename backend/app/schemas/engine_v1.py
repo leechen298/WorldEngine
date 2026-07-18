@@ -7,7 +7,7 @@ from pydantic_core import PydanticCustomError
 
 
 SCHEMA_VERSION = "worldengine.engine.v1"
-CONTRACT_VERSION = "0.13.0"
+CONTRACT_VERSION = "engine-v1-mvp"
 STATE_HASH_ALGORITHM = "sha256-canonical-json-v1"
 
 _PRIVATE_VALUE_MARKERS = (

@@ -1,4 +1,4 @@
-export const ENGINE_V1_CONTRACT_VERSION = "0.13.0";
+export const ENGINE_V1_CONTRACT_VERSION = "engine-v1-mvp";
 export const ENGINE_V1_SCHEMA_VERSION = "worldengine.engine.v1";
 
 interface ApiSuccessResponse<T> {

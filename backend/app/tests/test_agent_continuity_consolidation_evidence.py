@@ -524,9 +524,11 @@ def test_manifest_exposes_agent_continuity_endpoint() -> None:
     response = client.get("/manifest")
 
     assert response.status_code == 200
-    assert {
-        "path": "/worlds/{world_id}/agents/{agent_id}/continuity/evaluate",
-        "method": "POST",
-        "operation_id": "evaluate_agent_continuity",
-        "status": "available",
-    } in response.json()["public_surfaces"]
+    assert any(
+        surface["path"]
+        == "/worlds/{world_id}/agents/{agent_id}/continuity/evaluate"
+        and surface["method"] == "POST"
+        and surface["operation_id"] == "evaluate_agent_continuity"
+        and surface["status"] == "available"
+        for surface in response.json()["public_surfaces"]
+    )

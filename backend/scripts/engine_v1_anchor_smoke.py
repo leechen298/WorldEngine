@@ -276,13 +276,13 @@ def run_smoke(port: int) -> Dict[str, Any]:
                 ),
             }
             classification = (
-                "WORLDENGINE_SIDE_ANCHOR_PASS"
+                "WORLDENGINE_MVP_ANCHOR_PASS"
                 if all(checks.values())
-                else "WORLDENGINE_SIDE_ANCHOR_INCOMPLETE"
+                else "WORLDENGINE_MVP_ANCHOR_INCOMPLETE"
             )
             return {
                 "classification": classification,
-                "complete_v0_13_claimed": False,
+                "worldengine_side_only": True,
                 "checks": checks,
                 "missing_checks": [
                     name for name, passed in checks.items() if not passed
@@ -323,7 +323,7 @@ def main() -> int:
     args = parser.parse_args()
     result = run_smoke(args.port or _free_port())
     print(json.dumps(result, ensure_ascii=True, sort_keys=True))
-    return 0 if result["classification"] == "WORLDENGINE_SIDE_ANCHOR_PASS" else 1
+    return 0 if result["classification"] == "WORLDENGINE_MVP_ANCHOR_PASS" else 1
 
 
 if __name__ == "__main__":

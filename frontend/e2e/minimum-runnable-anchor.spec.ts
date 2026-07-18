@@ -4,7 +4,7 @@ test("minimum runnable anchor drives the real Engine V1 full flow", async ({ pag
   await page.goto("/admin/runnable-anchor");
 
   await expect(page.getByRole("heading", { name: "可运行锚点工作台" })).toBeVisible();
-  await expect(page.getByTestId("capabilities-ready")).toContainText("0.13.0");
+  await expect(page.getByTestId("capabilities-ready")).toContainText("engine-v1-mvp");
   await expect(page.getByTestId("operation-count")).toHaveText("14");
 
   await page.getByTestId("generate-package").click();

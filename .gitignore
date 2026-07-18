@@ -207,6 +207,7 @@ frontend/tsconfig.tsbuildinfo
 
 # Local test artifacts
 test-results/*
+output/
 !test-results/agent-smoke/
 test-results/agent-smoke/*
 !test-results/agent-smoke/latest/

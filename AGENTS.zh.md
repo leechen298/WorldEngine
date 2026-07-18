@@ -1,175 +1,36 @@
-# AGENTS.md
+# AGENTS.zh.md
 
-本文件为 Codex 和其他 AI coding agent 在本仓库工作时的规则说明。
+WorldEngine 负责生成世界、推进权威历史、运行 Agent、接受有边界的用户干预，并向独立
+客户端发布公开投影。
 
-英文入口：`AGENTS.md`。
+## 当前目标
 
-## Project Overview
+当前唯一执行入口是 `docs/current/MVP.zh.md`。
 
-WorldEngine 是 recursive world generation 与 runtime engine。它的长期目标是
-generate worlds、run worlds over time、support recursive world structures，并让
-Agent 在这些 world 中通过 memory、continuity、feedback、action 和 pseudo-self
-formation 形成持续变化的主体表现。
+`docs/iterations/` 下的文件是历史设计与证据记录。它们可以解释过去的决策，但不再指导
+当前工作，也不要求先创建版本包或阻断实现。
 
-在提出或实现会影响项目方向的工作前，先阅读：
+## 工作方式
 
-- `docs/project-north-star.md`
-- `docs/project-plan.md`
-- `docs/product-model.md`
-- `docs/scope-boundaries.md`
-- `docs/roadmap.md`
-- `docs/iterations/README.md`
+- 先检查当前代码和运行证据，不以文档声明代替事实。
+- 围绕当前目标直接实现最小但完整的纵向闭环。
+- 范围、决策或证据变化时，更新当前 MVP 文档。
+- 完整迭代包、中英文镜像、逐任务提交和常规 evaluator 不再是开发前置条件。
+- 并行工作确有价值时可以使用 subagent，主 Agent 负责整合和最终验证。
 
-External fixture、validation 和 projection applications 是 WorldEngine 的 consumers。
-它们不是 engine core 的一部分，也不能把本仓库变成 application-specific backend code。
+## 必须保留的边界
 
-## Active Code Path
+1. `backend/app/` 是当前后端；`backend/worldengine/` 是 legacy。
+2. WorldEngine 负责权威历史、规则、Agent 连续性和公开证据；渲染与精细物理属于外部
+   客户端或游戏引擎。
+3. 外部客户端只能使用公开 HTTP/OpenAPI；不得导入 WorldEngine 内部代码，也不得把
+   具体世界、地图、美术或客户端 UI 写入引擎核心。
+4. 被接受的状态变化必须产生事件和可重放证据。
+5. 公开响应不得泄露密钥、provider trace、原始提示词、私有记忆或思维链。
+6. 执行器可以记录证据，但不能给自己判定 PASS；最终 MVP 结论由独立 checker 产生。
+7. 保留无关的用户改动，不执行破坏性 Git 操作。
 
-- `backend/app/` 是 active backend code path。
-- `frontend/` 是 active dashboard code path。
-- `backend/worldengine/` 是 pre-v0.1 legacy code，除非后续 iteration contract
-  明确允许，否则不要视为 active path。
+## 验证要求
 
-不要在 `backend/worldengine/` 下新增 runtime feature。
-
-## Iteration Documentation Gate
-
-以 `docs/iterations/README.md` 作为每个 iteration 的文档标准。
-创建或修改 `docs/iterations/` 下文件时，还必须读取
-`docs/iterations/AGENTS.zh.md`。该文件定义 version plan、planned package、
-iteration package、validation plan、evidence 和 review documentation 的详细程度要求。
-
-对范围较大的 documentation generation 请求，尤其是 `/plan` 风格 prompt 或需要创建多个
-iteration files 的请求，起草文档前先遵循 `docs/iterations/AGENTS.zh.md` 中的 Codex
-Plan-Mode Document Generation Standard。
-
-只有当用户明确要求 subagents / parallel agent work，或 active package 的
-`GOAL_RUNNER.md`、contract 或 plan 明确授权时，Codex 才可以使用 subagents。
-Subagent work 必须保持在 active package scope 内，遵守同样的 git safety 和 evidence
-rules，并服从 main agent；main agent 负责 synthesis、verification 和 final status。
-对于 `/goal` development campaigns，iteration rules 要求 implementation-bearing child
-packages close out 前必须经过 subagent / evaluator checkpoints。Iteration work 的详细
-subagent 和 learning-report 规则见 `docs/iterations/AGENTS.zh.md`。
-
-当用户说 `完成 <iteration-package>`、`complete <iteration-package>`、
-`实现 <iteration-package>`、`开发 <iteration-package>`、`implement
-<iteration-package>`、`develop <iteration-package>`，或等价地要求实现/开发某个已命名
-iteration package 时，先在 `docs/iterations/**/<iteration-package>/` 下定位匹配
-package。如果该 package 包含 `README.md`、`GOAL_RUNNER.md`、`CURRENT_STATE.md` 或
-`CAMPAIGN_PLAN.md`，必须先读取这些文件再 planning 或 execution。不要根据 memory 或相邻
-package 推断 workflow。
-
-代码或混合型 iteration 在实现前必须先有 iteration package：
-
-- `README.md`
-- `intent.md`
-- `contract.md`
-- `technical-design.md`
-- `test-plan.md`
-- `plan.md`
-- `review.md`
-
-Documentation-only iteration 只有在不准备 runtime、schema、API、UI 或 test
-实现时，才可以省略 `technical-design.md` 和 `test-plan.md`。如果它改变 process
-rules、version semantics、product boundaries、concepts、evidence rules 或
-templates，仍然必须包含 `contract.md`。
-
-Iteration work 必须分成两个 gate：
-
-1. Documentation stage：先起草或更新当前 iteration package 所需文档。除非当前请求
-   明确是 documentation-only 且文件属于文档 scope，否则不要改 runtime、schema、
-   API、UI、test 或 fixture 文件。
-2. Implementation stage：只有 iteration package 通过 review 并批准后才能开始。把已
-   批准的文档视为 work contract。
-
-不要一边起草或修订 iteration 文档，一边实现对应的 runtime/code changes。文档必须先
-单独可 review，之后才能进入代码实现。如果实现过程中发现 design gap，先停止实现，
-更新相关文档；只有更新后的 contract、design、test plan 或 execution plan 通过 review
-后，才能继续。
-
-实现代码时，先按顺序阅读当前 iteration 文档并遵循它们：
-
-1. `intent.md`
-2. `contract.md`
-3. `technical-design.md`
-4. `test-plan.md`
-5. `plan.md`
-6. `review.md`
-
-如果实现过程中发现 design problem，先停止，更新相关 iteration 文档；只有在
-contract/design 更新并通过 review 后，才能继续。
-
-## Hard Rules
-
-1. North Star first.
-   任何 feature proposal 都必须先对照 `docs/project-north-star.md`。
-
-2. No implementation without iteration docs.
-   代码或混合型 iteration 必须有 intent、contract、technical design、test plan、
-   execution plan 和 review evidence。这些文档是实现前必须通过 review 的 gate，
-   不是边写代码边补的 paperwork。
-
-3. Current package only.
-   只实现当前 active iteration package。不要顺手实现 adjacent future versions 或
-   convenient follow-on capabilities。
-
-4. Preserve compatibility.
-   Schema extension 必须 additive，除非当前 iteration contract 明确允许 breaking
-   changes。
-
-5. Event is the system spine.
-   World、Agent、memory、runtime 和 external projection 应该通过 Event contract
-   与 evidence 收敛，而不是通过 hidden side effects。
-
-6. Application surfaces are not the engine goal.
-   不要把 WorldEngine 收窄成 demo-specific 或 application-specific backend logic。
-
-7. Agent pseudo-self is core, but not automatic current scope.
-   roadmap 或 iteration contract 可以只定义边界，把 Agent self-continuity 的实现放到
-   后续版本。
-
-8. Keep WorldEngine core generic.
-   不要在本仓库加入 concrete demo-world names、maps、characters、locations、
-   resources、story rules、seed data、UI code 或 game/application-specific backend
-   logic。
-
-9. External validation worlds are consumers.
-   不要用 external validation world 反向驱动 internal engine abstractions。External
-   fixture 和 validation applications 只能通过 public APIs、CLI contracts、schemas、
-   exported contracts 或 redacted reports 消费 WorldEngine。
-
-10. Review must include evidence.
-   每个 code iteration 都必须在 `review.md` 记录 changed files、commands run、
-   test results、compatibility review、scope review 和 unresolved findings。
-
-## Verification and Reporting
-
-- 只有在当前 work session 运行过相关命令或流程后，才可以声称 tests、builds、
-  E2E、UI smoke 或 runtime behavior 通过。
-- Docs-only iteration 可以不运行 code tests，但 `review.md` 必须说明没有运行测试及原因。
-- 优先运行与 iteration contract 对应的 focused verification；当 blast radius 需要时，再运行
-  broader regression commands。
-
-## Natural-Language Request Routing
-
-详细的自然语言 trigger 规则放在 `docs/agent-guides/`。本文件只保留短路由入口。
-执行被路由的请求前，先打开对应 guide 和它指向的 primary workflow 文档。
-
-| 用户请求 | 路由文档 | 主工作流 |
-| --- | --- | --- |
-| `生成 <version> 文档`、`编写 <version> 文档`、`规划 <version> 每个迭代`、`生成 <version> 迭代包` | `docs/agent-guides/natural-language-iteration-documentation-triggers.zh.md` | `docs/iterations/AGENTS.zh.md` |
-| `完成 <iteration-package>`、`实现 <iteration-package>`、`开发 <iteration-package>`、`complete <iteration-package>`、`implement <iteration-package>`、`develop <iteration-package>` | `docs/agent-guides/natural-language-implementation-triggers.zh.md` | `docs/iterations/AGENTS.zh.md` |
-| `测试 <version>`、`验证 <version>`、`<version> 是否通过`、`验证当前产品`、`clean pass` | `docs/agent-guides/natural-language-validation-triggers.zh.md` | `docs/testing/product-capability-validation-playbook.zh.md` |
-| `编写 <version> 测试方案`、`补充 <iteration-package> 测试文档`、`设计 <feature> 测试用例`、`生成测试矩阵` | `docs/agent-guides/natural-language-test-documentation-triggers.zh.md` | `docs/testing/test-documentation-playbook.zh.md` |
-| `审核 <version> 代码`、`review <version> code`、`代码审核 <feature-or-package>` | `docs/agent-guides/natural-language-code-review-triggers.zh.md` | `docs/testing/code-review-playbook.zh.md` |
-
-Trigger phrase 只是路由，不会自动授权 runtime、schema、API、frontend、test、fixture、
-migration 或 external repository implementation，也不能证明 PASS 或 closeout。如果一个请求
-同时包含 documentation、implementation、validation 或 review，按 guide 定义的顺序运行相关
-workflow，并严格限定 evidence claim。
-
-## Git Safety
-
-- 不要 revert 或覆盖 working tree 中已经存在的用户修改。
-- staging 或 commit 前先检查 changed-file set，并保持范围限定在当前 iteration
-  package，除非用户明确扩大 scope。
+开发中运行聚焦测试；声明 MVP 完成前必须运行完整后端测试、前端测试与构建、真实 HTTP
+smoke，以及外部客户端和 checker 闭环。失败项和未验证范围必须明确报告。

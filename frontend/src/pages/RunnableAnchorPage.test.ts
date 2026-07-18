@@ -44,7 +44,7 @@ const capabilities: CapabilityManifest = {
   engine_id: "worldengine",
   engine_build: "worldengine-test-build",
   instance_id: "instance-test",
-  contract_version: "0.13.0",
+  contract_version: "engine-v1-mvp",
   schema_version: "worldengine.engine.v1",
   state_hash_algorithm: "sha256-canonical-json-v1",
   operations: [
@@ -180,7 +180,7 @@ function makeEvidence(
 ): EvidenceBundle {
   return {
     schema_version: "worldengine.engine.v1",
-    contract_version: "0.13.0",
+    contract_version: "engine-v1-mvp",
     state_hash_algorithm: "sha256-canonical-json-v1",
     package: runnablePackage,
     projection,

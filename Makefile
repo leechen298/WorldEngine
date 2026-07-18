@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures validate-agent-autonomous-result validate-agent-autonomous-fixtures validate-codex-skills sync-codex-skills
+.PHONY: help setup setup-backend setup-frontend dev dev-backend dev-frontend check-backend check-frontend test test-mvp smoke-mvp test-e2e validate-agent-smoke-result validate-agent-smoke-fixtures validate-agent-autonomous-result validate-agent-autonomous-fixtures validate-codex-skills sync-codex-skills
 
 BACKEND_DIR := backend
 FRONTEND_DIR := frontend
@@ -14,6 +14,9 @@ help:
 	@echo "  make dev            Start backend and frontend together"
 	@echo "  make dev-backend    Start only the FastAPI backend"
 	@echo "  make dev-frontend   Start only the Vite frontend"
+	@echo "  make test-mvp       Run focused Engine V1 and frontend tests"
+	@echo "  make smoke-mvp      Run the real WorldEngine HTTP anchor smoke"
+	@echo "  make test           Run full backend and frontend verification"
 	@echo "  make test-e2e       Run browser E2E tests"
 	@echo "  make validate-agent-smoke-result RESULT_DIR=<dir>"
 	@echo "  make validate-agent-smoke-fixtures"
@@ -49,6 +52,23 @@ dev-backend:
 dev-frontend:
 	@$(MAKE) check-frontend
 	@cd "$(FRONTEND_DIR)" && pnpm dev
+
+test-mvp: check-backend check-frontend
+	@cd "$(BACKEND_DIR)" && .venv/bin/python -m pytest \
+		app/tests/test_engine_v1_generation.py \
+		app/tests/test_engine_v1_session.py \
+		app/tests/test_engine_v1_agent.py \
+		app/tests/test_engine_v1_interventions.py \
+		app/tests/test_engine_v1_protocol.py -q
+	@cd "$(FRONTEND_DIR)" && pnpm test
+
+smoke-mvp: check-backend
+	@cd "$(BACKEND_DIR)" && .venv/bin/python scripts/engine_v1_anchor_smoke.py
+
+test: check-backend check-frontend
+	@cd "$(BACKEND_DIR)" && .venv/bin/python -m pytest -q
+	@cd "$(FRONTEND_DIR)" && pnpm test
+	@cd "$(FRONTEND_DIR)" && pnpm build
 
 test-e2e: check-backend check-frontend
 	@cd "$(FRONTEND_DIR)" && pnpm exec playwright test

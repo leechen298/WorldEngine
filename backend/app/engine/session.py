@@ -77,7 +77,7 @@ class EngineV1Service:
         self._session_request_fingerprints: Dict[str, str] = {}
         self._diagnostics: List[Dict[str, Any]] = []
         self.instance_id = f"instance-{uuid4().hex[:16]}"
-        self.engine_build = os.getenv("WORLDENGINE_BUILD_ID", "worldengine-0.13.0")
+        self.engine_build = os.getenv("WORLDENGINE_BUILD_ID", "worldengine-mvp-dev")
 
     def capabilities(self) -> CapabilityManifest:
         operations = [
